@@ -11,6 +11,11 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
         ? { kind: "woocommerce-unavailable" as const }
         : { kind: "ready" as const };
 
-    return Promise.resolve({ availability, bootstrap: this.bootstrap, operations: [] });
+    return Promise.resolve({
+      availability,
+      bootstrap: this.bootstrap,
+      capabilities: { productWrites: false },
+      operations: [],
+    });
   }
 }

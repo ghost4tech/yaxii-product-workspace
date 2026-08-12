@@ -1,0 +1,131 @@
+#yaxii-product-workspace .ypw-overlay {
+  position: fixed;
+  z-index: 100000;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(15 23 42 / 58%);
+  backdrop-filter: blur(3px);
+}
+
+#yaxii-product-workspace .ypw-dialog {
+  width: min(640px, 100%);
+  max-height: min(760px, calc(100vh - 40px));
+  overflow: auto;
+  border: 1px solid var(--ypw-border);
+  border-radius: 14px;
+  background: var(--ypw-surface);
+  color: var(--ypw-text);
+  box-shadow: 0 28px 80px rgb(15 23 42 / 35%);
+}
+
+#yaxii-product-workspace .ypw-dialog__header {
+  position: sticky;
+  z-index: 2;
+  inset-block-start: 0;
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 17px 19px;
+  border-block-end: 1px solid var(--ypw-border);
+  background: var(--ypw-surface);
+}
+
+#yaxii-product-workspace .ypw-dialog__header h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+#yaxii-product-workspace .ypw-dialog__header p {
+  margin: 3px 0 0;
+  color: var(--ypw-muted);
+  font-size: 12px;
+}
+
+#yaxii-product-workspace .ypw-dialog__body {
+  padding: 18px;
+}
+
+#yaxii-product-workspace .ypw-dialog__body > .ypw-panel {
+  box-shadow: none;
+}
+
+#yaxii-product-workspace .ypw-command-search input {
+  height: 44px;
+  padding-inline: 13px;
+}
+
+#yaxii-product-workspace .ypw-command-list {
+  display: grid;
+  gap: 3px;
+  margin-block-start: 10px;
+}
+
+#yaxii-product-workspace .ypw-command-list button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 42px;
+  padding-inline: 11px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ypw-text);
+  text-align: start;
+}
+
+#yaxii-product-workspace .ypw-command-list button:hover,
+#yaxii-product-workspace .ypw-command-list button:focus-visible {
+  background: var(--ypw-surface-subtle);
+}
+
+#yaxii-product-workspace .ypw-command-empty {
+  padding: 18px;
+  color: var(--ypw-muted);
+  text-align: center;
+}
+
+#yaxii-product-workspace .ypw-shortcut-list {
+  display: grid;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+#yaxii-product-workspace .ypw-shortcut-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 11px;
+  border-block-end: 1px solid var(--ypw-border);
+}
+
+#yaxii-product-workspace .ypw-shortcut-list li:last-child {
+  border-block-end: 0;
+}
+
+#yaxii-product-workspace .ypw-shortcut-keys {
+  display: flex;
+  gap: 4px;
+}
+
+#yaxii-product-workspace .ypw-toast {
+  position: fixed;
+  z-index: 100010;
+  inset-inline-end: 24px;
+  inset-block-end: 24px;
+  max-width: min(390px, calc(100vw - 32px));
+  padding: 12px 15px;
+  border: 1px solid var(--ypw-border-strong);
+  border-radius: 9px;
+  background: var(--ypw-primary);
+  box-shadow: var(--ypw-shadow);
+  color: var(--ypw-primary-text);
+  font-size: 12px;
+  font-weight: 650;
+}

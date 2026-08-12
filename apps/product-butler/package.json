@@ -14,11 +14,12 @@
     "typecheck": "tsc -b",
     "lint": "eslint src/main.tsx src/production tools vite.config.ts vitest.config.ts",
     "check:lines": "node tools/check-production-lines.mjs",
+    "check:boundary": "node tools/check-production-boundary.mjs",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
     "audit:production": "npm audit --omit=dev",
-    "check": "npm run typecheck && npm run lint && npm run check:lines && npm test && npm run build"
+    "check": "npm run typecheck && npm run lint && npm run check:lines && npm test && npm run build && npm run check:boundary"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.101.4",

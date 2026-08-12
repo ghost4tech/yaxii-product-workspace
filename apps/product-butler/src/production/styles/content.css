@@ -1,0 +1,215 @@
+#yaxii-product-workspace .ypw-main {
+  width: min(1320px, 100%);
+  margin-inline: auto;
+  padding: 28px;
+}
+
+#yaxii-product-workspace .ypw-workspace-toolbar,
+#yaxii-product-workspace .ypw-page-heading {
+  margin-block-end: 20px;
+}
+
+#yaxii-product-workspace .ypw-workspace-toolbar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+#yaxii-product-workspace h1,
+#yaxii-product-workspace h2,
+#yaxii-product-workspace p {
+  margin-block-start: 0;
+}
+
+#yaxii-product-workspace h1 {
+  margin-block-end: 4px;
+  font-size: clamp(23px, 3vw, 31px);
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+#yaxii-product-workspace .ypw-workspace-toolbar p,
+#yaxii-product-workspace .ypw-page-heading p {
+  max-width: 680px;
+  margin-block-end: 0;
+  color: var(--ypw-muted);
+}
+
+#yaxii-product-workspace .ypw-toolbar-actions {
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+#yaxii-product-workspace .ypw-eyebrow {
+  display: block;
+  margin-block-end: 5px;
+  color: var(--ypw-muted);
+  font-size: 10px;
+  font-weight: 750;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+#yaxii-product-workspace .ypw-safety-chip,
+#yaxii-product-workspace .ypw-chip,
+#yaxii-product-workspace .ypw-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 27px;
+  padding-inline: 9px;
+  border-radius: 999px;
+  background: var(--ypw-accent-soft);
+  color: var(--ypw-accent);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+#yaxii-product-workspace .ypw-workspace-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+#yaxii-product-workspace .ypw-workspace-grid--focus {
+  grid-template-columns: minmax(0, 980px);
+  justify-content: center;
+}
+
+#yaxii-product-workspace .ypw-panel {
+  border: 1px solid var(--ypw-border);
+  border-radius: var(--ypw-radius);
+  background: var(--ypw-surface);
+  box-shadow: var(--ypw-shadow);
+}
+
+#yaxii-product-workspace .ypw-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 68px;
+  padding: 13px var(--ypw-panel-padding);
+  border-block-end: 1px solid var(--ypw-border);
+  background: color-mix(in srgb, var(--ypw-surface-subtle) 72%, transparent);
+}
+
+#yaxii-product-workspace .ypw-panel__header h2 {
+  margin: 0;
+  font-size: 16px;
+}
+
+#yaxii-product-workspace .ypw-queue-column {
+  position: sticky;
+  inset-block-start: 84px;
+}
+
+#yaxii-product-workspace .ypw-empty-state {
+  display: grid;
+  justify-items: center;
+  gap: 9px;
+  padding: 54px 28px;
+  color: var(--ypw-muted);
+  text-align: center;
+}
+
+#yaxii-product-workspace .ypw-empty-state strong {
+  color: var(--ypw-text);
+}
+
+#yaxii-product-workspace .ypw-empty-state p,
+#yaxii-product-workspace .ypw-fixture-note {
+  margin: 0;
+  font-size: 12px;
+}
+
+#yaxii-product-workspace .ypw-fixture-note {
+  padding: 10px 14px;
+  border-block-end: 1px solid var(--ypw-border);
+  background: #fffaeb;
+  color: #93370d;
+}
+
+#yaxii-product-workspace .ypw-operation {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 15px;
+  border-block-end: 1px solid var(--ypw-border);
+}
+
+#yaxii-product-workspace .ypw-operation:last-child {
+  border-block-end: 0;
+}
+
+#yaxii-product-workspace .ypw-operation div {
+  display: grid;
+  min-width: 0;
+}
+
+#yaxii-product-workspace .ypw-operation strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#yaxii-product-workspace .ypw-operation div span {
+  color: var(--ypw-muted);
+  font-size: 11px;
+}
+
+#yaxii-product-workspace .ypw-operation__status {
+  color: var(--ypw-warning);
+}
+
+#yaxii-product-workspace .ypw-operation__status--completed {
+  color: var(--ypw-accent);
+}
+
+#yaxii-product-workspace .ypw-operation__status--failed {
+  color: var(--ypw-danger);
+}
+
+#yaxii-product-workspace .ypw-button.ypw-mobile-queue {
+  display: none;
+}
+
+#yaxii-product-workspace .ypw-boundary-card {
+  max-width: 720px;
+  margin: 64px auto;
+  padding: 34px;
+  border: 1px solid var(--ypw-border);
+  border-radius: var(--ypw-radius);
+  background: var(--ypw-surface);
+  box-shadow: var(--ypw-shadow);
+}
+
+#yaxii-product-workspace .ypw-boundary-card h2 {
+  margin-block: 12px 7px;
+  font-size: 24px;
+}
+
+#yaxii-product-workspace .ypw-boundary-card p:last-child {
+  margin: 0;
+  color: var(--ypw-muted);
+}
+
+#yaxii-product-workspace .ypw-boundary-card--error {
+  color: var(--ypw-danger);
+}
+
+#yaxii-product-workspace .ypw-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -14,6 +14,7 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
         pluginVersion: "unknown",
         screenId: "unknown",
       },
+      capabilities: { productWrites: false },
       operations: [],
     });
   }

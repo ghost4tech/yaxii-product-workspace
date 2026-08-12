@@ -20,5 +20,16 @@ export type WorkspaceAvailability =
 export interface WorkspaceSnapshot {
   availability: WorkspaceAvailability;
   bootstrap: WorkspaceBootstrap;
-  operations: readonly [];
+  capabilities: {
+    productWrites: boolean;
+  };
+  operations: readonly WorkspaceOperation[];
+}
+
+export interface WorkspaceOperation {
+  id: string;
+  name: string;
+  source: "development-fixture" | "server";
+  status: "completed" | "failed" | "pending";
+  timestamp: string;
 }

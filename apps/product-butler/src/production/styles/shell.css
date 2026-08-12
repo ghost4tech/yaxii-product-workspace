@@ -1,0 +1,188 @@
+#yaxii-product-workspace,
+#yaxii-product-workspace *,
+#yaxii-product-workspace *::before,
+#yaxii-product-workspace *::after {
+  box-sizing: border-box;
+}
+
+#yaxii-product-workspace {
+  min-height: 520px;
+  padding-block: 0 24px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#yaxii-product-workspace button,
+#yaxii-product-workspace input,
+#yaxii-product-workspace select,
+#yaxii-product-workspace textarea {
+  font: inherit;
+}
+
+#yaxii-product-workspace button {
+  cursor: pointer;
+}
+
+#yaxii-product-workspace button:disabled {
+  cursor: not-allowed;
+}
+
+#yaxii-product-workspace :focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--ypw-info) 35%, transparent);
+  outline-offset: 2px;
+}
+
+#yaxii-product-workspace .ypw-app {
+  min-height: 640px;
+  border: 1px solid var(--ypw-border);
+  border-radius: var(--ypw-radius);
+  overflow: clip;
+  background-color: var(--ypw-bg);
+  background-image: radial-gradient(var(--ypw-canvas-dot) 1px, transparent 1px);
+  background-position: -1px -1px;
+  background-size: 22px 22px;
+  color: var(--ypw-text);
+}
+
+#yaxii-product-workspace .ypw-development-banner {
+  padding: 7px 16px;
+  background: #fffaeb;
+  color: #93370d;
+  font-size: 12px;
+  font-weight: 650;
+  text-align: center;
+}
+
+#yaxii-product-workspace[data-theme="dark"] .ypw-development-banner {
+  background: #4e1d09;
+  color: #fec84b;
+}
+
+#yaxii-product-workspace .ypw-header {
+  position: sticky;
+  z-index: 20;
+  inset-block-start: 0;
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto minmax(300px, 1fr);
+  align-items: center;
+  gap: 18px;
+  min-height: 64px;
+  padding-inline: 20px;
+  border-block-end: 1px solid var(--ypw-border);
+  background: color-mix(in srgb, var(--ypw-surface) 92%, transparent);
+  backdrop-filter: blur(14px);
+}
+
+#yaxii-product-workspace .ypw-header__identity,
+#yaxii-product-workspace .ypw-header__actions,
+#yaxii-product-workspace .ypw-navigation,
+#yaxii-product-workspace .ypw-toolbar-actions {
+  display: flex;
+  align-items: center;
+}
+
+#yaxii-product-workspace .ypw-header__identity {
+  gap: 10px;
+  min-width: 0;
+}
+
+#yaxii-product-workspace .ypw-header__identity div {
+  display: grid;
+  min-width: 0;
+}
+
+#yaxii-product-workspace .ypw-header__identity strong {
+  overflow: hidden;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#yaxii-product-workspace .ypw-header__identity span:not(.ypw-brand-mark) {
+  color: var(--ypw-muted);
+  font-size: 11px;
+}
+
+#yaxii-product-workspace .ypw-brand-mark,
+#yaxii-product-workspace .ypw-boundary-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--ypw-primary);
+  color: var(--ypw-primary-text);
+}
+
+#yaxii-product-workspace .ypw-navigation {
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--ypw-border);
+  border-radius: 9px;
+  background: var(--ypw-surface-subtle);
+}
+
+#yaxii-product-workspace .ypw-navigation button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding-inline: 11px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--ypw-muted);
+}
+
+#yaxii-product-workspace .ypw-navigation button[aria-current="page"] {
+  background: var(--ypw-surface);
+  box-shadow: 0 1px 2px rgb(16 24 40 / 8%);
+  color: var(--ypw-text);
+  font-weight: 650;
+}
+
+#yaxii-product-workspace .ypw-header__actions {
+  justify-content: flex-end;
+  gap: 7px;
+}
+
+#yaxii-product-workspace .ypw-icon-button,
+#yaxii-product-workspace .ypw-command-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  border: 1px solid var(--ypw-border);
+  border-radius: 8px;
+  background: var(--ypw-surface);
+  color: var(--ypw-text);
+}
+
+#yaxii-product-workspace .ypw-icon-button {
+  width: 36px;
+  padding: 0;
+}
+
+#yaxii-product-workspace .ypw-icon-button[aria-pressed="true"] {
+  border-color: var(--ypw-primary);
+  background: var(--ypw-primary);
+  color: var(--ypw-primary-text);
+}
+
+#yaxii-product-workspace .ypw-command-button {
+  gap: 8px;
+  padding-inline: 11px 7px;
+}
+
+#yaxii-product-workspace kbd {
+  min-width: 22px;
+  padding: 2px 5px;
+  border: 1px solid var(--ypw-border-strong);
+  border-radius: 5px;
+  background: var(--ypw-surface-subtle);
+  color: var(--ypw-muted);
+  font: 600 10px/1.4 ui-monospace, SFMono-Regular, Consolas, monospace;
+  text-align: center;
+}

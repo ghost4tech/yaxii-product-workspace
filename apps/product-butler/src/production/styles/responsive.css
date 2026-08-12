@@ -1,0 +1,158 @@
+@media (max-width: 1080px) {
+  #yaxii-product-workspace .ypw-header {
+    grid-template-columns: 1fr auto;
+  }
+
+  #yaxii-product-workspace .ypw-header__identity {
+    display: none;
+  }
+
+  #yaxii-product-workspace .ypw-navigation {
+    justify-self: start;
+  }
+
+  #yaxii-product-workspace .ypw-workspace-grid {
+    grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
+  }
+}
+
+@media (max-width: 782px) {
+  #yaxii-product-workspace {
+    padding-block-end: 12px;
+  }
+
+  #yaxii-product-workspace .ypw-app {
+    min-height: 560px;
+    border-radius: 0;
+  }
+
+  #yaxii-product-workspace .ypw-header {
+    position: relative;
+    min-height: 58px;
+    padding-inline: 12px;
+  }
+
+  #yaxii-product-workspace .ypw-command-button span,
+  #yaxii-product-workspace .ypw-command-button kbd {
+    display: none;
+  }
+
+  #yaxii-product-workspace .ypw-command-button {
+    width: 36px;
+    padding: 0;
+  }
+
+  #yaxii-product-workspace .ypw-main {
+    padding: 20px 14px;
+  }
+
+  #yaxii-product-workspace .ypw-workspace-toolbar {
+    display: grid;
+    align-items: start;
+  }
+
+  #yaxii-product-workspace .ypw-toolbar-actions {
+    justify-content: flex-start;
+  }
+
+  #yaxii-product-workspace .ypw-workspace-grid,
+  #yaxii-product-workspace .ypw-workspace-grid--focus {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #yaxii-product-workspace .ypw-queue-column {
+    display: none;
+  }
+
+  #yaxii-product-workspace .ypw-button.ypw-mobile-queue {
+    display: inline-flex;
+  }
+
+  #yaxii-product-workspace .ypw-preferences-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  #yaxii-product-workspace .ypw-header {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding-block: 10px;
+  }
+
+  #yaxii-product-workspace .ypw-navigation,
+  #yaxii-product-workspace .ypw-header__actions {
+    justify-self: stretch;
+  }
+
+  #yaxii-product-workspace .ypw-navigation button {
+    flex: 1;
+  }
+
+  #yaxii-product-workspace .ypw-header__actions {
+    justify-content: space-between;
+  }
+
+  #yaxii-product-workspace .ypw-field-grid,
+  #yaxii-product-workspace .ypw-locale-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #yaxii-product-workspace .ypw-field--wide {
+    grid-column: auto;
+  }
+
+  #yaxii-product-workspace .ypw-form-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  #yaxii-product-workspace .ypw-form-actions .ypw-button,
+  #yaxii-product-workspace .ypw-save-next,
+  #yaxii-product-workspace .ypw-save-next .ypw-button {
+    width: 100%;
+  }
+
+  #yaxii-product-workspace .ypw-save-next {
+    margin-inline-start: 0;
+    justify-items: stretch;
+  }
+
+  #yaxii-product-workspace .ypw-save-next span {
+    text-align: center;
+  }
+
+  #yaxii-product-workspace .ypw-safety-chip {
+    order: 3;
+  }
+
+  #yaxii-product-workspace .ypw-overlay {
+    align-items: end;
+    padding: 8px;
+  }
+
+  #yaxii-product-workspace .ypw-dialog {
+    max-height: calc(100vh - 16px);
+    border-radius: 14px 14px 8px 8px;
+  }
+}
+
+#yaxii-product-workspace[data-reduce-motion="true"] *,
+#yaxii-product-workspace[data-reduce-motion="true"] *::before,
+#yaxii-product-workspace[data-reduce-motion="true"] *::after {
+  scroll-behavior: auto !important;
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #yaxii-product-workspace *,
+  #yaxii-product-workspace *::before,
+  #yaxii-product-workspace *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
