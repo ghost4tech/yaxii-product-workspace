@@ -1,0 +1,22 @@
+#yaxii-product-workspace {
+  --ypw-bg: #f5f6f8;
+  --ypw-surface: #ffffff;
+  --ypw-text: #111827;
+  --ypw-muted: #667085;
+  --ypw-border: #e4e7ec;
+  --ypw-danger: #b42318;
+  --ypw-radius: 12px;
+  color: var(--ypw-text);
+  color-scheme: light;
+  direction: inherit;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+#yaxii-product-workspace[data-theme="dark"] {
+  --ypw-bg: #0c111d;
+  --ypw-surface: #161b26;
+  --ypw-text: #f5f7fa;
+  --ypw-muted: #98a2b3;
+  --ypw-border: #2b3445;
+  color-scheme: dark;
+}

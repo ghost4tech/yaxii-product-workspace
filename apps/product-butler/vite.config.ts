@@ -1,21 +1,25 @@
+import path from "node:path";
+import react from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react-swc";
-import path from "path";
-import { componentTagger } from "lovable-tagger";
 
-// https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
+  base: "./",
   server: {
-    host: "::",
+    host: "127.0.0.1",
     port: 8080,
-    hmr: {
-      overlay: false,
-    },
   },
-  plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  plugins: [react()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
+      "@": path.resolve(import.meta.dirname, "./src"),
     },
   },
-}));
+  build: {
+    outDir: path.resolve(import.meta.dirname, "../../assets/build"),
+    emptyOutDir: true,
+    manifest: true,
+    rollupOptions: {
+      input: path.resolve(import.meta.dirname, "src/main.tsx"),
+    },
+  },
+});

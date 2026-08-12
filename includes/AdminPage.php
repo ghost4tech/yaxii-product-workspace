@@ -1,0 +1,177 @@
+<?php
+/**
+ * WordPress admin host for the Product Workspace frontend.
+ *
+ * @package YaxiiProductWorkspace
+ */
+
+namespace Yaxii\ProductWorkspace;
+
+defined( 'ABSPATH' ) || exit;
+
+final class AdminPage {
+	private const MENU_SLUG   = 'yaxii-product-workspace';
+	private const SCRIPT_NAME = 'yaxii-product-workspace-app';
+	private const STYLE_NAME  = 'yaxii-product-workspace-app';
+
+	private string $hook_suffix = '';
+	private string $plugin_file;
+
+	public function __construct( string $plugin_file ) {
+		$this->plugin_file = $plugin_file;
+	}
+
+	public function register(): void {
+		add_action( 'admin_menu', array( $this, 'add_menu_page' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		add_filter( 'script_loader_tag', array( $this, 'mark_script_as_module' ), 10, 2 );
+	}
+
+	public function add_menu_page(): void {
+		$this->hook_suffix = (string) add_menu_page(
+			__( 'Yaxii Product Workspace', 'yaxii-product-workspace' ),
+			__( 'Product Workspace', 'yaxii-product-workspace' ),
+			$this->required_capability(),
+			self::MENU_SLUG,
+			array( $this, 'render_page' ),
+			'dashicons-products',
+			56
+		);
+	}
+
+	public function enqueue_assets( string $hook_suffix ): void {
+		if ( $hook_suffix !== $this->hook_suffix ) {
+			return;
+		}
+
+		$entry = $this->manifest_entry();
+		if ( null === $entry ) {
+			return;
+		}
+
+		$build_path = plugin_dir_path( $this->plugin_file ) . 'assets/build/';
+		$build_url  = plugin_dir_url( $this->plugin_file ) . 'assets/build/';
+		$script     = $entry['file'];
+
+		wp_enqueue_script(
+			self::SCRIPT_NAME,
+			$build_url . $script,
+			array(),
+			$this->asset_version( $build_path . $script ),
+			true
+		);
+
+		wp_add_inline_script(
+			self::SCRIPT_NAME,
+			'window.yaxiiProductWorkspaceConfig = ' . wp_json_encode( $this->bootstrap_data() ) . ';',
+			'before'
+		);
+
+		foreach ( $entry['css'] as $index => $stylesheet ) {
+			wp_enqueue_style(
+				self::STYLE_NAME . '-' . $index,
+				$build_url . $stylesheet,
+				array(),
+				$this->asset_version( $build_path . $stylesheet )
+			);
+		}
+	}
+
+	public function mark_script_as_module( string $tag, string $handle ): string {
+		if ( self::SCRIPT_NAME !== $handle ) {
+			return $tag;
+		}
+
+		if ( false === strpos( $tag, ' type=' ) ) {
+			return str_replace( '<script ', '<script type="module" ', $tag );
+		}
+
+		$module_tag = preg_replace( '/\stype=(["\']).*?\1/', ' type="module"', $tag, 1 );
+		return is_string( $module_tag ) ? $module_tag : $tag;
+	}
+
+	public function render_page(): void {
+		if ( ! current_user_can( $this->required_capability() ) ) {
+			wp_die( esc_html__( 'You are not allowed to access this workspace.', 'yaxii-product-workspace' ) );
+		}
+		?>
+		<div class="wrap yaxii-product-workspace-page">
+			<h1 class="screen-reader-text"><?php echo esc_html__( 'Yaxii Product Workspace', 'yaxii-product-workspace' ); ?></h1>
+			<div id="yaxii-product-workspace">
+				<div id="yaxii-product-workspace-app">
+					<div class="notice notice-info inline">
+						<p><?php echo esc_html( $this->fallback_message() ); ?></p>
+					</div>
+				</div>
+				<div id="yaxii-product-workspace-portals"></div>
+			</div>
+		</div>
+		<?php
+	}
+
+	private function bootstrap_data(): array {
+		return array(
+			'direction'              => is_rtl() ? 'rtl' : 'ltr',
+			'environment'            => 'wordpress',
+			'frontendAvailable'      => null !== $this->manifest_entry(),
+			'isWooCommerceAvailable' => $this->is_woocommerce_available(),
+			'locale'                 => determine_locale(),
+			'pluginVersion'          => YAXII_PRODUCT_WORKSPACE_VERSION,
+			'screenId'               => self::MENU_SLUG,
+		);
+	}
+
+	private function fallback_message(): string {
+		if ( null === $this->manifest_entry() ) {
+			return __( 'The Product Workspace frontend is unavailable because its built assets are missing.', 'yaxii-product-workspace' );
+		}
+
+		if ( ! $this->is_woocommerce_available() ) {
+			return __( 'WooCommerce must be installed and active before the Product Workspace can be used.', 'yaxii-product-workspace' );
+		}
+
+		return __( 'Loading Yaxii Product Workspace...', 'yaxii-product-workspace' );
+	}
+
+	private function required_capability(): string {
+		return $this->is_woocommerce_available() ? 'manage_woocommerce' : 'manage_options';
+	}
+
+	private function is_woocommerce_available(): bool {
+		return class_exists( 'WooCommerce' );
+	}
+
+	private function manifest_entry(): ?array {
+		static $entry = false;
+
+		if ( false !== $entry ) {
+			return $entry;
+		}
+
+		$manifest_path = plugin_dir_path( $this->plugin_file ) . 'assets/build/.vite/manifest.json';
+		if ( ! is_readable( $manifest_path ) ) {
+			$entry = null;
+			return null;
+		}
+
+		$manifest  = json_decode( (string) file_get_contents( $manifest_path ), true );
+		$candidate = is_array( $manifest ) ? ( $manifest['src/main.tsx'] ?? null ) : null;
+		if ( ! is_array( $candidate ) || ! isset( $candidate['file'] ) || ! is_string( $candidate['file'] ) ) {
+			$entry = null;
+			return null;
+		}
+
+		$css   = isset( $candidate['css'] ) && is_array( $candidate['css'] ) ? $candidate['css'] : array();
+		$entry = array(
+			'file' => $candidate['file'],
+			'css'  => array_values( array_filter( $css, 'is_string' ) ),
+		);
+
+		return $entry;
+	}
+
+	private function asset_version( string $path ): string {
+		$modified = is_file( $path ) ? filemtime( $path ) : false;
+		return false === $modified ? YAXII_PRODUCT_WORKSPACE_VERSION : (string) $modified;
+	}
+}
