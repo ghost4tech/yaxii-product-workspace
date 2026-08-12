@@ -1,5 +1,6 @@
 import { Focus, ListChecks, ShieldCheck } from "lucide-react";
 import type { LocaleFormatters } from "../../core/i18n/formatters";
+import type { Translate } from "../../core/i18n/messages";
 import type { WorkspaceSnapshot } from "../../domain/workspace";
 import { QueuePanel } from "../queue/QueuePanel";
 import { ProductEntryForm } from "./ProductEntryForm";
@@ -10,6 +11,7 @@ interface EntryWorkspaceProps {
   onFocusToggle: () => void;
   onQueueOpen: () => void;
   snapshot: WorkspaceSnapshot;
+  t: Translate;
 }
 
 export function EntryWorkspace(props: EntryWorkspaceProps) {
@@ -17,14 +19,14 @@ export function EntryWorkspace(props: EntryWorkspaceProps) {
     <main className="ypw-main">
       <section className="ypw-workspace-toolbar">
         <div>
-          <span className="ypw-eyebrow">Free workspace</span>
-          <h1>Add a product</h1>
-          <p>Prepare product details quickly. Server product saving is intentionally unavailable in Phase 1.</p>
+          <span className="ypw-eyebrow">{props.t("freeWorkspace")}</span>
+          <h1>{props.t("addProduct")}</h1>
+          <p>{props.t("prepareProduct")} {props.t("phase1SavingUnavailable")}</p>
         </div>
         <div className="ypw-toolbar-actions">
-          <span className="ypw-safety-chip"><ShieldCheck aria-hidden="true" size={15} /> No store writes</span>
+          <span className="ypw-safety-chip"><ShieldCheck aria-hidden="true" size={15} /> {props.t("noStoreWrites")}</span>
           <button className="ypw-button ypw-button--quiet ypw-mobile-queue" onClick={props.onQueueOpen} type="button">
-            <ListChecks aria-hidden="true" size={16} /> Queue
+            <ListChecks aria-hidden="true" size={16} /> {props.t("queue")}
           </button>
           <button
             aria-pressed={props.focusMode}
@@ -32,7 +34,7 @@ export function EntryWorkspace(props: EntryWorkspaceProps) {
             onClick={props.onFocusToggle}
             type="button"
           >
-            <Focus aria-hidden="true" size={16} /> Focus Mode
+            <Focus aria-hidden="true" size={16} /> {props.t("focusMode")}
           </button>
         </div>
       </section>
@@ -41,17 +43,17 @@ export function EntryWorkspace(props: EntryWorkspaceProps) {
         <section className="ypw-panel ypw-form-panel" aria-labelledby="ypw-entry-title">
           <header className="ypw-panel__header">
             <div>
-              <span className="ypw-eyebrow">Product draft</span>
-              <h2 id="ypw-entry-title">Form</h2>
+              <span className="ypw-eyebrow">{props.t("productDraft")}</span>
+              <h2 id="ypw-entry-title">{props.t("form")}</h2>
             </div>
-            <span className="ypw-chip">Local draft</span>
+            <span className="ypw-chip">{props.t("localDraft")}</span>
           </header>
-          <ProductEntryForm productWritesAvailable={props.snapshot.capabilities.productWrites} />
+          <ProductEntryForm productWritesAvailable={props.snapshot.capabilities.productWrites} t={props.t} />
         </section>
 
         {!props.focusMode ? (
           <div className="ypw-queue-column">
-            <QueuePanel formatters={props.formatters} operations={props.snapshot.operations} />
+            <QueuePanel formatters={props.formatters} operations={props.snapshot.operations} t={props.t} />
           </div>
         ) : null}
       </div>

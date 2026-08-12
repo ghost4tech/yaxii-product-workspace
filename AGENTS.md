@@ -273,7 +273,20 @@ After baseline:
 
 Do not invent canonical commands that the repository does not yet define.
 
-During the foundation/setup task, discover and establish the real install, lint, typecheck, test, build, PHP quality, and packaging commands. Once stable, document those commands here so future agents do not need to rediscover them.
+Run frontend commands from `apps/product-butler`:
+
+- `npm ci` — canonical clean install;
+- `npm run typecheck` — strict TypeScript;
+- `npm run lint` — maintained frontend and tooling lint;
+- `npm run check:lines` — maintained production 300-line limit;
+- `npm test` — Vitest suite;
+- `npm run build` — production assets and manifest under `assets/build`;
+- `npm run check:boundary` — scan built assets for forbidden prototype boundaries;
+- `npm run check` — authoritative frontend gate;
+- `npm run audit:production` — production dependency audit.
+
+For the Phase 1 PHP surface, run `php -l yaxii-product-workspace.php` and `php -l includes/AdminPage.php`.
+There is no Composer/PHPUnit or packaging command yet; do not invent one.
 
 ## Definition of done
 

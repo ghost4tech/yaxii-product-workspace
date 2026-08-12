@@ -24,16 +24,16 @@ export function PreferencesPanel({ direction, formatters, locale, t }: Preferenc
   return (
     <main className="ypw-main ypw-preferences" aria-labelledby="ypw-preferences-title">
       <header className="ypw-page-heading">
-        <span className="ypw-eyebrow">Workspace setup</span>
+        <span className="ypw-eyebrow">{t("workspaceSetup")}</span>
         <h1 id="ypw-preferences-title">{t("preferences")}</h1>
-        <p>These browser preferences affect only the plugin-owned workspace root.</p>
+        <p>{t("workspaceSetupDescription")}</p>
       </header>
 
       <div className="ypw-preferences-grid">
         <section className="ypw-panel ypw-preference-card">
           <header>
             <Sun aria-hidden="true" size={19} />
-            <div><h2>{t("theme")}</h2><p>Light, dark, or your operating-system preference.</p></div>
+            <div><h2>{t("theme")}</h2><p>{t("themeDescription")}</p></div>
           </header>
           <div className="ypw-segmented" aria-label={t("theme")}>
             {THEMES.map((theme) => (
@@ -53,7 +53,7 @@ export function PreferencesPanel({ direction, formatters, locale, t }: Preferenc
         <section className="ypw-panel ypw-preference-card">
           <header>
             <Rows3 aria-hidden="true" size={19} />
-            <div><h2>{t("density")}</h2><p>Adjust control and panel spacing without changing content.</p></div>
+            <div><h2>{t("density")}</h2><p>{t("densityDescription")}</p></div>
           </header>
           <div className="ypw-segmented" aria-label={t("density")}>
             {DENSITIES.map((density) => (
@@ -72,10 +72,10 @@ export function PreferencesPanel({ direction, formatters, locale, t }: Preferenc
         <section className="ypw-panel ypw-preference-card">
           <header>
             <Waves aria-hidden="true" size={19} />
-            <div><h2>Workspace behavior</h2><p>Keep attention and motion suited to your workflow.</p></div>
+            <div><h2>{t("workspaceBehavior")}</h2><p>{t("workspaceBehaviorDescription")}</p></div>
           </header>
           <label className="ypw-switch-row">
-            <span><strong>{t("focusMode")}</strong><small>Hide the queue while entering a product.</small></span>
+            <span><strong>{t("focusMode")}</strong><small>{t("focusDescription")}</small></span>
             <input
               checked={preferences.focusMode}
               onChange={(event) => setFocusMode(event.target.checked)}
@@ -84,7 +84,7 @@ export function PreferencesPanel({ direction, formatters, locale, t }: Preferenc
             />
           </label>
           <label className="ypw-switch-row">
-            <span><strong>{t("reducedMotion")}</strong><small>Minimize workspace transitions and animation.</small></span>
+            <span><strong>{t("reducedMotion")}</strong><small>{t("reducedMotionDescription")}</small></span>
             <input
               checked={preferences.reduceMotion}
               onChange={(event) => setReduceMotion(event.target.checked)}
@@ -97,13 +97,13 @@ export function PreferencesPanel({ direction, formatters, locale, t }: Preferenc
         <section className="ypw-panel ypw-preference-card">
           <header>
             <Languages aria-hidden="true" size={19} />
-            <div><h2>Locale foundation</h2><p>Supplied by WordPress; complete translations arrive later.</p></div>
+            <div><h2>{t("localeFoundation")}</h2><p>{t("localeDescription")}</p></div>
           </header>
           <dl className="ypw-locale-grid">
             <div><dt>{t("locale")}</dt><dd>{locale}</dd></div>
             <div><dt>{t("direction")}</dt><dd><MoveHorizontal aria-hidden="true" size={14} /> {direction.toUpperCase()}</dd></div>
             <div><dt>{t("localeSample")}</dt><dd>{formatters.number(1234567.89)}</dd></div>
-            <div><dt>Date</dt><dd>{formatters.date(new Date("2026-08-12T00:00:00.000Z"))}</dd></div>
+            <div><dt>{t("date")}</dt><dd>{formatters.date(new Date("2026-08-12T00:00:00.000Z"))}</dd></div>
           </dl>
         </section>
       </div>

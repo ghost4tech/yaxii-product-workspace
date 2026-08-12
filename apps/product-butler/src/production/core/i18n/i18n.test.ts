@@ -21,5 +21,6 @@ describe("locale foundation", () => {
     expect(createTranslator("ar")("localeSample")).toBe("معاينة اللغة");
     expect(createTranslator("fr_FR")("localeSample")).toBe("Aperçu de la langue");
     expect(createTranslator("de_DE")("entry")).toBe("Entry");
+    expect(createTranslator("en_US")("themeSet", { value: "Dark" })).toBe("Theme set to Dark.");
   });
 });

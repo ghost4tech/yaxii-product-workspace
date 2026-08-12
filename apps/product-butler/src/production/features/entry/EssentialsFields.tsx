@@ -1,26 +1,28 @@
+import type { Translate } from "../../core/i18n/messages";
 import type { ProductDraft } from "./productDraft";
 
 interface EssentialsFieldsProps {
   draft: ProductDraft;
+  t: Translate;
   update: <Key extends keyof ProductDraft>(key: Key, value: ProductDraft[Key]) => void;
 }
 
-export function EssentialsFields({ draft, update }: EssentialsFieldsProps) {
+export function EssentialsFields({ draft, t, update }: EssentialsFieldsProps) {
   return (
     <div className="ypw-field-grid">
       <label className="ypw-field ypw-field--wide">
-        <span>Product name</span>
+        <span>{t("productName")}</span>
         <input
           autoComplete="off"
           autoFocus
           onChange={(event) => update("name", event.target.value)}
-          placeholder="e.g. Handmade ceramic lamp"
+          placeholder={t("productNamePlaceholder")}
           value={draft.name}
         />
       </label>
 
       <label className="ypw-field">
-        <span>SKU</span>
+        <span>{t("sku")}</span>
         <input
           autoComplete="off"
           onChange={(event) => update("sku", event.target.value)}
@@ -30,18 +32,18 @@ export function EssentialsFields({ draft, update }: EssentialsFieldsProps) {
       </label>
 
       <label className="ypw-field">
-        <span>Status intent</span>
+        <span>{t("statusIntent")}</span>
         <select
           onChange={(event) => update("status", event.target.value === "publish" ? "publish" : "draft")}
           value={draft.status}
         >
-          <option value="draft">Draft</option>
-          <option value="publish">Publish</option>
+          <option value="draft">{t("draft")}</option>
+          <option value="publish">{t("publish")}</option>
         </select>
       </label>
 
       <label className="ypw-field">
-        <span>Regular price</span>
+        <span>{t("regularPrice")}</span>
         <input
           inputMode="decimal"
           onChange={(event) => update("regularPrice", event.target.value)}
@@ -51,17 +53,17 @@ export function EssentialsFields({ draft, update }: EssentialsFieldsProps) {
       </label>
 
       <label className="ypw-field">
-        <span>Sale price</span>
+        <span>{t("salePrice")}</span>
         <input
           inputMode="decimal"
           onChange={(event) => update("salePrice", event.target.value)}
-          placeholder="Optional"
+          placeholder={t("optional")}
           value={draft.salePrice}
         />
       </label>
 
       <label className="ypw-field">
-        <span>Stock quantity</span>
+        <span>{t("stockQuantity")}</span>
         <input
           inputMode="numeric"
           onChange={(event) => update("stockQuantity", event.target.value)}
@@ -71,19 +73,19 @@ export function EssentialsFields({ draft, update }: EssentialsFieldsProps) {
       </label>
 
       <label className="ypw-field">
-        <span>Category</span>
+        <span>{t("category")}</span>
         <input
           onChange={(event) => update("category", event.target.value)}
-          placeholder="Lookup arrives with the REST layer"
+          placeholder={t("categoryPlaceholder")}
           value={draft.category}
         />
       </label>
 
       <label className="ypw-field ypw-field--wide">
-        <span>Short description</span>
+        <span>{t("shortDescription")}</span>
         <textarea
           onChange={(event) => update("shortDescription", event.target.value)}
-          placeholder="A concise summary for the catalog."
+          placeholder={t("shortDescriptionPlaceholder")}
           rows={3}
           value={draft.shortDescription}
         />

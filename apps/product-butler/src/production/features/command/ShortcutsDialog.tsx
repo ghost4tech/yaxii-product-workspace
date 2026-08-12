@@ -1,30 +1,33 @@
 import { DialogFrame } from "../../components/DialogFrame";
+import type { Translate } from "../../core/i18n/messages";
 
 interface ShortcutsDialogProps {
   onClose: () => void;
   open: boolean;
   portalRoot: HTMLElement;
+  t: Translate;
 }
 
-const SHORTCUTS = [
-  { keys: ["Ctrl", "K"], label: "Open command menu" },
-  { keys: ["Ctrl", "S"], label: "Save browser-session draft" },
-  { keys: ["G", "E"], label: "Go to Entry" },
-  { keys: ["G", "P"], label: "Go to Preferences" },
-  { keys: ["?"], label: "Show keyboard shortcuts" },
-] as const;
+export function ShortcutsDialog({ onClose, open, portalRoot, t }: ShortcutsDialogProps) {
+  const shortcuts = [
+    { keys: ["Ctrl", "K"], label: t("shortcutCommand") },
+    { keys: ["Ctrl", "S"], label: t("shortcutDraft") },
+    { keys: ["G", "E"], label: t("shortcutEntry") },
+    { keys: ["G", "P"], label: t("shortcutPreferences") },
+    { keys: ["?"], label: t("shortcutHelp") },
+  ] as const;
 
-export function ShortcutsDialog({ onClose, open, portalRoot }: ShortcutsDialogProps) {
   return (
     <DialogFrame
-      description="Every listed shortcut is active. Product saving is not included."
+      closeLabel={t("closeDialog")}
+      description={t("shortcutsDescription")}
       onClose={onClose}
       open={open}
       portalRoot={portalRoot}
-      title="Keyboard shortcuts"
+      title={t("keyboardShortcuts")}
     >
       <ul className="ypw-shortcut-list">
-        {SHORTCUTS.map((shortcut) => (
+        {shortcuts.map((shortcut) => (
           <li key={shortcut.label}>
             <span>{shortcut.label}</span>
             <span className="ypw-shortcut-keys">

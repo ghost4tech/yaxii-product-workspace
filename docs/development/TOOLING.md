@@ -1,33 +1,44 @@
 # Development Tooling
 
-**Baseline date:** 2026-08-12
+**Updated:** Phase 1, 2026-08-12
 
 ## Package manager authority
 
 npm is the only canonical package-manager workflow. The authoritative lockfile is
 `apps/product-butler/package-lock.json`.
 
-`apps/product-butler/bun.lockb` is preserved unchanged as part of the approved imported prototype. It
-does not establish Bun as a supported workflow. Its final disposition is deferred to Phase 1.
+`apps/product-butler/bun.lockb` remains a preserved imported-prototype artifact. It is not authoritative and
+does not establish Bun as an install, build, test, or release workflow. `packageManager`, CI-style install
+evidence, scripts, and this document all designate npm.
 
-## Current prototype commands
+## Canonical frontend commands
 
 Run these from `apps/product-butler`:
 
-- Canonical clean install target: `npm ci`
+- Clean install: `npm ci`
 - Development server: `npm run dev`
-- Production build: `npm run build`
+- Strict TypeScript: `npm run typecheck`
 - Lint: `npm run lint`
-- Tests: `npm run test`
+- Maintained-file limit: `npm run check:lines`
+- Tests: `npm test`
+- Production build: `npm run build`
+- Built-boundary scan: `npm run check:boundary`
+- Full frontend gate: `npm run check`
+- Production dependency audit: `npm run audit:production`
 
-`npm ci` currently fails because the imported `package-lock.json` is missing entries required by
-`package.json`. Phase 0 preserves that approved dependency state. A one-off
-`npm install --package-lock=false` was used only to create a diagnostic tree; it is not a supported
-second workflow and left `package-lock.json` unchanged.
+`npm run build` writes the WordPress-ready manifest and hashed assets to `assets/build`. The committed build
+is required for the plugin host to mount the React app.
 
-With that diagnostic tree, the placeholder test and production build pass. Lint reports 8 errors and
-7 warnings in imported source. The build also reports an existing chunk larger than 500 kB. There is
-no separate typecheck, PHP quality, WordPress runtime, or packaging command in Phase 0.
+Phase 1 reconciled `package.json` and `package-lock.json`; a clean `npm ci` succeeds. Maintained production
+source is under `src/production`. Preserved Lovable prototype source outside that path is not part of the
+WordPress production entrypoint or the maintained lint/typecheck boundary.
 
-Supported runtime/tool versions remain undecided. The Phase 0 checks used Node 22.12.0 and npm 11.15.0;
-those observations are evidence, not compatibility policy.
+The package declares Node `^20.19.0 || >=22.12.0`, npm `>=10`, and npm 11.15.0 as its package-manager
+version. Phase 1 acceptance used Node 22.12.0 and npm 11.15.0.
+
+## PHP and WordPress checks
+
+There is no Composer or PHP test-suite command yet. Use `php -l yaxii-product-workspace.php` and
+`php -l includes/AdminPage.php` for the Phase 1 PHP surface. Repository triage is available through the
+installed `wp-project-triage` skill. Runtime acceptance additionally requires activation and screen checks
+inside a real WordPress installation; those are environment operations rather than package scripts.

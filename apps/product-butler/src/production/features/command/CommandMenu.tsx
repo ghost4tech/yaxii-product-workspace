@@ -40,37 +40,37 @@ export function CommandMenu(props: CommandMenuProps) {
     {
       icon: LayoutGrid,
       keywords: "entry product form",
-      label: "Go to Entry workspace",
+      label: props.t("commandActionEntry"),
       run: () => props.onNavigate("entry"),
     },
     {
       icon: Settings,
       keywords: "preferences settings",
-      label: "Go to Preferences",
+      label: props.t("commandActionPreferences"),
       run: () => props.onNavigate("preferences"),
     },
     {
       icon: Sun,
       keywords: "theme light dark system",
-      label: `Cycle theme from ${preferences.theme}`,
+      label: props.t("commandCycleTheme", { value: props.t(preferences.theme) }),
       run: () => setTheme(nextTheme(preferences.theme)),
     },
     {
       icon: Rows3,
       keywords: "density compact comfortable",
-      label: `Use ${nextDensity(preferences.density)} density`,
+      label: props.t("commandUseDensity", { value: props.t(nextDensity(preferences.density)) }),
       run: () => setDensity(nextDensity(preferences.density)),
     },
     {
       icon: Focus,
       keywords: "focus mode queue",
-      label: `${preferences.focusMode ? "Disable" : "Enable"} Focus Mode`,
+      label: props.t(preferences.focusMode ? "commandDisableFocus" : "commandEnableFocus"),
       run: () => setFocusMode(!preferences.focusMode),
     },
     {
       icon: Keyboard,
       keywords: "keyboard shortcuts help",
-      label: "Show keyboard shortcuts",
+      label: props.t("commandActionShortcuts"),
       run: props.onShortcutsOpen,
     },
   ];
@@ -89,24 +89,25 @@ export function CommandMenu(props: CommandMenuProps) {
 
   return (
     <DialogFrame
-      description="Only production-safe workspace actions are listed."
+      closeLabel={props.t("closeDialog")}
+      description={props.t("commandDescription")}
       onClose={close}
       open={props.open}
       portalRoot={props.portalRoot}
       title={props.t("commandMenu")}
     >
       <label className="ypw-command-search">
-        <span className="ypw-visually-hidden">Search commands</span>
+        <span className="ypw-visually-hidden">{props.t("commandSearchLabel")}</span>
         <input
           autoComplete="off"
           data-dialog-initial-focus
           onChange={(event) => setQuery(event.target.value)}
-          placeholder="Search actions and preferences..."
+          placeholder={props.t("commandSearchPlaceholder")}
           value={query}
         />
       </label>
       <div className="ypw-command-list">
-        {filtered.length === 0 ? <p className="ypw-command-empty">No matching commands.</p> : null}
+        {filtered.length === 0 ? <p className="ypw-command-empty">{props.t("noMatchingCommands")}</p> : null}
         {filtered.map((action) => {
           const Icon = action.icon;
           return (

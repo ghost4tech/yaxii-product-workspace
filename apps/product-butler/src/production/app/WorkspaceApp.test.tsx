@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, describe, expect, it } from "vitest";
 import { WorkspaceClient } from "../application/WorkspaceClient";
 import { WordPressWorkspaceRepository } from "../infrastructure/WordPressWorkspaceRepository";
@@ -70,11 +70,17 @@ describe("WorkspaceApp", () => {
     expect(screen.getByRole("heading", { name: "Preferences" })).toBeVisible();
     expect(window.location.pathname).toBe("/");
 
+    const commandButton = screen.getByRole("button", { name: "Open commands" });
+    commandButton.focus();
     fireEvent.keyDown(window, { ctrlKey: true, key: "k" });
-    expect(await screen.findByRole("dialog", { name: "Command menu" })).toBeVisible();
+    const dialog = await screen.findByRole("dialog", { name: "Command menu" });
+    expect(dialog).toBeVisible();
+    expect(document.getElementById("yaxii-product-workspace")?.contains(dialog)).toBe(true);
+    await waitFor(() => expect(screen.getByPlaceholderText(/Search actions/u)).toHaveFocus());
     expect(screen.queryByText("Analytics")).not.toBeInTheDocument();
 
     fireEvent.keyDown(document, { key: "Escape" });
     expect(screen.queryByRole("dialog", { name: "Command menu" })).not.toBeInTheDocument();
+    expect(commandButton).toHaveFocus();
   });
 });

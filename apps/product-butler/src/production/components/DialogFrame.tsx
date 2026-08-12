@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 
 interface DialogFrameProps {
   children: ReactNode;
+  closeLabel: string;
   description?: string;
   onClose: () => void;
   open: boolean;
@@ -16,6 +17,7 @@ const FOCUSABLE =
 
 export function DialogFrame({
   children,
+  closeLabel,
   description,
   onClose,
   open,
@@ -99,7 +101,7 @@ export function DialogFrame({
             <h2 id={titleId}>{title}</h2>
             {description ? <p id={descriptionId}>{description}</p> : null}
           </div>
-          <button aria-label="Close dialog" className="ypw-icon-button" onClick={onClose} type="button">
+          <button aria-label={closeLabel} className="ypw-icon-button" onClick={onClose} type="button">
             <X aria-hidden="true" size={18} />
           </button>
         </header>

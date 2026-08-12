@@ -17,6 +17,11 @@
 }
 
 #yaxii-product-workspace h1,
+#yaxii-product-workspace h2 {
+  color: var(--ypw-text);
+}
+
+#yaxii-product-workspace h1,
 #yaxii-product-workspace h2,
 #yaxii-product-workspace p {
   margin-block-start: 0;

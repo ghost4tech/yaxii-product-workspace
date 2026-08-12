@@ -3,7 +3,10 @@ import { useEffect, useState } from "react";
 import type { WorkspaceClient } from "../application/WorkspaceClient";
 import { useWorkspaceSnapshot } from "../application/useWorkspaceSnapshot";
 import { UnavailableState } from "../components/UnavailableState";
+import { createTranslator } from "../core/i18n/messages";
 import { WorkspaceRoot } from "./WorkspaceRoot";
+
+const english = createTranslator("en-US");
 
 interface WorkspaceAppProps {
   client: WorkspaceClient;
@@ -25,26 +28,31 @@ function WorkspaceBoundary({ client, scope }: WorkspaceAppProps) {
   }, [query.data, scope]);
 
   if (query.isPending) {
-    return <div className="ypw-boundary-card">Loading Yaxii Product Workspace...</div>;
+    return <div className="ypw-boundary-card">{english("loading")}</div>;
   }
 
   if (query.isError || !query.data) {
     return (
       <div className="ypw-boundary-card ypw-boundary-card--error" role="alert">
-        The workspace could not be initialized. No product operation was attempted.
+        {english("unavailableInit")}
       </div>
     );
   }
 
   if (query.data.availability.kind !== "ready") {
-    return <UnavailableState availability={query.data.availability} />;
+    return (
+      <UnavailableState
+        availability={query.data.availability}
+        t={createTranslator(query.data.bootstrap.locale)}
+      />
+    );
   }
 
   const portalRoot = scope.querySelector<HTMLElement>("#yaxii-product-workspace-portals");
   if (!portalRoot) {
     return (
       <div className="ypw-boundary-card ypw-boundary-card--error" role="alert">
-        The plugin-owned portal boundary is missing. No product operation was attempted.
+        {createTranslator(query.data.bootstrap.locale)("unavailablePortal")}
       </div>
     );
   }

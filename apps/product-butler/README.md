@@ -1,73 +1,33 @@
-# Welcome to your Lovable project
+# Product Workspace Frontend
 
-## Project info
+This package builds the Yaxii Product Workspace React application mounted by the WordPress plugin. The
+maintained Phase 1 entrypoint is `src/main.tsx`, and its production implementation lives under
+`src/production`.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+The imported Lovable prototype remains elsewhere under `src` as preserved product and UX reference. It is
+not part of the WordPress production execution graph.
 
-## How can I edit this code?
+## Development
 
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Use npm from this directory:
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+npm ci
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The standalone development host uses deterministic queue fixtures that are visibly labelled as non-store
+data. It does not connect to WooCommerce.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Run the authoritative frontend gate with:
 
-**Use GitHub Codespaces**
+```sh
+npm run check
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+That command runs strict TypeScript, ESLint, the maintained-file line limit, Vitest, the production Vite
+build, and the built-boundary scan. The build writes the manifest and hashed assets to the plugin-level
+`assets/build` directory.
 
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+See `../../docs/development/TOOLING.md` and `../../docs/architecture/FRONTEND-PRODUCTION-BOUNDARY.md` for the
+complete command and architecture contracts.

@@ -66,23 +66,23 @@ export function WorkspaceRoot({ portalRoot, scope, snapshot }: WorkspaceRootProp
   const toggleTheme = () => {
     const next = nextTheme(preferences.theme);
     setTheme(next);
-    setToast(`Theme set to ${next}.`);
+    setToast(t("themeSet", { value: t(next) }));
   };
   const toggleDensity = () => {
     const next = nextDensity(preferences.density);
     setDensity(next);
-    setToast(`Density set to ${next}.`);
+    setToast(t("densitySet", { value: t(next) }));
   };
   const toggleFocus = () => {
     const next = !preferences.focusMode;
     setFocusMode(next);
-    setToast(`Focus Mode ${next ? "enabled" : "disabled"}.`);
+    setToast(t(next ? "focusEnabled" : "focusDisabled"));
   };
 
   return (
     <div className={`ypw-app${preferences.focusMode ? " ypw-app--focus" : ""}`}>
       {snapshot.bootstrap.environment === "development" ? (
-        <div className="ypw-development-banner">Development fixture mode — no WooCommerce store data.</div>
+        <div className="ypw-development-banner">{t("developmentBanner")}</div>
       ) : null}
       <WorkspaceHeader
         activeSection={activeSection}
@@ -104,6 +104,7 @@ export function WorkspaceRoot({ portalRoot, scope, snapshot }: WorkspaceRootProp
           onFocusToggle={toggleFocus}
           onQueueOpen={() => setQueueOpen(true)}
           snapshot={snapshot}
+          t={t}
         />
       ) : (
         <PreferencesPanel
@@ -126,15 +127,17 @@ export function WorkspaceRoot({ portalRoot, scope, snapshot }: WorkspaceRootProp
         onClose={() => setShortcutsOpen(false)}
         open={shortcutsOpen}
         portalRoot={portalRoot}
+        t={t}
       />
       <DialogFrame
-        description="Server-authoritative product operations will appear here after Phase 2."
+        closeLabel={t("closeDialog")}
+        description={t("phase2QueueDescription")}
         onClose={() => setQueueOpen(false)}
         open={queueOpen}
         portalRoot={portalRoot}
-        title="Operation queue"
+        title={t("operationQueue")}
       >
-        <QueuePanel formatters={formatters} operations={snapshot.operations} />
+        <QueuePanel formatters={formatters} operations={snapshot.operations} t={t} />
       </DialogFrame>
       <ToastRegion message={toast} portalRoot={portalRoot} />
     </div>

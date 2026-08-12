@@ -1,24 +1,113 @@
 const ENGLISH_MESSAGES = {
+  addProduct: "Add a product",
   brandName: "Yaxii Product Workspace",
+  browserDraftClear: "Clear draft",
+  browserDraftCleared: "Browser draft cleared. No store data was changed.",
+  browserDraftHint: "Ctrl S saves a browser-session draft only.",
+  browserDraftRestoreError: "A saved browser draft could not be restored.",
+  browserDraftSave: "Save browser draft",
+  browserDraftSaveError: "The browser draft could not be saved.",
+  browserDraftSaved: "Browser draft saved for this session. No WooCommerce product was created.",
+  category: "Category",
+  categoryPlaceholder: "Lookup arrives with the REST layer",
+  closeDialog: "Close dialog",
+  commandActionEntry: "Go to Entry workspace",
+  commandActionPreferences: "Go to Preferences",
+  commandActionShortcuts: "Show keyboard shortcuts",
+  commandCycleTheme: "Cycle theme from {value}",
+  commandDescription: "Only production-safe workspace actions are listed.",
+  commandDisableFocus: "Disable Focus Mode",
+  commandEnableFocus: "Enable Focus Mode",
   commandMenu: "Command menu",
+  commandSearchLabel: "Search commands",
+  commandSearchPlaceholder: "Search actions and preferences...",
+  commandUseDensity: "Use {value} density",
   comfortable: "Comfortable",
   compact: "Compact",
+  currentStore: "Current WordPress store",
+  dark: "Dark",
+  date: "Date",
   density: "Density",
-  developmentFixture: "Development fixture",
+  densityDescription: "Adjust control and panel spacing without changing content.",
+  densitySet: "Density set to {value}.",
+  developmentBanner: "Development fixture mode — no WooCommerce store data.",
   direction: "Direction",
+  draft: "Draft",
   entry: "Entry",
+  essentials: "Essentials",
   extended: "Extended",
+  fixture: "Fixture",
+  focusDescription: "Hide the queue while entering a product.",
+  focusDisabled: "Focus Mode disabled.",
+  focusEnabled: "Focus Mode enabled.",
   focusMode: "Focus Mode",
+  form: "Form",
+  freeWorkspace: "Free workspace",
+  fullDescription: "Full description",
+  fullDescriptionPlaceholder: "Product details, materials, care, and benefits.",
   keyboardShortcuts: "Keyboard shortcuts",
   light: "Light",
-  dark: "Dark",
+  loading: "Loading Yaxii Product Workspace...",
+  localDraft: "Local draft",
   locale: "Locale",
+  localeDescription: "Supplied by WordPress; complete translations arrive later.",
+  localeFoundation: "Locale foundation",
   localeSample: "Locale preview",
+  media: "Media",
+  mediaDescription: "WordPress media selection is introduced with the server product flow.",
+  mediaUnavailable: "Media integration unavailable",
+  noMatchingCommands: "No matching commands.",
+  noServerOperations: "No server operations yet",
+  noStoreWrites: "No store writes",
   openCommands: "Open commands",
+  operationQueue: "Operation queue",
+  operations: "Operations",
+  optional: "Optional",
+  phase1SavingUnavailable: "Server product saving is intentionally unavailable in Phase 1.",
+  phase2QueueDescription: "Server-authoritative product operations will appear here after Phase 2.",
+  phase2Writes: "Product writes begin in Phase 2.",
   preferences: "Preferences",
+  prepareProduct: "Prepare product details quickly.",
+  productDraft: "Product draft",
+  productFields: "Product fields",
+  productName: "Product name",
+  productNamePlaceholder: "e.g. Handmade ceramic lamp",
+  publish: "Publish",
+  queue: "Queue",
+  queueDescription: "The real operation queue begins with the WordPress REST write layer. Nothing is inferred from local form state.",
+  queueFixtureDescription: "Deterministic development preview — not WooCommerce store data.",
   reducedMotion: "Reduced motion",
+  reducedMotionDescription: "Minimize workspace transitions and animation.",
+  regularPrice: "Regular price",
+  salePrice: "Sale price",
+  saveAndNext: "Save & Next",
+  shortDescription: "Short description",
+  shortDescriptionPlaceholder: "A concise summary for the catalog.",
+  shortcutCommand: "Open command menu",
+  shortcutDraft: "Save browser-session draft",
+  shortcutEntry: "Go to Entry",
+  shortcutHelp: "Show keyboard shortcuts",
+  shortcutPreferences: "Go to Preferences",
+  shortcutsDescription: "Every listed shortcut is active. Product saving is not included.",
+  sku: "SKU",
+  statusIntent: "Status intent",
+  stockQuantity: "Stock quantity",
   system: "System",
   theme: "Theme",
+  themeDescription: "Light, dark, or your operating-system preference.",
+  themeSet: "Theme set to {value}.",
+  unavailable: "Workspace unavailable",
+  unavailableBootstrap: "The built frontend assets or WordPress bootstrap are unavailable. No product operation was attempted.",
+  unavailableInit: "The workspace could not be initialized. No product operation was attempted.",
+  unavailablePortal: "The plugin-owned portal boundary is missing. No product operation was attempted.",
+  unavailableWoo: "WooCommerce must be installed and active before the Product Workspace can be used. WordPress remains unaffected.",
+  weight: "Weight",
+  weightPlaceholder: "Store unit",
+  workspaceBehavior: "Workspace behavior",
+  workspaceBehaviorDescription: "Keep attention and motion suited to your workflow.",
+  workspaceSections: "Workspace sections",
+  workspaceSetup: "Workspace setup",
+  workspaceSetupDescription: "These browser preferences affect only the plugin-owned workspace root.",
 } as const;
 
 const LOCALIZED_SAMPLES: Record<string, string> = {
@@ -27,7 +116,7 @@ const LOCALIZED_SAMPLES: Record<string, string> = {
 };
 
 export type MessageKey = keyof typeof ENGLISH_MESSAGES;
-export type Translate = (key: MessageKey) => string;
+export type Translate = (key: MessageKey, variables?: Readonly<Record<string, string>>) => string;
 
 function languageFromLocale(locale: string): string {
   return locale.replace("_", "-").split("-")[0]?.toLowerCase() ?? "en";
@@ -36,11 +125,13 @@ function languageFromLocale(locale: string): string {
 export function createTranslator(locale: string): Translate {
   const language = languageFromLocale(locale);
 
-  return (key) => {
+  return (key, variables = {}) => {
     if (key === "localeSample") {
       return LOCALIZED_SAMPLES[language] ?? ENGLISH_MESSAGES.localeSample;
     }
 
-    return ENGLISH_MESSAGES[key];
+    return ENGLISH_MESSAGES[key].replace(/\{(\w+)\}/gu, (placeholder, name: string) =>
+      Object.prototype.hasOwnProperty.call(variables, name) ? variables[name] ?? placeholder : placeholder,
+    );
   };
 }

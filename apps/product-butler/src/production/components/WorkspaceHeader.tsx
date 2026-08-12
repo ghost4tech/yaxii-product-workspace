@@ -28,11 +28,11 @@ export function WorkspaceHeader(props: WorkspaceHeaderProps) {
         </span>
         <div>
           <strong>{props.t("brandName")}</strong>
-          <span>Current WordPress store</span>
+          <span>{props.t("currentStore")}</span>
         </div>
       </div>
 
-      <nav aria-label="Workspace sections" className="ypw-navigation">
+      <nav aria-label={props.t("workspaceSections")} className="ypw-navigation">
         <button
           aria-current={props.activeSection === "entry" ? "page" : undefined}
           onClick={() => props.onNavigate("entry")}
@@ -56,7 +56,7 @@ export function WorkspaceHeader(props: WorkspaceHeaderProps) {
         </button>
         <button className="ypw-icon-button" onClick={props.onDensityToggle} title={props.t("density")} type="button">
           <Rows3 aria-hidden="true" size={17} />
-          <span className="ypw-visually-hidden">{props.t("density")}: {props.density}</span>
+          <span className="ypw-visually-hidden">{props.t("density")}: {props.t(props.density)}</span>
         </button>
         <button
           aria-pressed={props.focusMode}

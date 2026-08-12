@@ -1,5 +1,6 @@
 import { Eraser, Save } from "lucide-react";
 import { useState } from "react";
+import type { Translate } from "../../core/i18n/messages";
 import { EssentialsFields } from "./EssentialsFields";
 import { ExtendedFields } from "./ExtendedFields";
 import { useEntryDraft } from "./useEntryDraft";
@@ -8,22 +9,23 @@ type FormSection = "essentials" | "extended";
 
 interface ProductEntryFormProps {
   productWritesAvailable: boolean;
+  t: Translate;
 }
 
-export function ProductEntryForm({ productWritesAvailable }: ProductEntryFormProps) {
+export function ProductEntryForm({ productWritesAvailable, t }: ProductEntryFormProps) {
   const [section, setSection] = useState<FormSection>("essentials");
-  const controller = useEntryDraft();
+  const controller = useEntryDraft(t);
 
   return (
     <form className="ypw-entry-form" onSubmit={(event) => event.preventDefault()}>
-      <div className="ypw-form-tabs" role="tablist" aria-label="Product fields">
+      <div className="ypw-form-tabs" role="tablist" aria-label={t("productFields")}>
         <button
           aria-selected={section === "essentials"}
           onClick={() => setSection("essentials")}
           role="tab"
           type="button"
         >
-          Essentials
+          {t("essentials")}
         </button>
         <button
           aria-selected={section === "extended"}
@@ -31,34 +33,34 @@ export function ProductEntryForm({ productWritesAvailable }: ProductEntryFormPro
           role="tab"
           type="button"
         >
-          Extended
+          {t("extended")}
         </button>
       </div>
 
       <div className="ypw-form-section" role="tabpanel">
         {section === "essentials" ? (
-          <EssentialsFields draft={controller.draft} update={controller.update} />
+          <EssentialsFields draft={controller.draft} t={t} update={controller.update} />
         ) : (
-          <ExtendedFields draft={controller.draft} update={controller.update} />
+          <ExtendedFields draft={controller.draft} t={t} update={controller.update} />
         )}
       </div>
 
       <div aria-live="polite" className="ypw-draft-notice">
-        {controller.notice || "Ctrl S saves a browser-session draft only."}
+        {controller.notice || t("browserDraftHint")}
       </div>
 
       <footer className="ypw-form-actions">
         <button className="ypw-button ypw-button--quiet" onClick={controller.clear} type="button">
-          <Eraser aria-hidden="true" size={16} /> Clear draft
+          <Eraser aria-hidden="true" size={16} /> {t("browserDraftClear")}
         </button>
         <button className="ypw-button ypw-button--secondary" onClick={controller.save} type="button">
-          <Save aria-hidden="true" size={16} /> Save browser draft
+          <Save aria-hidden="true" size={16} /> {t("browserDraftSave")}
         </button>
         <div className="ypw-save-next">
           <button className="ypw-button ypw-button--primary" disabled={!productWritesAvailable} type="submit">
-            Save &amp; Next
+            {t("saveAndNext")}
           </button>
-          {!productWritesAvailable ? <span>Product writes begin in Phase 2.</span> : null}
+          {!productWritesAvailable ? <span>{t("phase2Writes")}</span> : null}
         </div>
       </footer>
     </form>

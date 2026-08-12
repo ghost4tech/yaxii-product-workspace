@@ -1,15 +1,16 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import type { Translate } from "../../core/i18n/messages";
 import { SessionDraftStorage } from "./draftStorage";
 import { EMPTY_PRODUCT_DRAFT, type ProductDraft } from "./productDraft";
 
-export function useEntryDraft() {
+export function useEntryDraft(t: Translate) {
   const storage = useMemo(() => new SessionDraftStorage(), []);
   const restored = useMemo(() => storage.read(), [storage]);
   const [draft, setDraft] = useState<ProductDraft>(
     restored.kind === "loaded" ? restored.draft : EMPTY_PRODUCT_DRAFT,
   );
   const [notice, setNotice] = useState(
-    restored.kind === "error" ? "A saved browser draft could not be restored." : "",
+    restored.kind === "error" ? t("browserDraftRestoreError") : "",
   );
 
   const update = useCallback(<Key extends keyof ProductDraft>(key: Key, value: ProductDraft[Key]) => {
@@ -20,16 +21,16 @@ export function useEntryDraft() {
     const result = storage.save(draft);
     setNotice(
       result.kind === "saved"
-        ? "Browser draft saved for this session. No WooCommerce product was created."
-        : "The browser draft could not be saved.",
+        ? t("browserDraftSaved")
+        : t("browserDraftSaveError"),
     );
-  }, [draft, storage]);
+  }, [draft, storage, t]);
 
   const clear = useCallback(() => {
     storage.clear();
     setDraft(EMPTY_PRODUCT_DRAFT);
-    setNotice("Browser draft cleared. No store data was changed.");
-  }, [storage]);
+    setNotice(t("browserDraftCleared"));
+  }, [storage, t]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
