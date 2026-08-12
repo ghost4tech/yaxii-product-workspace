@@ -2,14 +2,15 @@
 
 **Updated:** 2026-08-12
 
-**Current phase:** Phase 1 Lovable UI recovery
+**Current phase:** Phase 1 accepted; closeout complete
 
-**Acceptance state:** HOLD — browser visual-parity matrix not yet executed
+**Acceptance state:** ACCEPTED — owner-verified on the active LocalWP production page
 
 ## Canonical repository
 
 - Repository: `https://github.com/ghost4tech/yaxii-product-workspace.git`
 - Recovery branch: `recovery/phase-01-lovable-ui`
+- Owner-accepted implementation: `3e6550e10dba1000476f30f9812945f68f6b4a6b`
 - Recovery base: Phase 0 commit `5f54942dc37a916ec518bd1a2326d801dcc22b81`
 - Rejected branch: `phase/01-production-frontend-boundary` (not merged)
 - Package manager: npm
@@ -44,11 +45,15 @@ unavailable states, and RTL root attributes.
 An isolated WordPress Playground smoke test verified activation, the admin mount, built asset
 responses, the WooCommerce-inactive state, and absence of plugin assets on Dashboard.
 
-## HOLD
+## Acceptance
 
-The required desktop, laptop, tablet, 430 px, and 375 px visual comparison could not be run because
-the in-app browser service reported that no browser backend was available. Source/build/component
-evidence is not a substitute for screenshot and interaction parity. Phase 1 therefore remains on
-HOLD until that matrix is run against both the Phase 0 application and the WordPress-hosted build.
+The automated desktop, laptop, tablet, 430 px, and 375 px visual comparison could not run because
+the in-app browser service reported that no browser backend was available. That automated matrix is
+still recorded as not run rather than being inferred from source, build, or component evidence.
 
-Phase 2 has not started and is not authorized by this recovery branch.
+On 2026-08-12, the owner manually verified the refreshed production page on the active LocalWP site,
+confirmed that the restored Lovable application was visible and the rejected replacement was no
+longer served, and visually accepted the recovery. This owner verification closes the remaining
+Phase 1 parity gate.
+
+Phase 2 has not started. No Phase 2 branch was created during closeout.

@@ -4,7 +4,9 @@
 
 **Recovery branch:** `recovery/phase-01-lovable-ui`
 
-**Acceptance:** HOLD — browser visual parity is not yet verified
+**Acceptance:** ACCEPTED — owner-verified on the active LocalWP production page
+
+**Owner-accepted implementation SHA:** `3e6550e10dba1000476f30f9812945f68f6b4a6b`
 
 ## Git decision
 
@@ -34,8 +36,9 @@ Comparison of Phase 0 with rejected Phase 1 found these presentation regressions
 | Dark/density/motion | Existing preference effects and component states were replaced by a second preference system. |
 | Interaction details | Hover/focus states, menu actions, transitions, validation feedback, draft affordances, and visual hierarchy diverged with the replacement components. |
 
-This inventory is complete at the source/component level. Pixel-level differences still require the
-blocked browser matrix below.
+This inventory is complete at the source/component level. The automated browser matrix below could
+not run; the remaining visual gate was instead closed by explicit owner verification on the active
+LocalWP production page.
 
 ## Recovery implementation
 
@@ -97,8 +100,13 @@ and CSS assets, correct WooCommerce-inactive fallback/bootstrap, and no assets o
 
 The in-app browser controller reported `No browser is available` and listed no browser backends. No
 CLI browser substitute was used because it would not validate the required signed-in/in-app runtime
-surface. Phase 1 cannot be marked accepted until this matrix is run and any differences are fixed or
-explicitly approved.
+surface. The automated matrix therefore remains accurately recorded as not run.
+
+On 2026-08-12, the owner manually verified the refreshed production page on the active LocalWP site,
+confirmed that the restored Lovable application was showing, and confirmed that the rejected
+replacement UI was no longer being served. The owner visually accepted the restored Lovable UI.
+This explicit owner verification closes the remaining Phase 1 parity gate without claiming that
+browser automation ran.
 
 ## Phase boundary
 

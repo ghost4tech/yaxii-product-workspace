@@ -1,6 +1,6 @@
 # Frontend Production Boundary
 
-**Status:** Implemented in Phase 1 recovery; browser parity acceptance pending
+**Status:** Implemented and owner-accepted in Phase 1 recovery
 
 ## Presentation authority
 
