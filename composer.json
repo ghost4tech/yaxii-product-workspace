@@ -37,11 +37,7 @@
     "sort-packages": true
   },
   "scripts": {
-    "lint": [
-      "@php -l yaxii-product-workspace.php",
-      "@php -l src/Plugin.php",
-      "@php -l src/Admin/AdminPage.php"
-    ],
+    "lint": "@php tools/lint-php.php",
     "phpcs": "@php vendor/bin/phpcs",
     "phpstan": "@php vendor/bin/phpstan analyse --no-progress --memory-limit=1G",
     "test": "@php vendor/bin/phpunit -c phpunit.unit.xml.dist",

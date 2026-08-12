@@ -1,0 +1,199 @@
+<?php
+/**
+ * Idempotent simple-product creation service.
+ *
+ * @package YaxiiProductWorkspace
+ */
+
+namespace Yaxii\ProductWorkspace\Application\Products;
+
+use Throwable;
+use Yaxii\ProductWorkspace\Application\Access\CapabilityPolicy;
+use Yaxii\ProductWorkspace\Application\Operations\OperationRecord;
+use Yaxii\ProductWorkspace\Application\Operations\OperationStore;
+
+/**
+ * Orchestrates validation, idempotency, Woo persistence, and reconciliation.
+ */
+final class CreateProductService {
+	// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- REST serialization handles structured API messages.
+	private const OPERATION_TYPE = 'simple_product_create';
+
+	private CapabilityPolicy $capabilities;
+	private OperationStore $operations;
+	private ProductGateway $products;
+
+	public function __construct(
+		CapabilityPolicy $capabilities,
+		OperationStore $operations,
+		ProductGateway $products
+	) {
+		$this->capabilities = $capabilities;
+		$this->operations   = $operations;
+		$this->products     = $products;
+	}
+
+	/**
+	 * @throws ApiException When access, availability, or idempotency checks fail.
+	 */
+	public function create(
+		CreateProductCommand $command,
+		string $idempotency_key,
+		int $site_id,
+		int $user_id
+	): OperationResult {
+		$this->assert_command_allowed( $command );
+		$payload_json = wp_json_encode( $command->to_array() );
+		if ( false === $payload_json ) {
+			throw new ApiException(
+				'ypw_invalid_payload',
+				__( 'The product request could not be normalized.', 'yaxii-product-workspace' ),
+				400
+			);
+		}
+
+		$reservation = $this->operations->reserve(
+			$site_id,
+			$user_id,
+			self::OPERATION_TYPE,
+			$idempotency_key,
+			hash( 'sha256', $payload_json )
+		);
+
+		if ( $reservation->is_conflict() ) {
+			throw new ApiException(
+				'ypw_idempotency_conflict',
+				__( 'This idempotency key was already used with a different product payload.', 'yaxii-product-workspace' ),
+				409
+			);
+		}
+
+		$record = $reservation->record();
+		if ( ! $reservation->was_created() ) {
+			return $this->replay_or_reconcile( $record );
+		}
+
+		$field_errors = $this->products->validate( $command );
+		if ( array() !== $field_errors ) {
+			$result = OperationResult::failed(
+				$record->operation_id(),
+				$this->validation_code( $field_errors ),
+				__( 'WooCommerce rejected one or more product references.', 'yaxii-product-workspace' ),
+				$field_errors,
+				422
+			);
+
+			return $this->persist_or_mark_uncertain( $result );
+		}
+
+		return $this->write_product( $command, $record->operation_id() );
+	}
+
+	/**
+	 * Reconciles a durable operation against its canonical stored result or WooCommerce marker.
+	 */
+	public function reconcile( OperationRecord $record ): OperationResult {
+		return $this->replay_or_reconcile( $record );
+	}
+
+	private function assert_command_allowed( CreateProductCommand $command ): void {
+		if ( ! $this->products->is_available() ) {
+			throw new ApiException(
+				'ypw_woocommerce_unavailable',
+				__( 'WooCommerce is not available for product creation.', 'yaxii-product-workspace' ),
+				503
+			);
+		}
+
+		if ( ! $this->capabilities->can_create_products() ) {
+			throw new ApiException(
+				'ypw_forbidden',
+				__( 'You are not allowed to create products.', 'yaxii-product-workspace' ),
+				403
+			);
+		}
+
+		if ( 'publish' === $command->status() && ! $this->capabilities->can_publish_products() ) {
+			throw new ApiException(
+				'ypw_publish_forbidden',
+				__( 'You can create drafts but cannot publish products.', 'yaxii-product-workspace' ),
+				403,
+				array( 'status' => array( __( 'Choose Draft or ask an administrator for publishing access.', 'yaxii-product-workspace' ) ) )
+			);
+		}
+	}
+
+	private function replay_or_reconcile( OperationRecord $record ): OperationResult {
+		if ( null !== $record->result() ) {
+			return OperationResult::from_array( $record->result() );
+		}
+
+		$product = $this->products->find_by_operation( $record->operation_id() );
+		if ( null === $product ) {
+			return OperationResult::processing( $record->operation_id() );
+		}
+
+		$result = OperationResult::succeeded( $record->operation_id(), $product, true );
+		return $this->persist_or_mark_uncertain( $result );
+	}
+
+	private function write_product( CreateProductCommand $command, string $operation_id ): OperationResult {
+		try {
+			$product = $this->products->create( $command, $operation_id );
+			return $this->persist_or_mark_uncertain( OperationResult::succeeded( $operation_id, $product ) );
+		} catch ( Throwable $exception ) {
+			unset( $exception );
+			$reconciled = $this->products->find_by_operation( $operation_id );
+			if ( null !== $reconciled ) {
+				return $this->persist_or_mark_uncertain(
+					OperationResult::succeeded( $operation_id, $reconciled )
+				);
+			}
+
+			$result = OperationResult::failed(
+				$operation_id,
+				'ypw_product_write_failed',
+				__( 'WooCommerce could not save the product.', 'yaxii-product-workspace' ),
+				array(),
+				500
+			);
+
+			return $this->persist_or_mark_uncertain( $result );
+		}
+	}
+
+	private function persist_or_mark_uncertain( OperationResult $result ): OperationResult {
+		try {
+			$product    = $result->product();
+			$product_id = is_array( $product ) && isset( $product['id'] ) ? (int) $product['id'] : null;
+			$this->operations->complete(
+				$result->operation_id(),
+				$result->state(),
+				$product_id,
+				$result->to_array()
+			);
+			return $result;
+		} catch ( Throwable $exception ) {
+			unset( $exception );
+			return OperationResult::processing( $result->operation_id(), true );
+		}
+	}
+
+	/**
+	 * @param array<string, array<string>> $field_errors Field-addressable validation errors.
+	 */
+	private function validation_code( array $field_errors ): string {
+		if ( isset( $field_errors['sku'] ) ) {
+			return 'ypw_duplicate_sku';
+		}
+		if ( isset( $field_errors['category_ids'] ) ) {
+			return 'ypw_invalid_category';
+		}
+		if ( isset( $field_errors['image_ids'] ) ) {
+			return 'ypw_invalid_media';
+		}
+
+		return 'ypw_validation_failed';
+	}
+	// phpcs:enable WordPress.Security.EscapeOutput.ExceptionNotEscaped
+}

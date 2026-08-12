@@ -44,7 +44,9 @@ final class BootstrapProvider {
 				'features'     => array(
 					'simple_product_create'   => $woo_available,
 					'variable_product_create' => false,
-					'operation_lookup'        => true,
+					'category_lookup'         => $woo_available,
+					'media_selection'         => $this->capabilities->can_upload_media(),
+					'operation_lookup'        => $woo_available,
 				),
 				'limits'       => array(
 					'category_page_size'     => 20,

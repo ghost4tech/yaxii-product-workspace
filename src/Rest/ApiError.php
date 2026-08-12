@@ -7,6 +7,8 @@
 
 namespace Yaxii\ProductWorkspace\Rest;
 
+use Yaxii\ProductWorkspace\Application\Products\ApiException;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -27,5 +29,14 @@ final class ApiError {
 			__( 'You are not allowed to manage products.', 'yaxii-product-workspace' ),
 			array( 'status' => 403 )
 		);
+	}
+
+	public static function from_exception( ApiException $exception ): \WP_Error {
+		$data = array( 'status' => $exception->status() );
+		if ( array() !== $exception->fields() ) {
+			$data['fields'] = $exception->fields();
+		}
+
+		return new \WP_Error( $exception->api_code(), $exception->getMessage(), $data );
 	}
 }

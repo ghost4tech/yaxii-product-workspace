@@ -29,6 +29,7 @@ $yaxii_product_workspace_autoloader = __DIR__ . '/vendor/autoload.php';
 if ( is_readable( $yaxii_product_workspace_autoloader ) ) {
 	require_once $yaxii_product_workspace_autoloader;
 
+	register_activation_hook( __FILE__, array( Yaxii\ProductWorkspace\Infrastructure\Persistence\SchemaManager::class, 'activate' ) );
 	Yaxii\ProductWorkspace\Plugin::create( __FILE__ )->register();
 } else {
 	add_action(
