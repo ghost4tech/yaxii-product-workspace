@@ -1,0 +1,82 @@
+<?php
+/**
+ * Builds the current-store bootstrap resource.
+ *
+ * @package YaxiiProductWorkspace
+ */
+
+namespace Yaxii\ProductWorkspace\Application\Bootstrap;
+
+use Yaxii\ProductWorkspace\Application\Access\CapabilityPolicy;
+
+defined( 'ABSPATH' ) || exit;
+
+/**
+ * Reads only bounded, non-secret WordPress and WooCommerce settings.
+ */
+final class BootstrapProvider {
+	private CapabilityPolicy $capabilities;
+
+	public function __construct( CapabilityPolicy $capabilities ) {
+		$this->capabilities = $capabilities;
+	}
+
+	public function get(): BootstrapResource {
+		$user          = wp_get_current_user();
+		$woo_available = class_exists( 'WooCommerce' ) && defined( 'WC_VERSION' );
+
+		return new BootstrapResource(
+			array(
+				'user'         => array(
+					'id'           => (int) $user->ID,
+					'display_name' => (string) $user->display_name,
+				),
+				'capabilities' => array(
+					'create_products'  => $this->capabilities->can_create_products(),
+					'publish_products' => $this->capabilities->can_publish_products(),
+					'upload_media'     => $this->capabilities->can_upload_media(),
+				),
+				'locale'       => array(
+					'code'      => determine_locale(),
+					'direction' => is_rtl() ? 'rtl' : 'ltr',
+				),
+				'woocommerce'  => $this->woocommerce_data( $woo_available ),
+				'features'     => array(
+					'simple_product_create'   => $woo_available,
+					'variable_product_create' => false,
+					'operation_lookup'        => true,
+				),
+				'limits'       => array(
+					'category_page_size'     => 20,
+					'max_category_page_size' => 50,
+					'max_images'             => 10,
+				),
+			)
+		);
+	}
+
+	/**
+	 * @return array<string, mixed>
+	 */
+	private function woocommerce_data( bool $available ): array {
+		if ( ! $available ) {
+			return array(
+				'available' => false,
+				'version'   => null,
+			);
+		}
+
+		return array(
+			'available'          => true,
+			'version'            => (string) WC_VERSION,
+			'currency'           => get_woocommerce_currency(),
+			'currency_symbol'    => get_woocommerce_currency_symbol(),
+			'price_decimals'     => wc_get_price_decimals(),
+			'decimal_separator'  => wc_get_price_decimal_separator(),
+			'thousand_separator' => wc_get_price_thousand_separator(),
+			'price_format'       => get_woocommerce_price_format(),
+			'weight_unit'        => get_option( 'woocommerce_weight_unit', 'kg' ),
+			'dimension_unit'     => get_option( 'woocommerce_dimension_unit', 'cm' ),
+		);
+	}
+}
