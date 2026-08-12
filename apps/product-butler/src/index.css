@@ -5,7 +5,7 @@
 /* WooCommerce Bulk Entry — Minimal Modern Design System */
 
 @layer base {
-  :root {
+  #yaxii-product-workspace {
     /* Surfaces */
     --background: 0 0% 100%;
     --foreground: 224 71% 4%;
@@ -87,7 +87,7 @@
     --shadow-card: 0 1px 3px 0 hsl(224 71% 4% / 0.04), 0 1px 2px 0 hsl(224 71% 4% / 0.03);
   }
 
-  .dark {
+  #yaxii-product-workspace.dark {
     --background: 224 71% 4%;
     --foreground: 220 14% 96%;
     --card: 224 71% 6%;
@@ -113,19 +113,18 @@
     --info: 217 91% 60%;
   }
 }
-
 @layer base {
   * {
     @apply border-border;
   }
 
-  html, body {
+  #yaxii-product-workspace {
     font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
     font-feature-settings: 'cv11', 'ss01';
     -webkit-font-smoothing: antialiased;
   }
 
-  body {
+  #yaxii-product-workspace {
     @apply bg-background text-foreground;
   }
 
@@ -134,7 +133,6 @@
     font-feature-settings: 'tnum';
   }
 }
-
 @layer components {
   .surface-card {
     @apply bg-card border border-border rounded-lg;
@@ -220,7 +218,7 @@
     background-size: 22px 22px;
     background-position: -1px -1px;
   }
-  .dark .workspace-canvas {
+  #yaxii-product-workspace.dark .workspace-canvas {
     background-color: hsl(var(--background));
     background-image: radial-gradient(hsl(var(--foreground) / 0.07) 1px, transparent 1px);
   }
@@ -232,7 +230,7 @@
       0 1px 2px hsl(224 71% 4% / 0.04),
       0 8px 24px -16px hsl(224 71% 4% / 0.18);
   }
-  .dark .panel {
+  #yaxii-product-workspace.dark .panel {
     box-shadow: 0 1px 0 hsl(0 0% 100% / 0.02), 0 12px 32px -20px hsl(0 0% 0% / 0.6);
   }
   .panel-head {
@@ -248,7 +246,7 @@
   .field-label {
     @apply block text-[12px] font-medium text-foreground/80 mb-1.5;
   }
-  [data-density='compact'] .field-label {
+  #yaxii-product-workspace[data-density='compact'] .field-label {
     @apply text-[11px] mb-1;
   }
   /* Density-aware control height (wins over shadcn h-* defaults) */
@@ -282,51 +280,6 @@
   }
   .stack-lg > * + * {
     margin-block-start: var(--stack-lg);
-  }
-}
-
-@layer utilities {
-  :root {
-    --ctl-h: 2.5rem;
-    --stack-y: 1rem;
-    --stack-lg: 1.5rem;
-    --panel-x: 1.25rem;
-    --panel-head-y: 0.875rem;
-  }
-  [data-density='compact'] {
-    --ctl-h: 2rem;
-    --stack-y: 0.625rem;
-    --stack-lg: 1rem;
-    --panel-x: 0.875rem;
-    --panel-head-y: 0.5rem;
-  }
-
-  /* Density */
-  [data-density='compact'] .row-y {
-    @apply py-1.5;
-  }
-  [data-density='compact'] .pad-panel {
-    @apply p-3;
-  }
-  .pad-panel {
-    @apply p-4;
-  }
-
-  /* Reduced motion preference */
-  [data-reduce-motion='true'] *,
-  [data-reduce-motion='true'] *::before,
-  [data-reduce-motion='true'] *::after {
-    animation-duration: 0.001ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
-  }
-
-  /* Hide scrollbars on horizontal chip rails */
-  .no-scrollbar {
-    scrollbar-width: none;
-  }
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
   }
 }
 

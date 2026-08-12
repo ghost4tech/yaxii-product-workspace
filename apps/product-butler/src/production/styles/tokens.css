@@ -1,0 +1,43 @@
+#yaxii-product-workspace {
+  box-sizing: border-box;
+  min-width: 0;
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-size: 16px;
+  font-feature-settings: "cv11", "ss01";
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+#yaxii-product-workspace *,
+#yaxii-product-workspace *::before,
+#yaxii-product-workspace *::after {
+  box-sizing: border-box;
+}
+
+#yaxii-product-workspace button,
+#yaxii-product-workspace input,
+#yaxii-product-workspace optgroup,
+#yaxii-product-workspace select,
+#yaxii-product-workspace textarea {
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
+
+#yaxii-product-workspace button {
+  margin: 0;
+}
+
+#yaxii-product-workspace img,
+#yaxii-product-workspace svg {
+  display: block;
+}
+
+#yaxii-product-workspace h1,
+#yaxii-product-workspace h2,
+#yaxii-product-workspace h3,
+#yaxii-product-workspace p {
+  margin: 0;
+}

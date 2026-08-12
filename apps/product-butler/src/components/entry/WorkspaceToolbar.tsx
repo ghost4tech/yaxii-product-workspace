@@ -1,94 +1,60 @@
-import React from 'react';
+import type React from "react";
 import {
   Columns2,
-  FileSpreadsheet,
   Focus,
   ListChecks,
-  Lock,
   Minimize2,
   PanelRightClose,
   PanelRightOpen,
   Rows3,
-  Sparkles,
   Undo2,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { usePrefsStore } from '@/stores/prefsStore';
-import { cn } from '@/lib/utils';
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { usePrefsStore } from "@/stores/prefsStore";
 
 interface Props {
-  monthCount: number;
-  limit: number;
-  isPro: boolean;
   advancedOpen: boolean;
-  onAdvancedToggle: () => void;
   canUndo: boolean;
-  onUndo: () => void;
+  onAdvancedToggle: () => void;
   onOpenQueue: () => void;
+  onUndo: () => void;
   queueCount: number;
-  onBulk: () => void;
-  onAi: () => void;
 }
 
 /** Workspace command strip above the entry surfaces. */
 export const WorkspaceToolbar: React.FC<Props> = ({
-  monthCount,
-  limit,
-  isPro,
   advancedOpen,
-  onAdvancedToggle,
   canUndo,
-  onUndo,
+  onAdvancedToggle,
   onOpenQueue,
+  onUndo,
   queueCount,
-  onBulk,
-  onAi,
 }) => {
   const { prefs, setPref } = usePrefsStore();
-  const compact = prefs.density === 'compact';
+  const compact = prefs.density === "compact";
   const focus = prefs.focusMode;
-  const pct = isPro ? 100 : Math.min(100, Math.round((monthCount / limit) * 100));
 
   return (
     <div className="flex flex-wrap items-center gap-2">
-      <div className="min-w-0 me-auto">
-        <h1 className="text-[19px] sm:text-[21px] font-semibold tracking-tight leading-tight">
+      <div className="me-auto min-w-0">
+        <h1 className="text-[19px] font-semibold leading-tight tracking-tight sm:text-[21px]">
           Product entry
         </h1>
-        <div className="flex items-center gap-2 mt-1">
-          {isPro ? (
-            <span className="text-[12px] text-muted-foreground">
-              Unlimited products · {monthCount} added this month
-            </span>
-          ) : (
-            <>
-              <span className="h-1 w-20 rounded-full bg-border overflow-hidden">
-                <span
-                  className={cn('block h-full', pct >= 100 ? 'bg-destructive' : 'bg-foreground/70')}
-                  style={{ inlineSize: `${pct}%` }}
-                />
-              </span>
-              <span className="text-[12px] text-muted-foreground tabular-nums">
-                {monthCount}/{limit} this month
-              </span>
-            </>
-          )}
-        </div>
+        <p className="mt-1 text-[12px] text-muted-foreground">Browser draft · no store writes</p>
       </div>
 
       {canUndo && (
         <Button variant="ghost" size="sm" onClick={onUndo} className="h-8 text-[12px]">
-          <Undo2 className="h-3.5 w-3.5 me-1.5" /> Undo delete
+          <Undo2 className="me-1.5 h-3.5 w-3.5" /> Undo delete
         </Button>
       )}
 
-      {/* Density */}
       <div className="seg" role="group" aria-label="Density">
         <button
           type="button"
           className="seg-item"
           data-active={!compact}
-          onClick={() => setPref('density', 'comfortable')}
+          onClick={() => setPref("density", "comfortable")}
           title="Comfortable density"
         >
           <Rows3 className="h-3.5 w-3.5" />
@@ -97,7 +63,7 @@ export const WorkspaceToolbar: React.FC<Props> = ({
           type="button"
           className="seg-item"
           data-active={compact}
-          onClick={() => setPref('density', 'compact')}
+          onClick={() => setPref("density", "compact")}
           title="Compact density"
         >
           <ListChecks className="h-3.5 w-3.5" />
@@ -108,14 +74,14 @@ export const WorkspaceToolbar: React.FC<Props> = ({
         variant="outline"
         size="sm"
         onClick={onAdvancedToggle}
-        className="h-8 text-[12px] hidden sm:inline-flex"
+        className="hidden h-8 text-[12px] sm:inline-flex"
       >
         {advancedOpen ? (
-          <PanelRightClose className="h-3.5 w-3.5 me-1.5" />
+          <PanelRightClose className="me-1.5 h-3.5 w-3.5" />
         ) : (
-          <PanelRightOpen className="h-3.5 w-3.5 me-1.5" />
+          <PanelRightOpen className="me-1.5 h-3.5 w-3.5" />
         )}
-        {advancedOpen ? 'Hide extended' : 'Extended'}
+        {advancedOpen ? "Hide extended" : "Extended"}
       </Button>
 
       <Button
@@ -124,45 +90,24 @@ export const WorkspaceToolbar: React.FC<Props> = ({
         onClick={onOpenQueue}
         className="h-8 text-[12px] lg:hidden"
       >
-        <Columns2 className="h-3.5 w-3.5 me-1.5" /> Queue
+        <Columns2 className="me-1.5 h-3.5 w-3.5" /> Queue
         <span className="ms-1.5 tabular-nums opacity-60">{queueCount}</span>
       </Button>
 
       <Button
-        variant={focus ? 'default' : 'outline'}
+        variant={focus ? "default" : "outline"}
         size="sm"
-        onClick={() => setPref('focusMode', !focus)}
+        onClick={() => setPref("focusMode", !focus)}
         className="h-8 text-[12px]"
         title="Focus mode — hide everything except product entry"
       >
         {focus ? (
-          <Minimize2 className="h-3.5 w-3.5 me-1.5" />
+          <Minimize2 className="me-1.5 h-3.5 w-3.5" />
         ) : (
-          <Focus className="h-3.5 w-3.5 me-1.5" />
+          <Focus className="me-1.5 h-3.5 w-3.5" />
         )}
-        {focus ? 'Exit focus' : 'Focus'}
+        {focus ? "Exit focus" : "Focus"}
       </Button>
-
-      {!focus && (
-        <div className="hidden xl:flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={onBulk} className="h-8 text-[12px]">
-            {isPro ? (
-              <FileSpreadsheet className="h-3.5 w-3.5 me-1.5" />
-            ) : (
-              <Lock className="h-3.5 w-3.5 me-1.5" />
-            )}
-            Bulk CSV
-          </Button>
-          <Button variant="outline" size="sm" onClick={onAi} className="h-8 text-[12px]">
-            {isPro ? (
-              <Sparkles className="h-3.5 w-3.5 me-1.5" />
-            ) : (
-              <Lock className="h-3.5 w-3.5 me-1.5" />
-            )}
-            AI descriptions
-          </Button>
-        </div>
-      )}
     </div>
   );
 };

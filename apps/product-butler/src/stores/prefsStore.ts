@@ -21,7 +21,7 @@ export interface Preferences {
   monoNumbers: boolean;
 
   /* Workspace */
-  defaultTab: '/' | '/analytics' | '/stores' | '/license' | '/settings';
+  defaultTab: '/' | '/settings';
   showKpiTrends: boolean;
   showKeyboardHints: boolean;
   stickyQueue: boolean;
@@ -73,6 +73,8 @@ interface PrefsStore {
   resetPrefs: () => void;
   commandOpen: boolean;
   setCommandOpen: (v: boolean) => void;
+  shortcutsOpen: boolean;
+  setShortcutsOpen: (value: boolean) => void;
 }
 
 export const usePrefsStore = create<PrefsStore>()(
@@ -84,9 +86,12 @@ export const usePrefsStore = create<PrefsStore>()(
       resetPrefs: () => set({ prefs: defaultPreferences }),
       commandOpen: false,
       setCommandOpen: (v) => set({ commandOpen: v }),
+      shortcutsOpen: false,
+      setShortcutsOpen: (value) => set({ shortcutsOpen: value }),
     }),
     {
-      name: 'woo-prefs-store',
+      name: 'ypw.preferences.v1',
+      version: 1,
       partialize: (s) => ({ prefs: s.prefs }),
     }
   )

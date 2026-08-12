@@ -1,10 +1,10 @@
-import React, { useState, forwardRef, useCallback } from 'react';
-import { Plus, X, GripVertical, ImagePlus, Trash2 } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { ProductVariation, VariationOption, ProductImage } from '@/types/product';
-import { cn } from '@/lib/utils';
+import { forwardRef, useCallback, useState } from "react";
+import { GripVertical, Plus, Trash2 } from "lucide-react";
+import { VariationOptionCard } from "@/components/variations/VariationOptionCard";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { ProductVariation, VariationOption } from "@/types/product";
 
 interface VariationsEditorProps {
   variations: ProductVariation[];
@@ -16,141 +16,136 @@ export const VariationsEditor = forwardRef<HTMLDivElement, VariationsEditorProps
     const [expandedVariations, setExpandedVariations] = useState<Set<string>>(new Set());
 
     const addVariation = useCallback(() => {
-      const newVariation: ProductVariation = {
+      const variation: ProductVariation = {
         id: crypto.randomUUID(),
-        name: '',
+        name: "",
         options: [],
       };
-      onChange([...variations, newVariation]);
-      setExpandedVariations(prev => new Set(prev).add(newVariation.id));
-    }, [variations, onChange]);
+      onChange([...variations, variation]);
+      setExpandedVariations((current) => new Set(current).add(variation.id));
+    }, [onChange, variations]);
 
     const removeVariation = useCallback((id: string) => {
-      onChange(variations.filter((v) => v.id !== id));
-      setExpandedVariations(prev => {
-        const newSet = new Set(prev);
-        newSet.delete(id);
-        return newSet;
+      onChange(variations.filter((variation) => variation.id !== id));
+      setExpandedVariations((current) => {
+        const next = new Set(current);
+        next.delete(id);
+        return next;
       });
-    }, [variations, onChange]);
+    }, [onChange, variations]);
 
     const updateVariationName = useCallback((id: string, name: string) => {
-      onChange(
-        variations.map((v) => (v.id === id ? { ...v, name } : v))
-      );
-    }, [variations, onChange]);
+      onChange(variations.map((variation) => (variation.id === id ? { ...variation, name } : variation)));
+    }, [onChange, variations]);
 
     const addOption = useCallback((variationId: string) => {
-      const newOption: VariationOption = {
+      const option: VariationOption = {
         id: crypto.randomUUID(),
-        value: '',
-        price: '',
-        salePrice: '',
-        sku: '',
-        stockQuantity: '',
+        value: "",
+        price: "",
+        salePrice: "",
+        sku: "",
+        stockQuantity: "",
       };
       onChange(
-        variations.map((v) =>
-          v.id === variationId
-            ? { ...v, options: [...v.options, newOption] }
-            : v
-        )
+        variations.map((variation) =>
+          variation.id === variationId
+            ? { ...variation, options: [...variation.options, option] }
+            : variation,
+        ),
       );
-    }, [variations, onChange]);
+    }, [onChange, variations]);
 
     const removeOption = useCallback((variationId: string, optionId: string) => {
       onChange(
-        variations.map((v) =>
-          v.id === variationId
-            ? { ...v, options: v.options.filter((opt) => opt.id !== optionId) }
-            : v
-        )
+        variations.map((variation) =>
+          variation.id === variationId
+            ? { ...variation, options: variation.options.filter((option) => option.id !== optionId) }
+            : variation,
+        ),
       );
-    }, [variations, onChange]);
+    }, [onChange, variations]);
 
     const updateOption = useCallback((
       variationId: string,
       optionId: string,
-      updates: Partial<VariationOption>
+      updates: Partial<VariationOption>,
     ) => {
       onChange(
-        variations.map((v) =>
-          v.id === variationId
+        variations.map((variation) =>
+          variation.id === variationId
             ? {
-                ...v,
-                options: v.options.map((opt) =>
-                  opt.id === optionId ? { ...opt, ...updates } : opt
+                ...variation,
+                options: variation.options.map((option) =>
+                  option.id === optionId ? { ...option, ...updates } : option,
                 ),
               }
-            : v
-        )
+            : variation,
+        ),
       );
-    }, [variations, onChange]);
-
-    const handleOptionImageUpload = useCallback((
-      variationId: string,
-      optionId: string,
-      event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-      const file = event.target.files?.[0];
-      if (!file) return;
-
-      const image: ProductImage = {
-        id: crypto.randomUUID(),
-        file,
-        preview: URL.createObjectURL(file),
-      };
-
-      updateOption(variationId, optionId, { image });
-    }, [updateOption]);
+    }, [onChange, variations]);
 
     const removeOptionImage = useCallback((variationId: string, optionId: string) => {
-      updateOption(variationId, optionId, { image: undefined });
-    }, [updateOption]);
+      onChange(
+        variations.map((variation) =>
+          variation.id === variationId
+            ? {
+                ...variation,
+                options: variation.options.map((option) => {
+                  if (option.id !== optionId) return option;
+                  if (option.image) URL.revokeObjectURL(option.image.preview);
+                  const withoutImage = { ...option };
+                  delete withoutImage.image;
+                  return withoutImage;
+                }),
+              }
+            : variation,
+        ),
+      );
+    }, [onChange, variations]);
 
-    const toggleVariationExpanded = useCallback((id: string) => {
-      setExpandedVariations(prev => {
-        const newSet = new Set(prev);
-        if (newSet.has(id)) {
-          newSet.delete(id);
-        } else {
-          newSet.add(id);
-        }
-        return newSet;
+    const toggleExpanded = useCallback((id: string) => {
+      setExpandedVariations((current) => {
+        const next = new Set(current);
+        if (next.has(id)) next.delete(id);
+        else next.add(id);
+        return next;
       });
     }, []);
 
     return (
       <div ref={ref} className="space-y-4">
         {variations.map((variation) => (
-          <div
-            key={variation.id}
-            className="border border-border rounded-lg bg-card overflow-hidden"
-          >
-            {/* Variation Header */}
-            <div 
-              className="flex items-center gap-2 p-4 bg-muted/30 cursor-pointer"
-              onClick={() => toggleVariationExpanded(variation.id)}
+          <div key={variation.id} className="overflow-hidden rounded-lg border border-border bg-card">
+            <div
+              className="flex cursor-pointer items-center gap-2 bg-muted/30 p-4"
+              onClick={() => toggleExpanded(variation.id)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") toggleExpanded(variation.id);
+              }}
             >
-              <GripVertical className="h-4 w-4 text-muted-foreground cursor-grab" />
+              <GripVertical className="h-4 w-4 cursor-grab text-muted-foreground" />
               <Input
                 placeholder="Attribute name (e.g., Size, Color)"
                 value={variation.name}
-                onChange={(e) => {
-                  e.stopPropagation();
-                  updateVariationName(variation.id, e.target.value);
+                onChange={(event) => {
+                  event.stopPropagation();
+                  updateVariationName(variation.id, event.target.value);
                 }}
-                onClick={(e) => e.stopPropagation()}
+                onClick={(event) => event.stopPropagation()}
                 className="flex-1"
               />
               <span className="text-sm text-muted-foreground">
-                {variation.options.length} option{variation.options.length !== 1 ? 's' : ''}
+                {variation.options.length} option{variation.options.length !== 1 ? "s" : ""}
               </span>
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={(e) => {
-                  e.stopPropagation();
+                type="button"
+                onClick={(event) => {
+                  event.stopPropagation();
                   removeVariation(variation.id);
                 }}
                 className="text-muted-foreground hover:text-destructive"
@@ -159,153 +154,45 @@ export const VariationsEditor = forwardRef<HTMLDivElement, VariationsEditorProps
               </Button>
             </div>
 
-            {/* Options */}
             {expandedVariations.has(variation.id) && (
-              <div className="p-4 space-y-3">
-                <Label className="text-sm text-muted-foreground">
-                  Options (with individual pricing)
-                </Label>
-
+              <div className="space-y-3 p-4">
+                <Label className="text-sm text-muted-foreground">Options (with individual pricing)</Label>
                 {variation.options.map((option) => (
-                  <div
+                  <VariationOptionCard
                     key={option.id}
-                    className="p-3 border border-border rounded-lg bg-background space-y-3"
-                  >
-                    {/* Option Value and Image */}
-                    <div className="flex items-start gap-3">
-                      {/* Image upload */}
-                      <div className="relative">
-                        {option.image ? (
-                          <div className="relative w-16 h-16 rounded-md overflow-hidden border border-border">
-                            <img
-                              src={option.image.preview}
-                              alt={option.value}
-                              className="w-full h-full object-cover"
-                            />
-                            <button
-                              onClick={() => removeOptionImage(variation.id, option.id)}
-                              className="absolute -top-1 -right-1 p-0.5 bg-destructive text-destructive-foreground rounded-full"
-                            >
-                              <X className="h-3 w-3" />
-                            </button>
-                          </div>
-                        ) : (
-                          <label className="w-16 h-16 flex items-center justify-center border-2 border-dashed border-muted-foreground/25 rounded-md cursor-pointer hover:border-primary/50 transition-colors">
-                            <ImagePlus className="h-5 w-5 text-muted-foreground" />
-                            <input
-                              type="file"
-                              accept="image/*"
-                              className="hidden"
-                              onChange={(e) => handleOptionImageUpload(variation.id, option.id, e)}
-                            />
-                          </label>
-                        )}
-                      </div>
-
-                      {/* Option value */}
-                      <div className="flex-1">
-                        <Input
-                          placeholder="Option value (e.g., Red, Large)"
-                          value={option.value}
-                          onChange={(e) =>
-                            updateOption(variation.id, option.id, { value: e.target.value })
-                          }
-                        />
-                      </div>
-
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => removeOption(variation.id, option.id)}
-                        className="text-muted-foreground hover:text-destructive shrink-0"
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-
-                    {/* Pricing Row */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                      <div>
-                        <Label className="text-xs text-muted-foreground">Price *</Label>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          placeholder="0.00"
-                          value={option.price}
-                          onChange={(e) =>
-                            updateOption(variation.id, option.id, { price: e.target.value })
-                          }
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-xs text-muted-foreground">Sale Price</Label>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          placeholder="0.00"
-                          value={option.salePrice || ''}
-                          onChange={(e) =>
-                            updateOption(variation.id, option.id, { salePrice: e.target.value })
-                          }
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-xs text-muted-foreground">SKU</Label>
-                        <Input
-                          placeholder="SKU"
-                          value={option.sku || ''}
-                          onChange={(e) =>
-                            updateOption(variation.id, option.id, { sku: e.target.value })
-                          }
-                        />
-                      </div>
-                      <div>
-                        <Label className="text-xs text-muted-foreground">Stock</Label>
-                        <Input
-                          type="number"
-                          placeholder="Qty"
-                          value={option.stockQuantity || ''}
-                          onChange={(e) =>
-                            updateOption(variation.id, option.id, { stockQuantity: e.target.value })
-                          }
-                        />
-                      </div>
-                    </div>
-                  </div>
+                    option={option}
+                    onChange={(updates) => updateOption(variation.id, option.id, updates)}
+                    onRemove={() => removeOption(variation.id, option.id)}
+                    onRemoveImage={() => removeOptionImage(variation.id, option.id)}
+                  />
                 ))}
-
                 <Button
                   variant="outline"
                   size="sm"
+                  type="button"
                   onClick={() => addOption(variation.id)}
                   className="w-full border-dashed"
                 >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Option
+                  <Plus className="me-2 h-4 w-4" /> Add Option
                 </Button>
               </div>
             )}
           </div>
         ))}
 
-        <Button
-          variant="outline"
-          onClick={addVariation}
-          className="w-full border-dashed"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Add Attribute
+        <Button variant="outline" type="button" onClick={addVariation} className="w-full border-dashed">
+          <Plus className="me-2 h-4 w-4" /> Add Attribute
         </Button>
 
         {variations.length > 0 && (
           <p className="text-xs text-muted-foreground">
-            Each attribute option can have its own price, sale price, SKU, stock, and image.
-            Variations will be automatically generated in WooCommerce.
+            Each attribute option can have its own price, sale price, SKU, stock, and image. Variations will
+            be automatically generated in WooCommerce.
           </p>
         )}
       </div>
     );
-  }
+  },
 );
 
-VariationsEditor.displayName = 'VariationsEditor';
+VariationsEditor.displayName = "VariationsEditor";

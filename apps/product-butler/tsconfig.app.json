@@ -1,15 +1,8 @@
 {
   "compilerOptions": {
-    "types": [
-      "vitest/globals"
-    ],
-    "target": "ES2020",
+    "target": "ES2022",
     "useDefineForClassFields": true,
-    "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
-    ],
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
     "moduleResolution": "bundler",
@@ -18,18 +11,31 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-    "strict": false,
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "noImplicitAny": false,
-    "noFallthroughCasesInSwitch": false,
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "types": ["vitest/globals", "@testing-library/jest-dom"],
+    "baseUrl": ".",
+    "paths": { "@/*": ["./src/*"] }
   },
-  "include": [
-    "src"
+  "include": ["src", "src/vite-env.d.ts"],
+  "exclude": [
+    "src/components/ui",
+    "src/components/ProLock.tsx",
+    "src/components/deferred",
+    "src/components/UpgradeModal.tsx",
+    "src/components/WooCommerceSetup.tsx",
+    "src/lib/mockData.ts",
+    "src/pages/Analytics.tsx",
+    "src/pages/License.tsx",
+    "src/pages/NotFound.tsx",
+    "src/pages/Stores.tsx",
+    "src/pages/Team.tsx",
+    "src/services",
+    "src/stores/storesStore.ts",
+    "src/stores/tierStore.ts",
+    "src/test/example.test.ts"
   ]
 }

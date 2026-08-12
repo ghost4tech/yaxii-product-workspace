@@ -74,8 +74,9 @@ export const EntryActionBar: React.FC<Props> = ({
         </Button>
         <Button
           type="submit"
-          disabled={isSubmitting}
+          disabled
           className="ctl flex-1 sm:flex-none min-w-[190px] px-4 text-[13px] font-semibold group"
+          title="WooCommerce product writes begin in Phase 2"
         >
           {isSubmitting ? (
             <Loader2 className="h-4 w-4 me-2 animate-spin" />

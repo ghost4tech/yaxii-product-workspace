@@ -1,176 +1,121 @@
-import { useEffect } from 'react';
-import { Toaster } from '@/components/ui/toaster';
-import { Toaster as Sonner } from '@/components/ui/sonner';
-import { TooltipProvider } from '@/components/ui/tooltip';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
-import Entry from './pages/Entry';
-import Analytics from './pages/Analytics';
-import Stores from './pages/Stores';
-import Team from './pages/Team';
-import License from './pages/License';
-import Settings from './pages/Settings';
-import NotFound from './pages/NotFound';
-import { AppShell } from '@/components/AppShell';
-import { UpgradeModal } from '@/components/UpgradeModal';
-import { ShortcutsModal } from '@/components/ShortcutsModal';
-import { CommandMenu } from '@/components/CommandMenu';
-import { PreferencesEffects } from '@/components/PreferencesEffects';
-import { useTierStore } from '@/stores/tierStore';
-import { useProductStore } from '@/stores/productStore';
-import { usePrefsStore } from '@/stores/prefsStore';
-import { clearDraft, duplicateLastProduct, saveDraft } from '@/lib/entryActions';
-import { toast } from '@/hooks/use-toast';
+import { useEffect } from "react";
+import { MemoryRouter, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Toaster } from "@/components/ui/toaster";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { AppShell } from "@/components/AppShell";
+import { CommandMenu } from "@/components/CommandMenu";
+import { PreferencesEffects } from "@/components/PreferencesEffects";
+import { ShortcutsModal } from "@/components/ShortcutsModal";
+import { toast } from "@/hooks/use-toast";
+import { clearDraft, duplicateLastProduct, saveDraft } from "@/lib/entryActions";
+import Entry from "@/pages/Entry";
+import Settings from "@/pages/Settings";
+import { usePrefsStore } from "@/stores/prefsStore";
+import { useProductStore } from "@/stores/productStore";
 
-const queryClient = new QueryClient();
-
-/** Redirects to the user's preferred landing tab on first load. */
 function LandingRedirect() {
   const navigate = useNavigate();
   const location = useLocation();
-  const defaultTab = usePrefsStore((s) => s.prefs.defaultTab);
+  const defaultTab = usePrefsStore((state) => state.prefs.defaultTab);
 
   useEffect(() => {
-    if (location.pathname === '/' && defaultTab !== '/') navigate(defaultTab, { replace: true });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (location.pathname === "/" && defaultTab === "/settings") {
+      void navigate(defaultTab, { replace: true });
+    }
+  }, [defaultTab, location.pathname, navigate]);
 
   return null;
 }
 
 function GlobalHotkeys() {
   const navigate = useNavigate();
-  const { setShortcutsOpen, tier, setTier, openUpgradeModal } = useTierStore();
-  const setCommandOpen = usePrefsStore((s) => s.setCommandOpen);
-  const { lastDeletedProduct, addProduct, setLastDeletedProduct } = useProductStore();
+  const setCommandOpen = usePrefsStore((state) => state.setCommandOpen);
+  const setShortcutsOpen = usePrefsStore((state) => state.setShortcutsOpen);
+  const { addProduct, lastDeletedProduct, setLastDeletedProduct } = useProductStore();
 
   useEffect(() => {
     let lastG = 0;
-    const onKey = (e: KeyboardEvent) => {
-      const target = e.target as HTMLElement;
+    const onKey = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement;
       const inField =
-        ['INPUT', 'TEXTAREA', 'SELECT'].includes(target?.tagName) || target?.isContentEditable;
-      const mod = e.ctrlKey || e.metaKey;
-      const key = e.key.toLowerCase();
+        ["INPUT", "TEXTAREA", "SELECT"].includes(target?.tagName) || target?.isContentEditable;
+      const modifier = event.ctrlKey || event.metaKey;
+      const key = event.key.toLowerCase();
 
-      // --- Modifier shortcuts (work everywhere, including inputs) ---
-      if (mod && key === 'k') {
-        e.preventDefault();
+      if (modifier && key === "k") {
+        event.preventDefault();
         setCommandOpen(true);
         return;
       }
-      if (mod && key === 's') {
-        e.preventDefault();
+      if (modifier && key === "s") {
+        event.preventDefault();
         saveDraft();
         return;
       }
-      if (mod && key === 'd') {
-        e.preventDefault();
+      if (modifier && key === "d") {
+        event.preventDefault();
         duplicateLastProduct();
-        navigate('/');
+        void navigate("/");
         return;
       }
-      if (mod && key === 'b') {
-        e.preventDefault();
-        const next = tier === 'pro' ? 'free' : 'pro';
-        setTier(next);
-        toast({ title: `${next === 'pro' ? 'Pro' : 'Free'} plan preview` });
+      if (modifier && key === "z" && !inField && lastDeletedProduct) {
+        event.preventDefault();
+        addProduct(lastDeletedProduct);
+        setLastDeletedProduct(null);
+        toast({ title: "Restored", description: lastDeletedProduct.name });
         return;
       }
-      if (mod && key === 'z' && !inField) {
-        if (lastDeletedProduct) {
-          e.preventDefault();
-          addProduct(lastDeletedProduct);
-          setLastDeletedProduct(null);
-          toast({ title: 'Restored', description: lastDeletedProduct.name });
-        }
+      if (inField) {
         return;
       }
-
-      if (inField) return;
-
-      if (e.key === '?') {
-        e.preventDefault();
+      if (event.key === "?") {
+        event.preventDefault();
         setShortcutsOpen(true);
         return;
       }
-      if (e.key === 'Escape') {
+      if (event.key === "Escape") {
         clearDraft();
         return;
       }
-
-      // g-then-letter navigation
-      if (key === 'g') {
+      if (key === "g") {
         lastG = Date.now();
         return;
       }
       if (Date.now() - lastG < 800) {
-        const map: Record<string, string> = {
-          e: '/',
-          q: '/',
-          a: '/analytics',
-          s: '/stores',
-          t: '/team',
-          l: '/license',
-          p: '/settings',
-        };
-        const path = map[key];
+        const path = key === "p" ? "/settings" : key === "e" || key === "q" ? "/" : null;
         if (path) {
-          e.preventDefault();
-          if ((path === '/analytics' || path === '/stores' || path === '/team') && tier !== 'pro') {
-            openUpgradeModal(
-              path === '/analytics' ? 'analytics' : path === '/stores' ? 'multi_store' : 'team'
-            );
-          } else {
-            navigate(path);
-          }
-          lastG = 0;
+          event.preventDefault();
+          void navigate(path);
         }
+        lastG = 0;
       }
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [
-    navigate,
-    setShortcutsOpen,
-    setCommandOpen,
-    tier,
-    setTier,
-    lastDeletedProduct,
-    addProduct,
-    setLastDeletedProduct,
-    openUpgradeModal,
-  ]);
+
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [addProduct, lastDeletedProduct, navigate, setCommandOpen, setLastDeletedProduct, setShortcutsOpen]);
 
   return null;
 }
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+export default function App() {
+  return (
     <TooltipProvider>
       <PreferencesEffects />
       <Toaster />
-      <Sonner />
-      <BrowserRouter>
+      <MemoryRouter>
         <LandingRedirect />
         <GlobalHotkeys />
         <AppShell>
           <Routes>
             <Route path="/" element={<Entry />} />
-            <Route path="/analytics" element={<Analytics />} />
-            <Route path="/stores" element={<Stores />} />
-            <Route path="/team" element={<Team />} />
-            <Route path="/license" element={<License />} />
             <Route path="/settings" element={<Settings />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<Entry />} />
           </Routes>
         </AppShell>
-        <UpgradeModal />
         <ShortcutsModal />
         <CommandMenu />
-      </BrowserRouter>
+      </MemoryRouter>
     </TooltipProvider>
-  </QueryClientProvider>
-);
-
-export default App;
+  );
+}

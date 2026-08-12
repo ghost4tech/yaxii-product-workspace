@@ -20,6 +20,7 @@ import { Category } from '@/types/product';
 import { useProductStore } from '@/stores/productStore';
 
 interface CategorySelectProps {
+  id?: string;
   value: string;
   onChange: (value: string) => void;
   onRefresh?: () => void;
@@ -27,6 +28,7 @@ interface CategorySelectProps {
 }
 
 export const CategorySelect: React.FC<CategorySelectProps> = ({
+  id,
   value,
   onChange,
   onRefresh,
@@ -54,6 +56,7 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
+            id={id}
             variant="outline"
             role="combobox"
             aria-expanded={open}

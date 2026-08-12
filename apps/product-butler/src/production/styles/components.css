@@ -1,0 +1,14 @@
+#yaxii-product-workspace #yaxii-product-workspace-portals {
+  color: hsl(var(--foreground));
+  font-family: inherit;
+}
+
+#yaxii-product-workspace button:disabled {
+  cursor: not-allowed;
+}
+
+@media (max-width: 782px) {
+  #yaxii-product-workspace {
+    min-height: calc(100vh - 46px);
+  }
+}

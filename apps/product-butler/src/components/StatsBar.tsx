@@ -54,7 +54,8 @@ export const StatsBar: React.FC = () => {
     const days = Array.from({ length: 7 }, () => 0);
     products.forEach((p) => {
       const diff = Math.floor((Date.now() - new Date(p.createdAt).getTime()) / 86400000);
-      if (diff >= 0 && diff < 7) days[6 - diff] += 1;
+      const index = 6 - diff;
+      if (diff >= 0 && diff < 7 && days[index] !== undefined) days[index] += 1;
     });
     return days;
   }, [products]);
@@ -63,7 +64,7 @@ export const StatsBar: React.FC = () => {
   const week = getProductsAddedThisWeek();
   const synced = products.filter((p) => p.status === 'synced').length;
   const failed = products.filter((p) => p.status === 'error').length;
-  const successRate = products.length ? Math.round((synced / products.length) * 100) : 100;
+  const successRate = products.length ? `${Math.round((synced / products.length) * 100)}%` : '—';
   const prevWeekAvg = perDay.slice(0, 4).reduce((a, b) => a + b, 0) / 4 || 0;
   const lastAvg = perDay.slice(4).reduce((a, b) => a + b, 0) / 3 || 0;
   const delta = prevWeekAvg ? Math.round(((lastAvg - prevWeekAvg) / prevWeekAvg) * 100) : 0;
@@ -71,7 +72,7 @@ export const StatsBar: React.FC = () => {
   const metrics: Metric[] = [
     { label: 'Added today', value: today, hint: 'products', delta, spark: perDay },
     { label: 'Last 7 days', value: week, hint: 'products', spark: perDay },
-    { label: 'Sync success', value: `${successRate}%`, hint: `${synced} synced` },
+    { label: 'Sync success', value: successRate, hint: products.length ? `${synced} synced` : 'no operations' },
     { label: 'Needs attention', value: failed, hint: failed ? 'failed syncs' : 'all clear' },
   ];
 

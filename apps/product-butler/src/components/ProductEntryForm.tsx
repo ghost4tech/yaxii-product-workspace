@@ -19,7 +19,6 @@ import { usePrefsStore } from '@/stores/prefsStore';
 import { saveDraft } from '@/lib/entryActions';
 
 interface ProductEntryFormProps {
-  onSubmit: (data: ProductFormData) => void;
   isSubmitting?: boolean;
   /** Controlled extended-section open state (when provided, internal toggle is hidden) */
   advancedOpen?: boolean;
@@ -28,18 +27,18 @@ interface ProductEntryFormProps {
   twoColumn?: boolean;
 }
 
-type FormValues = {
+export type ProductEntryValues = {
   name: string;
-  sku: string;
-  regularPrice: string;
-  salePrice: string;
+  sku?: string;
+  regularPrice?: string;
+  salePrice?: string;
   categoryId: string;
-  stockQuantity: string;
-  shortDescription: string;
-  longDescription: string;
+  stockQuantity?: string;
+  shortDescription?: string;
+  longDescription?: string;
 };
 
-const EMPTY: FormValues = {
+const EMPTY: ProductEntryValues = {
   name: '',
   sku: '',
   regularPrice: '',
@@ -50,7 +49,7 @@ const EMPTY: FormValues = {
   longDescription: '',
 };
 
-const toValues = (d: Partial<ProductFormData>): FormValues => ({
+const toValues = (d: Partial<ProductFormData>): ProductEntryValues => ({
   name: d.name || '',
   sku: d.sku || '',
   regularPrice: d.regularPrice || '',
@@ -62,7 +61,6 @@ const toValues = (d: Partial<ProductFormData>): FormValues => ({
 });
 
 export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
-  onSubmit,
   isSubmitting = false,
   advancedOpen,
   onAdvancedChange,
@@ -70,7 +68,7 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
 }) => {
   const [internalAdvanced, setInternalAdvanced] = React.useState(false);
   const isControlled = advancedOpen !== undefined;
-  const showAdvanced = isControlled ? advancedOpen! : internalAdvanced;
+  const showAdvanced = isControlled ? advancedOpen : internalAdvanced;
   const setShowAdvanced = isControlled ? (onAdvancedChange ?? (() => {})) : setInternalAdvanced;
 
   const [images, setImages] = React.useState<ProductImage[]>([]);
@@ -157,25 +155,11 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
   }, [isVariable, form]);
 
   const handleSubmit = useCallback(
-    (values: z.infer<typeof productSchema>) => {
-      onSubmit({
-        name: values.name,
-        regularPrice: isVariable ? '' : values.regularPrice || '',
-        categoryId: values.categoryId,
-        sku: values.sku || '',
-        salePrice: isVariable ? '' : values.salePrice || '',
-        stockQuantity: values.stockQuantity || '',
-        shortDescription: values.shortDescription || '',
-        longDescription: values.longDescription || '',
-        images,
-        variations,
-        saleScheduleStart: saleStart,
-        saleScheduleEnd: saleEnd,
-        isVariable,
-      });
+    () => {
+      saveDraft();
       nameInputRef.current?.focus();
     },
-    [images, variations, saleStart, saleEnd, isVariable, onSubmit]
+    []
   );
 
   const handleReset = useCallback(() => {
@@ -193,7 +177,7 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
     const onKey = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
         e.preventDefault();
-        form.handleSubmit(handleSubmit)();
+        void form.handleSubmit(handleSubmit)();
       }
     };
     document.addEventListener('keydown', onKey);
@@ -232,7 +216,7 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)}>
+      <form onSubmit={(event) => void form.handleSubmit(handleSubmit)(event)}>
         {twoColumn ? (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
             <div className="min-w-0">{essentials}</div>

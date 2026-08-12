@@ -1,30 +1,22 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { Product, Category, WooCommerceConfig, ProductFormData, emptyProductFormData, AppSettings, defaultAppSettings } from '@/types/product';
+import { createJSONStorage, persist } from 'zustand/middleware';
+import { Product, Category, ProductFormData, emptyProductFormData, AppSettings, defaultAppSettings } from '@/types/product';
 
 interface ProductStore {
-  // Products
   products: Product[];
   addProduct: (product: Product) => void;
   updateProduct: (id: string, updates: Partial<Product>) => void;
   deleteProduct: (id: string) => void;
   
-  // Categories
   categories: Category[];
   setCategories: (categories: Category[]) => void;
   recentCategoryIds: number[];
   addRecentCategory: (categoryId: number) => void;
   
-  // WooCommerce Config
-  wooConfig: WooCommerceConfig | null;
-  setWooConfig: (config: WooCommerceConfig | null) => void;
-  
-  // App Settings
   appSettings: AppSettings;
   setAppSettings: (settings: Partial<AppSettings>) => void;
   resetAppSettings: () => void;
   
-  // Draft form data (auto-save)
   draftFormData: ProductFormData;
   setDraftFormData: (data: ProductFormData) => void;
   clearDraftFormData: () => void;
@@ -32,11 +24,9 @@ interface ProductStore {
   draftRevision: number;
   applyDraft: (data: ProductFormData) => void;
   
-  // Stats
   getProductsAddedToday: () => number;
   getProductsAddedThisWeek: () => number;
   
-  // Undo
   lastDeletedProduct: Product | null;
   setLastDeletedProduct: (product: Product | null) => void;
 }
@@ -44,7 +34,6 @@ interface ProductStore {
 export const useProductStore = create<ProductStore>()(
   persist(
     (set, get) => ({
-      // Products
       products: [],
       addProduct: (product) => set((state) => ({ 
         products: [product, ...state.products] 
@@ -58,7 +47,6 @@ export const useProductStore = create<ProductStore>()(
         products: state.products.filter((p) => p.id !== id),
       })),
       
-      // Categories
       categories: [],
       setCategories: (categories) => set({ categories }),
       recentCategoryIds: [],
@@ -67,18 +55,12 @@ export const useProductStore = create<ProductStore>()(
         return { recentCategoryIds: [categoryId, ...filtered].slice(0, 5) };
       }),
       
-      // WooCommerce Config
-      wooConfig: null,
-      setWooConfig: (config) => set({ wooConfig: config }),
-      
-      // App Settings
       appSettings: defaultAppSettings,
       setAppSettings: (settings) => set((state) => ({
         appSettings: { ...state.appSettings, ...settings },
       })),
       resetAppSettings: () => set({ appSettings: defaultAppSettings }),
       
-      // Draft form data
       draftFormData: emptyProductFormData,
       setDraftFormData: (data) => set({ draftFormData: data }),
       clearDraftFormData: () =>
@@ -90,7 +72,6 @@ export const useProductStore = create<ProductStore>()(
       applyDraft: (data) =>
         set((state) => ({ draftFormData: data, draftRevision: state.draftRevision + 1 })),
       
-      // Stats
       getProductsAddedToday: () => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -103,19 +84,16 @@ export const useProductStore = create<ProductStore>()(
         return get().products.filter((p) => new Date(p.createdAt) >= weekAgo).length;
       },
       
-      // Undo
       lastDeletedProduct: null,
       setLastDeletedProduct: (product) => set({ lastDeletedProduct: product }),
     }),
     {
-      name: 'woo-product-store',
+      name: 'ypw.product-draft.v1',
+      storage: createJSONStorage(() => sessionStorage),
+      version: 1,
       partialize: (state) => ({
-        products: state.products,
-        categories: state.categories,
-        recentCategoryIds: state.recentCategoryIds,
-        wooConfig: state.wooConfig,
         appSettings: state.appSettings,
-        draftFormData: state.draftFormData,
+        draftFormData: { ...state.draftFormData, images: [] },
       }),
     }
   )

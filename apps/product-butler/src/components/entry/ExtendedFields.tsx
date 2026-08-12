@@ -9,9 +9,10 @@ import { FormSection, FieldShell } from '@/components/entry/FormSection';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import type { UseFormReturn } from 'react-hook-form';
+import type { ProductEntryValues } from '@/components/ProductEntryForm';
 
 interface Props {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<ProductEntryValues>;
   isVariable: boolean;
   saleStart?: Date;
   saleEnd?: Date;
@@ -74,10 +75,11 @@ export const ExtendedFields: React.FC<Props> = ({
         name="shortDescription"
         render={({ field }) => (
           <FormItem className="space-y-0">
-            <label className="field-label">Short description</label>
+            <label className="field-label" htmlFor="ypw-product-short-description">Short description</label>
             <FormControl>
               <Textarea
                 {...field}
+                id="ypw-product-short-description"
                 placeholder="One or two lines shown near the price…"
                 rows={3}
                 className="text-[13px] resize-y"
@@ -91,10 +93,11 @@ export const ExtendedFields: React.FC<Props> = ({
         name="longDescription"
         render={({ field }) => (
           <FormItem className="space-y-0">
-            <label className="field-label">Long description</label>
+            <label className="field-label" htmlFor="ypw-product-long-description">Long description</label>
             <FormControl>
               <Textarea
                 {...field}
+                id="ypw-product-long-description"
                 placeholder="Full product description, materials, care instructions…"
                 rows={7}
                 className="text-[13px] resize-y"

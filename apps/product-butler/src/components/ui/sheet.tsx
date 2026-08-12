@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
+import { usePortalContainer } from "@/production/components/PortalProvider";
 
 const Sheet = SheetPrimitive.Root;
 
@@ -11,7 +12,9 @@ const SheetTrigger = SheetPrimitive.Trigger;
 
 const SheetClose = SheetPrimitive.Close;
 
-const SheetPortal = SheetPrimitive.Portal;
+const SheetPortal = (props: React.ComponentProps<typeof SheetPrimitive.Portal>) => (
+  <SheetPrimitive.Portal container={usePortalContainer()} {...props} />
+);
 
 const SheetOverlay = React.forwardRef<
   React.ElementRef<typeof SheetPrimitive.Overlay>,

@@ -1,18 +1,29 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "@yaxii/product-workspace-frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0-alpha.1",
   "type": "module",
+  "packageManager": "npm@11.15.0",
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0",
+    "npm": ">=10"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:dev": "vite build --mode development",
-    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.app.json && tsc -p tsconfig.node.json",
+    "lint": "eslint src/main.tsx src/App.tsx src/production src/components/AppShell.tsx src/components/CategorySelect.tsx src/components/CommandMenu.tsx src/components/ImageUpload.tsx src/components/PreferencesEffects.tsx src/components/ProductEntryForm.tsx src/components/ProductQueue.tsx src/components/ShortcutsModal.tsx src/components/StatsBar.tsx src/components/VariationsEditor.tsx src/components/entry src/components/queue src/components/settings src/hooks/use-toast.ts src/lib/entryActions.ts src/lib/utils.ts src/pages/Entry.tsx src/pages/Settings.tsx src/stores/prefsStore.ts src/stores/productStore.ts src/types/product.ts tools vite.config.ts vitest.config.ts",
+    "check:lines": "node tools/check-production-lines.mjs",
+    "check:boundary": "node tools/check-production-boundary.mjs",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "audit:production": "npm audit --omit=dev",
+    "check": "npm run typecheck && npm run lint && npm run check:lines && npm test && npm run build && npm run check:boundary"
   },
   "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/jetbrains-mono": "^5.2.8",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -55,7 +66,7 @@
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.61.1",
     "react-resizable-panels": "^2.1.9",
-    "react-router-dom": "^6.30.1",
+    "react-router-dom": "^7.18.2",
     "recharts": "^2.15.4",
     "sonner": "^1.7.4",
     "tailwind-merge": "^2.6.0",
@@ -67,24 +78,38 @@
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "@tailwindcss/typography": "^0.5.16",
+    "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.6.0",
     "@testing-library/react": "^16.0.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/node": "^22.16.5",
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
-    "@vitejs/plugin-react-swc": "^3.11.0",
+    "@vitejs/plugin-react-swc": "^4.3.3",
     "autoprefixer": "^10.4.21",
     "eslint": "^9.32.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^15.15.0",
-    "jsdom": "^20.0.3",
-    "lovable-tagger": "^1.1.13",
-    "postcss": "^8.5.6",
+    "jsdom": "^26.1.0",
+    "postcss": "^8.5.26",
+    "postcss-prefix-selector": "^2.1.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.38.0",
-    "vite": "^5.4.19",
-    "vitest": "^3.2.4"
+    "vite": "^8.2.1",
+    "vitest": "^4.1.10"
+  },
+  "overrides": {
+    "ajv": "^6.15.0",
+    "brace-expansion": "^2.1.4",
+    "flatted": "^3.4.4",
+    "glob": "^10.5.0",
+    "js-yaml": "^4.3.1",
+    "lodash": "^4.18.1",
+    "minimatch": "^9.0.9",
+    "nanoid": "^3.3.18",
+    "ws": "^8.21.3",
+    "yaml": "^2.9.0"
   }
 }

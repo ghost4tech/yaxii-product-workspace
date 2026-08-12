@@ -9,9 +9,10 @@ import { ProductImage, ProductVariation } from '@/types/product';
 import { FormSection, FieldShell } from '@/components/entry/FormSection';
 import { cn } from '@/lib/utils';
 import type { UseFormReturn } from 'react-hook-form';
+import type { ProductEntryValues } from '@/components/ProductEntryForm';
 
 interface Props {
-  form: UseFormReturn<any>;
+  form: UseFormReturn<ProductEntryValues>;
   isVariable: boolean;
   onVariableChange: (v: boolean) => void;
   images: ProductImage[];
@@ -60,10 +61,11 @@ export const EssentialsFields: React.FC<Props> = ({
             name="name"
             render={({ field }) => (
               <FormItem className="flex-1 min-w-0 space-y-0">
-                <label className="field-label">Product name *</label>
+                <label className="field-label" htmlFor="ypw-product-name">Product name *</label>
                 <FormControl>
                   <Input
                     {...field}
+                    id="ypw-product-name"
                     ref={nameRef}
                     placeholder="e.g. Linen Crew Tee"
                     autoComplete="off"
@@ -79,10 +81,11 @@ export const EssentialsFields: React.FC<Props> = ({
             name="sku"
             render={({ field }) => (
               <FormItem className="sm:w-44 space-y-0">
-                <label className="field-label">SKU</label>
+                <label className="field-label" htmlFor="ypw-product-sku">SKU</label>
                 <FormControl>
                   <Input
                     {...field}
+                    id="ypw-product-sku"
                     placeholder="SKU-1024"
                     autoComplete="off"
                     className="ctl ctl-input font-mono"
@@ -98,9 +101,9 @@ export const EssentialsFields: React.FC<Props> = ({
           name="categoryId"
           render={({ field }) => (
             <FormItem className="space-y-0">
-              <label className="field-label">Category *</label>
+              <label className="field-label" htmlFor="ypw-product-category">Category *</label>
               <FormControl>
-                <CategorySelect value={field.value} onChange={field.onChange} />
+                <CategorySelect id="ypw-product-category" value={field.value} onChange={field.onChange} />
               </FormControl>
               <FormMessage className="text-[11px] mt-1" />
             </FormItem>
@@ -119,7 +122,7 @@ export const EssentialsFields: React.FC<Props> = ({
             name="regularPrice"
             render={({ field }) => (
               <FormItem className="space-y-0">
-                <label className={cn('field-label', isVariable && 'text-muted-foreground')}>
+                <label htmlFor="ypw-product-regular-price" className={cn('field-label', isVariable && 'text-muted-foreground')}>
                   Price {!isVariable && '*'}
                 </label>
                 <FormControl>
@@ -127,6 +130,7 @@ export const EssentialsFields: React.FC<Props> = ({
                     <span className="input-affix">{currency}</span>
                     <input
                       {...field}
+                      id="ypw-product-regular-price"
                       type="number"
                       step="0.01"
                       inputMode="decimal"
@@ -145,7 +149,7 @@ export const EssentialsFields: React.FC<Props> = ({
             name="salePrice"
             render={({ field }) => (
               <FormItem className="space-y-0">
-                <label className={cn('field-label', isVariable && 'text-muted-foreground')}>
+                <label htmlFor="ypw-product-sale-price" className={cn('field-label', isVariable && 'text-muted-foreground')}>
                   Sale price
                 </label>
                 <FormControl>
@@ -153,6 +157,7 @@ export const EssentialsFields: React.FC<Props> = ({
                     <span className="input-affix">{currency}</span>
                     <input
                       {...field}
+                      id="ypw-product-sale-price"
                       type="number"
                       step="0.01"
                       inputMode="decimal"
@@ -170,13 +175,14 @@ export const EssentialsFields: React.FC<Props> = ({
             name="stockQuantity"
             render={({ field }) => (
               <FormItem className="col-span-2 sm:col-span-1 space-y-0">
-                <label className={cn('field-label', isVariable && 'text-muted-foreground')}>
+                <label htmlFor="ypw-product-stock" className={cn('field-label', isVariable && 'text-muted-foreground')}>
                   Stock
                 </label>
                 <FormControl>
                   <div className={cn('input-group', isVariable && 'opacity-60')}>
                     <input
                       {...field}
+                      id="ypw-product-stock"
                       type="number"
                       inputMode="numeric"
                       placeholder={isVariable ? '—' : '0'}
