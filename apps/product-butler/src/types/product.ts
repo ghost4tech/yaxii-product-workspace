@@ -24,6 +24,8 @@ export interface ProductVariation {
 }
 
 export interface Product {
+  canReconcile?: boolean;
+  canRetry?: boolean;
   id: string;
   name: string;
   sku: string;
@@ -87,14 +89,30 @@ export interface TeamMember {
 }
 
 export interface ProductFormData {
+  additionalCategoryIds: number[];
+  backorders: 'no' | 'notify' | 'yes';
+  catalogVisibility: 'visible' | 'catalog' | 'search' | 'hidden';
+  height: string;
+  length: string;
+  manageStock: boolean;
   name: string;
+  productStatus: 'publish' | 'draft' | 'pending';
+  shippingClassId: number;
   sku: string;
+  slug: string;
   regularPrice: string;
   salePrice: string;
   saleScheduleStart?: Date;
   saleScheduleEnd?: Date;
   categoryId: string;
   stockQuantity: string;
+  stockStatus: 'instock' | 'outofstock' | 'onbackorder';
+  soldIndividually: boolean;
+  tagIds: number[];
+  taxClass: string;
+  taxStatus: 'taxable' | 'shipping' | 'none';
+  weight: string;
+  width: string;
   shortDescription: string;
   longDescription: string;
   images: ProductImage[];
@@ -103,12 +121,28 @@ export interface ProductFormData {
 }
 
 export const emptyProductFormData: ProductFormData = {
+  additionalCategoryIds: [],
+  backorders: 'no',
+  catalogVisibility: 'visible',
+  height: '',
+  length: '',
+  manageStock: false,
   name: '',
+  productStatus: 'publish',
+  shippingClassId: 0,
   sku: '',
+  slug: '',
   regularPrice: '',
   salePrice: '',
   categoryId: '',
   stockQuantity: '',
+  stockStatus: 'instock',
+  soldIndividually: false,
+  tagIds: [],
+  taxClass: '',
+  taxStatus: 'taxable',
+  weight: '',
+  width: '',
   shortDescription: '',
   longDescription: '',
   images: [],

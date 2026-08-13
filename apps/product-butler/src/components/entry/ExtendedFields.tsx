@@ -10,6 +10,8 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import type { UseFormReturn } from 'react-hook-form';
 import type { ProductEntryValues } from '@/components/entry/productEntryModel';
+import { PublishingInventoryFields } from './PublishingInventoryFields';
+import { ShippingTaxFields } from './ShippingTaxFields';
 
 interface Props {
   form: UseFormReturn<ProductEntryValues>;
@@ -116,5 +118,7 @@ export const ExtendedFields: React.FC<Props> = ({
         </div>
       </FormSection>
     )}
+    <PublishingInventoryFields form={form} />
+    <ShippingTaxFields form={form} />
   </div>
 );

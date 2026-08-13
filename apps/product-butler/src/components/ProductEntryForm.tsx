@@ -1,257 +1,95 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Form } from '@/components/ui/form';
+import { ChevronDown, ChevronUp } from "lucide-react";
+import React from "react";
+import type { CanonicalProduct } from "@/production/domain/products";
+import { Button } from "@/components/ui/button";
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '@/components/ui/collapsible';
-import { EssentialsFields } from '@/components/entry/EssentialsFields';
-import { ExtendedFields } from '@/components/entry/ExtendedFields';
-import { EntryActionBar } from '@/components/entry/EntryActionBar';
-import { emptyProductFormData, ProductImage, ProductVariation, type ProductFormData } from '@/types/product';
-import { useProductStore } from '@/stores/productStore';
-import { usePrefsStore } from '@/stores/prefsStore';
-import { saveDraft } from '@/lib/entryActions';
-import { useWorkspaceRuntime } from '@/production/app/WorkspaceRuntime';
-import { useProductCreate } from '@/production/features/products/useProductCreate';
-import type { ProductFieldErrors } from '@/production/features/products/productMapping';
-import { EMPTY_PRODUCT_ENTRY, toProductEntryValues, type ProductEntryValues } from '@/components/entry/productEntryModel';
-import { productOperationCopy } from '@/production/core/i18n/productMessages';
+  Collapsible, CollapsibleContent, CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Form } from "@/components/ui/form";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { EntryActionBar } from "@/components/entry/EntryActionBar";
+import { EssentialsFields } from "@/components/entry/EssentialsFields";
+import { ExtendedFields } from "@/components/entry/ExtendedFields";
+import { useProductEntryController } from "@/components/entry/useProductEntryController";
 
-interface ProductEntryFormProps {
-  /** Controlled extended-section open state (when provided, internal toggle is hidden) */
+interface Props {
   advancedOpen?: boolean;
   onAdvancedChange?: (open: boolean) => void;
-  /** Render essentials + extended side by side */
+  onCloseEdit?: () => void;
+  onProductUpdated?: (product: CanonicalProduct) => void;
+  product?: CanonicalProduct | null;
   twoColumn?: boolean;
 }
 
-export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
+export function ProductEntryForm({
   advancedOpen,
   onAdvancedChange,
+  onCloseEdit,
+  onProductUpdated,
+  product,
   twoColumn = false,
-}) => {
+}: Props) {
   const [internalAdvanced, setInternalAdvanced] = React.useState(false);
-  const isControlled = advancedOpen !== undefined;
-  const showAdvanced = isControlled ? advancedOpen : internalAdvanced;
-  const setShowAdvanced = isControlled ? (onAdvancedChange ?? (() => {})) : setInternalAdvanced;
-
-  const [images, setImages] = React.useState<ProductImage[]>([]);
-  const [variations, setVariations] = React.useState<ProductVariation[]>([]);
-  const [saleStart, setSaleStart] = React.useState<Date>();
-  const [saleEnd, setSaleEnd] = React.useState<Date>();
-  const [isVariable, setIsVariable] = React.useState(false);
-
-  const nameInputRef = useRef<HTMLInputElement>(null);
-  const { draftFormData, setDraftFormData, clearDraftFormData, draftRevision } = useProductStore();
-  const autoFocusName = usePrefsStore((s) => s.prefs.autoFocusName);
-  const keepValuesAfterSave = usePrefsStore((s) => s.prefs.keepValuesAfterSave);
-  const appSettings = useProductStore((s) => s.appSettings);
-  const { bootstrap, client } = useWorkspaceRuntime();
-  const productCreate = useProductCreate(client, bootstrap);
-  const productCopy = productOperationCopy(bootstrap.locale);
-  const canWrite = bootstrap.capabilities.createProducts && bootstrap.features.simpleProductCreate;
-
-  const hasValidVariations = useMemo(
-    () => variations.some((v) => v.name && v.options.length > 0),
-    [variations]
-  );
-
-  const productSchema = useMemo(
-    () =>
-      z.object({
-        name: z.string().min(1, 'Product name is required'),
-        sku: z.string().optional(),
-        regularPrice: isVariable ? z.string().optional() : z.string().min(1, 'Price is required'),
-        salePrice: z.string().optional(),
-        categoryId: z.string().min(1, 'Category is required'),
-        stockQuantity: z.string().optional(),
-        shortDescription: z.string().optional(),
-        longDescription: z.string().optional(),
-      }),
-    [isVariable]
-  );
-
-  const form = useForm<z.infer<typeof productSchema>>({
-    resolver: zodResolver(productSchema),
-    defaultValues: toProductEntryValues(draftFormData),
-  });
-
+  const controlled = advancedOpen !== undefined;
+  const showAdvanced = controlled ? advancedOpen : internalAdvanced;
+  const setShowAdvanced = controlled ? (onAdvancedChange ?? (() => undefined)) : setInternalAdvanced;
+  const controller = useProductEntryController({ onCloseEdit, onProductUpdated, product });
+  const { form } = controller;
   const watched = form.watch();
-  const dirty = Boolean(
-    watched.name || watched.regularPrice || watched.sku || images.length || variations.length
-  );
 
-  useEffect(() => {
-    const subscription = form.watch((values) => {
-      setDraftFormData({
-        ...values,
-        images,
-        variations,
-        saleScheduleStart: saleStart,
-        saleScheduleEnd: saleEnd,
-        isVariable,
-      } as ProductFormData);
-    });
-    return () => subscription.unsubscribe();
-  }, [form, images, variations, saleStart, saleEnd, isVariable, setDraftFormData]);
-
-  useEffect(() => {
-    if (draftFormData.images?.length) setImages(draftFormData.images);
-    if (draftFormData.variations?.length) setVariations(draftFormData.variations);
-    if (draftFormData.saleScheduleStart) setSaleStart(new Date(draftFormData.saleScheduleStart));
-    if (draftFormData.saleScheduleEnd) setSaleEnd(new Date(draftFormData.saleScheduleEnd));
-    if (draftFormData.isVariable) setIsVariable(draftFormData.isVariable);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  // React to drafts replaced from outside the form (command menu, Ctrl+D, Esc)
-  const firstRevision = useRef(draftRevision);
-  useEffect(() => {
-    if (draftRevision === firstRevision.current) return;
-    const d = useProductStore.getState().draftFormData;
-    form.reset(toProductEntryValues(d));
-    setImages(d.images || []);
-    setVariations(d.variations || []);
-    setIsVariable(!!d.isVariable);
-    nameInputRef.current?.focus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [draftRevision]);
-
-  useEffect(() => {
-    if (isVariable) {
-      form.setValue('regularPrice', '');
-      form.setValue('salePrice', '');
-    }
-  }, [isVariable, form]);
-
-  const applyFieldErrors = useCallback((fields: ProductFieldErrors) => {
-    Object.entries(fields).forEach(([field, message]) => {
-      if (!message) return;
-      if (field === 'root') form.setError('root.server', { message });
-      else form.setError(field as keyof ProductEntryValues, { message });
-    });
-  }, [form]);
-
-  const handleSubmit = useCallback(async (values: ProductEntryValues) => {
-    form.clearErrors();
-    if (!canWrite) {
-      form.setError('root.server', { message: `${productCopy.unavailable}.` });
-      return;
-    }
-    const outcome = await productCreate.submit({
-      images,
-      isVariable,
-      saleEnd,
-      saleStart,
-      settings: appSettings,
-      values,
-    });
-    applyFieldErrors(outcome.fields);
-    if (outcome.state !== 'succeeded') return;
-
-    const next = keepValuesAfterSave
-      ? {
-          ...EMPTY_PRODUCT_ENTRY,
-          categoryId: values.categoryId,
-          regularPrice: values.regularPrice,
-          salePrice: values.salePrice,
-          stockQuantity: values.stockQuantity,
-        }
-      : EMPTY_PRODUCT_ENTRY;
-    form.reset(next);
-    setImages([]);
-    setVariations([]);
-    setSaleStart(undefined);
-    setSaleEnd(undefined);
-    setIsVariable(false);
-    setDraftFormData({ ...emptyProductFormData, ...next });
-    nameInputRef.current?.focus();
-  }, [appSettings, applyFieldErrors, canWrite, form, images, isVariable, keepValuesAfterSave, productCopy, productCreate, saleEnd, saleStart, setDraftFormData]);
-
-  const handleReset = useCallback(() => {
-    form.reset(EMPTY_PRODUCT_ENTRY);
-    setImages([]);
-    setVariations([]);
-    setSaleStart(undefined);
-    setSaleEnd(undefined);
-    setIsVariable(false);
-    clearDraftFormData();
-    nameInputRef.current?.focus();
-  }, [form, clearDraftFormData]);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-        e.preventDefault();
-        void form.handleSubmit(handleSubmit)();
+  React.useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+        event.preventDefault();
+        void form.handleSubmit(controller.submit)();
       }
     };
-    document.addEventListener('keydown', onKey);
-    return () => document.removeEventListener('keydown', onKey);
-  }, [form, handleSubmit]);
-
-  useEffect(() => {
-    if (autoFocusName) nameInputRef.current?.focus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [controller.submit, form]);
 
   const essentials = (
     <EssentialsFields
+      currency={controller.bootstrap.woocommerce.currencySymbol}
       form={form}
-      isVariable={isVariable}
-      onVariableChange={setIsVariable}
-      images={images}
-      onImagesChange={setImages}
-      variations={variations}
-      onVariationsChange={setVariations}
-      hasValidVariations={hasValidVariations}
-      nameRef={nameInputRef}
-      currency={bootstrap.woocommerce.currencySymbol}
+      images={controller.images}
+      isVariable={false}
+      nameRef={controller.nameInputRef}
+      onImagesChange={controller.setImages}
     />
   );
-
   const extended = (
     <ExtendedFields
       form={form}
-      isVariable={isVariable}
-      saleStart={saleStart}
-      saleEnd={saleEnd}
-      onSaleStart={setSaleStart}
-      onSaleEnd={setSaleEnd}
+      isVariable={false}
+      onSaleEnd={controller.setSaleEnd}
+      onSaleStart={controller.setSaleStart}
+      saleEnd={controller.saleEnd}
+      saleStart={controller.saleStart}
     />
   );
 
   return (
     <Form {...form}>
-      <form onSubmit={(event) => void form.handleSubmit(handleSubmit)(event)}>
+      <form onSubmit={(event) => void form.handleSubmit(controller.submit)(event)}>
         {twoColumn ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
             <div className="min-w-0">{essentials}</div>
             <div className="min-w-0 lg:border-s lg:border-border lg:ps-8">{extended}</div>
           </div>
         ) : (
           <div className="stack-lg">
             {essentials}
-            {!isControlled && (
+            {!controlled && (
               <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
                 <CollapsibleTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="w-full justify-between h-9 text-[12px] text-muted-foreground hover:text-foreground"
-                  >
+                  <Button type="button" variant="ghost"
+                    className="h-9 w-full justify-between text-[12px] text-muted-foreground hover:text-foreground">
                     <span>Extended options</span>
-                    {showAdvanced ? (
-                      <ChevronUp className="h-3.5 w-3.5" />
-                    ) : (
-                      <ChevronDown className="h-3.5 w-3.5" />
-                    )}
+                    {showAdvanced ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
                   </Button>
                 </CollapsibleTrigger>
                 <CollapsibleContent className="pt-4">{extended}</CollapsibleContent>
@@ -267,15 +105,34 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
         )}
 
         <EntryActionBar
-          disabled={!canWrite || isVariable}
-          disabledReason={isVariable ? productCopy.simpleOnly : !canWrite ? productCopy.unavailable : undefined}
-          isSubmitting={productCreate.isSubmitting}
-          dirty={dirty}
+          clearLabel={controller.editing ? "Reset changes" : "Clear"}
+          disabled={!controller.canWrite}
+          disabledReason={!controller.canWrite ? "This product operation is unavailable." : undefined}
+          dirty={controller.editing ? form.formState.isDirty : Boolean(watched.name || watched.regularPrice || watched.sku || controller.images.length)}
+          isSubmitting={controller.editing ? controller.manage.isSaving : controller.create.isSubmitting}
+          onClear={controller.reset}
+          onSaveDraft={controller.editing ? undefined : controller.saveDraft}
+          onTrash={controller.editing ? () => controller.setTrashOpen(true) : undefined}
           productName={watched.name}
-          onClear={handleReset}
-          onSaveDraft={saveDraft}
+          submitLabel={controller.editing ? "Save changes" : "Save & next"}
         />
       </form>
+
+      <AlertDialog open={controller.conflictOpen} onOpenChange={controller.setConflictOpen}>
+        <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Newer product changes found</AlertDialogTitle>
+          <AlertDialogDescription>Your edit was not saved because this product changed after you opened it. Reload the latest values before editing again.</AlertDialogDescription>
+        </AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Keep this draft</AlertDialogCancel>
+          <AlertDialogAction onClick={() => void controller.reloadLatest()}>Reload latest</AlertDialogAction>
+        </AlertDialogFooter></AlertDialogContent>
+      </AlertDialog>
+
+      <AlertDialog open={controller.trashOpen} onOpenChange={controller.setTrashOpen}>
+        <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Trash this WooCommerce product?</AlertDialogTitle>
+          <AlertDialogDescription>This moves “{product?.name}” to WooCommerce trash. It is different from removing an entry from recent operations.</AlertDialogDescription>
+        </AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={() => void controller.trash()}>Move to trash</AlertDialogAction>
+        </AlertDialogFooter></AlertDialogContent>
+      </AlertDialog>
     </Form>
   );
-};
+}

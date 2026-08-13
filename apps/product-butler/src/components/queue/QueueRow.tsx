@@ -15,6 +15,7 @@ interface QueueRowProps {
   compact: boolean;
   onDelete: (product: Product) => void;
   onEdit?: (product: Product) => void;
+  onReconcile?: (product: Product) => void;
   onRetry?: (product: Product) => void;
   product: Product;
   relativeTimestamps: boolean;
@@ -24,6 +25,7 @@ export function QueueRow({
   compact,
   onDelete,
   onEdit,
+  onReconcile,
   onRetry,
   product,
   relativeTimestamps,
@@ -88,18 +90,23 @@ export function QueueRow({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          {onEdit && (
+          {product.wooCommerceId && onEdit && (
             <DropdownMenuItem onClick={() => onEdit(product)}>
               <Edit className="me-2 h-4 w-4" /> Edit
             </DropdownMenuItem>
           )}
-          {product.status === "error" && onRetry && (
+          {product.status === "error" && product.canRetry && onRetry && (
             <DropdownMenuItem onClick={() => onRetry(product)}>
-              <RefreshCw className="me-2 h-4 w-4" /> Retry sync
+              <RefreshCw className="me-2 h-4 w-4" /> Retry safely
+            </DropdownMenuItem>
+          )}
+          {product.status === "pending" && product.canReconcile && onReconcile && (
+            <DropdownMenuItem onClick={() => onReconcile(product)}>
+              <RefreshCw className="me-2 h-4 w-4" /> Reconcile
             </DropdownMenuItem>
           )}
           <DropdownMenuItem onClick={() => onDelete(product)} className="text-destructive focus:text-destructive">
-            <Trash2 className="me-2 h-4 w-4" /> Delete
+            <Trash2 className="me-2 h-4 w-4" /> Remove from queue
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

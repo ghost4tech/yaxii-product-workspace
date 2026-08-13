@@ -1,6 +1,7 @@
 import type { WorkspaceRepository } from "../application/WorkspaceRepository";
 import { WorkspaceApiError } from "../application/WorkspaceApiError";
 import type { WorkspaceSnapshot } from "../domain/workspace";
+import { DEFAULT_WORKSPACE_PREFERENCES } from "../domain/products";
 
 export class DevelopmentWorkspaceRepository implements WorkspaceRepository {
   public load(): Promise<WorkspaceSnapshot> {
@@ -14,7 +15,12 @@ export class DevelopmentWorkspaceRepository implements WorkspaceRepository {
           categoryLookup: false,
           mediaSelection: false,
           operationLookup: false,
+          operationQueue: false,
+          preferences: false,
+          productManagement: false,
+          shippingClassLookup: false,
           simpleProductCreate: false,
+          tagLookup: false,
           variableProductCreate: false,
         },
         frontendAvailable: true,
@@ -26,6 +32,7 @@ export class DevelopmentWorkspaceRepository implements WorkspaceRepository {
           currency: "USD",
           currencySymbol: "$",
           dimensionUnit: "cm",
+          taxClasses: [],
           version: null,
           weightUnit: "kg",
         },
@@ -41,9 +48,32 @@ export class DevelopmentWorkspaceRepository implements WorkspaceRepository {
     return Promise.reject(this.unsupported());
   }
 
+  public getProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
+  public updateProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
+  public trashProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
+  public duplicateProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
+  public searchProducts() { return Promise.resolve({ has_more: false, items: [], page: 1, per_page: 20, total: 0 }); }
+  public listOperations() {
+    return Promise.resolve({
+      counts: { all: 0, draft: 0, error: 0, pending: 0, synced: 0 },
+      has_more: false,
+      items: [],
+      page: 1,
+      per_page: 25,
+      total: 0,
+    });
+  }
+  public retryOperation(): Promise<never> { return Promise.reject(this.unsupported()); }
+  public dismissOperation(): Promise<never> { return Promise.reject(this.unsupported()); }
+  public getPreferences() { return Promise.resolve(DEFAULT_WORKSPACE_PREFERENCES); }
+  public updatePreferences() { return Promise.resolve(DEFAULT_WORKSPACE_PREFERENCES); }
+
   public searchCategories() {
     return Promise.resolve({ has_more: false, items: [], page: 1, per_page: 20 });
   }
+
+  public searchTags() { return this.searchCategories(); }
+  public searchShippingClasses() { return this.searchCategories(); }
 
   private unsupported() {
     return new WorkspaceApiError("ypw_development_only", "WooCommerce writes require WordPress.", 503);

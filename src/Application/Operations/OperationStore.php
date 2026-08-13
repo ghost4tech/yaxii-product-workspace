@@ -16,6 +16,15 @@ interface OperationStore {
 	public function find_for_user( string $operation_id, int $site_id, int $user_id ): ?OperationRecord;
 
 	/**
+	 * @return array{items: array<int, OperationRecord>, total: int, counts: array{all: int, synced: int, draft: int, pending: int, error: int}}
+	 */
+	public function query_for_user( OperationQuery $query, int $site_id, int $user_id ): array;
+
+	public function claim_retry( string $operation_id, int $site_id, int $user_id ): bool;
+
+	public function dismiss_for_user( string $operation_id, int $site_id, int $user_id ): bool;
+
+	/**
 	 * @param array<string, mixed> $result Canonical operation result.
 	 */
 	public function complete(

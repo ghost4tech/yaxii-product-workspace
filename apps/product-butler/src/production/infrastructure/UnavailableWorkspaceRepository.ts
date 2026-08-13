@@ -14,7 +14,12 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
           categoryLookup: false,
           mediaSelection: false,
           operationLookup: false,
+          operationQueue: false,
+          preferences: false,
+          productManagement: false,
+          shippingClassLookup: false,
           simpleProductCreate: false,
+          tagLookup: false,
           variableProductCreate: false,
         },
         frontendAvailable: false,
@@ -26,6 +31,7 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
           currency: "",
           currencySymbol: "",
           dimensionUnit: "",
+          taxClasses: [],
           version: null,
           weightUnit: "",
         },
@@ -41,9 +47,23 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
     return Promise.reject(this.unavailable());
   }
 
+  public getProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public updateProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public trashProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public duplicateProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public searchProducts(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public listOperations(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public retryOperation(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public dismissOperation(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public getPreferences(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public updatePreferences(): Promise<never> { return Promise.reject(this.unavailable()); }
+
   public searchCategories(): Promise<never> {
     return Promise.reject(this.unavailable());
   }
+
+  public searchTags(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public searchShippingClasses(): Promise<never> { return Promise.reject(this.unavailable()); }
 
   private unavailable() {
     return new WorkspaceApiError("ypw_host_unavailable", "The WordPress host is unavailable.", 503);

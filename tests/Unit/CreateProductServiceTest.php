@@ -10,7 +10,9 @@ namespace Yaxii\ProductWorkspace\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Yaxii\ProductWorkspace\Application\Products\ApiException;
 use Yaxii\ProductWorkspace\Application\Products\CreateProductCommand;
+use Yaxii\ProductWorkspace\Application\Products\CreateProductRequestFactory;
 use Yaxii\ProductWorkspace\Application\Products\CreateProductService;
+use Yaxii\ProductWorkspace\Application\Products\ProductFieldParser;
 use Yaxii\ProductWorkspace\Tests\Support\FakeCapabilityPolicy;
 use Yaxii\ProductWorkspace\Tests\Support\FakeOperationStore;
 use Yaxii\ProductWorkspace\Tests\Support\FakeProductGateway;
@@ -28,7 +30,12 @@ final class CreateProductServiceTest extends TestCase {
 		$this->capabilities = new FakeCapabilityPolicy();
 		$this->operations   = new FakeOperationStore();
 		$this->products     = new FakeProductGateway();
-		$this->service      = new CreateProductService( $this->capabilities, $this->operations, $this->products );
+		$this->service      = new CreateProductService(
+			$this->capabilities,
+			$this->operations,
+			$this->products,
+			new CreateProductRequestFactory( new ProductFieldParser() )
+		);
 	}
 
 	public function test_same_key_and_payload_replays_without_a_second_write(): void {
@@ -113,22 +120,48 @@ final class CreateProductServiceTest extends TestCase {
 		self::assertSame( 0, $this->products->create_calls );
 	}
 
+	public function test_manual_retry_reuses_the_original_operation_identity(): void {
+		$this->products->fail_write = true;
+		$failed                     = $this->service->create( $this->command(), 'key-a', 1, 2 );
+		$record                     = $this->operations->find_for_user( $failed->operation_id(), 1, 2 );
+		self::assertNotNull( $record );
+		self::assertTrue( $record->can_retry() );
+
+		$this->products->fail_write = false;
+		$retried                    = $this->service->retry( $record, 1, 2 );
+		self::assertSame( $failed->operation_id(), $retried->operation_id() );
+		self::assertSame( 'succeeded', $retried->state() );
+		self::assertSame( 2, $this->products->create_calls );
+	}
+
 	private function command( string $name = 'Product', string $status = 'draft' ): CreateProductCommand {
 		return new CreateProductCommand(
 			array(
 				'name'               => $name,
+				'slug'               => '',
 				'sku'                => 'SKU-1',
 				'regular_price'      => '10.00',
 				'sale_price'         => null,
+				'date_on_sale_from'  => null,
+				'date_on_sale_to'    => null,
 				'manage_stock'       => false,
 				'stock_quantity'     => null,
 				'stock_status'       => 'instock',
+				'backorders'         => 'no',
+				'sold_individually'  => false,
 				'status'             => $status,
 				'catalog_visibility' => 'visible',
 				'tax_status'         => 'taxable',
+				'tax_class'          => '',
 				'description'        => '',
 				'short_description'  => '',
+				'weight'             => '',
+				'length'             => '',
+				'width'              => '',
+				'height'             => '',
+				'shipping_class_id'  => 0,
 				'category_ids'       => array( 1 ),
+				'tag_ids'            => array(),
 				'image_ids'          => array(),
 			)
 		);

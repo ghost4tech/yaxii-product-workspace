@@ -4,37 +4,11 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { defaultPreferences, usePrefsStore } from "@/stores/prefsStore";
 import { useProductStore } from "@/stores/productStore";
 import { WorkspaceClient } from "../application/WorkspaceClient";
-import type { WorkspaceRepository } from "../application/WorkspaceRepository";
 import type { WorkspaceSnapshot } from "../domain/workspace";
+import { workspaceRepository, workspaceSnapshot } from "../test/workspaceFixtures";
 import { WorkspaceApp } from "./WorkspaceApp";
 
-const snapshot: WorkspaceSnapshot = {
-  availability: { kind: "ready" },
-  bootstrap: {
-    capabilities: { createProducts: true, publishProducts: true, uploadMedia: true },
-    direction: "ltr",
-    environment: "wordpress",
-    features: {
-      categoryLookup: true,
-      mediaSelection: true,
-      operationLookup: true,
-      simpleProductCreate: true,
-      variableProductCreate: false,
-    },
-    frontendAvailable: true,
-    isWooCommerceAvailable: true,
-    locale: "en-US",
-    pluginVersion: "test",
-    user: { displayName: "Admin", id: 1 },
-    woocommerce: {
-      currency: "USD",
-      currencySymbol: "$",
-      dimensionUnit: "cm",
-      version: "10.9.4",
-      weightUnit: "kg",
-    },
-  },
-};
+const snapshot: WorkspaceSnapshot = workspaceSnapshot;
 
 function renderWorkspace(value = snapshot) {
   const scope = document.createElement("div");
@@ -44,12 +18,7 @@ function renderWorkspace(value = snapshot) {
   portals.id = "yaxii-product-workspace-portals";
   scope.append(app, portals);
   document.body.append(scope);
-  const repository: WorkspaceRepository = {
-    createProduct: () => Promise.reject(new Error("Not configured for this test.")),
-    getOperation: () => Promise.reject(new Error("Not configured for this test.")),
-    load: () => Promise.resolve(value),
-    searchCategories: () => Promise.resolve({ has_more: false, items: [], page: 1, per_page: 20 }),
-  };
+  const repository = workspaceRepository({ load: () => Promise.resolve(value) });
   render(<WorkspaceApp client={new WorkspaceClient(repository)} scope={scope} />, { container: app });
   return { portals, scope };
 }
@@ -61,7 +30,6 @@ beforeEach(() => {
     prefs: defaultPreferences,
     shortcutsOpen: false,
   });
-  useProductStore.setState({ lastDeletedProduct: null, products: [] });
   useProductStore.getState().clearDraftFormData();
 });
 

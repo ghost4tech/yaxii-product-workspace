@@ -215,6 +215,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
                   <GripVertical className="h-5 w-5 text-primary-foreground drop-shadow-md" />
                 </div>
                 <Button
+                  aria-label={`Remove product image ${index + 1}`}
                   variant="destructive"
                   size="icon"
                   className="absolute top-2 end-2 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"

@@ -30,16 +30,6 @@ export interface Preferences {
   focusMode: boolean;
   focusModeShowQueue: boolean;
 
-  /* Entry flow */
-  autoFocusName: boolean;
-  keepValuesAfterSave: boolean;
-  confirmBeforeDelete: boolean;
-  soundOnSave: boolean;
-
-  /* Queue */
-  queueGroupByDay: boolean;
-  relativeTimestamps: boolean;
-  queueRowsPerPage: number;
 }
 
 export const defaultPreferences: Preferences = {
@@ -57,14 +47,6 @@ export const defaultPreferences: Preferences = {
   focusMode: false,
   focusModeShowQueue: true,
 
-  autoFocusName: true,
-  keepValuesAfterSave: false,
-  confirmBeforeDelete: false,
-  soundOnSave: false,
-
-  queueGroupByDay: true,
-  relativeTimestamps: true,
-  queueRowsPerPage: 25,
 };
 
 interface PrefsStore {

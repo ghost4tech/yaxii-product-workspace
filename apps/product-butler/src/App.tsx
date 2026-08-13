@@ -6,12 +6,11 @@ import { AppShell } from "@/components/AppShell";
 import { CommandMenu } from "@/components/CommandMenu";
 import { PreferencesEffects } from "@/components/PreferencesEffects";
 import { ShortcutsModal } from "@/components/ShortcutsModal";
-import { toast } from "@/hooks/use-toast";
 import { clearDraft, duplicateLastProduct, saveDraft } from "@/lib/entryActions";
 import Entry from "@/pages/Entry";
 import Settings from "@/pages/Settings";
 import { usePrefsStore } from "@/stores/prefsStore";
-import { useProductStore } from "@/stores/productStore";
+import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
 
 function LandingRedirect() {
   const navigate = useNavigate();
@@ -31,7 +30,7 @@ function GlobalHotkeys() {
   const navigate = useNavigate();
   const setCommandOpen = usePrefsStore((state) => state.setCommandOpen);
   const setShortcutsOpen = usePrefsStore((state) => state.setShortcutsOpen);
-  const { addProduct, lastDeletedProduct, setLastDeletedProduct } = useProductStore();
+  const { client } = useWorkspaceRuntime();
 
   useEffect(() => {
     let lastG = 0;
@@ -54,15 +53,8 @@ function GlobalHotkeys() {
       }
       if (modifier && key === "d") {
         event.preventDefault();
-        duplicateLastProduct();
+        void duplicateLastProduct(client);
         void navigate("/");
-        return;
-      }
-      if (modifier && key === "z" && !inField && lastDeletedProduct) {
-        event.preventDefault();
-        addProduct(lastDeletedProduct);
-        setLastDeletedProduct(null);
-        toast({ title: "Restored", description: lastDeletedProduct.name });
         return;
       }
       if (inField) {
@@ -93,7 +85,7 @@ function GlobalHotkeys() {
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [addProduct, lastDeletedProduct, navigate, setCommandOpen, setLastDeletedProduct, setShortcutsOpen]);
+  }, [client, navigate, setCommandOpen, setShortcutsOpen]);
 
   return null;
 }

@@ -23,15 +23,18 @@ final class CreateProductService {
 	private CapabilityPolicy $capabilities;
 	private OperationStore $operations;
 	private ProductGateway $products;
+	private CreateProductRequestFactory $request_factory;
 
 	public function __construct(
 		CapabilityPolicy $capabilities,
 		OperationStore $operations,
-		ProductGateway $products
+		ProductGateway $products,
+		CreateProductRequestFactory $request_factory
 	) {
-		$this->capabilities = $capabilities;
-		$this->operations   = $operations;
-		$this->products     = $products;
+		$this->capabilities    = $capabilities;
+		$this->operations      = $operations;
+		$this->products        = $products;
+		$this->request_factory = $request_factory;
 	}
 
 	/**
@@ -44,6 +47,10 @@ final class CreateProductService {
 		int $user_id
 	): OperationResult {
 		$this->assert_command_allowed( $command );
+		$field_errors = $this->products->validate( $command );
+		if ( array() === $field_errors ) {
+			$this->assert_media_allowed( $command );
+		}
 		$payload_json = wp_json_encode( $command->to_array() );
 		if ( false === $payload_json ) {
 			throw new ApiException(
@@ -61,6 +68,9 @@ final class CreateProductService {
 					'operation_type'  => self::OPERATION_TYPE,
 					'idempotency_key' => $idempotency_key,
 					'payload_hash'    => hash( 'sha256', $payload_json ),
+					'payload_json'    => $payload_json,
+					'product_name'    => $command->name(),
+					'product_sku'     => $command->sku(),
 				)
 			)
 		);
@@ -78,19 +88,8 @@ final class CreateProductService {
 			return $this->replay_or_reconcile( $record );
 		}
 
-		$field_errors = $this->products->validate( $command );
 		if ( array() !== $field_errors ) {
-			$result = OperationResult::failed(
-				$record->operation_id(),
-				new OperationFailure(
-					$this->validation_code( $field_errors ),
-					__( 'WooCommerce rejected one or more product references.', 'yaxii-product-workspace' ),
-					$field_errors,
-					422
-				)
-			);
-
-			return $this->persist_or_mark_uncertain( $result );
+			return $this->persist_validation_failure( $record->operation_id(), $field_errors );
 		}
 
 		return $this->write_product( $command, $record->operation_id() );
@@ -101,6 +100,32 @@ final class CreateProductService {
 	 */
 	public function reconcile( OperationRecord $record ): OperationResult {
 		return $this->replay_or_reconcile( $record );
+	}
+
+	/**
+	 * Safely retries only a stored write failure with the original validated identity.
+	 */
+	public function retry( OperationRecord $record, int $site_id, int $user_id ): OperationResult {
+		$request = $record->request();
+		if ( self::OPERATION_TYPE !== $record->operation_type() || ! $record->can_retry() || null === $request ) {
+			throw new ApiException( 'ypw_retry_not_allowed', __( 'This operation is not marked safe for manual retry.', 'yaxii-product-workspace' ), 409 );
+		}
+		$existing = $this->products->find_by_operation( $record->operation_id() );
+		if ( null !== $existing ) {
+			return $this->persist_or_mark_uncertain( OperationResult::succeeded( $record->operation_id(), $existing, true ) );
+		}
+
+		$command = $this->request_factory->from_complete_array( $request );
+		$this->assert_command_allowed( $command );
+		$field_errors = $this->products->validate( $command );
+		if ( array() !== $field_errors ) {
+			return $this->persist_validation_failure( $record->operation_id(), $field_errors );
+		}
+		$this->assert_media_allowed( $command );
+		if ( ! $this->operations->claim_retry( $record->operation_id(), $site_id, $user_id ) ) {
+			throw new ApiException( 'ypw_retry_conflict', __( 'This operation is already being reconciled or retried.', 'yaxii-product-workspace' ), 409 );
+		}
+		return $this->write_product( $command, $record->operation_id() );
 	}
 
 	private function assert_command_allowed( CreateProductCommand $command ): void {
@@ -127,6 +152,26 @@ final class CreateProductService {
 				403,
 				array( 'status' => array( __( 'Choose Draft or ask an administrator for publishing access.', 'yaxii-product-workspace' ) ) )
 			);
+		}
+
+		if ( ! $this->capabilities->can_assign_product_terms() ) {
+			throw new ApiException(
+				'ypw_term_assignment_forbidden',
+				__( 'You are not allowed to assign product terms.', 'yaxii-product-workspace' ),
+				403
+			);
+		}
+	}
+
+	private function assert_media_allowed( CreateProductCommand $command ): void {
+		foreach ( $command->image_ids() as $image_id ) {
+			if ( ! $this->capabilities->can_use_media( $image_id ) ) {
+				throw new ApiException(
+					'ypw_media_forbidden',
+					__( 'You are not allowed to use one or more selected images.', 'yaxii-product-workspace' ),
+					403
+				);
+			}
 		}
 	}
 
@@ -169,6 +214,21 @@ final class CreateProductService {
 
 			return $this->persist_or_mark_uncertain( $result );
 		}
+	}
+
+	/** @param array<string, array<string>> $field_errors Validation errors. */
+	private function persist_validation_failure( string $operation_id, array $field_errors ): OperationResult {
+		return $this->persist_or_mark_uncertain(
+			OperationResult::failed(
+				$operation_id,
+				new OperationFailure(
+					$this->validation_code( $field_errors ),
+					__( 'WooCommerce rejected one or more product references.', 'yaxii-product-workspace' ),
+					$field_errors,
+					422
+				)
+			)
+		);
 	}
 
 	private function persist_or_mark_uncertain( OperationResult $result ): OperationResult {

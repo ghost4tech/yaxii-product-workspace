@@ -41,3 +41,12 @@
 #yaxii-product-workspace p {
   margin: 0;
 }
+
+#yaxii-product-workspace #yaxii-product-workspace-app h1,
+#yaxii-product-workspace #yaxii-product-workspace-app h2,
+#yaxii-product-workspace #yaxii-product-workspace-app h3,
+#yaxii-product-workspace #yaxii-product-workspace-portals h1,
+#yaxii-product-workspace #yaxii-product-workspace-portals h2,
+#yaxii-product-workspace #yaxii-product-workspace-portals h3 {
+  color: inherit;
+}

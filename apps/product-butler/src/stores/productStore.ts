@@ -1,22 +1,13 @@
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
-import { Product, Category, ProductFormData, emptyProductFormData, AppSettings, defaultAppSettings } from '@/types/product';
+import { Category, ProductFormData, emptyProductFormData } from '@/types/product';
+import { createDraftStorage, sanitizeDraft } from '@/production/infrastructure/draftStorage';
 
 interface ProductStore {
-  products: Product[];
-  addProduct: (product: Product) => void;
-  upsertProduct: (product: Product) => void;
-  updateProduct: (id: string, updates: Partial<Product>) => void;
-  deleteProduct: (id: string) => void;
-  
   categories: Category[];
   setCategories: (categories: Category[]) => void;
   recentCategoryIds: number[];
   addRecentCategory: (categoryId: number) => void;
-  
-  appSettings: AppSettings;
-  setAppSettings: (settings: Partial<AppSettings>) => void;
-  resetAppSettings: () => void;
   
   draftFormData: ProductFormData;
   setDraftFormData: (data: ProductFormData) => void;
@@ -25,32 +16,11 @@ interface ProductStore {
   draftRevision: number;
   applyDraft: (data: ProductFormData) => void;
   
-  getProductsAddedToday: () => number;
-  getProductsAddedThisWeek: () => number;
-  
-  lastDeletedProduct: Product | null;
-  setLastDeletedProduct: (product: Product | null) => void;
 }
 
 export const useProductStore = create<ProductStore>()(
   persist(
-    (set, get) => ({
-      products: [],
-      addProduct: (product) => set((state) => ({ 
-        products: [product, ...state.products] 
-      })),
-      upsertProduct: (product) => set((state) => ({
-        products: [product, ...state.products.filter((item) => item.id !== product.id)],
-      })),
-      updateProduct: (id, updates) => set((state) => ({
-        products: state.products.map((p) => 
-          p.id === id ? { ...p, ...updates } : p
-        ),
-      })),
-      deleteProduct: (id) => set((state) => ({
-        products: state.products.filter((p) => p.id !== id),
-      })),
-      
+    (set) => ({
       categories: [],
       setCategories: (categories) => set({ categories }),
       recentCategoryIds: [],
@@ -58,12 +28,6 @@ export const useProductStore = create<ProductStore>()(
         const filtered = state.recentCategoryIds.filter((id) => id !== categoryId);
         return { recentCategoryIds: [categoryId, ...filtered].slice(0, 5) };
       }),
-      
-      appSettings: defaultAppSettings,
-      setAppSettings: (settings) => set((state) => ({
-        appSettings: { ...state.appSettings, ...settings },
-      })),
-      resetAppSettings: () => set({ appSettings: defaultAppSettings }),
       
       draftFormData: emptyProductFormData,
       setDraftFormData: (data) => set({ draftFormData: data }),
@@ -76,28 +40,13 @@ export const useProductStore = create<ProductStore>()(
       applyDraft: (data) =>
         set((state) => ({ draftFormData: data, draftRevision: state.draftRevision + 1 })),
       
-      getProductsAddedToday: () => {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        return get().products.filter((p) => new Date(p.createdAt) >= today).length;
-      },
-      getProductsAddedThisWeek: () => {
-        const weekAgo = new Date();
-        weekAgo.setDate(weekAgo.getDate() - 7);
-        weekAgo.setHours(0, 0, 0, 0);
-        return get().products.filter((p) => new Date(p.createdAt) >= weekAgo).length;
-      },
-      
-      lastDeletedProduct: null,
-      setLastDeletedProduct: (product) => set({ lastDeletedProduct: product }),
     }),
     {
-      name: 'ypw.product-draft.v1',
-      storage: createJSONStorage(() => sessionStorage),
-      version: 1,
+      name: 'ypw.product-draft.v2',
+      storage: createJSONStorage(() => createDraftStorage(sessionStorage)),
+      version: 2,
       partialize: (state) => ({
-        appSettings: state.appSettings,
-        draftFormData: { ...state.draftFormData, images: [] },
+        draftFormData: sanitizeDraft(state.draftFormData),
       }),
     }
   )

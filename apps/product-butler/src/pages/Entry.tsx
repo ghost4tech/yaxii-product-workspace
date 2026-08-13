@@ -1,44 +1,52 @@
+import { X } from "lucide-react";
 import { useCallback, useState } from "react";
 import { ProductEntryForm } from "@/components/ProductEntryForm";
 import { ProductQueue } from "@/components/ProductQueue";
 import { QueueSheet } from "@/components/entry/QueueSheet";
 import { WorkspaceToolbar } from "@/components/entry/WorkspaceToolbar";
+import { ProductFinder } from "@/components/products/ProductFinder";
 import { StatsBar } from "@/components/StatsBar";
+import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
+import { useOperationSummary } from "@/production/features/operations/useOperationSummary";
+import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
+import type { CanonicalProduct } from "@/production/domain/products";
 import { usePrefsStore } from "@/stores/prefsStore";
-import { useProductStore } from "@/stores/productStore";
+import type { Product } from "@/types/product";
 
 const Entry = () => {
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [queueSheet, setQueueSheet] = useState(false);
-  const {
-    addProduct,
-    lastDeletedProduct,
-    products,
-    setLastDeletedProduct,
-  } = useProductStore();
+  const [finderOpen, setFinderOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState<CanonicalProduct | null>(null);
   const prefs = usePrefsStore((state) => state.prefs);
+  const operationCounts = useOperationSummary();
   const { toast } = useToast();
+  const { client } = useWorkspaceRuntime();
 
-  const handleUndo = useCallback(() => {
-    if (!lastDeletedProduct) {
-      return;
-    }
-    addProduct(lastDeletedProduct);
-    setLastDeletedProduct(null);
-    toast({ title: "Product restored", description: lastDeletedProduct.name });
-  }, [addProduct, lastDeletedProduct, setLastDeletedProduct, toast]);
-
-  const unavailableAction = useCallback(
-    () => {
-      toast({
-        title: "Server operation unavailable",
-        description: "Editing and retry arrive with the Phase 2 WooCommerce write layer.",
-        variant: "destructive",
-      });
+  const openQueueProduct = useCallback(
+    async (product: Product) => {
+      if (!product.wooCommerceId) {
+        toast({
+          title: "Product is not available",
+          description: "This operation does not have a WooCommerce product result to open.",
+          variant: "destructive",
+        });
+        return;
+      }
+      try {
+        setEditingProduct(await client.getProduct(product.wooCommerceId));
+        setQueueSheet(false);
+      } catch (error) {
+        toast({
+          title: "Product could not be opened",
+          description: error instanceof Error ? error.message : "WooCommerce did not return the product.",
+          variant: "destructive",
+        });
+      }
     },
-    [toast],
+    [client, toast],
   );
 
   const focus = prefs.focusMode;
@@ -49,10 +57,11 @@ const Entry = () => {
       <WorkspaceToolbar
         advancedOpen={advancedOpen}
         onAdvancedToggle={() => setAdvancedOpen((value) => !value)}
-        canUndo={Boolean(lastDeletedProduct)}
-        onUndo={handleUndo}
+        canUndo={false}
+        onUndo={() => undefined}
         onOpenQueue={() => setQueueSheet(true)}
-        queueCount={products.length}
+        onOpenProducts={() => setFinderOpen(true)}
+        queueCount={operationCounts.all}
       />
 
       {!focus && <StatsBar />}
@@ -66,17 +75,24 @@ const Entry = () => {
         >
           <div className="panel-head">
             <div className="flex min-w-0 items-center gap-2">
-              <h2 className="truncate text-[14px] font-semibold">Add new product</h2>
-              <span className="label-eyebrow">Draft</span>
+              <h2 className="truncate text-[14px] font-semibold">
+                {editingProduct ? `Edit ${editingProduct.name}` : "Add new product"}
+              </h2>
+              <span className="label-eyebrow">{editingProduct?.status ?? "Draft"}</span>
             </div>
-            <span className="hidden text-[11px] text-muted-foreground sm:inline">
+            {editingProduct && <Button type="button" size="sm" variant="ghost" onClick={() => setEditingProduct(null)}
+              className="h-7 text-xs"><X className="me-1 h-3.5 w-3.5" />Close edit</Button>}
+            {!editingProduct && <span className="hidden text-[11px] text-muted-foreground sm:inline">
               {prefs.density === "compact" ? "Compact" : "Comfortable"}
-            </span>
+            </span>}
           </div>
           <div className="panel-body">
             <ProductEntryForm
               advancedOpen={advancedOpen}
               onAdvancedChange={setAdvancedOpen}
+              onCloseEdit={() => setEditingProduct(null)}
+              onProductUpdated={setEditingProduct}
+              product={editingProduct}
               twoColumn={advancedOpen}
             />
           </div>
@@ -89,13 +105,13 @@ const Entry = () => {
               prefs.stickyQueue && "lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start",
             )}
           >
-            <ProductQueue compact onEdit={unavailableAction} onRetry={unavailableAction} />
+            <ProductQueue compact onEdit={(product) => void openQueueProduct(product)} />
           </section>
         )}
 
         {!showQueueColumn && (
           <section className="lg:col-span-12">
-            <ProductQueue onEdit={unavailableAction} onRetry={unavailableAction} />
+            <ProductQueue onEdit={(product) => void openQueueProduct(product)} />
           </section>
         )}
       </div>
@@ -103,9 +119,10 @@ const Entry = () => {
       <QueueSheet
         open={queueSheet}
         onOpenChange={setQueueSheet}
-        onEdit={unavailableAction}
-        onRetry={unavailableAction}
+        onEdit={(product) => void openQueueProduct(product)}
       />
+      <ProductFinder open={finderOpen} onOpenChange={setFinderOpen}
+        onOpenProduct={setEditingProduct} onDraftPrepared={() => setEditingProduct(null)} />
     </div>
   );
 };

@@ -10,25 +10,43 @@ namespace Yaxii\ProductWorkspace\Application\Products;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Converts an untrusted REST body into an allowlisted command.
+ * Converts an untrusted REST body into a complete allowlisted product command.
  */
 final class CreateProductRequestFactory {
+	// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- ApiException values are serialized by the REST error boundary.
 	private const ALLOWED_FIELDS = array(
 		'name',
-		'sku',
+		'slug',
+		'description',
+		'short_description',
+		'status',
+		'catalog_visibility',
 		'regular_price',
 		'sale_price',
+		'date_on_sale_from',
+		'date_on_sale_to',
+		'sku',
 		'manage_stock',
 		'stock_quantity',
 		'stock_status',
-		'status',
-		'catalog_visibility',
+		'backorders',
+		'sold_individually',
+		'weight',
+		'length',
+		'width',
+		'height',
+		'shipping_class_id',
 		'tax_status',
-		'description',
-		'short_description',
+		'tax_class',
 		'category_ids',
+		'tag_ids',
 		'image_ids',
 	);
+	private ProductFieldParser $fields;
+
+	public function __construct( ProductFieldParser $fields ) {
+		$this->fields = $fields;
+	}
 
 	/**
 	 * @param array<string, mixed> $payload Untrusted request data.
@@ -36,228 +54,133 @@ final class CreateProductRequestFactory {
 	 */
 	public function from_array( array $payload ): CreateProductCommand {
 		$errors = new ValidationErrors();
-		$this->validate_types( $payload, $errors );
-		$unknown_fields = array_diff( array_keys( $payload ), self::ALLOWED_FIELDS );
-		if ( array() !== $unknown_fields ) {
-			$errors->add( '_request', __( 'The request contains unsupported fields.', 'yaxii-product-workspace' ) );
+		$this->reject_unknown_fields( $payload, $errors );
+		$this->validate_field_types( $payload, $errors );
+
+		$fields = $this->normalized_fields( $payload, $errors );
+		$this->validate_relationships( $fields, $errors );
+		$this->throw_if_invalid( $errors );
+
+		return new CreateProductCommand( $fields );
+	}
+
+	/**
+	 * @param array<string, mixed> $payload Complete update payload.
+	 * @throws ApiException When any field is omitted.
+	 */
+	public function from_complete_array( array $payload ): CreateProductCommand {
+		if ( array() !== array_diff( self::ALLOWED_FIELDS, array_keys( $payload ) ) ) {
+			throw new ApiException(
+				'ypw_incomplete_product',
+				__( 'Every product field must be present; send an empty value to clear a field.', 'yaxii-product-workspace' ),
+				400,
+				array( '_request' => array( __( 'Reload the product before saving this update.', 'yaxii-product-workspace' ) ) )
+			);
 		}
+		return $this->from_array( $payload );
+	}
 
-		$name          = sanitize_text_field( $this->string_value( $payload, 'name' ) );
-		$sku           = sanitize_text_field( $this->string_value( $payload, 'sku' ) );
-		$regular_price = $this->decimal_value( $payload, 'regular_price', true, $errors );
-		$sale_price    = $this->decimal_value( $payload, 'sale_price', false, $errors );
+	/**
+	 * @param array<string, mixed> $payload Request data.
+	 * @return array<string, mixed>
+	 */
+	private function normalized_fields( array $payload, ValidationErrors $errors ): array {
+		$name = sanitize_text_field( $this->fields->text( $payload, 'name' ) );
+		$sku  = sanitize_text_field( $this->fields->text( $payload, 'sku' ) );
+		$this->validate_text_lengths( $name, $sku, $errors );
 
+		$manage_stock = true === ( $payload['manage_stock'] ?? false );
+		return array(
+			'name'               => $name,
+			'slug'               => sanitize_title( $this->fields->text( $payload, 'slug' ) ),
+			'description'        => wp_kses_post( $this->fields->text( $payload, 'description' ) ),
+			'short_description'  => wp_kses_post( $this->fields->text( $payload, 'short_description' ) ),
+			'status'             => $this->fields->enum( $payload, 'status', array( 'draft', 'publish', 'pending' ), 'draft', $errors ),
+			'catalog_visibility' => $this->fields->enum( $payload, 'catalog_visibility', array( 'visible', 'catalog', 'search', 'hidden' ), 'visible', $errors ),
+			'regular_price'      => (string) $this->fields->decimal( $payload, 'regular_price', true, $errors ),
+			'sale_price'         => $this->fields->decimal( $payload, 'sale_price', false, $errors ),
+			'date_on_sale_from'  => $this->fields->date( $payload, 'date_on_sale_from', $errors ),
+			'date_on_sale_to'    => $this->fields->date( $payload, 'date_on_sale_to', $errors ),
+			'sku'                => $sku,
+			'manage_stock'       => $manage_stock,
+			'stock_quantity'     => $this->fields->stock_quantity( $payload, $manage_stock, $errors ),
+			'stock_status'       => $this->fields->enum( $payload, 'stock_status', array( 'instock', 'outofstock', 'onbackorder' ), 'instock', $errors ),
+			'backorders'         => $this->fields->enum( $payload, 'backorders', array( 'no', 'notify', 'yes' ), 'no', $errors ),
+			'sold_individually'  => true === ( $payload['sold_individually'] ?? false ),
+			'weight'             => (string) ( $this->fields->decimal( $payload, 'weight', false, $errors ) ?? '' ),
+			'length'             => (string) ( $this->fields->decimal( $payload, 'length', false, $errors ) ?? '' ),
+			'width'              => (string) ( $this->fields->decimal( $payload, 'width', false, $errors ) ?? '' ),
+			'height'             => (string) ( $this->fields->decimal( $payload, 'height', false, $errors ) ?? '' ),
+			'shipping_class_id'  => $this->fields->optional_id( $payload, 'shipping_class_id', $errors ),
+			'tax_status'         => $this->fields->enum( $payload, 'tax_status', array( 'taxable', 'shipping', 'none' ), 'taxable', $errors ),
+			'tax_class'          => sanitize_title( $this->fields->text( $payload, 'tax_class' ) ),
+			'category_ids'       => $this->fields->id_list( $payload, 'category_ids', 20, true, $errors ),
+			'tag_ids'            => $this->fields->id_list( $payload, 'tag_ids', 20, false, $errors ),
+			'image_ids'          => $this->fields->id_list( $payload, 'image_ids', 10, false, $errors ),
+		);
+	}
+
+	private function validate_text_lengths( string $name, string $sku, ValidationErrors $errors ): void {
 		if ( '' === $name ) {
 			$errors->add( 'name', __( 'Product name is required.', 'yaxii-product-workspace' ) );
 		} elseif ( 200 < mb_strlen( $name ) ) {
 			$errors->add( 'name', __( 'Product name must be 200 characters or fewer.', 'yaxii-product-workspace' ) );
 		}
-
 		if ( 100 < mb_strlen( $sku ) ) {
 			$errors->add( 'sku', __( 'SKU must be 100 characters or fewer.', 'yaxii-product-workspace' ) );
 		}
+	}
 
-		if ( null !== $regular_price && null !== $sale_price && $this->decimal_is_greater( $sale_price, $regular_price ) ) {
+	/**
+	 * @param array<string, mixed> $fields Normalized fields.
+	 */
+	private function validate_relationships( array $fields, ValidationErrors $errors ): void {
+		$sale    = $fields['sale_price'];
+		$regular = $fields['regular_price'];
+		if ( is_string( $sale ) && $this->fields->decimal_is_greater( $sale, (string) $regular ) ) {
 			$errors->add( 'sale_price', __( 'Sale price cannot exceed the regular price.', 'yaxii-product-workspace' ) );
 		}
-
-		$manage_stock   = isset( $payload['manage_stock'] ) && true === $payload['manage_stock'];
-		$stock_quantity = $this->stock_quantity( $payload, $manage_stock, $errors );
-		$stock_status   = $this->enum_value(
-			$payload['stock_status'] ?? 'instock',
-			'stock_status',
-			array( 'instock', 'outofstock', 'onbackorder' ),
-			$errors
-		);
-		$status         = $this->enum_value( $payload['status'] ?? 'draft', 'status', array( 'draft', 'publish' ), $errors );
-		$visibility     = $this->enum_value(
-			$payload['catalog_visibility'] ?? 'visible',
-			'catalog_visibility',
-			array( 'visible', 'catalog', 'search', 'hidden' ),
-			$errors
-		);
-		$tax_status     = $this->enum_value(
-			$payload['tax_status'] ?? 'taxable',
-			'tax_status',
-			array( 'taxable', 'shipping', 'none' ),
-			$errors
-		);
-
-		$category_ids = $this->id_list( $payload['category_ids'] ?? array(), 'category_ids', 10, $errors );
-		$image_ids    = $this->id_list( $payload['image_ids'] ?? array(), 'image_ids', 10, $errors );
-		if ( array() === $category_ids ) {
-			$errors->add( 'category_ids', __( 'Select at least one product category.', 'yaxii-product-workspace' ) );
+		$from = $fields['date_on_sale_from'];
+		$to   = $fields['date_on_sale_to'];
+		if ( is_string( $from ) && is_string( $to ) && $from > $to ) {
+			$errors->add( 'date_on_sale_to', __( 'Sale end date cannot be before the start date.', 'yaxii-product-workspace' ) );
 		}
-
-		if ( $errors->has_errors() ) {
-			// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- REST serialization handles structured API errors.
-			throw new ApiException(
-				'ypw_validation_failed',
-				__( 'Review the highlighted product fields.', 'yaxii-product-workspace' ),
-				400,
-				$errors->all()
-			);
-			// phpcs:enable WordPress.Security.EscapeOutput.ExceptionNotEscaped
-		}
-
-		return new CreateProductCommand(
-			array(
-				'name'               => $name,
-				'sku'                => $sku,
-				'regular_price'      => (string) $regular_price,
-				'sale_price'         => $sale_price,
-				'manage_stock'       => $manage_stock,
-				'stock_quantity'     => $stock_quantity,
-				'stock_status'       => $stock_status,
-				'status'             => $status,
-				'catalog_visibility' => $visibility,
-				'tax_status'         => $tax_status,
-				'description'        => wp_kses_post( $this->string_value( $payload, 'description' ) ),
-				'short_description'  => wp_kses_post( $this->string_value( $payload, 'short_description' ) ),
-				'category_ids'       => $category_ids,
-				'image_ids'          => $image_ids,
-			)
-		);
 	}
 
 	/**
 	 * @param array<string, mixed> $payload Request data.
 	 */
-	private function string_value( array $payload, string $key ): string {
-		return isset( $payload[ $key ] ) && is_string( $payload[ $key ] ) ? trim( $payload[ $key ] ) : '';
+	private function reject_unknown_fields( array $payload, ValidationErrors $errors ): void {
+		if ( array() !== array_diff( array_keys( $payload ), self::ALLOWED_FIELDS ) ) {
+			$errors->add( '_request', __( 'The request contains unsupported fields.', 'yaxii-product-workspace' ) );
+		}
 	}
 
 	/**
 	 * @param array<string, mixed> $payload Request data.
 	 */
-	private function validate_types( array $payload, ValidationErrors $errors ): void {
-		$string_fields = array(
-			'name',
-			'sku',
-			'regular_price',
-			'sale_price',
-			'stock_status',
-			'status',
-			'catalog_visibility',
-			'tax_status',
-			'description',
-			'short_description',
-		);
-
+	private function validate_field_types( array $payload, ValidationErrors $errors ): void {
+		$string_fields = array_diff( self::ALLOWED_FIELDS, array( 'manage_stock', 'sold_individually', 'stock_quantity', 'shipping_class_id', 'category_ids', 'tag_ids', 'image_ids' ) );
 		foreach ( $string_fields as $field ) {
-			$value = $payload[ $field ] ?? null;
-			if ( array_key_exists( $field, $payload ) && null !== $value && ! is_string( $value ) ) {
+			if ( array_key_exists( $field, $payload ) && null !== $payload[ $field ] && ! is_string( $payload[ $field ] ) ) {
 				$errors->add( $field, __( 'Expected a text value.', 'yaxii-product-workspace' ) );
 			}
 		}
-
-		if ( isset( $payload['manage_stock'] ) && ! is_bool( $payload['manage_stock'] ) ) {
-			$errors->add( 'manage_stock', __( 'Expected true or false.', 'yaxii-product-workspace' ) );
-		}
-	}
-
-	/**
-	 * @param array<string, mixed> $payload Request data.
-	 */
-	private function decimal_value( array $payload, string $key, bool $required, ValidationErrors $errors ): ?string {
-		$value = $this->string_value( $payload, $key );
-		if ( '' === $value ) {
-			if ( $required ) {
-				$errors->add( $key, __( 'A non-negative decimal value is required.', 'yaxii-product-workspace' ) );
+		foreach ( array( 'manage_stock', 'sold_individually' ) as $field ) {
+			if ( array_key_exists( $field, $payload ) && ! is_bool( $payload[ $field ] ) ) {
+				$errors->add( $field, __( 'Expected true or false.', 'yaxii-product-workspace' ) );
 			}
-			return null;
 		}
-
-		if ( 1 !== preg_match( '/^(?:0|[1-9]\d{0,11})(?:\.\d{1,6})?$/', $value ) ) {
-			$errors->add( $key, __( 'Enter a valid non-negative decimal value.', 'yaxii-product-workspace' ) );
-			return null;
-		}
-
-		return $value;
-	}
-
-	private function decimal_is_greater( string $left, string $right ): bool {
-		$left_parts  = array_pad( explode( '.', $left, 2 ), 2, '' );
-		$right_parts = array_pad( explode( '.', $right, 2 ), 2, '' );
-		$left_units  = ltrim( $left_parts[0], '0' ) . str_pad( $left_parts[1], 6, '0' );
-		$right_units = ltrim( $right_parts[0], '0' ) . str_pad( $right_parts[1], 6, '0' );
-		$left_units  = ltrim( $left_units, '0' );
-		$right_units = ltrim( $right_units, '0' );
-		$left_units  = '' === $left_units ? '0' : $left_units;
-		$right_units = '' === $right_units ? '0' : $right_units;
-
-		return strlen( $left_units ) > strlen( $right_units )
-			|| ( strlen( $left_units ) === strlen( $right_units ) && 0 < strcmp( $left_units, $right_units ) );
 	}
 
 	/**
-	 * @param array<string, mixed> $payload Request data.
+	 * @throws ApiException When validation failed.
 	 */
-	private function stock_quantity( array $payload, bool $manage_stock, ValidationErrors $errors ): ?int {
-		$value = $payload['stock_quantity'] ?? null;
-		if ( null === $value || '' === $value ) {
-			if ( $manage_stock ) {
-				$errors->add( 'stock_quantity', __( 'Stock quantity is required when stock management is enabled.', 'yaxii-product-workspace' ) );
-			}
-			return null;
+	private function throw_if_invalid( ValidationErrors $errors ): void {
+		if ( ! $errors->has_errors() ) {
+			return;
 		}
-
-		if ( ! is_int( $value ) || 0 > $value ) {
-			$errors->add( 'stock_quantity', __( 'Stock quantity must be a non-negative whole number.', 'yaxii-product-workspace' ) );
-			return null;
-		}
-
-		return $value;
+		throw new ApiException( 'ypw_validation_failed', __( 'Review the highlighted product fields.', 'yaxii-product-workspace' ), 400, $errors->all() );
 	}
-
-	/**
-	 * @param mixed         $value   Untrusted value.
-	 * @param array<string> $allowed Allowed values.
-	 */
-	private function enum_value(
-		$value,
-		string $key,
-		array $allowed,
-		ValidationErrors $errors
-	): string {
-		if ( ! is_string( $value ) || ! in_array( $value, $allowed, true ) ) {
-			$errors->add( $key, __( 'Choose a supported value.', 'yaxii-product-workspace' ) );
-			return $allowed[0];
-		}
-
-		return $value;
-	}
-
-	/**
-	 * @param mixed $value Untrusted value.
-	 * @return array<int>
-	 */
-	private function id_list(
-		$value,
-		string $key,
-		int $limit,
-		ValidationErrors $errors
-	): array {
-		if ( ! is_array( $value ) ) {
-			$errors->add( $key, __( 'Expected a list of numeric IDs.', 'yaxii-product-workspace' ) );
-			return array();
-		}
-
-		$ids = array_values( array_unique( array_filter( $value, 'is_int' ) ) );
-		if ( count( $ids ) !== count( $value ) || array_filter( $ids, static fn ( int $id ): bool => 0 >= $id ) ) {
-			$errors->add( $key, __( 'Every referenced ID must be a positive integer.', 'yaxii-product-workspace' ) );
-		}
-		if ( $limit < count( $ids ) ) {
-			$errors->add(
-				$key,
-				sprintf(
-				/* translators: %d: maximum number of referenced items. */
-					__( 'No more than %d items are allowed.', 'yaxii-product-workspace' ),
-					$limit
-				)
-			);
-		}
-
-		return array_slice( $ids, 0, $limit );
-	}
+	// phpcs:enable WordPress.Security.EscapeOutput.ExceptionNotEscaped
 }

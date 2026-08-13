@@ -1,6 +1,7 @@
 import { LayoutGrid, Package, Search, SlidersHorizontal } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
 import { usePrefsStore } from "@/stores/prefsStore";
 
 const TABS = [
@@ -13,6 +14,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const setCommandOpen = usePrefsStore((state) => state.setCommandOpen);
   const showHints = usePrefsStore((state) => state.prefs.showKeyboardHints);
   const focusMode = usePrefsStore((state) => state.prefs.focusMode);
+  const { bootstrap } = useWorkspaceRuntime();
 
   return (
     <div className="min-h-screen bg-background">
@@ -41,8 +43,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               {showHints && <kbd className="kbd ms-6">Ctrl K</kbd>}
             </button>
             <div className="hidden h-8 items-center gap-1.5 rounded-md border border-border px-2.5 text-[11px] font-medium text-muted-foreground lg:flex">
-              <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" />
-              Offline
+              <span className="h-1.5 w-1.5 rounded-full bg-success" />
+              Connected · {bootstrap.woocommerce.currency}
             </div>
           </div>
         </div>

@@ -42,6 +42,7 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
   const [loadError, setLoadError] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState('');
   const loadSequence = useRef(0);
+  const activeRequest = useRef<AbortController | null>(null);
   const { categories, recentCategoryIds, addRecentCategory, setCategories } = useProductStore();
   const { bootstrap, client } = useWorkspaceRuntime();
   const copy = productOperationCopy(bootstrap.locale);
@@ -49,14 +50,18 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
   const loadCategories = useCallback(async (search: string) => {
     if (!bootstrap.features.categoryLookup) return;
     const sequence = ++loadSequence.current;
+    activeRequest.current?.abort();
+    const controller = new AbortController();
+    activeRequest.current = controller;
     setLoading(true);
     setLoadError(false);
     try {
-      const page = await client.searchCategories(search);
+      const page = await client.searchCategories(search, controller.signal);
       if (sequence !== loadSequence.current) return;
       setCategories(page.items);
-    } catch {
+    } catch (error) {
       if (sequence !== loadSequence.current) return;
+      if (error instanceof DOMException && error.name === 'AbortError') return;
       setCategories([]);
       setLoadError(true);
     } finally {
@@ -73,6 +78,7 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
     const timer = window.setTimeout(() => void loadCategories(query), 250);
     return () => {
       window.clearTimeout(timer);
+      activeRequest.current?.abort();
     };
   }, [loadCategories, open, query]);
 
@@ -112,7 +118,7 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
             aria-expanded={open}
             className="w-full justify-between h-10 font-normal"
           >
-            {selectedLabel || 'Select category...'}
+            {selectedLabel || (value ? `Category #${value}` : 'Select category...')}
             <ChevronsUpDown className="ms-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>

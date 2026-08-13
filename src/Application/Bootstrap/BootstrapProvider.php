@@ -43,10 +43,15 @@ final class BootstrapProvider {
 				'woocommerce'  => $this->woocommerce_data( $woo_available ),
 				'features'     => array(
 					'simple_product_create'   => $woo_available,
+					'simple_product_manage'   => $woo_available,
 					'variable_product_create' => false,
 					'category_lookup'         => $woo_available,
+					'tag_lookup'              => $woo_available,
+					'shipping_class_lookup'   => $woo_available,
 					'media_selection'         => $this->capabilities->can_upload_media(),
 					'operation_lookup'        => $woo_available,
+					'operation_queue'         => $woo_available,
+					'preferences'             => $woo_available,
 				),
 				'limits'       => array(
 					'category_page_size'     => 20,
@@ -72,13 +77,20 @@ final class BootstrapProvider {
 			'available'          => true,
 			'version'            => (string) WC_VERSION,
 			'currency'           => get_woocommerce_currency(),
-			'currency_symbol'    => get_woocommerce_currency_symbol(),
+			'currency_symbol'    => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES | ENT_HTML5, 'UTF-8' ),
 			'price_decimals'     => wc_get_price_decimals(),
 			'decimal_separator'  => wc_get_price_decimal_separator(),
 			'thousand_separator' => wc_get_price_thousand_separator(),
 			'price_format'       => get_woocommerce_price_format(),
 			'weight_unit'        => get_option( 'woocommerce_weight_unit', 'kg' ),
 			'dimension_unit'     => get_option( 'woocommerce_dimension_unit', 'cm' ),
+			'tax_classes'        => array_map(
+				static fn ( $tax_class ): array => array(
+					'name' => (string) $tax_class->name,
+					'slug' => (string) $tax_class->slug,
+				),
+				\WC_Tax::get_tax_rate_classes()
+			),
 		);
 	}
 }

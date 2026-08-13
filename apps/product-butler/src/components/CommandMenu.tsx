@@ -12,9 +12,11 @@ import {
 } from "@/components/ui/command";
 import { clearDraft, duplicateLastProduct, saveDraft } from "@/lib/entryActions";
 import { usePrefsStore } from "@/stores/prefsStore";
+import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
 
 export function CommandMenu() {
   const navigate = useNavigate();
+  const { client } = useWorkspaceRuntime();
   const {
     commandOpen,
     prefs,
@@ -39,7 +41,7 @@ export function CommandMenu() {
             <Save className="me-2 h-4 w-4" /> Save draft
             <CommandShortcut>Ctrl S</CommandShortcut>
           </CommandItem>
-          <CommandItem onSelect={() => run(duplicateLastProduct)}>
+          <CommandItem onSelect={() => run(() => void duplicateLastProduct(client))}>
             <Copy className="me-2 h-4 w-4" /> Duplicate last product
             <CommandShortcut>Ctrl D</CommandShortcut>
           </CommandItem>

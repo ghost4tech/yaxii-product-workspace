@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Circle, Loader2, RotateCcw, Save } from 'lucide-react';
+import { ArrowRight, Circle, Loader2, RotateCcw, Save, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { usePrefsStore } from '@/stores/prefsStore';
 import { cn } from '@/lib/utils';
@@ -7,12 +7,15 @@ import { cn } from '@/lib/utils';
 interface Props {
   disabled?: boolean;
   disabledReason?: string;
+  clearLabel?: string;
   isSubmitting?: boolean;
   /** Draft has unsaved content */
   dirty: boolean;
   productName?: string;
   onClear: () => void;
   onSaveDraft?: () => void;
+  onTrash?: () => void;
+  submitLabel?: string;
   className?: string;
 }
 
@@ -20,11 +23,14 @@ interface Props {
 export const EntryActionBar: React.FC<Props> = ({
   disabled = false,
   disabledReason,
+  clearLabel = 'Clear',
   isSubmitting,
   dirty,
   productName,
   onClear,
   onSaveDraft,
+  onTrash,
+  submitLabel = 'Save & next',
   className,
 }) => {
   const showHints = usePrefsStore((s) => s.prefs.showKeyboardHints);
@@ -52,7 +58,7 @@ export const EntryActionBar: React.FC<Props> = ({
             {dirty ? `Unsaved draft${productName ? ` · ${productName}` : ''}` : 'No changes'}
           </span>
         </span>
-        <div className="hidden lg:flex items-center gap-1.5 ms-auto">
+        {onSaveDraft && <div className="hidden lg:flex items-center gap-1.5 ms-auto">
           <Button
             type="button"
             variant="ghost"
@@ -63,10 +69,16 @@ export const EntryActionBar: React.FC<Props> = ({
             Save draft
             {showHints && <span className="kbd ms-1.5">Ctrl S</span>}
           </Button>
-        </div>
+        </div>}
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
+        {onTrash && (
+          <Button type="button" variant="ghost" onClick={onTrash}
+            className="ctl px-3 text-[13px] text-destructive hover:text-destructive">
+            <Trash2 className="me-1.5 h-3.5 w-3.5" /> Trash
+          </Button>
+        )}
         <Button
           type="button"
           variant="ghost"
@@ -74,7 +86,7 @@ export const EntryActionBar: React.FC<Props> = ({
           className="ctl px-3 text-[13px] text-muted-foreground hover:text-foreground"
           title="Clear the form (Esc)"
         >
-          <RotateCcw className="h-3.5 w-3.5 me-1.5" /> Clear
+          <RotateCcw className="h-3.5 w-3.5 me-1.5" /> {clearLabel}
         </Button>
         <Button
           type="submit"
@@ -87,7 +99,7 @@ export const EntryActionBar: React.FC<Props> = ({
           ) : (
             <Save className="h-4 w-4 me-2" />
           )}
-          {isSubmitting ? 'Saving…' : 'Save & next'}
+          {isSubmitting ? 'Saving…' : submitLabel}
           {showHints && !isSubmitting && (
             <span className="kbd ms-2 bg-primary-foreground/15 text-primary-foreground/80 border-primary-foreground/25">
               Ctrl ⏎

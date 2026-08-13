@@ -11,126 +11,133 @@ namespace Yaxii\ProductWorkspace\Application\Products;
  * Immutable allowlisted values accepted by the application service.
  */
 final class CreateProductCommand {
-	private string $name;
-	private string $sku;
-	private string $regular_price;
-	private ?string $sale_price;
-	private bool $manage_stock;
-	private ?int $stock_quantity;
-	private string $stock_status;
-	private string $status;
-	private string $catalog_visibility;
-	private string $tax_status;
-	private string $description;
-	private string $short_description;
-
-	/** @var array<int> */
-	private array $category_ids;
-
-	/** @var array<int> */
-	private array $image_ids;
+	/** @var array<string, mixed> */
+	private array $fields;
 
 	/**
-	 * @param array{name: string, sku: string, regular_price: string, sale_price: string|null, manage_stock: bool, stock_quantity: int|null, stock_status: string, status: string, catalog_visibility: string, tax_status: string, description: string, short_description: string, category_ids: array<int>, image_ids: array<int>} $values Validated values.
+	 * @param array<string, mixed> $values Validated allowlisted values.
 	 */
 	public function __construct( array $values ) {
-		$this->name               = $values['name'];
-		$this->sku                = $values['sku'];
-		$this->regular_price      = $values['regular_price'];
-		$this->sale_price         = $values['sale_price'];
-		$this->manage_stock       = $values['manage_stock'];
-		$this->stock_quantity     = $values['stock_quantity'];
-		$this->stock_status       = $values['stock_status'];
-		$this->status             = $values['status'];
-		$this->catalog_visibility = $values['catalog_visibility'];
-		$this->tax_status         = $values['tax_status'];
-		$this->description        = $values['description'];
-		$this->short_description  = $values['short_description'];
-		$this->category_ids       = $values['category_ids'];
-		$this->image_ids          = $values['image_ids'];
+		$this->fields = $values;
 	}
 
 	public function name(): string {
-		return $this->name;
+		return (string) $this->fields['name'];
+	}
+
+	public function slug(): string {
+		return (string) $this->fields['slug'];
 	}
 
 	public function sku(): string {
-		return $this->sku;
+		return (string) $this->fields['sku'];
 	}
 
 	public function regular_price(): string {
-		return $this->regular_price;
+		return (string) $this->fields['regular_price'];
 	}
 
 	public function sale_price(): ?string {
-		return $this->sale_price;
+		return is_string( $this->fields['sale_price'] ) ? $this->fields['sale_price'] : null;
+	}
+
+	public function date_on_sale_from(): ?string {
+		return is_string( $this->fields['date_on_sale_from'] ) ? $this->fields['date_on_sale_from'] : null;
+	}
+
+	public function date_on_sale_to(): ?string {
+		return is_string( $this->fields['date_on_sale_to'] ) ? $this->fields['date_on_sale_to'] : null;
 	}
 
 	public function manage_stock(): bool {
-		return $this->manage_stock;
+		return true === $this->fields['manage_stock'];
 	}
 
 	public function stock_quantity(): ?int {
-		return $this->stock_quantity;
+		return is_int( $this->fields['stock_quantity'] ) ? $this->fields['stock_quantity'] : null;
 	}
 
 	public function stock_status(): string {
-		return $this->stock_status;
+		return (string) $this->fields['stock_status'];
+	}
+
+	public function backorders(): string {
+		return (string) $this->fields['backorders'];
+	}
+
+	public function sold_individually(): bool {
+		return true === $this->fields['sold_individually'];
 	}
 
 	public function status(): string {
-		return $this->status;
+		return (string) $this->fields['status'];
 	}
 
 	public function catalog_visibility(): string {
-		return $this->catalog_visibility;
+		return (string) $this->fields['catalog_visibility'];
 	}
 
 	public function tax_status(): string {
-		return $this->tax_status;
+		return (string) $this->fields['tax_status'];
+	}
+
+	public function tax_class(): string {
+		return (string) $this->fields['tax_class'];
 	}
 
 	public function description(): string {
-		return $this->description;
+		return (string) $this->fields['description'];
 	}
 
 	public function short_description(): string {
-		return $this->short_description;
+		return (string) $this->fields['short_description'];
+	}
+
+	public function weight(): string {
+		return (string) $this->fields['weight'];
+	}
+
+	public function length(): string {
+		return (string) $this->fields['length'];
+	}
+
+	public function width(): string {
+		return (string) $this->fields['width'];
+	}
+
+	public function height(): string {
+		return (string) $this->fields['height'];
+	}
+
+	public function shipping_class_id(): int {
+		return (int) $this->fields['shipping_class_id'];
 	}
 
 	/**
 	 * @return array<int>
 	 */
 	public function category_ids(): array {
-		return $this->category_ids;
+		return $this->fields['category_ids'];
+	}
+
+	/**
+	 * @return array<int>
+	 */
+	public function tag_ids(): array {
+		return $this->fields['tag_ids'];
 	}
 
 	/**
 	 * @return array<int>
 	 */
 	public function image_ids(): array {
-		return $this->image_ids;
+		return $this->fields['image_ids'];
 	}
 
 	/**
 	 * @return array<string, mixed>
 	 */
 	public function to_array(): array {
-		return array(
-			'name'               => $this->name,
-			'sku'                => $this->sku,
-			'regular_price'      => $this->regular_price,
-			'sale_price'         => $this->sale_price,
-			'manage_stock'       => $this->manage_stock,
-			'stock_quantity'     => $this->stock_quantity,
-			'stock_status'       => $this->stock_status,
-			'status'             => $this->status,
-			'catalog_visibility' => $this->catalog_visibility,
-			'tax_status'         => $this->tax_status,
-			'description'        => $this->description,
-			'short_description'  => $this->short_description,
-			'category_ids'       => $this->category_ids,
-			'image_ids'          => $this->image_ids,
-		);
+		return $this->fields;
 	}
 }
