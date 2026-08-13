@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
  * Maps validated fields to and from WooCommerce CRUD objects.
  */
 final class WooProductMapper {
-	public function apply( \WC_Product_Simple $product, CreateProductCommand $command ): void {
+	public function apply( \WC_Product $product, CreateProductCommand $command ): void {
 		$product->set_name( $command->name() );
 		$product->set_slug( $command->slug() );
 		$product->set_description( $command->description() );
@@ -145,7 +145,7 @@ final class WooProductMapper {
 	/**
 	 * @param array<int> $image_ids Valid attachment IDs.
 	 */
-	private function assign_images( \WC_Product_Simple $product, array $image_ids ): void {
+	private function assign_images( \WC_Product $product, array $image_ids ): void {
 		$product->set_image_id( (int) ( $image_ids[0] ?? 0 ) );
 		$product->set_gallery_image_ids( array_slice( $image_ids, 1 ) );
 	}

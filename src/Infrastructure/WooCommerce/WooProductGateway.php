@@ -21,9 +21,11 @@ final class WooProductGateway implements ProductGateway {
 	private const OPERATION_META_KEY = '_ypw_operation_id';
 
 	private WooProductMapper $mapper;
+	private ?WooVariableProductMapper $variable_mapper;
 
-	public function __construct( WooProductMapper $mapper ) {
-		$this->mapper = $mapper;
+	public function __construct( WooProductMapper $mapper, ?WooVariableProductMapper $variable_mapper = null ) {
+		$this->mapper          = $mapper;
+		$this->variable_mapper = $variable_mapper;
 	}
 
 	public function is_available(): bool {
@@ -56,7 +58,10 @@ final class WooProductGateway implements ProductGateway {
 
 	public function get( int $product_id ): ?array {
 		$product = wc_get_product( $product_id );
-		return $product instanceof \WC_Product_Simple ? $this->mapper->resource( $product ) : null;
+		if ( $product instanceof \WC_Product_Simple ) {
+			return $this->mapper->resource( $product );
+		}
+		return $product instanceof \WC_Product_Variable && null !== $this->variable_mapper ? $this->variable_mapper->resource( $product ) : null;
 	}
 
 	public function query( ProductQuery $query ): array {
@@ -71,7 +76,7 @@ final class WooProductGateway implements ProductGateway {
 		$items = array();
 		foreach ( $ids as $product_id ) {
 			$product = wc_get_product( $product_id );
-			if ( $product instanceof \WC_Product_Simple && current_user_can( 'edit_post', $product_id ) ) {
+			if ( ( $product instanceof \WC_Product_Simple || $product instanceof \WC_Product_Variable ) && current_user_can( 'edit_post', $product_id ) ) {
 				$items[] = $this->mapper->resource( $product );
 			}
 		}
@@ -88,8 +93,8 @@ final class WooProductGateway implements ProductGateway {
 
 	public function update( int $product_id, CreateProductCommand $command ): array {
 		$product = wc_get_product( $product_id );
-		if ( ! $product instanceof \WC_Product_Simple ) {
-			throw new RuntimeException( 'The requested simple product is unavailable.' );
+		if ( ! $product instanceof \WC_Product_Simple && ! $product instanceof \WC_Product_Variable ) {
+			throw new RuntimeException( 'The requested product is unavailable.' );
 		}
 		$this->mapper->apply( $product, $command );
 		$product->save();
@@ -201,7 +206,7 @@ final class WooProductGateway implements ProductGateway {
 				array(
 					'taxonomy' => 'product_type',
 					'field'    => 'slug',
-					'terms'    => array( 'simple' ),
+					'terms'    => array( 'simple', 'variable' ),
 				),
 			),
 		);
@@ -213,7 +218,7 @@ final class WooProductGateway implements ProductGateway {
 		}
 		$sku_id  = wc_get_product_id_by_sku( $query->search() );
 		$product = $sku_id ? wc_get_product( $sku_id ) : false;
-		if ( ! $product instanceof \WC_Product_Simple || ! current_user_can( 'edit_post', $sku_id ) ) {
+		if ( ( ! $product instanceof \WC_Product_Simple && ! $product instanceof \WC_Product_Variable ) || ! current_user_can( 'edit_post', $sku_id ) ) {
 			return 0;
 		}
 		$status = $product->get_status();

@@ -1,6 +1,6 @@
 # Phase 4 Variable-Product Domain
 
-**Status:** Checkpoint A domain contract implemented; WooCommerce persistence and production UI are not yet connected
+**Status:** Checkpoints A-B implemented and runtime-tested; production UI integration remains pending
 
 ## Model boundary
 
@@ -33,9 +33,23 @@ The projected count is checked before rows are accepted. The validators reject d
 attributes, duplicate options, duplicate combination selections, incomplete selection sets,
 unknown attribute or option references, duplicate client identities, and unsupported fields.
 
+## WooCommerce and REST boundary
+
+The same-origin `/variable-products` route accepts the parent, complete attribute list, and every
+concrete combination in one request. PHP validates the complete plan before mutation, then uses
+`WC_Product_Variable`, `WC_Product_Attribute`, and `WC_Product_Variation` CRUD. The browser never
+orchestrates one request per variation and never receives WooCommerce credentials.
+
+Global attribute resources are bounded under `/attributes` and `/attributes/{id}/terms`. The
+server verifies each submitted attribute ID against its `pa_*` taxonomy and verifies every term
+inside that taxonomy. Custom attributes remain product-local.
+
+The adapter stores only two private recovery identities: the original operation ID on the parent
+and the stable client combination ID on each variation. WooCommerce-owned prices, stock, SKUs,
+images, statuses, attributes, and term relationships remain in WooCommerce CRUD storage.
+
 ## Current checkpoint boundary
 
-Checkpoint A provides pure PHP and TypeScript domain contracts and tests. It does not register a
-new REST route, expose variable products in production navigation, query WooCommerce attributes or
-terms, or persist `WC_Product_Variable` / `WC_Product_Variation` objects. Those platform and UI
-connections belong to Checkpoints B and C and must not be inferred from this document.
+Checkpoint B supports real create, hydrate, versioned update, idempotent replay, partial result,
+and safe reconciliation. The server-authoritative queue recognizes `partial` as actionable. The
+approved Lovable editor is not yet wired to these routes; that observable UI work is Checkpoint C.

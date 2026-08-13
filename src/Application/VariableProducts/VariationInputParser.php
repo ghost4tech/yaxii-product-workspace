@@ -8,11 +8,19 @@
 namespace Yaxii\ProductWorkspace\Application\VariableProducts;
 
 use Yaxii\ProductWorkspace\Application\Products\ApiException;
+use Yaxii\ProductWorkspace\Application\Products\ProductFieldParser;
+use Yaxii\ProductWorkspace\Application\Products\ValidationErrors;
 
 /**
  * Validates the identity and commercial fields of one concrete variation.
  */
 final class VariationInputParser {
+	private ProductFieldParser $fields;
+
+	public function __construct( ?ProductFieldParser $fields = null ) {
+		$this->fields = $fields ?? new ProductFieldParser();
+	}
+
 	/**
 	 * @param array<string, mixed> $combination Untrusted combination.
 	 * @return array{client_id: string, variation_id: int, fields: array<string, bool|int|string|null>}
@@ -46,17 +54,33 @@ final class VariationInputParser {
 		if ( 100 < mb_strlen( $sku ) ) {
 			$this->invalid( "combinations.$index.sku", __( 'Variation SKU must be 100 characters or fewer.', 'yaxii-product-workspace' ) );
 		}
+		$regular = $this->price( $regular, "combinations.$index.regular_price", $enabled );
+		$sale    = null === $sale ? null : $this->price( $sale, "combinations.$index.sale_price", false );
+		if ( null !== $sale && '' !== $sale && '' !== $regular && $this->fields->decimal_is_greater( $sale, $regular ) ) {
+			$this->invalid( "combinations.$index.sale_price", __( 'Sale price cannot exceed the regular price.', 'yaxii-product-workspace' ) );
+		}
 		$stock_quantity = $this->stock_quantity( $combination, $index, $manage_stock );
 		return array(
 			'enabled'        => $enabled,
-			'regular_price'  => trim( $regular ),
-			'sale_price'     => is_string( $sale ) ? trim( $sale ) : null,
+			'regular_price'  => $regular,
+			'sale_price'     => $sale,
 			'sku'            => sanitize_text_field( $sku ),
 			'manage_stock'   => $manage_stock,
 			'stock_quantity' => $stock_quantity,
 			'stock_status'   => $this->stock_status( $combination, $index ),
 			'image_id'       => $this->non_negative_int( $combination['image_id'] ?? 0, "combinations.$index.image_id" ),
 		);
+	}
+
+	private function price( string $value, string $field, bool $required ): string {
+		$errors     = new ValidationErrors();
+		$field_name = substr( $field, strrpos( $field, '.' ) + 1 );
+		$parsed     = $this->fields->decimal( array( $field_name => trim( $value ) ), $field_name, $required, $errors );
+		if ( $errors->has_errors() ) {
+			$message = $errors->all()[ $field_name ][0] ?? __( 'Enter a valid non-negative decimal value.', 'yaxii-product-workspace' );
+			$this->invalid( $field, $message );
+		}
+		return $parsed ?? '';
 	}
 
 	/** @param array<string, mixed> $combination */

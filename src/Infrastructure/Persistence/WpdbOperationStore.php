@@ -108,23 +108,18 @@ final class WpdbOperationStore implements OperationStore {
 	}
 
 	public function claim_retry( string $operation_id, int $site_id, int $user_id ): bool {
-		$updated = $this->database->update(
+		$sql     = $this->database->prepare(
+			'UPDATE %i SET state = %s, result_json = NULL, updated_at = %s WHERE operation_id = %s AND site_id = %d AND user_id = %d AND state IN (%s, %s) AND dismissed_at IS NULL',
 			$this->table_name,
-			array(
-				'state'       => 'processing',
-				'result_json' => null,
-				'updated_at'  => current_time( 'mysql', true ),
-			),
-			array(
-				'operation_id' => $operation_id,
-				'site_id'      => $site_id,
-				'user_id'      => $user_id,
-				'state'        => 'failed',
-				'dismissed_at' => null,
-			),
-			array( '%s', '%s', '%s' ),
-			array( '%s', '%d', '%d', '%s', '%s' )
+			'processing',
+			current_time( 'mysql', true ),
+			$operation_id,
+			$site_id,
+			$user_id,
+			'failed',
+			'partial'
 		);
+		$updated = $this->database->query( $sql );
 		return 1 === $updated;
 	}
 
