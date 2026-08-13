@@ -26,71 +26,60 @@ final class OperationResult {
 	private int $http_status;
 
 	/**
-	 * @param array<string, mixed>|null        $product  Canonical product summary.
-	 * @param array<int, string>               $warnings Non-blocking warnings.
-	 * @param array<int, array<string, mixed>> $errors   Structured errors.
+	 * @param array{operation_id: string, state: string, product: array<string, mixed>|null, warnings: array<int, string>, errors: array<int, array<string, mixed>>, replayed: bool, http_status: int} $values Resource values.
 	 */
-	public function __construct(
-		string $operation_id,
-		string $state,
-		?array $product,
-		array $warnings,
-		array $errors,
-		bool $replayed,
-		int $http_status
-	) {
-		$this->operation_id = $operation_id;
-		$this->state        = $state;
-		$this->product      = $product;
-		$this->warnings     = $warnings;
-		$this->errors       = $errors;
-		$this->replayed     = $replayed;
-		$this->http_status  = $http_status;
+	private function __construct( array $values ) {
+		$this->operation_id = $values['operation_id'];
+		$this->state        = $values['state'];
+		$this->product      = $values['product'];
+		$this->warnings     = $values['warnings'];
+		$this->errors       = $values['errors'];
+		$this->replayed     = $values['replayed'];
+		$this->http_status  = $values['http_status'];
 	}
 
 	/**
 	 * @param array<string, mixed> $product Canonical product summary.
 	 */
 	public static function succeeded( string $operation_id, array $product, bool $replayed = false ): self {
-		return new self( $operation_id, 'succeeded', $product, array(), array(), $replayed, $replayed ? 200 : 201 );
-	}
-
-	/**
-	 * @param array<string, array<string>> $fields Field-addressable messages.
-	 */
-	public static function failed(
-		string $operation_id,
-		string $code,
-		string $message,
-		array $fields,
-		int $http_status
-	): self {
 		return new self(
-			$operation_id,
-			'failed',
-			null,
-			array(),
 			array(
-				array(
-					'code'    => $code,
-					'message' => $message,
-					'fields'  => $fields,
-				),
-			),
-			false,
-			$http_status
+				'operation_id' => $operation_id,
+				'state'        => 'succeeded',
+				'product'      => $product,
+				'warnings'     => array(),
+				'errors'       => array(),
+				'replayed'     => $replayed,
+				'http_status'  => $replayed ? 200 : 201,
+			)
 		);
 	}
 
-	public static function processing( string $operation_id, bool $uncertain = false ): self {
+	public static function failed( string $operation_id, OperationFailure $failure ): self {
 		return new self(
-			$operation_id,
-			$uncertain ? 'uncertain' : 'processing',
-			null,
-			array(),
-			array(),
-			true,
-			202
+			array(
+				'operation_id' => $operation_id,
+				'state'        => 'failed',
+				'product'      => null,
+				'warnings'     => array(),
+				'errors'       => array( $failure->to_array() ),
+				'replayed'     => false,
+				'http_status'  => $failure->http_status(),
+			)
+		);
+	}
+
+	public static function processing( string $operation_id, bool $uncertain = false, bool $replayed = true ): self {
+		return new self(
+			array(
+				'operation_id' => $operation_id,
+				'state'        => $uncertain ? 'uncertain' : 'processing',
+				'product'      => null,
+				'warnings'     => array(),
+				'errors'       => array(),
+				'replayed'     => $replayed,
+				'http_status'  => 202,
+			)
 		);
 	}
 
@@ -104,13 +93,15 @@ final class OperationResult {
 		$status   = isset( $data['http_status'] ) ? (int) $data['http_status'] : 200;
 
 		return new self(
-			(string) ( $data['operation_id'] ?? '' ),
-			(string) ( $data['state'] ?? 'failed' ),
-			$product,
-			array_values( array_filter( $warnings, 'is_string' ) ),
-			array_values( array_filter( $errors, 'is_array' ) ),
-			$replayed,
-			( $data['state'] ?? null ) === 'succeeded' ? 200 : $status
+			array(
+				'operation_id' => (string) ( $data['operation_id'] ?? '' ),
+				'state'        => (string) ( $data['state'] ?? 'failed' ),
+				'product'      => $product,
+				'warnings'     => array_values( array_filter( $warnings, 'is_string' ) ),
+				'errors'       => array_values( array_filter( $errors, 'is_array' ) ),
+				'replayed'     => $replayed,
+				'http_status'  => ( $data['state'] ?? null ) === 'succeeded' ? 200 : $status,
+			)
 		);
 	}
 

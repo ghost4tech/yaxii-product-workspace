@@ -7,6 +7,7 @@
 
 namespace Yaxii\ProductWorkspace\Rest;
 
+use Throwable;
 use Yaxii\ProductWorkspace\Application\Access\CapabilityPolicy;
 use Yaxii\ProductWorkspace\Application\Products\ApiException;
 use Yaxii\ProductWorkspace\Application\Products\CreateProductRequestFactory;
@@ -95,6 +96,9 @@ final class ProductController extends \WP_REST_Controller {
 			return $response;
 		} catch ( ApiException $exception ) {
 			return ApiError::from_exception( $exception );
+		} catch ( Throwable $exception ) {
+			unset( $exception );
+			return ApiError::server_failure();
 		}
 	}
 

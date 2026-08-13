@@ -9,6 +9,7 @@ namespace Yaxii\ProductWorkspace\Infrastructure\Persistence;
 
 use RuntimeException;
 use Yaxii\ProductWorkspace\Application\Operations\OperationRecord;
+use Yaxii\ProductWorkspace\Application\Operations\OperationRequest;
 use Yaxii\ProductWorkspace\Application\Operations\OperationReservation;
 use Yaxii\ProductWorkspace\Application\Operations\OperationStore;
 
@@ -26,26 +27,20 @@ final class WpdbOperationStore implements OperationStore {
 		$this->table_name = $table_name;
 	}
 
-	public function reserve(
-		int $site_id,
-		int $user_id,
-		string $operation_type,
-		string $idempotency_key,
-		string $payload_hash
-	): OperationReservation {
+	public function reserve( OperationRequest $request ): OperationReservation {
 		$operation_id     = wp_generate_uuid4();
-		$idempotency_hash = hash_hmac( 'sha256', $idempotency_key, wp_salt( 'auth' ) );
+		$idempotency_hash = hash_hmac( 'sha256', $request->idempotency_key(), wp_salt( 'auth' ) );
 		$timestamp        = current_time( 'mysql', true );
 		$previous_errors  = $this->database->suppress_errors( true );
 		$inserted         = $this->database->insert(
 			$this->table_name,
 			array(
 				'operation_id'     => $operation_id,
-				'site_id'          => $site_id,
-				'user_id'          => $user_id,
-				'operation_type'   => $operation_type,
+				'site_id'          => $request->site_id(),
+				'user_id'          => $request->user_id(),
+				'operation_type'   => $request->operation_type(),
 				'idempotency_hash' => $idempotency_hash,
-				'payload_hash'     => $payload_hash,
+				'payload_hash'     => $request->payload_hash(),
 				'state'            => 'processing',
 				'created_at'       => $timestamp,
 				'updated_at'       => $timestamp,
@@ -55,11 +50,24 @@ final class WpdbOperationStore implements OperationStore {
 		$this->database->suppress_errors( $previous_errors );
 
 		if ( false !== $inserted ) {
-			$record = new OperationRecord( $operation_id, $payload_hash, 'processing', null, null );
+			$record = new OperationRecord(
+				array(
+					'operation_id' => $operation_id,
+					'payload_hash' => $request->payload_hash(),
+					'state'        => 'processing',
+					'product_id'   => null,
+					'result'       => null,
+				)
+			);
 			return new OperationReservation( $record, true, false );
 		}
 
-		$record = $this->find_by_key( $site_id, $user_id, $operation_type, $idempotency_hash );
+		$record = $this->find_by_key(
+			$request->site_id(),
+			$request->user_id(),
+			$request->operation_type(),
+			$idempotency_hash
+		);
 		if ( null === $record ) {
 			throw new RuntimeException( 'Unable to reserve the product operation.' );
 		}
@@ -67,14 +75,14 @@ final class WpdbOperationStore implements OperationStore {
 		return new OperationReservation(
 			$record,
 			false,
-			! hash_equals( $record->payload_hash(), $payload_hash )
+			! hash_equals( $record->payload_hash(), $request->payload_hash() )
 		);
 	}
 
 	public function find_for_user( string $operation_id, int $site_id, int $user_id ): ?OperationRecord {
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is generated from wpdb prefix.
 		$sql = $this->database->prepare(
-			"SELECT operation_id, payload_hash, state, product_id, result_json FROM {$this->table_name} WHERE operation_id = %s AND site_id = %d AND user_id = %d",
+			'SELECT operation_id, payload_hash, state, product_id, result_json FROM %i WHERE operation_id = %s AND site_id = %d AND user_id = %d',
+			$this->table_name,
 			$operation_id,
 			$site_id,
 			$user_id
@@ -118,9 +126,9 @@ final class WpdbOperationStore implements OperationStore {
 		string $operation_type,
 		string $idempotency_hash
 	): ?OperationRecord {
-		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Table name is generated from wpdb prefix.
 		$sql = $this->database->prepare(
-			"SELECT operation_id, payload_hash, state, product_id, result_json FROM {$this->table_name} WHERE site_id = %d AND user_id = %d AND operation_type = %s AND idempotency_hash = %s",
+			'SELECT operation_id, payload_hash, state, product_id, result_json FROM %i WHERE site_id = %d AND user_id = %d AND operation_type = %s AND idempotency_hash = %s',
+			$this->table_name,
 			$site_id,
 			$user_id,
 			$operation_type,
@@ -145,11 +153,13 @@ final class WpdbOperationStore implements OperationStore {
 		}
 
 		return new OperationRecord(
-			(string) $row['operation_id'],
-			(string) $row['payload_hash'],
-			(string) $row['state'],
-			isset( $row['product_id'] ) ? (int) $row['product_id'] : null,
-			$result
+			array(
+				'operation_id' => (string) $row['operation_id'],
+				'payload_hash' => (string) $row['payload_hash'],
+				'state'        => (string) $row['state'],
+				'product_id'   => isset( $row['product_id'] ) ? (int) $row['product_id'] : null,
+				'result'       => $result,
+			)
 		);
 	}
 }

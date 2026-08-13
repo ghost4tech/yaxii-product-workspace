@@ -5,6 +5,7 @@ import { Product, Category, ProductFormData, emptyProductFormData, AppSettings, 
 interface ProductStore {
   products: Product[];
   addProduct: (product: Product) => void;
+  upsertProduct: (product: Product) => void;
   updateProduct: (id: string, updates: Partial<Product>) => void;
   deleteProduct: (id: string) => void;
   
@@ -37,6 +38,9 @@ export const useProductStore = create<ProductStore>()(
       products: [],
       addProduct: (product) => set((state) => ({ 
         products: [product, ...state.products] 
+      })),
+      upsertProduct: (product) => set((state) => ({
+        products: [product, ...state.products.filter((item) => item.id !== product.id)],
       })),
       updateProduct: (id, updates) => set((state) => ({
         products: state.products.map((p) => 

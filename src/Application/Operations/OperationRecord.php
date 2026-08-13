@@ -20,20 +20,14 @@ final class OperationRecord {
 	private ?array $result;
 
 	/**
-	 * @param array<string, mixed>|null $result Canonical stored result.
+	 * @param array{operation_id: string, payload_hash: string, state: string, product_id: int|null, result: array<string, mixed>|null} $values Stored values.
 	 */
-	public function __construct(
-		string $operation_id,
-		string $payload_hash,
-		string $state,
-		?int $product_id,
-		?array $result
-	) {
-		$this->operation_id = $operation_id;
-		$this->payload_hash = $payload_hash;
-		$this->state        = $state;
-		$this->product_id   = $product_id;
-		$this->result       = $result;
+	public function __construct( array $values ) {
+		$this->operation_id = $values['operation_id'];
+		$this->payload_hash = $values['payload_hash'];
+		$this->state        = $values['state'];
+		$this->product_id   = $values['product_id'];
+		$this->result       = $values['result'];
 	}
 
 	public function operation_id(): string {

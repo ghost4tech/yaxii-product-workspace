@@ -47,7 +47,7 @@ function WorkspaceBoundary({ client, scope }: WorkspaceAppProps) {
   }
 
   return (
-    <WorkspaceRuntimeProvider scope={scope}>
+    <WorkspaceRuntimeProvider bootstrap={query.data.bootstrap} client={client} scope={scope}>
       <PortalProvider container={portalRoot}>
         <App />
       </PortalProvider>

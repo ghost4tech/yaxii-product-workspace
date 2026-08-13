@@ -55,6 +55,18 @@ final class WooProductGateway implements ProductGateway {
 
 	public function create( CreateProductCommand $command, string $operation_id ): array {
 		$product = new \WC_Product_Simple();
+		$this->configure_product( $product, $command );
+		$product->update_meta_data( self::OPERATION_META_KEY, $operation_id );
+
+		$product_id = $product->save();
+		if ( 0 >= $product_id ) {
+			throw new RuntimeException( 'WooCommerce did not return a product ID.' );
+		}
+
+		return $this->summary( $product );
+	}
+
+	private function configure_product( \WC_Product_Simple $product, CreateProductCommand $command ): void {
 		$product->set_name( $command->name() );
 		$product->set_status( $command->status() );
 		$product->set_regular_price( $command->regular_price() );
@@ -74,19 +86,17 @@ final class WooProductGateway implements ProductGateway {
 			$product->set_stock_quantity( $command->stock_quantity() );
 		}
 
-		$image_ids = $command->image_ids();
+		$this->assign_images( $product, $command->image_ids() );
+	}
+
+	/**
+	 * @param array<int> $image_ids Valid image attachment IDs.
+	 */
+	private function assign_images( \WC_Product_Simple $product, array $image_ids ): void {
 		if ( array() !== $image_ids ) {
 			$product->set_image_id( (int) array_shift( $image_ids ) );
 			$product->set_gallery_image_ids( $image_ids );
 		}
-
-		$product->update_meta_data( self::OPERATION_META_KEY, $operation_id );
-		$product_id = $product->save();
-		if ( 0 >= $product_id ) {
-			throw new RuntimeException( 'WooCommerce did not return a product ID.' );
-		}
-
-		return $this->summary( $product );
 	}
 
 	public function find_by_operation( string $operation_id ): ?array {

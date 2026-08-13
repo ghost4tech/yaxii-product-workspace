@@ -1,59 +1,66 @@
 # Execution State
 
-**Updated:** 2026-08-12
+**Updated:** 2026-08-13
 
-**Current phase:** Phase 1 accepted; closeout complete
+**Current phase:** Phase 2 implementation complete; Phase 3 not started
 
-**Acceptance state:** ACCEPTED — owner-verified on the active LocalWP production page
+**Acceptance state:** OWNER ACCEPTANCE PENDING — authenticated Lovable UI runtime parity remains a
+HOLD
 
 ## Canonical repository
 
 - Repository: `https://github.com/ghost4tech/yaxii-product-workspace.git`
-- Recovery branch: `recovery/phase-01-lovable-ui`
-- Owner-accepted implementation: `3e6550e10dba1000476f30f9812945f68f6b4a6b`
-- Recovery base: Phase 0 commit `5f54942dc37a916ec518bd1a2326d801dcc22b81`
-- Rejected branch: `phase/01-production-frontend-boundary` (not merged)
-- Package manager: npm
-- Authoritative lockfile: `apps/product-butler/package-lock.json`
-- Preserved non-canonical lockfile: `apps/product-butler/bun.lockb`
+- Accepted starting `main`: `13dde2b33c5fb43d5e3ac609235c17d018353e4e`
+- Phase 2 branch: `phase/02-simple-product-vertical-slice`
+- Checkpoint A: `8476d4b8d46e93a49e9d7892b4d987542f3c36b4`
+- Checkpoint B: `35cbba21ba09902a9e19ba75cb2a2b99e294cfbe`
+- Package managers: Composer for PHP and npm for the frontend
+- Frontend lockfile: `apps/product-butler/package-lock.json`
 
-## Implemented recovery state
+The branch is not merged to `main`. Owner edits in `AGENTS.md` and `CLAUDE.md` remain preserved and
+outside the Phase 2 commits.
 
-- The production entrypoint mounts the actual Phase 0 Lovable application rather than a parallel
-  presentation layer.
-- Entry, Focus Mode, queue, Settings, command menu, shortcuts, forms, dialogs, theme, density, and
-  responsive component source come from the approved Lovable tree.
-- Deferred Lovable screens and actions remain in source but are excluded from Free production
-  routing and the active bundle.
-- React uses a same-site WordPress bootstrap through an application-client/repository boundary.
-- Product writes remain unavailable; the Phase 1 UI stores only a bounded browser draft and
-  preferences.
-- CSS, theme attributes, direction, and overlay portals are scoped to the plugin root.
-- The thin PHP host guards WooCommerce availability and loads built assets only on the plugin page.
+## Implemented Phase 2 state
+
+- Composer PSR-4, a small composition root, PHPCS/WPCS, PHPStan, PHPUnit, and current-site
+  WordPress/WooCommerce integration tests form the PHP foundation.
+- Same-origin REST resources expose a bounded bootstrap, product categories, simple-product create,
+  and per-user operation reconciliation.
+- `CreateProductService` enforces capabilities and durable idempotency before WooCommerce CRUD.
+- `WC_Product_Simple` persists the supported name, prices, SKU, stock, category, descriptions,
+  existing image attachment IDs, visibility, tax status, and Draft/Publish intent.
+- Same key plus same normalized payload returns or reconciles one result; conflicting key reuse is
+  rejected.
+- The approved Lovable form now drives the production create flow. Success and queue state come from
+  the server; failures retain the draft, and uncertain outcomes retain their idempotency identity.
+- Bounded category search and the current WordPress media library replace prototype catalog and
+  credential paths.
+- Variable products, sale schedules, pending review, and queue edit/retry/delete remain outside this
+  vertical slice and are truthfully unavailable.
 
 ## Evidence state
 
-Passing automated evidence and exact commands are documented in
-[Development Tooling](../development/TOOLING.md). The source comparison, intentional differences,
-and parity gate are documented in [Phase 1 Recovery](PHASE-1-RECOVERY.md).
+- `composer run check`: Composer validation, PHP lint, PHPCS, PHPStan, and 8 unit tests with 25
+  assertions pass.
+- `composer run test:integration`: 14 tests with 92 assertions pass against the active LocalWP site.
+- `npm ci`, `npm run check`, and `npm run audit:production`: 25 frontend tests pass, all 78 maintained
+  production files are at most 300 lines, the production build/boundary scan passes, and the
+  production dependency audit reports zero vulnerabilities.
+- LocalWP runtime REST dispatch created and inspected disposable Draft and Published products,
+  verified their canonical saved values, proved idempotent replay returned one product, rejected
+  conflicting key reuse with HTTP 409, and removed the fixtures.
+- A WooCommerce-inactive runtime check reported the dependency unavailable and produced zero product
+  writes; WooCommerce was then restored.
+- An unauthenticated HTTP bootstrap request returned HTTP 401.
 
-The current automated suite covers the real Lovable Entry surface, hidden deferred navigation,
-truthful empty queue, disabled store write, draft entry, Focus Mode, queue sheet, Settings,
-light/dark preference behavior, density, plugin-owned dialog portals, host validation, localized
-unavailable states, and RTL root attributes.
+The local PHP runtime emits a pre-existing missing `php_imagick.dll` startup warning; it did not
+change command exit status or the passing results above.
 
-An isolated WordPress Playground smoke test verified activation, the admin mount, built asset
-responses, the WooCommerce-inactive state, and absence of plugin assets on Dashboard.
+## Acceptance HOLD
 
-## Acceptance
+The in-app browser service reported that no browser backend was available. Authenticated desktop,
+tablet, 430 px, 375 px, light/dark, Focus Mode, and structural RTL checks therefore were not run and
+are not inferred from source, component tests, build output, or REST evidence.
 
-The automated desktop, laptop, tablet, 430 px, and 375 px visual comparison could not run because
-the in-app browser service reported that no browser backend was available. That automated matrix is
-still recorded as not run rather than being inferred from source, build, or component evidence.
-
-On 2026-08-12, the owner manually verified the refreshed production page on the active LocalWP site,
-confirmed that the restored Lovable application was visible and the rejected replacement was no
-longer served, and visually accepted the recovery. This owner verification closes the remaining
-Phase 1 parity gate.
-
-Phase 2 has not started. No Phase 2 branch was created during closeout.
+Phase 2 stops here for owner review. Do not merge to `main` or begin Phase 3 until the owner accepts
+the Lovable UI/runtime parity and the Phase 2 branch.

@@ -8,6 +8,7 @@
 namespace Yaxii\ProductWorkspace\Tests\Support;
 
 use Yaxii\ProductWorkspace\Application\Operations\OperationRecord;
+use Yaxii\ProductWorkspace\Application\Operations\OperationRequest;
 use Yaxii\ProductWorkspace\Application\Operations\OperationReservation;
 use Yaxii\ProductWorkspace\Application\Operations\OperationStore;
 
@@ -24,22 +25,27 @@ final class FakeOperationStore implements OperationStore {
 	public int $reserve_calls  = 0;
 	public bool $fail_complete = false;
 
-	public function reserve(
-		int $site_id,
-		int $user_id,
-		string $operation_type,
-		string $idempotency_key,
-		string $payload_hash
-	): OperationReservation {
+	public function reserve( OperationRequest $request ): OperationReservation {
 		++$this->reserve_calls;
-		$key = implode( ':', array( $site_id, $user_id, $operation_type, $idempotency_key ) );
+		$key = implode(
+			':',
+			array( $request->site_id(), $request->user_id(), $request->operation_type(), $request->idempotency_key() )
+		);
 		if ( isset( $this->records_by_key[ $key ] ) ) {
 			$record = $this->records_by_key[ $key ];
-			return new OperationReservation( $record, false, $record->payload_hash() !== $payload_hash );
+			return new OperationReservation( $record, false, $record->payload_hash() !== $request->payload_hash() );
 		}
 
 		$operation_id                             = '00000000-0000-4000-8000-' . str_pad( (string) count( $this->records_by_key ), 12, '0', STR_PAD_LEFT );
-		$record                                   = new OperationRecord( $operation_id, $payload_hash, 'processing', null, null );
+		$record                                   = new OperationRecord(
+			array(
+				'operation_id' => $operation_id,
+				'payload_hash' => $request->payload_hash(),
+				'state'        => 'processing',
+				'product_id'   => null,
+				'result'       => null,
+			)
+		);
 		$this->records_by_key[ $key ]             = $record;
 		$this->keys_by_operation[ $operation_id ] = $key;
 
@@ -60,11 +66,13 @@ final class FakeOperationStore implements OperationStore {
 		$key                          = $this->keys_by_operation[ $operation_id ];
 		$record                       = $this->records_by_key[ $key ];
 		$this->records_by_key[ $key ] = new OperationRecord(
-			$operation_id,
-			$record->payload_hash(),
-			$state,
-			$product_id,
-			$result
+			array(
+				'operation_id' => $operation_id,
+				'payload_hash' => $record->payload_hash(),
+				'state'        => $state,
+				'product_id'   => $product_id,
+				'result'       => $result,
+			)
 		);
 	}
 }

@@ -31,6 +31,14 @@ final class ApiError {
 		);
 	}
 
+	public static function server_failure(): \WP_Error {
+		return new \WP_Error(
+			'ypw_server_error',
+			__( 'The product operation could not be completed.', 'yaxii-product-workspace' ),
+			array( 'status' => 500 )
+		);
+	}
+
 	public static function from_exception( ApiException $exception ): \WP_Error {
 		$data = array( 'status' => $exception->status() );
 		if ( array() !== $exception->fields() ) {

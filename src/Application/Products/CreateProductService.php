@@ -10,6 +10,7 @@ namespace Yaxii\ProductWorkspace\Application\Products;
 use Throwable;
 use Yaxii\ProductWorkspace\Application\Access\CapabilityPolicy;
 use Yaxii\ProductWorkspace\Application\Operations\OperationRecord;
+use Yaxii\ProductWorkspace\Application\Operations\OperationRequest;
 use Yaxii\ProductWorkspace\Application\Operations\OperationStore;
 
 /**
@@ -53,11 +54,15 @@ final class CreateProductService {
 		}
 
 		$reservation = $this->operations->reserve(
-			$site_id,
-			$user_id,
-			self::OPERATION_TYPE,
-			$idempotency_key,
-			hash( 'sha256', $payload_json )
+			new OperationRequest(
+				array(
+					'site_id'         => $site_id,
+					'user_id'         => $user_id,
+					'operation_type'  => self::OPERATION_TYPE,
+					'idempotency_key' => $idempotency_key,
+					'payload_hash'    => hash( 'sha256', $payload_json ),
+				)
+			)
 		);
 
 		if ( $reservation->is_conflict() ) {
@@ -77,10 +82,12 @@ final class CreateProductService {
 		if ( array() !== $field_errors ) {
 			$result = OperationResult::failed(
 				$record->operation_id(),
-				$this->validation_code( $field_errors ),
-				__( 'WooCommerce rejected one or more product references.', 'yaxii-product-workspace' ),
-				$field_errors,
-				422
+				new OperationFailure(
+					$this->validation_code( $field_errors ),
+					__( 'WooCommerce rejected one or more product references.', 'yaxii-product-workspace' ),
+					$field_errors,
+					422
+				)
 			);
 
 			return $this->persist_or_mark_uncertain( $result );
@@ -152,10 +159,12 @@ final class CreateProductService {
 
 			$result = OperationResult::failed(
 				$operation_id,
-				'ypw_product_write_failed',
-				__( 'WooCommerce could not save the product.', 'yaxii-product-workspace' ),
-				array(),
-				500
+				new OperationFailure(
+					'ypw_product_write_failed',
+					__( 'WooCommerce could not save the product.', 'yaxii-product-workspace' ),
+					array(),
+					500
+				)
 			);
 
 			return $this->persist_or_mark_uncertain( $result );
@@ -175,7 +184,7 @@ final class CreateProductService {
 			return $result;
 		} catch ( Throwable $exception ) {
 			unset( $exception );
-			return OperationResult::processing( $result->operation_id(), true );
+			return OperationResult::processing( $result->operation_id(), true, false );
 		}
 	}
 

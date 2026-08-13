@@ -31,39 +31,23 @@ final class CreateProductCommand {
 	private array $image_ids;
 
 	/**
-	 * @param array<int> $category_ids Valid product-category term IDs.
-	 * @param array<int> $image_ids    Valid attachment IDs.
+	 * @param array{name: string, sku: string, regular_price: string, sale_price: string|null, manage_stock: bool, stock_quantity: int|null, stock_status: string, status: string, catalog_visibility: string, tax_status: string, description: string, short_description: string, category_ids: array<int>, image_ids: array<int>} $values Validated values.
 	 */
-	public function __construct(
-		string $name,
-		string $sku,
-		string $regular_price,
-		?string $sale_price,
-		bool $manage_stock,
-		?int $stock_quantity,
-		string $stock_status,
-		string $status,
-		string $catalog_visibility,
-		string $tax_status,
-		string $description,
-		string $short_description,
-		array $category_ids,
-		array $image_ids
-	) {
-		$this->name               = $name;
-		$this->sku                = $sku;
-		$this->regular_price      = $regular_price;
-		$this->sale_price         = $sale_price;
-		$this->manage_stock       = $manage_stock;
-		$this->stock_quantity     = $stock_quantity;
-		$this->stock_status       = $stock_status;
-		$this->status             = $status;
-		$this->catalog_visibility = $catalog_visibility;
-		$this->tax_status         = $tax_status;
-		$this->description        = $description;
-		$this->short_description  = $short_description;
-		$this->category_ids       = $category_ids;
-		$this->image_ids          = $image_ids;
+	public function __construct( array $values ) {
+		$this->name               = $values['name'];
+		$this->sku                = $values['sku'];
+		$this->regular_price      = $values['regular_price'];
+		$this->sale_price         = $values['sale_price'];
+		$this->manage_stock       = $values['manage_stock'];
+		$this->stock_quantity     = $values['stock_quantity'];
+		$this->stock_status       = $values['stock_status'];
+		$this->status             = $values['status'];
+		$this->catalog_visibility = $values['catalog_visibility'];
+		$this->tax_status         = $values['tax_status'];
+		$this->description        = $values['description'];
+		$this->short_description  = $values['short_description'];
+		$this->category_ids       = $values['category_ids'];
+		$this->image_ids          = $values['image_ids'];
 	}
 
 	public function name(): string {

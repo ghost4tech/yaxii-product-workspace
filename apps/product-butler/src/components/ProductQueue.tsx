@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
+import { productOperationCopy } from "@/production/core/i18n/productMessages";
 import { usePrefsStore } from "@/stores/prefsStore";
 import { useProductStore } from "@/stores/productStore";
 import type { Product } from "@/types/product";
@@ -37,6 +39,8 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
   const [visible, setVisible] = useState<number | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Product | null>(null);
   const { deleteProduct, products, setLastDeletedProduct } = useProductStore();
+  const { bootstrap } = useWorkspaceRuntime();
+  const productCopy = productOperationCopy(bootstrap.locale);
   const prefs = usePrefsStore((state) => state.prefs);
   const pageSize = visible ?? prefs.queueRowsPerPage;
 
@@ -151,7 +155,7 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
             <h3 className="text-sm font-semibold">{products.length === 0 ? "Queue is empty" : "No matching products"}</h3>
             <p className="mt-1 max-w-[240px] text-xs leading-relaxed text-muted-foreground">
               {products.length === 0
-                ? "Server product operations will appear here when the Phase 2 write layer is available."
+                ? productCopy.savedProductsAppearHere
                 : "Adjust the search term or pick a different status."}
             </p>
           </div>

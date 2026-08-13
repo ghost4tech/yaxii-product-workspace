@@ -11,12 +11,28 @@ import { WorkspaceApp } from "./WorkspaceApp";
 const snapshot: WorkspaceSnapshot = {
   availability: { kind: "ready" },
   bootstrap: {
+    capabilities: { createProducts: true, publishProducts: true, uploadMedia: true },
     direction: "ltr",
     environment: "wordpress",
+    features: {
+      categoryLookup: true,
+      mediaSelection: true,
+      operationLookup: true,
+      simpleProductCreate: true,
+      variableProductCreate: false,
+    },
     frontendAvailable: true,
     isWooCommerceAvailable: true,
     locale: "en-US",
     pluginVersion: "test",
+    user: { displayName: "Admin", id: 1 },
+    woocommerce: {
+      currency: "USD",
+      currencySymbol: "$",
+      dimensionUnit: "cm",
+      version: "10.9.4",
+      weightUnit: "kg",
+    },
   },
 };
 
@@ -28,7 +44,12 @@ function renderWorkspace(value = snapshot) {
   portals.id = "yaxii-product-workspace-portals";
   scope.append(app, portals);
   document.body.append(scope);
-  const repository: WorkspaceRepository = { load: () => Promise.resolve(value) };
+  const repository: WorkspaceRepository = {
+    createProduct: () => Promise.reject(new Error("Not configured for this test.")),
+    getOperation: () => Promise.reject(new Error("Not configured for this test.")),
+    load: () => Promise.resolve(value),
+    searchCategories: () => Promise.resolve({ has_more: false, items: [], page: 1, per_page: 20 }),
+  };
   render(<WorkspaceApp client={new WorkspaceClient(repository)} scope={scope} />, { container: app });
   return { portals, scope };
 }
@@ -60,7 +81,7 @@ describe("WorkspaceApp", () => {
     expect(screen.queryByRole("button", { name: /connect store/i })).not.toBeInTheDocument();
     expect(screen.queryByText("0/50 this month")).not.toBeInTheDocument();
     expect(screen.getByText("Queue is empty")).toBeVisible();
-    expect(screen.getByRole("button", { name: /save & next/i })).toBeDisabled();
+    expect(screen.getByRole("button", { name: /save & next/i })).toBeEnabled();
   });
 
   it("keeps the current draft while entering and leaving Focus Mode", async () => {

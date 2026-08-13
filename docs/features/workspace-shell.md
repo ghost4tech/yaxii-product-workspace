@@ -1,13 +1,12 @@
 # Workspace Shell
 
-**Status:** Phase 1 accepted after owner verification on the active LocalWP production page
+**Status:** Phase 2 implementation complete; owner visual acceptance pending
 
 ## Purpose and workflow
 
-The production wp-admin screen presents the approved Lovable product-entry workspace. A user can
-fill simple or variable draft fields, add local image previews, open extended fields, save or clear
-the browser draft, inspect the truthful empty queue, enter Focus Mode, use the command/shortcut
-dialogs, and change appearance and workflow preferences.
+The production wp-admin screen presents the approved Lovable product-entry workspace. An authorized
+user can create a real simple WooCommerce product while retaining the approved Entry, Extended,
+Focus Mode, queue, responsive, theme, density, dialog, and keyboard experience.
 
 ## Observable behavior
 
@@ -16,38 +15,43 @@ dialogs, and change appearance and workflow preferences.
 - Settings retains the Lovable Appearance, Workspace, Entry & queue, and Product defaults panels.
 - Light/dark/system theme, comfortable/compact density, accents, reduced motion, and local
   preferences are scoped to this workspace.
-- Deferred Free/Pro navigation and actions are absent from production.
-- Product writes and retry/edit server operations are unavailable; the UI never reports them as
-  successful.
+- Deferred Free/Pro navigation and actions remain absent from production.
+- Simple-product Save & next uses a real server operation. Queue success comes only from the
+  canonical operation response.
+- Variable-product create and queue edit/retry/delete server operations remain unavailable and do
+  not report fake server success.
 
 ## Backend and persistence
 
-The WordPress page supplies a validated bootstrap snapshot through `WorkspaceClient` and a repository
-adapter. There is no Phase 1 product endpoint. Workspace preferences use versioned local storage;
-the current product draft and product-default preferences use versioned session storage. Browser
-files, products, categories, Woo credentials, licenses, and server operations are not persisted.
+The WordPress page supplies host configuration and the frontend loads the current bootstrap through
+`WorkspaceClient` and `WordPressWorkspaceRepository`. The same-origin repository creates products,
+reconciles operations, and loads bounded categories. Workspace preferences use versioned local
+storage; the current draft and product defaults use versioned session storage. The queue represents
+results for the current browser session and is not a browser catalog mirror.
 
 ## Security and capabilities
 
-The admin screen is capability-gated by WordPress. The production bundle has no Woo consumer-key
-form, direct `/wc/v3` client, or wildcard CORS guidance. The write control is unconditionally
-disabled because this phase has no product-write client or endpoint.
+The admin screen and every REST route are capability-gated by WordPress. Product writes also require
+cookie authentication, `X-WP-Nonce`, server validation, and a UUID idempotency key. Publish requires
+`publish_products`. The production bundle has no Woo consumer-key form, direct `/wc/v3` client, or
+wildcard CORS guidance.
 
 ## Error and recovery behavior
 
 Missing host configuration, missing frontend assets, and inactive WooCommerce render bounded
-unavailable states. Draft save/clear is local and truthful. Queue edit/retry paths cannot claim
-success before their server implementation exists.
+unavailable states. Failed product creates preserve the draft and show field/form errors. Unknown
+outcomes preserve both the draft and idempotency identity for reconciliation. Queue edit/retry paths
+remain bounded unavailable actions.
 
 ## Limitations
 
-No real product, media, category, variation, queue, edit, retry, or delete server operation ships in
-Phase 1. Complete UI translation and final Arabic visual polishing are later release work. Browser
-automation was unavailable; the owner manually verified and visually accepted the restored Lovable
-UI on the active LocalWP production page.
+Phase 2 creates only simple products. It does not persist variation data, sale schedules, pending
+review status, or local browser files. Media selection uses existing WordPress attachment IDs;
+category lookup is bounded. Complete UI translation and final Arabic visual polishing remain later
+work.
 
 ## Evidence
 
-Strict TypeScript, lint, the maintained line limit, component tests, build, boundary scan, production
-dependency audit, PHP lint, and isolated WordPress hosting checks cover this implementation. See
-[Phase 1 Recovery](../project/PHASE-1-RECOVERY.md) for the parity ledger and owner acceptance.
+See [Simple Product Create](simple-product-create.md), [Product Operation Results](operation-results.md),
+and [Development Tooling](../development/TOOLING.md). The Phase 1 parity acceptance remains recorded
+in [Phase 1 Recovery](../project/PHASE-1-RECOVERY.md); Phase 2 browser parity is still owner-pending.

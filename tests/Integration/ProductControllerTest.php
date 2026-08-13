@@ -148,11 +148,28 @@ final class ProductControllerTest extends TestCase {
 	}
 
 	public function test_malformed_payload_writes_nothing(): void {
-		$before   = $this->product_count();
-		$response = $this->create_request( array( 'name' => '' ) );
+		$payload                 = $this->payload( 'draft' );
+		$payload['sku']          = array( 'not-a-string' );
+		$payload['manage_stock'] = 'yes';
+		$before                  = $this->product_count();
+		$response                = $this->create_request( $payload );
 
 		self::assertSame( 400, $response->get_status() );
 		self::assertSame( 'ypw_validation_failed', $response->get_data()['code'] );
+		self::assertArrayHasKey( 'sku', $response->get_data()['data']['fields'] );
+		self::assertArrayHasKey( 'manage_stock', $response->get_data()['data']['fields'] );
+		self::assertSame( $before, $this->product_count() );
+	}
+
+	public function test_sale_price_above_regular_price_writes_nothing(): void {
+		$payload                  = $this->payload( 'draft' );
+		$payload['regular_price'] = '10.000000';
+		$payload['sale_price']    = '10.000001';
+		$before                   = $this->product_count();
+		$response                 = $this->create_request( $payload );
+
+		self::assertSame( 400, $response->get_status() );
+		self::assertArrayHasKey( 'sale_price', $response->get_data()['data']['fields'] );
 		self::assertSame( $before, $this->product_count() );
 	}
 

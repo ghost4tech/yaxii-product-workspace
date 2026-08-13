@@ -10,7 +10,9 @@ describe("parseHostConfig", () => {
         frontendAvailable: true,
         isWooCommerceAvailable: true,
         locale: "ar",
+        nonce: "nonce",
         pluginVersion: "0.1.0",
+        restUrl: "https://example.test/wp-json/yaxii-product-workspace/v1/",
       }),
     ).toEqual({
       direction: "rtl",
@@ -18,7 +20,9 @@ describe("parseHostConfig", () => {
       frontendAvailable: true,
       isWooCommerceAvailable: true,
       locale: "ar",
+      nonce: "nonce",
       pluginVersion: "0.1.0",
+      restUrl: "https://example.test/wp-json/yaxii-product-workspace/v1/",
     });
   });
 

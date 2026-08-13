@@ -91,6 +91,7 @@ final class CreateProductServiceTest extends TestCase {
 		$record                          = $this->operations->find_for_user( $uncertain->operation_id(), 1, 2 );
 
 		self::assertSame( 'uncertain', $uncertain->state() );
+		self::assertFalse( $uncertain->to_array()['replayed'] );
 		self::assertNotNull( $record );
 
 		$this->operations->fail_complete = false;
@@ -114,20 +115,22 @@ final class CreateProductServiceTest extends TestCase {
 
 	private function command( string $name = 'Product', string $status = 'draft' ): CreateProductCommand {
 		return new CreateProductCommand(
-			$name,
-			'SKU-1',
-			'10.00',
-			null,
-			false,
-			null,
-			'instock',
-			$status,
-			'visible',
-			'taxable',
-			'',
-			'',
-			array( 1 ),
-			array()
+			array(
+				'name'               => $name,
+				'sku'                => 'SKU-1',
+				'regular_price'      => '10.00',
+				'sale_price'         => null,
+				'manage_stock'       => false,
+				'stock_quantity'     => null,
+				'stock_status'       => 'instock',
+				'status'             => $status,
+				'catalog_visibility' => 'visible',
+				'tax_status'         => 'taxable',
+				'description'        => '',
+				'short_description'  => '',
+				'category_ids'       => array( 1 ),
+				'image_ids'          => array(),
+			)
 		);
 	}
 }

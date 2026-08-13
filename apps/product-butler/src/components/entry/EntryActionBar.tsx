@@ -5,6 +5,8 @@ import { usePrefsStore } from '@/stores/prefsStore';
 import { cn } from '@/lib/utils';
 
 interface Props {
+  disabled?: boolean;
+  disabledReason?: string;
   isSubmitting?: boolean;
   /** Draft has unsaved content */
   dirty: boolean;
@@ -16,6 +18,8 @@ interface Props {
 
 /** Signature action area for continuous product entry. */
 export const EntryActionBar: React.FC<Props> = ({
+  disabled = false,
+  disabledReason,
   isSubmitting,
   dirty,
   productName,
@@ -74,9 +78,9 @@ export const EntryActionBar: React.FC<Props> = ({
         </Button>
         <Button
           type="submit"
-          disabled
+          disabled={disabled || isSubmitting}
           className="ctl flex-1 sm:flex-none min-w-[190px] px-4 text-[13px] font-semibold group"
-          title="WooCommerce product writes begin in Phase 2"
+          title={disabledReason}
         >
           {isSubmitting ? (
             <Loader2 className="h-4 w-4 me-2 animate-spin" />

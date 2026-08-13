@@ -85,6 +85,29 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
     [processFiles]
   );
 
+  const openMediaLibrary = useCallback(() => {
+    if (!window.wp?.media) {
+      document.getElementById('image-upload-input')?.click();
+      return;
+    }
+
+    const frame = window.wp.media({
+      library: { type: 'image' },
+      multiple: true,
+    });
+    frame.on('select', () => {
+      const remainingSlots = maxImages - images.length;
+      const selected = frame.state().get('selection').toJSON().slice(0, remainingSlots);
+      const mediaImages: ProductImage[] = selected.map((attachment) => ({
+        id: `wp-${attachment.id}`,
+        preview: attachment.url,
+        wpMediaId: attachment.id,
+      }));
+      onChange([...images, ...mediaImages]);
+    });
+    frame.open();
+  }, [images, maxImages, onChange]);
+
   const removeImage = useCallback(
     (id: string) => {
       const image = images.find((img) => img.id === id);
@@ -132,7 +155,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         )}
         onClick={() => {
           if (images.length < maxImages) {
-            document.getElementById('image-upload-input')?.click();
+            openMediaLibrary();
           }
         }}
       >
@@ -187,13 +210,13 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
               
               {/* Overlay */}
               <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-colors">
-                <div className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-2 start-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   <GripVertical className="h-5 w-5 text-primary-foreground drop-shadow-md" />
                 </div>
                 <Button
                   variant="destructive"
                   size="icon"
-                  className="absolute top-2 right-2 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
+                  className="absolute top-2 end-2 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
                   onClick={(e) => {
                     e.stopPropagation();
                     removeImage(image.id);
@@ -205,7 +228,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
 
               {/* First image badge */}
               {index === 0 && (
-                <div className="absolute bottom-2 left-2 px-2 py-0.5 bg-primary text-primary-foreground text-xs rounded font-medium">
+                <div className="absolute bottom-2 start-2 px-2 py-0.5 bg-primary text-primary-foreground text-xs rounded font-medium">
                   Main
                 </div>
               )}
