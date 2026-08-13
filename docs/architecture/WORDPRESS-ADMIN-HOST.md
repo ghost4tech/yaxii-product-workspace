@@ -1,18 +1,23 @@
 # WordPress Admin Host
 
-**Status:** Implemented thin Phase 1 host
+**Status:** Extended for the Phase 2 same-site application boundary
 
-`yaxii-product-workspace.php` registers a small namespaced admin-page class. The host:
+`yaxii-product-workspace.php` loads the Composer autoloader and starts the explicit `Plugin::create()`
+composition root. The host:
 
 - adds a `Product Workspace` admin menu;
-- requires `manage_woocommerce` when WooCommerce is active and `manage_options` for the bounded
+- requires `edit_products` when WooCommerce is active and `manage_options` for the bounded
   dependency screen when it is not;
 - reads the generated Vite manifest;
 - enqueues the module and styles only on its own admin page;
 - creates separate application and overlay portal roots;
-- exposes direction, locale, plugin version, frontend availability, and WooCommerce availability;
+- exposes the REST base URL, WordPress REST nonce, direction, locale, plugin version, frontend
+  availability, and WooCommerce availability;
 - renders translated fallback copy when assets or WooCommerce are unavailable;
-- avoids loading WooCommerce classes or making WooCommerce calls.
+- registers the bootstrap, category, product-create, and operation-reconciliation routes;
+- manages the narrow idempotency-operation table on activation and schema-version changes;
+- wires thin controllers to application services and WordPress/WooCommerce adapters.
 
-There are no REST routes, product writes, direct metadata updates, database tables, activation side
-effects, or remote requests in this phase.
+Assets remain scoped to the plugin admin page. WooCommerce classes are checked before use, so an
+inactive or missing dependency remains a bounded non-fatal state. The browser receives no store
+credentials and the plugin makes no remote store request.

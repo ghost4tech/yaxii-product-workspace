@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { ProductImage, VariationOption } from "@/types/product";
+import { generateSecureUuidV4 } from "@/production/core/security/secureUuid";
 
 interface VariationOptionCardProps {
   option: VariationOption;
@@ -23,7 +24,7 @@ export function VariationOptionCard({
     if (!file) return;
 
     const image: ProductImage = {
-      id: crypto.randomUUID(),
+      id: generateSecureUuidV4(),
       file,
       preview: URL.createObjectURL(file),
     };

@@ -1,23 +1,21 @@
 # Frontend Production Boundary
 
-**Status:** Implemented and owner-accepted in Phase 1 recovery
+**Status:** Phase 2 data integration implemented; owner visual acceptance pending
 
 ## Presentation authority
 
-The approved Phase 0 Lovable tree under `apps/product-butler/src` is the presentation layer. The
-production entrypoint imports that application directly. There is no second workspace shell, form,
-queue, preferences screen, command menu, or visual token system for production.
+The approved Phase 0 Lovable tree under `apps/product-butler/src` remains the presentation layer.
+The production entrypoint imports that application directly. There is no second workspace shell,
+form, queue, preferences screen, command menu, or visual token system for production.
 
-The flow is:
+The Phase 2 flow is:
 
-`Lovable component → feature/controller hook → WorkspaceClient → WorkspaceRepository`
-
-Phase 1 uses the repository only for the host bootstrap. Phase 2, not this branch, owns REST,
-server-authoritative operations, and WooCommerce writes.
+`Lovable component -> useProductCreate -> WorkspaceClient -> WordPressWorkspaceRepository -> Yaxii REST`
 
 ## Host adapters
 
-- `WordPressWorkspaceRepository` consumes validated same-page bootstrap data.
+- `WordPressWorkspaceRepository` consumes validated host data, loads the server bootstrap, performs
+  same-origin product creates and operation reconciliation, and requests bounded category pages.
 - `DevelopmentWorkspaceRepository` supports the local Vite presentation with no mock products and
   no writes.
 - `UnavailableWorkspaceRepository` fails closed when a production host is missing.
@@ -48,13 +46,19 @@ action.
 Only the current form draft, local product-default preferences, and workspace preferences persist.
 The draft is versioned and bounded to `sessionStorage`; browser `File` objects are excluded. It
 contains no catalog or credentials. The production application never reads the legacy prototype
-credential/catalog stores.
+credential/catalog stores. An idempotency identity is retained only for an unresolved unchanged
+create payload and is cleared after a canonical success.
 
-## Deliberate Phase 1 limitations
+## Deliberate Phase 2 limitations
 
-- Save & next is visibly disabled because product writes do not exist yet.
-- Ctrl/Cmd+Enter validates and saves the browser draft; it does not create a product.
-- The queue and metrics show truthful empty/no-operation states.
-- Category data is empty until a later same-site server resource exists.
+- Save & next and Ctrl/Cmd+Enter create only supported simple products when the server capability and
+  feature flags allow it.
+- The queue and metrics derive new product states from server operation results; they do not infer
+  success from the request completing locally.
+- Category data comes from bounded same-origin search. Images must be existing WordPress media
+  attachment IDs selected through the native media library.
+- Variable creation, sale schedules, pending review, and queue edit/retry/delete server actions stay
+  disabled or truthfully unavailable.
 - Full interface translation is deferred; locale normalization, EN/FR/AR unavailable copy,
-  locale-aware formatters, direction, and RTL-safe root/portal infrastructure are present.
+  centralized operation copy, locale-aware formatters, direction, and RTL-safe root/portal
+  infrastructure are present.

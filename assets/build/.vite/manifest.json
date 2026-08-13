@@ -18,8 +18,8 @@
       "_react-vendor-9ctgm1MN.js"
     ]
   },
-  "_vendor-BPenz1a0.js": {
-    "file": "assets/vendor-BPenz1a0.js",
+  "_vendor-C8dv14xg.js": {
+    "file": "assets/vendor-C8dv14xg.js",
     "name": "vendor",
     "imports": [
       "_react-vendor-9ctgm1MN.js"
@@ -115,18 +115,18 @@
     "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2"
   },
   "src/main.tsx": {
-    "file": "assets/main-BPFPqtT2.js",
+    "file": "assets/main-dODYmQgr.js",
     "name": "main",
     "src": "src/main.tsx",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-CbXtAM7H.js",
-      "_vendor-BPenz1a0.js",
+      "_vendor-C8dv14xg.js",
       "_react-vendor-9ctgm1MN.js",
       "_ui-vendor-BsketZyv.js"
     ],
     "css": [
-      "assets/main-COFBIhMg.css"
+      "assets/main-D_OcTfGY.css"
     ]
   }
 }

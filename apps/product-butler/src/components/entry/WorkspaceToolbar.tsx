@@ -10,6 +10,8 @@ import {
   Undo2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
+import { productOperationCopy } from "@/production/core/i18n/productMessages";
 import { usePrefsStore } from "@/stores/prefsStore";
 
 interface Props {
@@ -31,6 +33,8 @@ export const WorkspaceToolbar: React.FC<Props> = ({
   queueCount,
 }) => {
   const { prefs, setPref } = usePrefsStore();
+  const { bootstrap } = useWorkspaceRuntime();
+  const productCopy = productOperationCopy(bootstrap.locale);
   const compact = prefs.density === "compact";
   const focus = prefs.focusMode;
 
@@ -40,7 +44,7 @@ export const WorkspaceToolbar: React.FC<Props> = ({
         <h1 className="text-[19px] font-semibold leading-tight tracking-tight sm:text-[21px]">
           Product entry
         </h1>
-        <p className="mt-1 text-[12px] text-muted-foreground">Browser draft · no store writes</p>
+        <p className="mt-1 text-[12px] text-muted-foreground">{productCopy.currentStore}</p>
       </div>
 
       {canUndo && (

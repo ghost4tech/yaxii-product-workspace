@@ -41,6 +41,7 @@ export interface Product {
   errorMessage?: string;
   createdAt: Date;
   createdBy: string;
+  currencySymbol?: string;
   wooCommerceId?: number;
   isVariable?: boolean;
 }

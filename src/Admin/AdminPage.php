@@ -5,10 +5,15 @@
  * @package YaxiiProductWorkspace
  */
 
-namespace Yaxii\ProductWorkspace;
+namespace Yaxii\ProductWorkspace\Admin;
+
+use Yaxii\ProductWorkspace\Application\Access\CapabilityPolicy;
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Mounts and scopes the approved Lovable application in wp-admin.
+ */
 final class AdminPage {
 	private const MENU_SLUG    = 'yaxii-product-workspace';
 	private const SCRIPT_NAME  = 'yaxii-product-workspace-app';
@@ -16,9 +21,11 @@ final class AdminPage {
 
 	private string $hook_suffix = '';
 	private string $plugin_file;
+	private CapabilityPolicy $capabilities;
 
-	public function __construct( string $plugin_file ) {
-		$this->plugin_file = $plugin_file;
+	public function __construct( string $plugin_file, CapabilityPolicy $capabilities ) {
+		$this->plugin_file  = $plugin_file;
+		$this->capabilities = $capabilities;
 	}
 
 	public function register(): void {
@@ -49,6 +56,7 @@ final class AdminPage {
 			return;
 		}
 
+		wp_enqueue_media();
 		$build_path = plugin_dir_path( $this->plugin_file ) . 'assets/build/';
 		$build_url  = plugin_dir_url( $this->plugin_file ) . 'assets/build/';
 		$this->enqueue_application_script( $entry['file'], $build_path, $build_url );
@@ -66,11 +74,14 @@ final class AdminPage {
 
 		wp_add_inline_script(
 			self::SCRIPT_NAME,
-			'window.yaxiiProductWorkspaceConfig = ' . wp_json_encode( $this->bootstrap_data() ) . ';',
+			'window.yaxiiProductWorkspaceConfig = ' . wp_json_encode( $this->host_data() ) . ';',
 			'before'
 		);
 	}
 
+	/**
+	 * @param array<string> $styles Stylesheet paths.
+	 */
 	private function enqueue_styles( array $styles, string $build_path, string $build_url ): void {
 		foreach ( $styles as $index => $stylesheet ) {
 			wp_enqueue_style(
@@ -96,7 +107,7 @@ final class AdminPage {
 	}
 
 	public function render_page(): void {
-		if ( ! current_user_can( $this->required_capability() ) ) {
+		if ( ! $this->capabilities->can_access_workspace() ) {
 			wp_die( esc_html__( 'You are not allowed to access this workspace.', 'yaxii-product-workspace' ) );
 		}
 		?>
@@ -104,9 +115,7 @@ final class AdminPage {
 			<h1 class="screen-reader-text"><?php echo esc_html__( 'Yaxii Product Workspace', 'yaxii-product-workspace' ); ?></h1>
 			<div id="yaxii-product-workspace">
 				<div id="yaxii-product-workspace-app">
-					<div class="notice notice-info inline">
-						<p><?php echo esc_html( $this->fallback_message() ); ?></p>
-					</div>
+					<div class="notice notice-info inline"><p><?php echo esc_html( $this->fallback_message() ); ?></p></div>
 				</div>
 				<div id="yaxii-product-workspace-portals"></div>
 			</div>
@@ -114,14 +123,19 @@ final class AdminPage {
 		<?php
 	}
 
-	private function bootstrap_data(): array {
+	/**
+	 * @return array<string, mixed>
+	 */
+	private function host_data(): array {
 		return array(
 			'direction'              => is_rtl() ? 'rtl' : 'ltr',
 			'environment'            => 'wordpress',
 			'frontendAvailable'      => null !== $this->manifest_entry(),
 			'isWooCommerceAvailable' => $this->is_woocommerce_available(),
 			'locale'                 => determine_locale(),
+			'nonce'                  => wp_create_nonce( 'wp_rest' ),
 			'pluginVersion'          => YAXII_PRODUCT_WORKSPACE_VERSION,
+			'restUrl'                => esc_url_raw( rest_url( 'yaxii-product-workspace/v1/' ) ),
 		);
 	}
 
@@ -138,13 +152,16 @@ final class AdminPage {
 	}
 
 	private function required_capability(): string {
-		return $this->is_woocommerce_available() ? 'manage_woocommerce' : 'manage_options';
+		return $this->is_woocommerce_available() ? 'edit_products' : 'manage_options';
 	}
 
 	private function is_woocommerce_available(): bool {
-		return class_exists( 'WooCommerce' );
+		return class_exists( 'WooCommerce' ) && defined( 'WC_VERSION' );
 	}
 
+	/**
+	 * @return array{file: string, css: array<string>}|null
+	 */
 	private function manifest_entry(): ?array {
 		static $entry = false;
 
@@ -158,6 +175,7 @@ final class AdminPage {
 			return null;
 		}
 
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- Reads a local generated manifest.
 		$manifest  = json_decode( (string) file_get_contents( $manifest_path ), true );
 		$candidate = is_array( $manifest ) ? ( $manifest['src/main.tsx'] ?? null ) : null;
 		if ( ! is_array( $candidate ) || ! isset( $candidate['file'] ) || ! is_string( $candidate['file'] ) ) {

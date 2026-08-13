@@ -13,13 +13,17 @@ import {
 import { EssentialsFields } from '@/components/entry/EssentialsFields';
 import { ExtendedFields } from '@/components/entry/ExtendedFields';
 import { EntryActionBar } from '@/components/entry/EntryActionBar';
-import { ProductFormData, ProductImage, ProductVariation } from '@/types/product';
+import { emptyProductFormData, ProductImage, ProductVariation, type ProductFormData } from '@/types/product';
 import { useProductStore } from '@/stores/productStore';
 import { usePrefsStore } from '@/stores/prefsStore';
 import { saveDraft } from '@/lib/entryActions';
+import { useWorkspaceRuntime } from '@/production/app/WorkspaceRuntime';
+import { useProductCreate } from '@/production/features/products/useProductCreate';
+import type { ProductFieldErrors } from '@/production/features/products/productMapping';
+import { EMPTY_PRODUCT_ENTRY, toProductEntryValues, type ProductEntryValues } from '@/components/entry/productEntryModel';
+import { productOperationCopy } from '@/production/core/i18n/productMessages';
 
 interface ProductEntryFormProps {
-  isSubmitting?: boolean;
   /** Controlled extended-section open state (when provided, internal toggle is hidden) */
   advancedOpen?: boolean;
   onAdvancedChange?: (open: boolean) => void;
@@ -27,41 +31,7 @@ interface ProductEntryFormProps {
   twoColumn?: boolean;
 }
 
-export type ProductEntryValues = {
-  name: string;
-  sku?: string;
-  regularPrice?: string;
-  salePrice?: string;
-  categoryId: string;
-  stockQuantity?: string;
-  shortDescription?: string;
-  longDescription?: string;
-};
-
-const EMPTY: ProductEntryValues = {
-  name: '',
-  sku: '',
-  regularPrice: '',
-  salePrice: '',
-  categoryId: '',
-  stockQuantity: '',
-  shortDescription: '',
-  longDescription: '',
-};
-
-const toValues = (d: Partial<ProductFormData>): ProductEntryValues => ({
-  name: d.name || '',
-  sku: d.sku || '',
-  regularPrice: d.regularPrice || '',
-  salePrice: d.salePrice || '',
-  categoryId: d.categoryId || '',
-  stockQuantity: d.stockQuantity || '',
-  shortDescription: d.shortDescription || '',
-  longDescription: d.longDescription || '',
-});
-
 export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
-  isSubmitting = false,
   advancedOpen,
   onAdvancedChange,
   twoColumn = false,
@@ -80,6 +50,12 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
   const nameInputRef = useRef<HTMLInputElement>(null);
   const { draftFormData, setDraftFormData, clearDraftFormData, draftRevision } = useProductStore();
   const autoFocusName = usePrefsStore((s) => s.prefs.autoFocusName);
+  const keepValuesAfterSave = usePrefsStore((s) => s.prefs.keepValuesAfterSave);
+  const appSettings = useProductStore((s) => s.appSettings);
+  const { bootstrap, client } = useWorkspaceRuntime();
+  const productCreate = useProductCreate(client, bootstrap);
+  const productCopy = productOperationCopy(bootstrap.locale);
+  const canWrite = bootstrap.capabilities.createProducts && bootstrap.features.simpleProductCreate;
 
   const hasValidVariations = useMemo(
     () => variations.some((v) => v.name && v.options.length > 0),
@@ -103,7 +79,7 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
 
   const form = useForm<z.infer<typeof productSchema>>({
     resolver: zodResolver(productSchema),
-    defaultValues: toValues(draftFormData),
+    defaultValues: toProductEntryValues(draftFormData),
   });
 
   const watched = form.watch();
@@ -139,7 +115,7 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
   useEffect(() => {
     if (draftRevision === firstRevision.current) return;
     const d = useProductStore.getState().draftFormData;
-    form.reset(toValues(d));
+    form.reset(toProductEntryValues(d));
     setImages(d.images || []);
     setVariations(d.variations || []);
     setIsVariable(!!d.isVariable);
@@ -154,16 +130,52 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
     }
   }, [isVariable, form]);
 
-  const handleSubmit = useCallback(
-    () => {
-      saveDraft();
-      nameInputRef.current?.focus();
-    },
-    []
-  );
+  const applyFieldErrors = useCallback((fields: ProductFieldErrors) => {
+    Object.entries(fields).forEach(([field, message]) => {
+      if (!message) return;
+      if (field === 'root') form.setError('root.server', { message });
+      else form.setError(field as keyof ProductEntryValues, { message });
+    });
+  }, [form]);
+
+  const handleSubmit = useCallback(async (values: ProductEntryValues) => {
+    form.clearErrors();
+    if (!canWrite) {
+      form.setError('root.server', { message: `${productCopy.unavailable}.` });
+      return;
+    }
+    const outcome = await productCreate.submit({
+      images,
+      isVariable,
+      saleEnd,
+      saleStart,
+      settings: appSettings,
+      values,
+    });
+    applyFieldErrors(outcome.fields);
+    if (outcome.state !== 'succeeded') return;
+
+    const next = keepValuesAfterSave
+      ? {
+          ...EMPTY_PRODUCT_ENTRY,
+          categoryId: values.categoryId,
+          regularPrice: values.regularPrice,
+          salePrice: values.salePrice,
+          stockQuantity: values.stockQuantity,
+        }
+      : EMPTY_PRODUCT_ENTRY;
+    form.reset(next);
+    setImages([]);
+    setVariations([]);
+    setSaleStart(undefined);
+    setSaleEnd(undefined);
+    setIsVariable(false);
+    setDraftFormData({ ...emptyProductFormData, ...next });
+    nameInputRef.current?.focus();
+  }, [appSettings, applyFieldErrors, canWrite, form, images, isVariable, keepValuesAfterSave, productCopy, productCreate, saleEnd, saleStart, setDraftFormData]);
 
   const handleReset = useCallback(() => {
-    form.reset(EMPTY);
+    form.reset(EMPTY_PRODUCT_ENTRY);
     setImages([]);
     setVariations([]);
     setSaleStart(undefined);
@@ -200,6 +212,7 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
       onVariationsChange={setVariations}
       hasValidVariations={hasValidVariations}
       nameRef={nameInputRef}
+      currency={bootstrap.woocommerce.currencySymbol}
     />
   );
 
@@ -247,8 +260,16 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
           </div>
         )}
 
+        {form.formState.errors.root?.server?.message && (
+          <p role="alert" className="mt-4 text-[12px] text-destructive">
+            {form.formState.errors.root.server.message}
+          </p>
+        )}
+
         <EntryActionBar
-          isSubmitting={isSubmitting}
+          disabled={!canWrite || isVariable}
+          disabledReason={isVariable ? productCopy.simpleOnly : !canWrite ? productCopy.unavailable : undefined}
+          isSubmitting={productCreate.isSubmitting}
           dirty={dirty}
           productName={watched.name}
           onClear={handleReset}

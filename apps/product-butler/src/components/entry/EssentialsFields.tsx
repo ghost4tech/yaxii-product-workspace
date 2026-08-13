@@ -9,7 +9,7 @@ import { ProductImage, ProductVariation } from '@/types/product';
 import { FormSection, FieldShell } from '@/components/entry/FormSection';
 import { cn } from '@/lib/utils';
 import type { UseFormReturn } from 'react-hook-form';
-import type { ProductEntryValues } from '@/components/ProductEntryForm';
+import type { ProductEntryValues } from '@/components/entry/productEntryModel';
 
 interface Props {
   form: UseFormReturn<ProductEntryValues>;
@@ -91,6 +91,7 @@ export const EssentialsFields: React.FC<Props> = ({
                     className="ctl ctl-input font-mono"
                   />
                 </FormControl>
+                <FormMessage className="text-[11px] mt-1" />
               </FormItem>
             )}
           />
@@ -167,6 +168,7 @@ export const EssentialsFields: React.FC<Props> = ({
                     />
                   </div>
                 </FormControl>
+                <FormMessage className="text-[11px] mt-1" />
               </FormItem>
             )}
           />
@@ -192,6 +194,7 @@ export const EssentialsFields: React.FC<Props> = ({
                     <span className="input-affix input-affix-end">units</span>
                   </div>
                 </FormControl>
+                <FormMessage className="text-[11px] mt-1" />
               </FormItem>
             )}
           />

@@ -1,4 +1,4 @@
-import type { Direction, WorkspaceBootstrap } from "../domain/workspace";
+import type { Direction, WorkspaceHostConfig } from "../domain/workspace";
 
 declare global {
   interface Window {
@@ -14,7 +14,7 @@ function isDirection(value: unknown): value is Direction {
   return value === "ltr" || value === "rtl";
 }
 
-export function parseHostConfig(value: unknown): WorkspaceBootstrap | null {
+export function parseHostConfig(value: unknown): WorkspaceHostConfig | null {
   if (!isRecord(value)) {
     return null;
   }
@@ -25,7 +25,9 @@ export function parseHostConfig(value: unknown): WorkspaceBootstrap | null {
     typeof value.frontendAvailable !== "boolean" ||
     typeof value.isWooCommerceAvailable !== "boolean" ||
     typeof value.locale !== "string" ||
-    typeof value.pluginVersion !== "string"
+    typeof value.nonce !== "string" ||
+    typeof value.pluginVersion !== "string" ||
+    typeof value.restUrl !== "string"
   ) {
     return null;
   }
@@ -36,6 +38,8 @@ export function parseHostConfig(value: unknown): WorkspaceBootstrap | null {
     frontendAvailable: value.frontendAvailable,
     isWooCommerceAvailable: value.isWooCommerceAvailable,
     locale: value.locale,
+    nonce: value.nonce,
     pluginVersion: value.pluginVersion,
+    restUrl: value.restUrl,
   };
 }

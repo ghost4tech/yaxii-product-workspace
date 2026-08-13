@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
 import { Check, ChevronsUpDown, RefreshCw, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -18,6 +18,8 @@ import {
 } from '@/components/ui/popover';
 import { Category } from '@/types/product';
 import { useProductStore } from '@/stores/productStore';
+import { useWorkspaceRuntime } from '@/production/app/WorkspaceRuntime';
+import { productOperationCopy } from '@/production/core/i18n/productMessages';
 
 interface CategorySelectProps {
   id?: string;
@@ -35,7 +37,44 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
   isRefreshing = false,
 }) => {
   const [open, setOpen] = useState(false);
-  const { categories, recentCategoryIds, addRecentCategory } = useProductStore();
+  const [query, setQuery] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState(false);
+  const [selectedLabel, setSelectedLabel] = useState('');
+  const loadSequence = useRef(0);
+  const { categories, recentCategoryIds, addRecentCategory, setCategories } = useProductStore();
+  const { bootstrap, client } = useWorkspaceRuntime();
+  const copy = productOperationCopy(bootstrap.locale);
+
+  const loadCategories = useCallback(async (search: string) => {
+    if (!bootstrap.features.categoryLookup) return;
+    const sequence = ++loadSequence.current;
+    setLoading(true);
+    setLoadError(false);
+    try {
+      const page = await client.searchCategories(search);
+      if (sequence !== loadSequence.current) return;
+      setCategories(page.items);
+    } catch {
+      if (sequence !== loadSequence.current) return;
+      setCategories([]);
+      setLoadError(true);
+    } finally {
+      if (sequence === loadSequence.current) setLoading(false);
+    }
+  }, [bootstrap.features.categoryLookup, client, setCategories]);
+
+  useEffect(() => {
+	loadSequence.current += 1;
+    if (!open) {
+      setLoading(false);
+      return;
+    }
+    const timer = window.setTimeout(() => void loadCategories(query), 250);
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [loadCategories, open, query]);
 
   const recentCategories = useMemo(() => {
     return recentCategoryIds
@@ -45,10 +84,21 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
 
   const selectedCategory = categories.find((c) => c.id.toString() === value);
 
+  useEffect(() => {
+    if (!value) setSelectedLabel('');
+    else if (selectedCategory) setSelectedLabel(selectedCategory.name);
+  }, [selectedCategory, value]);
+
   const handleSelect = (categoryId: string) => {
+    setSelectedLabel(categories.find((category) => category.id.toString() === categoryId)?.name ?? '');
     onChange(categoryId);
     addRecentCategory(parseInt(categoryId));
     setOpen(false);
+  };
+
+  const handleRefresh = () => {
+    onRefresh?.();
+    void loadCategories(query);
   };
 
   return (
@@ -62,15 +112,15 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
             aria-expanded={open}
             className="w-full justify-between h-10 font-normal"
           >
-            {selectedCategory ? selectedCategory.name : 'Select category...'}
-            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            {selectedLabel || 'Select category...'}
+            <ChevronsUpDown className="ms-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[300px] p-0" align="start">
-          <Command>
-            <CommandInput placeholder="Search categories..." />
+          <Command shouldFilter={false}>
+            <CommandInput placeholder="Search categories..." value={query} onValueChange={setQuery} />
             <CommandList>
-              <CommandEmpty>No category found.</CommandEmpty>
+              <CommandEmpty>{loadError ? copy.categoriesLoadFailed : 'No category found.'}</CommandEmpty>
               
               {recentCategories.length > 0 && (
                 <>
@@ -81,11 +131,11 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
                         value={`recent-${category.name}`}
                         onSelect={() => handleSelect(category.id.toString())}
                       >
-                        <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
+                        <Clock className="me-2 h-4 w-4 text-muted-foreground" />
                         {category.name}
                         <Check
                           className={cn(
-                            'ml-auto h-4 w-4',
+                            'ms-auto h-4 w-4',
                             value === category.id.toString()
                               ? 'opacity-100'
                               : 'opacity-0'
@@ -106,7 +156,7 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
                     onSelect={() => handleSelect(category.id.toString())}
                   >
                     <span className="flex-1">{category.name}</span>
-                    <span className="text-xs text-muted-foreground mr-2">
+                    <span className="me-2 text-xs text-muted-foreground">
                       {category.count} products
                     </span>
                     <Check
@@ -125,15 +175,15 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
         </PopoverContent>
       </Popover>
       
-      {onRefresh && (
+      {bootstrap.features.categoryLookup && (
         <Button
           variant="outline"
           size="icon"
-          onClick={onRefresh}
-          disabled={isRefreshing}
+          onClick={handleRefresh}
+          disabled={isRefreshing || loading}
           title="Refresh categories"
         >
-          <RefreshCw className={cn('h-4 w-4', isRefreshing && 'animate-spin')} />
+          <RefreshCw className={cn('h-4 w-4', (isRefreshing || loading) && 'animate-spin')} />
         </Button>
       )}
     </div>

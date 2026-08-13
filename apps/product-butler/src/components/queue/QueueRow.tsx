@@ -65,10 +65,10 @@ export function QueueRow({
       {!compact && (
         <div className="w-24 shrink-0 text-end">
           <span className="text-[13px] font-medium tabular-nums">
-            {product.regularPrice ? `$${product.regularPrice}` : "—"}
+            {product.regularPrice ? `${product.currencySymbol ?? ""}${product.regularPrice}` : "—"}
           </span>
           {product.salePrice && (
-            <span className="block text-[11px] tabular-nums text-success">${product.salePrice}</span>
+            <span className="block text-[11px] tabular-nums text-success">{product.currencySymbol ?? ""}{product.salePrice}</span>
           )}
         </div>
       )}

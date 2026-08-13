@@ -9,7 +9,7 @@ import { FormSection, FieldShell } from '@/components/entry/FormSection';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import type { UseFormReturn } from 'react-hook-form';
-import type { ProductEntryValues } from '@/components/ProductEntryForm';
+import type { ProductEntryValues } from '@/components/entry/productEntryModel';
 
 interface Props {
   form: UseFormReturn<ProductEntryValues>;
