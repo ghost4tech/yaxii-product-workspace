@@ -2,19 +2,20 @@
 
 **Updated:** 2026-08-13
 
-**Current phase:** Phase 3 implementation and acceptance gates complete; awaiting owner acceptance
+**Current phase:** Phase 3 accepted and closed; Phase 4 is the next authorized phase
 
-**Acceptance state:** READY FOR OWNER ACCEPTANCE - branch is pushed and must not be merged yet
+**Acceptance state:** OWNER ACCEPTED - corrected Product Queue manually verified on active LocalWP
 
 ## Canonical repository
 
 - Repository: `https://github.com/ghost4tech/yaxii-product-workspace.git`
 - Accepted Phase 3 starting `main`: `4158bc7f52447e58c67603054e270ea24249c122`
 - Phase 3 branch: `phase/03-free-simple-product-workflow`
+- Accepted Phase 3 SHA: `85e02344412ed867794eda44dc2f10e5d6d66f68`
 - Checkpoint A: `fdf5ccde8038926013efea6271c8561ff0097318`
 - Checkpoint B: `c5ece83894ecd9a74423fddde8e9139cf2d8b133`
-- Checkpoint C: the commit containing this closeout; its exact verified remote SHA is reported in the
-  owner handoff
+- Checkpoint C: `8e4f9e3465668484c9744b26e86a6b0e6b2ab01c`
+- Queue acceptance correction: `85e02344412ed867794eda44dc2f10e5d6d66f68`
 - Package managers: Composer for PHP and npm for the frontend
 
 The branch was created from the exact accepted `main` SHA and pushed before implementation. The
@@ -57,5 +58,7 @@ owner's local `AGENTS.md` and `CLAUDE.md` edits remain preserved and outside Pha
 
 ## Historical acceptance
 
-Phase 2 was accepted and merged before this branch. Phase 3 is implemented and verified but has not
-been merged. Stop here for owner review; do not begin Phase 4.
+Phase 2 was accepted and merged before this branch. On 2026-08-13, the owner manually verified the
+corrected Product Queue on the active LocalWP site and accepted Phase 3 at
+`85e02344412ed867794eda44dc2f10e5d6d66f68`. Phase 3 is closed. Phase 4 is the next authorized phase,
+but it has not started and no Phase 4 branch was created during this closeout.

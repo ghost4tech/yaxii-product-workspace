@@ -2,8 +2,7 @@
 
 **Date:** 2026-08-13
 
-**State:** Implementation and acceptance gates complete; owner-found queue regression corrected;
-awaiting owner re-acceptance
+**State:** Owner accepted; authorized for closeout merge into `main`
 
 ## Git boundary
 
@@ -11,12 +10,20 @@ awaiting owner re-acceptance
 - Branch: `phase/03-free-simple-product-workflow`
 - Checkpoint A: `fdf5ccde8038926013efea6271c8561ff0097318`
 - Checkpoint B: `c5ece83894ecd9a74423fddde8e9139cf2d8b133`
-- Checkpoint C: this closeout commit; the handoff records its verified remote SHA
-- Queue acceptance correction: this correction commit; the handoff records its verified remote SHA
-- Merge state: not merged; owner acceptance required
+- Checkpoint C: `8e4f9e3465668484c9744b26e86a6b0e6b2ab01c`
+- Queue acceptance correction and accepted Phase 3 SHA:
+  `85e02344412ed867794eda44dc2f10e5d6d66f68`
+- Merge disposition: owner accepted the corrected branch for a history-preserving merge into `main`
 
-The branch started from the accepted clean remote main and was pushed before work. The owner's local
-`AGENTS.md` and `CLAUDE.md` changes were neither edited nor staged.
+The branch started from the accepted clean remote main and was pushed before work. Before closeout,
+the accepted branch and its remote tracking ref both resolved to the exact accepted SHA. The owner's
+local `AGENTS.md` and `CLAUDE.md` changes were neither edited nor staged.
+
+## Owner acceptance
+
+On 2026-08-13, the owner manually verified the corrected Product Queue on the active LocalWP site,
+confirmed the regression was fixed, and accepted Phase 3 at
+`85e02344412ed867794eda44dc2f10e5d6d66f68`.
 
 ## Delivered workflow
 
@@ -111,5 +118,5 @@ media were left intact.
 
 French and Arabic copy remains incomplete; structural direction support was verified. Variable
 products, variations, templates, batch operations, AI, analytics, stores, team, licensing,
-multi-store, automation, and Pro/Agency functionality remain outside Phase 3. Do not begin Phase 4
-or merge this branch before owner acceptance.
+multi-store, automation, and Pro/Agency functionality remain outside Phase 3. Phase 4 is the next
+authorized phase, but it has not started and no Phase 4 branch was created during this closeout.
