@@ -15,10 +15,10 @@ import { ExtendedFields } from '@/components/entry/ExtendedFields';
 import { EntryActionBar } from '@/components/entry/EntryActionBar';
 import { emptyProductFormData, ProductImage, ProductVariation, type ProductFormData } from '@/types/product';
 import { useProductStore } from '@/stores/productStore';
-import { usePrefsStore } from '@/stores/prefsStore';
 import { saveDraft } from '@/lib/entryActions';
 import { useWorkspaceRuntime } from '@/production/app/WorkspaceRuntime';
 import { useProductCreate } from '@/production/features/products/useProductCreate';
+import { useWorkspacePreferences } from '@/production/features/preferences/useWorkspacePreferences';
 import type { ProductFieldErrors } from '@/production/features/products/productMapping';
 import { EMPTY_PRODUCT_ENTRY, toProductEntryValues, type ProductEntryValues } from '@/components/entry/productEntryModel';
 import { productOperationCopy } from '@/production/core/i18n/productMessages';
@@ -49,9 +49,7 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
 
   const nameInputRef = useRef<HTMLInputElement>(null);
   const { draftFormData, setDraftFormData, clearDraftFormData, draftRevision } = useProductStore();
-  const autoFocusName = usePrefsStore((s) => s.prefs.autoFocusName);
-  const keepValuesAfterSave = usePrefsStore((s) => s.prefs.keepValuesAfterSave);
-  const appSettings = useProductStore((s) => s.appSettings);
+  const { preferences } = useWorkspacePreferences();
   const { bootstrap, client } = useWorkspaceRuntime();
   const productCreate = useProductCreate(client, bootstrap);
   const productCopy = productOperationCopy(bootstrap.locale);
@@ -149,21 +147,21 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
       isVariable,
       saleEnd,
       saleStart,
-      settings: appSettings,
+      settings: preferences,
       values,
     });
     applyFieldErrors(outcome.fields);
     if (outcome.state !== 'succeeded') return;
 
-    const next = keepValuesAfterSave
-      ? {
-          ...EMPTY_PRODUCT_ENTRY,
-          categoryId: values.categoryId,
-          regularPrice: values.regularPrice,
-          salePrice: values.salePrice,
-          stockQuantity: values.stockQuantity,
-        }
-      : EMPTY_PRODUCT_ENTRY;
+    const product = outcome.result?.product;
+    const repeat = preferences.repeat_fields;
+    const next = {
+      ...EMPTY_PRODUCT_ENTRY,
+      categoryId: repeat.includes('category_ids') ? String(product?.category_ids[0] ?? '') : '',
+      regularPrice: repeat.includes('regular_price') ? product?.regular_price ?? '' : '',
+      salePrice: repeat.includes('sale_price') ? product?.sale_price ?? '' : '',
+      stockQuantity: repeat.includes('stock_quantity') ? String(product?.stock_quantity ?? '') : '',
+    };
     form.reset(next);
     setImages([]);
     setVariations([]);
@@ -172,7 +170,7 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
     setIsVariable(false);
     setDraftFormData({ ...emptyProductFormData, ...next });
     nameInputRef.current?.focus();
-  }, [appSettings, applyFieldErrors, canWrite, form, images, isVariable, keepValuesAfterSave, productCopy, productCreate, saleEnd, saleStart, setDraftFormData]);
+  }, [applyFieldErrors, canWrite, form, images, isVariable, preferences, productCopy, productCreate, saleEnd, saleStart, setDraftFormData]);
 
   const handleReset = useCallback(() => {
     form.reset(EMPTY_PRODUCT_ENTRY);
@@ -197,9 +195,8 @@ export const ProductEntryForm: React.FC<ProductEntryFormProps> = ({
   }, [form, handleSubmit]);
 
   useEffect(() => {
-    if (autoFocusName) nameInputRef.current?.focus();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (preferences.auto_focus_name) nameInputRef.current?.focus();
+  }, [preferences.auto_focus_name]);
 
   const essentials = (
     <EssentialsFields

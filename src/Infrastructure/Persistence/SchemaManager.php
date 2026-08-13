@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * Creates and upgrades the minimal durable idempotency store.
  */
 final class SchemaManager {
-	public const VERSION = '1';
+	public const VERSION = '3';
 
 	private const VERSION_OPTION = 'ypw_operation_schema_version';
 
@@ -53,14 +53,20 @@ final class SchemaManager {
 			operation_type varchar(40) NOT NULL,
 			idempotency_hash char(64) NOT NULL,
 			payload_hash char(64) NOT NULL,
+			request_json longtext NULL,
 			state varchar(20) NOT NULL,
 			product_id bigint(20) unsigned NULL,
+			product_name varchar(200) NOT NULL DEFAULT '',
+			product_sku varchar(100) NOT NULL DEFAULT '',
+			product_status varchar(20) NOT NULL DEFAULT '',
 			result_json longtext NULL,
+			dismissed_at datetime NULL,
 			created_at datetime NOT NULL,
 			updated_at datetime NOT NULL,
 			PRIMARY KEY  (operation_id),
 			UNIQUE KEY request_identity (site_id,user_id,operation_type,idempotency_hash),
-			KEY user_state (site_id,user_id,state)
+			KEY user_state (site_id,user_id,state),
+			KEY user_updated (site_id,user_id,updated_at)
 		) {$charset_collate};";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';

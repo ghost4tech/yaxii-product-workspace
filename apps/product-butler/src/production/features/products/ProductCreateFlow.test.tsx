@@ -3,80 +3,45 @@ import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defaultPreferences, usePrefsStore } from "@/stores/prefsStore";
 import { useProductStore } from "@/stores/productStore";
-import { defaultAppSettings } from "@/types/product";
 import { WorkspaceApp } from "../../app/WorkspaceApp";
 import { WorkspaceClient } from "../../application/WorkspaceClient";
 import type { WorkspaceRepository } from "../../application/WorkspaceRepository";
 import { WorkspaceApiError } from "../../application/WorkspaceApiError";
 import type { CreateProductRequest, OperationResult } from "../../domain/products";
-import type { WorkspaceSnapshot } from "../../domain/workspace";
-
-const snapshot: WorkspaceSnapshot = {
-  availability: { kind: "ready" },
-  bootstrap: {
-    capabilities: { createProducts: true, publishProducts: true, uploadMedia: true },
-    direction: "ltr",
-    environment: "wordpress",
-    features: {
-      categoryLookup: true,
-      mediaSelection: true,
-      operationLookup: true,
-      simpleProductCreate: true,
-      variableProductCreate: false,
-    },
-    frontendAvailable: true,
-    isWooCommerceAvailable: true,
-    locale: "en-US",
-    pluginVersion: "test",
-    user: { displayName: "Admin", id: 1 },
-    woocommerce: {
-      currency: "USD",
-      currencySymbol: "$",
-      dimensionUnit: "cm",
-      version: "10.9.4",
-      weightUnit: "kg",
-    },
-  },
-};
+import { operationResult, workspaceRepository, workspaceSnapshot } from "../../test/workspaceFixtures";
+import { DEFAULT_WORKSPACE_PREFERENCES } from "../../domain/products";
 
 function succeeded(state: OperationResult["state"] = "succeeded"): OperationResult {
-  return {
-    errors: [],
-    operation_id: "11111111-1111-4111-8111-111111111111",
-    product: state === "succeeded" ? {
-      catalog_visibility: "visible",
-      category_ids: [7],
-      created_at: "2026-08-12T12:00:00+00:00",
-      id: 321,
-      image_ids: [],
-      manage_stock: false,
-      name: "Canvas tote",
-      regular_price: "19.99",
-      sale_price: "",
-      sku: "TOTE-1",
-      status: "publish",
-      stock_quantity: null,
-      stock_status: "instock",
-    } : null,
-    replayed: false,
-    retry: { can_reconcile: state !== "succeeded", safe_to_resubmit: state !== "succeeded" },
-    state,
-    warnings: [],
-  };
+  return operationResult(state);
 }
 
 function repository(createProduct: WorkspaceRepository["createProduct"]): WorkspaceRepository {
-  return {
-    createProduct,
+  const operations: OperationResult[] = [];
+  return workspaceRepository({
+    createProduct: async (request, key) => {
+      const result = await createProduct(request, key);
+      operations.splice(0, operations.length, result);
+      return result;
+    },
     getOperation: () => Promise.resolve(succeeded()),
-    load: () => Promise.resolve(snapshot),
+    listOperations: () => Promise.resolve({
+      counts: {
+        all: operations.length,
+        draft: operations.filter((item) => item.product?.status === "draft").length,
+        error: operations.filter((item) => item.state === "failed").length,
+        pending: operations.filter((item) => item.state === "processing" || item.state === "uncertain").length,
+        synced: operations.filter((item) => item.product?.status === "publish").length,
+      },
+      has_more: false, items: operations, page: 1, per_page: 25, total: operations.length,
+    }),
+    load: () => Promise.resolve(workspaceSnapshot),
     searchCategories: () => Promise.resolve({
       has_more: false,
       items: [{ count: 0, id: 7, name: "Accessories", parent: 0, slug: "accessories" }],
       page: 1,
       per_page: 20,
     }),
-  };
+  });
 }
 
 function renderWorkspace(repo: WorkspaceRepository) {
@@ -110,9 +75,7 @@ beforeEach(() => {
   sessionStorage.clear();
   usePrefsStore.setState({ commandOpen: false, prefs: defaultPreferences, shortcutsOpen: false });
   useProductStore.setState({
-    appSettings: defaultAppSettings,
     categories: [],
-    products: [],
     recentCategoryIds: [],
   });
   useProductStore.getState().clearDraftFormData();
@@ -239,5 +202,24 @@ describe("real product create flow", () => {
     await waitFor(() => expect(create).toHaveBeenCalledTimes(1));
     expect(reconcile).toHaveBeenCalledWith("11111111-1111-4111-8111-111111111111");
     expect((await screen.findAllByText("Synced")).length).toBeGreaterThan(0);
+  });
+
+  it("retains only configured fields from the canonical server result", async () => {
+    const result = succeeded();
+    result.product = result.product ? { ...result.product, regular_price: "20.00" } : null;
+    const repo = repository(() => Promise.resolve(result));
+    repo.getPreferences = () => Promise.resolve({
+      ...DEFAULT_WORKSPACE_PREFERENCES,
+      repeat_fields: ["category_ids", "regular_price"],
+    });
+    const user = userEvent.setup();
+    renderWorkspace(repo);
+    await fillRequiredFields(user);
+    await user.click(screen.getByRole("button", { name: /save & next/i }));
+
+    await waitFor(() => expect(screen.getByLabelText(/product name/i)).toHaveValue(""));
+    expect(screen.getByLabelText(/^Price/i)).toHaveValue(20);
+    expect(screen.getByRole("combobox", { name: /category/i })).toHaveTextContent("Accessories");
+    expect(screen.getByLabelText(/^SKU/i)).toHaveValue("");
   });
 });

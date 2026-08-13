@@ -50,6 +50,8 @@ final class BootstrapProvider {
 					'shipping_class_lookup'   => $woo_available,
 					'media_selection'         => $this->capabilities->can_upload_media(),
 					'operation_lookup'        => $woo_available,
+					'operation_queue'         => $woo_available,
+					'preferences'             => $woo_available,
 				),
 				'limits'       => array(
 					'category_page_size'     => 20,
@@ -83,11 +85,11 @@ final class BootstrapProvider {
 			'weight_unit'        => get_option( 'woocommerce_weight_unit', 'kg' ),
 			'dimension_unit'     => get_option( 'woocommerce_dimension_unit', 'cm' ),
 			'tax_classes'        => array_map(
-				static fn ( string $name ): array => array(
-					'name' => $name,
-					'slug' => sanitize_title( $name ),
+				static fn ( $tax_class ): array => array(
+					'name' => (string) $tax_class->name,
+					'slug' => (string) $tax_class->slug,
 				),
-				\WC_Tax::get_tax_classes()
+				\WC_Tax::get_tax_rate_classes()
 			),
 		);
 	}

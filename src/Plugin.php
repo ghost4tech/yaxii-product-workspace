@@ -10,16 +10,20 @@ namespace Yaxii\ProductWorkspace;
 use Yaxii\ProductWorkspace\Admin\AdminPage;
 use Yaxii\ProductWorkspace\Application\Access\WordPressCapabilityPolicy;
 use Yaxii\ProductWorkspace\Application\Bootstrap\BootstrapProvider;
+use Yaxii\ProductWorkspace\Application\Operations\OperationPresenter;
+use Yaxii\ProductWorkspace\Application\Preferences\PreferenceService;
 use Yaxii\ProductWorkspace\Application\Products\CreateProductRequestFactory;
 use Yaxii\ProductWorkspace\Application\Products\CreateProductService;
 use Yaxii\ProductWorkspace\Application\Products\ProductFieldParser;
 use Yaxii\ProductWorkspace\Application\Products\ProductManagementService;
 use Yaxii\ProductWorkspace\Infrastructure\Persistence\SchemaManager;
 use Yaxii\ProductWorkspace\Infrastructure\Persistence\WpdbOperationStore;
+use Yaxii\ProductWorkspace\Infrastructure\Persistence\WordPressPreferenceRepository;
 use Yaxii\ProductWorkspace\Infrastructure\WooCommerce\WooProductGateway;
 use Yaxii\ProductWorkspace\Infrastructure\WooCommerce\WooProductMapper;
 use Yaxii\ProductWorkspace\Rest\BootstrapController;
 use Yaxii\ProductWorkspace\Rest\OperationController;
+use Yaxii\ProductWorkspace\Rest\PreferenceController;
 use Yaxii\ProductWorkspace\Rest\ProductController;
 use Yaxii\ProductWorkspace\Rest\ProductItemController;
 use Yaxii\ProductWorkspace\Rest\ProductTermController;
@@ -54,11 +58,15 @@ final class Plugin {
 		$provider     = new BootstrapProvider( $capabilities );
 		$schema       = SchemaManager::create();
 		global $wpdb;
-		$operations = new WpdbOperationStore( $wpdb, $schema->table_name() );
-		$products   = new WooProductGateway( new WooProductMapper() );
-		$service    = new CreateProductService( $capabilities, $operations, $products );
-		$management = new ProductManagementService( $capabilities, $products );
-		$factory    = new CreateProductRequestFactory( new ProductFieldParser() );
+		$operations  = new WpdbOperationStore( $wpdb, $schema->table_name() );
+		$products    = new WooProductGateway( new WooProductMapper() );
+		$factory     = new CreateProductRequestFactory( new ProductFieldParser() );
+		$service     = new CreateProductService( $capabilities, $operations, $products, $factory );
+		$management  = new ProductManagementService( $capabilities, $products );
+		$preferences = new PreferenceService(
+			new WordPressPreferenceRepository(),
+			class_exists( 'WC_Tax' ) ? \WC_Tax::get_tax_class_slugs() : array()
+		);
 
 		return new self(
 			new AdminPage( $plugin_file, $capabilities ),
@@ -70,7 +78,8 @@ final class Plugin {
 				new ProductTermController( $capabilities, 'shipping-classes', 'product_shipping_class' ),
 				new ProductController( $factory, $service, $management, $capabilities ),
 				new ProductItemController( $factory, $management, $capabilities ),
-				new OperationController( $operations, $service, $capabilities ),
+				new OperationController( $operations, new OperationPresenter(), $service, $capabilities ),
+				new PreferenceController( $preferences, $capabilities ),
 			)
 		);
 	}

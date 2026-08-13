@@ -93,13 +93,13 @@ export function QueueRow({
               <Edit className="me-2 h-4 w-4" /> Edit
             </DropdownMenuItem>
           )}
-          {product.status === "error" && onRetry && (
+          {product.status === "error" && product.canRetry && onRetry && (
             <DropdownMenuItem onClick={() => onRetry(product)}>
-              <RefreshCw className="me-2 h-4 w-4" /> Retry sync
+              <RefreshCw className="me-2 h-4 w-4" /> Retry safely
             </DropdownMenuItem>
           )}
           <DropdownMenuItem onClick={() => onDelete(product)} className="text-destructive focus:text-destructive">
-            <Trash2 className="me-2 h-4 w-4" /> Delete
+            <Trash2 className="me-2 h-4 w-4" /> Remove from queue
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>

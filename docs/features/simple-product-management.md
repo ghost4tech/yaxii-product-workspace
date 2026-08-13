@@ -1,6 +1,6 @@
 # Simple Product Management
 
-**Status:** Phase 3 Checkpoint A backend implemented; Lovable UI integration pending
+**Status:** Phase 3 Checkpoint A backend implemented; Checkpoint C Lovable UI integration pending
 
 ## Workflow
 
@@ -56,6 +56,8 @@ capability decisions. LocalWP integration coverage exercises a complete field ro
 search, detail, persisted update, conflict without overwrite, duplicate without write, object-level
 route denial, and versioned trash with fixture cleanup.
 
-Save & Next, persistent preferences, browser draft recovery, the server-authoritative queue, and
-the authenticated browser/visual acceptance matrix remain later Phase 3 checkpoint work. Variable
-products remain excluded until Phase 4.
+Save & Next, persistent preferences, bounded browser draft recovery, and the server-authoritative
+queue are implemented in Checkpoint B and documented in
+`docs/features/productivity-and-operation-workflow.md`. Complete product-management UI and the
+authenticated browser/visual acceptance matrix remain Checkpoint C work. Variable products remain
+excluded until Phase 4.

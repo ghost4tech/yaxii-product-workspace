@@ -128,6 +128,7 @@ final class OperationResult {
 	 * @return array<string, mixed>
 	 */
 	public function to_array(): array {
+		$write_failure = isset( $this->errors[0]['code'] ) && 'ypw_product_write_failed' === $this->errors[0]['code'];
 		return array(
 			'operation_id' => $this->operation_id,
 			'state'        => $this->state,
@@ -136,8 +137,9 @@ final class OperationResult {
 			'errors'       => $this->errors,
 			'replayed'     => $this->replayed,
 			'retry'        => array(
-				'can_reconcile'    => in_array( $this->state, array( 'processing', 'uncertain', 'failed' ), true ),
-				'safe_to_resubmit' => in_array( $this->state, array( 'processing', 'uncertain' ), true ),
+				'can_reconcile'    => in_array( $this->state, array( 'processing', 'uncertain' ), true ),
+				'can_retry'        => $write_failure,
+				'safe_to_resubmit' => false,
 			),
 			'http_status'  => $this->http_status,
 		);

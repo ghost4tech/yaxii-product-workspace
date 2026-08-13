@@ -2,14 +2,16 @@
 
 **Updated:** 2026-08-13
 
-**Current phase:** Phase 2 owner accepted and complete; Phase 3 not started
+**Current phase:** Phase 3 in progress; Checkpoints A and B implemented, Checkpoint C pending
 
-**Acceptance state:** OWNER ACCEPTED — authenticated LocalWP wp-admin product creation verified
+**Acceptance state:** IN PROGRESS — Phase 3 browser/runtime acceptance has not started
 
 ## Canonical repository
 
 - Repository: `https://github.com/ghost4tech/yaxii-product-workspace.git`
-- Accepted starting `main`: `13dde2b33c5fb43d5e3ac609235c17d018353e4e`
+- Accepted Phase 3 starting `main`: `4158bc7f52447e58c67603054e270ea24249c122`
+- Phase 3 branch: `phase/03-free-simple-product-workflow`
+- Phase 3 Checkpoint A: `fdf5ccde8038926013efea6271c8561ff0097318`
 - Phase 2 branch: `phase/02-simple-product-vertical-slice`
 - Checkpoint A: `8476d4b8d46e93a49e9d7892b4d987542f3c36b4`
 - Checkpoint B: `35cbba21ba09902a9e19ba75cb2a2b99e294cfbe`
@@ -18,8 +20,19 @@
 - Package managers: Composer for PHP and npm for the frontend
 - Frontend lockfile: `apps/product-butler/package-lock.json`
 
-The owner accepted Phase 2 on 2026-08-13 and authorized the phase branch to merge into `main`.
-Owner edits in `AGENTS.md` and `CLAUDE.md` remain preserved and outside the Phase 2 commits.
+The Phase 3 branch was created from the exact accepted `main` SHA and pushed before implementation.
+Owner edits in `AGENTS.md` and `CLAUDE.md` remain preserved and outside Phase 3 commits.
+
+## Implemented Phase 3 state
+
+- Checkpoint A implements the full simple-product WooCommerce domain, bounded search/detail,
+  complete updates, optimistic conflict rejection, safe duplicate prefill, and versioned trash.
+- Checkpoint B implements WordPress-side workflow defaults, canonical Save & Next reset/repeat,
+  bounded and expiring browser draft recovery, and a server-authoritative recent-operation queue.
+- Queue search/filter/counts are server-side; manual retry is restricted to durable write failures
+  and atomically reuses the original operation identity and normalized request.
+- Complete Lovable product search/open/edit/duplicate/trash UI and browser/visual acceptance remain
+  Checkpoint C work. Phase 3 remains in progress.
 
 ## Implemented Phase 2 state
 

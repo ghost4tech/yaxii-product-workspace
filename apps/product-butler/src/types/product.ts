@@ -24,6 +24,7 @@ export interface ProductVariation {
 }
 
 export interface Product {
+  canRetry?: boolean;
   id: string;
   name: string;
   sku: string;

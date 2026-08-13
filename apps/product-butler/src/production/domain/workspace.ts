@@ -24,7 +24,12 @@ export interface WorkspaceBootstrap {
     categoryLookup: boolean;
     mediaSelection: boolean;
     operationLookup: boolean;
+    operationQueue: boolean;
+    preferences: boolean;
+    productManagement: boolean;
+    shippingClassLookup: boolean;
     simpleProductCreate: boolean;
+    tagLookup: boolean;
     variableProductCreate: boolean;
   };
   frontendAvailable: boolean;
@@ -36,6 +41,7 @@ export interface WorkspaceBootstrap {
     currency: string;
     currencySymbol: string;
     dimensionUnit: string;
+    taxClasses: Array<{ name: string; slug: string }>;
     version: string | null;
     weightUnit: string;
   };

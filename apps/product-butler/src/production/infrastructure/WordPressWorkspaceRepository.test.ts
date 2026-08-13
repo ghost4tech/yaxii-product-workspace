@@ -25,7 +25,7 @@ describe("WordPressWorkspaceRepository", () => {
       return Promise.resolve(new Response(JSON.stringify({
         data: {
           errors: [], operation_id: "11111111-1111-4111-8111-111111111111", product: null, replayed: false,
-          retry: { can_reconcile: true, safe_to_resubmit: true }, state: "processing", warnings: [],
+          retry: { can_reconcile: true, can_retry: false, safe_to_resubmit: false }, state: "processing", warnings: [],
         },
       }), { status: 202, headers: { "Content-Type": "application/json" } }));
     });
@@ -48,7 +48,7 @@ describe("WordPressWorkspaceRepository", () => {
         operation_id: "11111111-1111-4111-8111-111111111111",
         product: null,
         replayed: false,
-        retry: { can_reconcile: true, safe_to_resubmit: false },
+        retry: { can_reconcile: false, can_retry: false, safe_to_resubmit: false },
         state: "failed",
         warnings: [],
       },
@@ -66,5 +66,24 @@ describe("WordPressWorkspaceRepository", () => {
       code: "ypw_network_error",
       outcomeUncertain: true,
     });
+  });
+
+  it("passes cancellation through bounded product search", async () => {
+    const fetchMock = vi.fn((...args: [RequestInfo | URL, RequestInit?]) => {
+      void args;
+      return Promise.resolve(new Response(JSON.stringify({
+        data: { has_more: false, items: [], page: 1, per_page: 20, total: 0 },
+      }), { status: 200, headers: { "Content-Type": "application/json" } }));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const controller = new AbortController();
+
+    await new WordPressWorkspaceRepository(host).searchProducts({
+      page: 1, perPage: 20, search: "canvas", signal: controller.signal,
+    });
+
+    const [url, init] = fetchMock.mock.calls[0] ?? [];
+    expect(url).toBe("https://store.test/wp-json/yaxii-product-workspace/v1/products?page=1&per_page=20&search=canvas");
+    expect(init?.signal).toBe(controller.signal);
   });
 });

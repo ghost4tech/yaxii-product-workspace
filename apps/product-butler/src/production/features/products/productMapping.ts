@@ -1,6 +1,6 @@
 import type { ProductEntryValues } from "@/components/entry/productEntryModel";
-import type { AppSettings, ProductImage } from "@/types/product";
-import type { CreateProductRequest } from "../../domain/products";
+import type { ProductImage } from "@/types/product";
+import type { CreateProductRequest, WorkspacePreferences } from "../../domain/products";
 import type { ProductOperationCopy } from "../../core/i18n/productMessages";
 
 export type ProductFieldErrors = Partial<Record<keyof ProductEntryValues | "root", string>>;
@@ -10,7 +10,7 @@ export interface ProductSubmission {
   isVariable: boolean;
   saleEnd?: Date;
   saleStart?: Date;
-  settings: AppSettings;
+  settings: WorkspacePreferences;
   values: ProductEntryValues;
 }
 
@@ -25,9 +25,6 @@ export function mapProductRequest(input: ProductSubmission, copy: ProductOperati
   const fields: ProductFieldErrors = {};
   if (isVariable) fields.root = copy.variableUnsupported;
   if (saleStart || saleEnd) fields.root = copy.saleScheduleUnsupported;
-  if (settings.defaultProductStatus === "pending") {
-    fields.root = copy.pendingStatusUnsupported;
-  }
 
   const categoryId = Number(values.categoryId);
   if (!Number.isInteger(categoryId) || categoryId <= 0) fields.categoryId = copy.chooseCategory;
@@ -45,19 +42,31 @@ export function mapProductRequest(input: ProductSubmission, copy: ProductOperati
 
   if (Object.keys(fields).length > 0) throw new ProductMappingError(fields);
   return {
-    catalog_visibility: settings.defaultCatalogVisibility,
+	backorders: settings.default_backorders,
+	catalog_visibility: settings.default_catalog_visibility,
     category_ids: [categoryId],
+	date_on_sale_from: saleStart?.toISOString() ?? null,
+	date_on_sale_to: saleEnd?.toISOString() ?? null,
     description: values.longDescription?.trim() ?? "",
+	height: "",
     image_ids: images.map((image) => image.wpMediaId as number),
-    manage_stock: settings.enableManageStock || stockQuantity !== null,
+	length: "",
+    manage_stock: settings.default_manage_stock || stockQuantity !== null,
     name: values.name.trim(),
     regular_price: values.regularPrice?.trim() ?? "",
     sale_price: values.salePrice?.trim() || null,
+	shipping_class_id: 0,
     short_description: values.shortDescription?.trim() ?? "",
     sku: values.sku?.trim() ?? "",
-    status: settings.defaultProductStatus === "publish" ? "publish" : "draft",
+	slug: "",
+	sold_individually: settings.default_sold_individually,
+	status: settings.default_product_status,
     stock_quantity: stockQuantity,
-    stock_status: settings.defaultStockStatus,
-    tax_status: settings.defaultTaxStatus,
+	stock_status: settings.default_stock_status,
+	tag_ids: [],
+	tax_class: settings.default_tax_class,
+	tax_status: settings.default_tax_status,
+	weight: "",
+	width: "",
   };
 }
