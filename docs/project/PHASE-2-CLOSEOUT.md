@@ -6,7 +6,7 @@
 
 **Starting main:** `13dde2b33c5fb43d5e3ac609235c17d018353e4e`
 
-**State:** Implementation complete and pushed; owner visual acceptance required before merge
+**State:** Acceptance correction implemented and deployed; final authenticated Save re-test required before merge
 
 ## Outcome
 
@@ -18,16 +18,45 @@ idempotency, and the canonical operation result used by the queue.
 No WooCommerce credentials are exposed to React, no browser-direct `/wc/v3` route is used, and the
 approved Lovable application remains the production presentation layer.
 
+## Owner-found acceptance regression and correction
+
+Owner testing on the real LocalWP Product Workspace confirmed that the application and category
+lookup loaded, but product submission stopped before the REST request with
+`TypeError: crypto.randomUUID is not a function`.
+
+The idempotency manager called `crypto.randomUUID()` directly before entering the request error
+boundary. The active site is served from `http://ysf-lite.local`; `Crypto.randomUUID()` is a
+secure-context API and is not exposed by this browser/runtime combination on that HTTP origin.
+`Crypto.getRandomValues()` remains the appropriate cryptographically secure compatibility
+primitive.
+
+The correction adds one centralized `generateSecureUuidV4()` implementation. It:
+
+- uses `globalThis.crypto.randomUUID()` when the method is available;
+- otherwise creates a standards-compatible UUID v4 from 16 bytes supplied by
+  `crypto.getRandomValues()` and sets the required version and variant bits;
+- throws `SecureRandomUnavailableError` when neither secure API is available;
+- never uses `Math.random()`, timestamps, sequential values, or a third-party UUID dependency.
+
+The product-create hook maps only that explicit failure to the existing form and destructive toast,
+retains the draft, sends no request, and adds no queue result. The server idempotency header,
+payload binding, replay, conflict, and reconciliation contracts are unchanged. All bundled UUID
+call sites now use the same generator. No layout, styling, component structure, or approved Lovable
+interaction was changed.
+
 ## Checkpoints
 
 1. Checkpoint A — `8476d4b8d46e93a49e9d7892b4d987542f3c36b4`
    (`feat: establish Phase 2 REST foundation`)
 2. Checkpoint B — `35cbba21ba09902a9e19ba75cb2a2b99e294cfbe`
    (`feat: create simple products idempotently`)
-3. Checkpoint C — final branch HEAD (`feat: connect Lovable product creation flow`)
+3. Checkpoint C — `93a798082a5e6a79dd9cecf868dc5e284554c0e9`
+   (`feat: connect Lovable product creation flow`)
+4. Acceptance correction — final branch HEAD
+   (`fix: support secure UUID fallback in LocalWP`)
 
 The branch was created and pushed before implementation. Remote `main` remained at the accepted
-starting SHA throughout the work. Checkpoint C is not merged to `main`.
+starting SHA throughout the work. The phase branch is not merged to `main`.
 
 Owner changes in `AGENTS.md` and `CLAUDE.md` were preserved in the checkout and excluded from every
 Phase 2 commit.
@@ -89,14 +118,19 @@ The final release gates pass:
 - `npm run check`
   - strict TypeScript
   - ESLint
-  - 78 maintained production files at or below 300 lines
-  - 8 Vitest files, 25 tests
+  - 80 maintained production files at or below 300 lines
+  - 9 Vitest files, 31 tests
   - production build
   - 23-asset production-boundary scan
 - `npm run audit:production`
   - zero production dependency vulnerabilities
 - `git diff --check`
   - clean
+
+The added regression coverage proves the native `randomUUID()` path, the secure
+`getRandomValues()` fallback, UUID-v4 structure, distinct fallback output, explicit failure when
+secure randomness is absent, successful product submission on the fallback path, and zero requests
+plus draft retention on the unavailable path.
 
 The local PHP process emits a pre-existing missing `php_imagick.dll` startup warning. It did not
 change the successful command exit statuses or test results.
@@ -118,18 +152,29 @@ disposable fixtures:
 - deleted both disposable products and the disposable category and confirmed no Phase 2 fixture
   products remained.
 
+For the acceptance correction, the frontend was rebuilt directly in the active LocalWP plugin. The
+manifest entry is `assets/main-dODYmQgr.js`. Its local and HTTP-served SHA-256 values both equal
+`52F0F54F289E8E639EA0E42BD020BDA143708FB0B1A1A82C49A103F884FA13D3`, proving that
+`ysf-lite.local` serves the corrected bundle. Yaxii Product Workspace `0.2.0-alpha.1` and
+WooCommerce `10.9.4` were both active when the deployment check ran. The complete LocalWP
+integration suite then passed 14 tests and 92 assertions, including real WooCommerce Draft,
+Publish, idempotency replay/conflict, authorization, and validation coverage with fixture cleanup.
+The unit suite separately covers write failures and WooCommerce-unavailable behavior.
+
 ## Guard results
 
-- `clean-code-guard`: clean after contract decomposition, exact decimal handling, trust-boundary
-  response validation, and category-request race protection.
+- `clean-code-guard`: clean after the acceptance correction; one platform-backed generator owns
+  UUID creation, the fallback sets UUID version/variant bits explicitly, and no weak fallback,
+  dependency, catch-all recovery, duplicate production logic, or UI change was introduced.
 - `wp-guard`: clean after explicit permissions, stable exception responses, nonce/capability tests,
   safe schema management, and prepared dynamic table identifiers.
 - `woo-guard`: clean; WooCommerce CRUD owns product persistence and reference/SKU checks precede
   writes.
-- `test-guard`: clean; meaningful unit, integration, repository, mapping, and component behaviors
-  cover success and failure paths without timing-based assertions.
-- `docs-guard`: clean; commands, routes, contracts, limits, test counts, and runtime claims were
-  verified against source or executed evidence.
+- `test-guard`: clean; the owner-found browser regression is named and reproduced at the product
+  boundary, randomness is mocked only at the browser boundary, and assertions cover request,
+  queue, retained-form, and explicit-failure behavior without timing-based assertions.
+- `docs-guard`: clean; UUID behavior, commands, test counts, bundle fingerprint, plugin versions,
+  and runtime limitations were verified against source or executed evidence.
 
 ## Documentation delivered
 
@@ -143,14 +188,21 @@ disposable fixtures:
 
 ## Owner acceptance HOLD
 
-The execution environment exposed no browser backend. Authenticated visual checks were therefore
-not run for desktop, tablet, 430 px, 375 px, light/dark, Focus Mode, or structural RTL. This report
-does not infer visual acceptance from source, component tests, compiled assets, or REST evidence.
+The correction environment still exposed no attached browser backend. It was therefore not
+possible to repeat the authenticated Save / Save & next click in the actual wp-admin page, inspect
+the console/network panel, or observe the queue after this rebuilt bundle was deployed. This report
+does not infer browser acceptance from component tests, a served-asset hash, or REST/WooCommerce
+integration evidence.
+
+The owner-found failure is corrected in source and the exact corrected asset is active on LocalWP,
+but Phase 2 remains on HOLD until the real Product Workspace confirms that the REST request is sent,
+the queue shows the server result, repeat submission creates no duplicate, and Draft/Publish both
+reach WooCommerce.
 
 Owner review target:
 
 `http://ysf-lite.local/wp-admin/admin.php?page=yaxii-product-workspace`
 
-To close Phase 2, the owner should verify the representative visual matrix and one Draft/Publish
-Save & next workflow, then explicitly accept the branch. Do not merge or begin Phase 3 before that
-acceptance.
+To close Phase 2, the owner should hard-refresh the page, verify one Draft and one Published Save &
+next workflow, repeat one submission to confirm a single WooCommerce product, and explicitly accept
+the branch. Do not merge or begin Phase 3 before that acceptance.

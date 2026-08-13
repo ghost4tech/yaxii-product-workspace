@@ -7,6 +7,7 @@ import { WorkspaceApiError } from "../../application/WorkspaceApiError";
 import type { OperationResult } from "../../domain/products";
 import type { WorkspaceBootstrap } from "../../domain/workspace";
 import { productOperationCopy } from "../../core/i18n/productMessages";
+import { SecureRandomUnavailableError } from "../../core/security/secureUuid";
 import { IdempotencyKeyManager } from "./idempotency";
 import { mapServerFields, operationErrorFields } from "./productErrors";
 import {
@@ -71,7 +72,18 @@ export function useProductCreate(client: WorkspaceClient, bootstrap: WorkspaceBo
       return { fields, state: "failed" };
     }
 
-    const key = keys.current.forRequest(request);
+    let key: string;
+    try {
+      key = keys.current.forRequest(request);
+    } catch (error) {
+      if (!(error instanceof SecureRandomUnavailableError)) throw error;
+      toast({
+        title: copy.productNotSaved,
+        description: copy.secureRandomUnavailable,
+        variant: "destructive",
+      });
+      return { fields: { root: copy.secureRandomUnavailable }, state: "failed" };
+    }
     inFlight.current = true;
     setIsSubmitting(true);
     try {

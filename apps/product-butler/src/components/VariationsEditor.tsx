@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { ProductVariation, VariationOption } from "@/types/product";
+import { generateSecureUuidV4 } from "@/production/core/security/secureUuid";
 
 interface VariationsEditorProps {
   variations: ProductVariation[];
@@ -17,7 +18,7 @@ export const VariationsEditor = forwardRef<HTMLDivElement, VariationsEditorProps
 
     const addVariation = useCallback(() => {
       const variation: ProductVariation = {
-        id: crypto.randomUUID(),
+        id: generateSecureUuidV4(),
         name: "",
         options: [],
       };
@@ -40,7 +41,7 @@ export const VariationsEditor = forwardRef<HTMLDivElement, VariationsEditorProps
 
     const addOption = useCallback((variationId: string) => {
       const option: VariationOption = {
-        id: crypto.randomUUID(),
+        id: generateSecureUuidV4(),
         value: "",
         price: "",
         salePrice: "",

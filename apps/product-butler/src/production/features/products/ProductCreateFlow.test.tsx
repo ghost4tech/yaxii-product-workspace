@@ -89,6 +89,15 @@ function renderWorkspace(repo: WorkspaceRepository) {
   render(<WorkspaceApp client={new WorkspaceClient(repo)} scope={scope} />, { container: app });
 }
 
+function replaceBrowserCrypto(cryptoSource: unknown): () => void {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, "crypto");
+  Object.defineProperty(globalThis, "crypto", { configurable: true, value: cryptoSource });
+  return () => {
+    if (descriptor) Object.defineProperty(globalThis, "crypto", descriptor);
+    else Reflect.deleteProperty(globalThis, "crypto");
+  };
+}
+
 async function fillRequiredFields(user: ReturnType<typeof userEvent.setup>) {
   await user.type(await screen.findByLabelText(/product name/i), "Canvas tote");
   await user.type(screen.getByLabelText(/^Price/i), "19.99");
@@ -115,6 +124,57 @@ afterEach(() => {
 });
 
 describe("real product create flow", () => {
+  it("submits with secure fallback UUIDs when randomUUID is unavailable", async () => {
+    let nextByte = 1;
+    const restoreCrypto = replaceBrowserCrypto({
+      getRandomValues(bytes: Uint8Array) {
+        bytes.fill(nextByte);
+        nextByte += 1;
+        return bytes;
+      },
+    });
+    const create = vi.fn((...args: [CreateProductRequest, string]) => {
+      void args;
+      return Promise.resolve(succeeded());
+    });
+
+    try {
+      const user = userEvent.setup();
+      renderWorkspace(repository(create));
+      await fillRequiredFields(user);
+      await user.click(screen.getByRole("button", { name: /save & next/i }));
+
+      await waitFor(() => expect(create).toHaveBeenCalledTimes(1));
+      expect(create.mock.calls[0]?.[1]).toMatch(
+        /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
+      );
+      expect((await screen.findAllByText("Synced")).length).toBeGreaterThan(0);
+    } finally {
+      restoreCrypto();
+    }
+  });
+
+  it("owner regression: reports unavailable secure randomness without sending a product request", async () => {
+    const restoreCrypto = replaceBrowserCrypto(undefined);
+    const create = vi.fn(() => Promise.resolve(succeeded()));
+
+    try {
+      const user = userEvent.setup();
+      renderWorkspace(repository(create));
+      await fillRequiredFields(user);
+      await user.click(screen.getByRole("button", { name: /save & next/i }));
+
+      expect(await screen.findByRole("alert")).toHaveTextContent(
+        "Secure product identity could not be generated. Product creation was not attempted.",
+      );
+      expect(create).not.toHaveBeenCalled();
+      expect(screen.getByLabelText(/product name/i)).toHaveValue("Canvas tote");
+      expect(screen.getByText("Queue is empty")).toBeVisible();
+    } finally {
+      restoreCrypto();
+    }
+  });
+
   it("prevents double submit, shows saving, and queues only the server result", async () => {
     let resolveCreate!: (value: OperationResult) => void;
     const create = vi.fn((...args: [CreateProductRequest, string]) => {

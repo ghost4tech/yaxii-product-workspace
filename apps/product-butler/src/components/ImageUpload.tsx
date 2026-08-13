@@ -3,6 +3,7 @@ import { Upload, X, GripVertical } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ProductImage } from '@/types/product';
 import { Button } from '@/components/ui/button';
+import { generateSecureUuidV4 } from '@/production/core/security/secureUuid';
 
 interface ImageUploadProps {
   images: ProductImage[];
@@ -55,7 +56,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         .slice(0, remainingSlots);
 
       const newImages: ProductImage[] = filesToProcess.map((file) => ({
-        id: crypto.randomUUID(),
+        id: generateSecureUuidV4(),
         file,
         preview: URL.createObjectURL(file),
         uploading: false,
