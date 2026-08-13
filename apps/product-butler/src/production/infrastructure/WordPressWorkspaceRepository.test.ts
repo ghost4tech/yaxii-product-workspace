@@ -93,6 +93,47 @@ describe("WordPressWorkspaceRepository", () => {
     expect(page.items[0]?.errors[0]?.fields).toEqual({});
   });
 
+  it("accepts the durable Phase 2 product summary in operation history", async () => {
+    vi.stubGlobal("fetch", () => Promise.resolve(new Response(JSON.stringify({
+      data: {
+        counts: { all: 1, draft: 0, error: 0, pending: 0, synced: 1 },
+        has_more: false,
+        items: [{
+          created_at: "2026-08-13 13:03:32",
+          errors: [],
+          input: null,
+          operation_id: "a655dc97-a337-41c2-8d63-14c9b43aa51a",
+          product: {
+            catalog_visibility: "visible",
+            category_ids: [16],
+            created_at: "2026-08-13T13:03:32+00:00",
+            id: 314,
+            image_ids: [],
+            manage_stock: true,
+            name: "Product 1",
+            regular_price: "200",
+            sale_price: "180",
+            sku: "SG2233",
+            status: "publish",
+            stock_quantity: 22,
+            stock_status: "instock",
+          },
+          replayed: false,
+          retry: { can_reconcile: false, can_retry: false, safe_to_resubmit: false },
+          state: "succeeded",
+          updated_at: "2026-08-13 13:03:33",
+          warnings: [],
+        }],
+        page: 1,
+        per_page: 25,
+        total: 1,
+      },
+    }), { status: 200, headers: { "Content-Type": "application/json" } })));
+
+    const page = await new WordPressWorkspaceRepository(host).listOperations({ perPage: 25 });
+    expect(page.items[0]?.product).toMatchObject({ id: 314, name: "Product 1", status: "publish" });
+  });
+
   it("passes cancellation through bounded product search", async () => {
     const fetchMock = vi.fn((...args: [RequestInfo | URL, RequestInit?]) => {
       void args;

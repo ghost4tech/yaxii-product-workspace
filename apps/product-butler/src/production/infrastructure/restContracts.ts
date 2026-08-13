@@ -38,6 +38,13 @@ export const canonicalProductSchema = simpleProductFieldsSchema.extend({
   version: z.string().length(64),
 });
 
+const operationProductSchema = canonicalProductSchema.partial().extend({
+  id: z.number().int().positive(),
+  name: z.string(),
+  sku: z.string(),
+  status: z.enum(["draft", "publish", "pending"]),
+});
+
 export const trashedProductSchema = z.object({
   id: z.number().int().positive(),
   status: z.literal("trash"),
@@ -67,6 +74,10 @@ export const operationResultSchema = z.object({
   state: z.enum(["succeeded", "failed", "processing", "uncertain"]),
   updated_at: z.string().nullable().optional(),
   warnings: z.array(z.string()),
+});
+
+const operationHistoryResultSchema = operationResultSchema.extend({
+  product: operationProductSchema.nullable(),
 });
 
 export const termPageSchema = z.object({
@@ -99,7 +110,7 @@ export const operationPageSchema = z.object({
     synced: z.number().int().nonnegative(),
   }),
   has_more: z.boolean(),
-  items: z.array(operationResultSchema),
+  items: z.array(operationHistoryResultSchema),
   page: z.number().int().positive(),
   per_page: z.number().int().positive().max(50),
   total: z.number().int().nonnegative(),

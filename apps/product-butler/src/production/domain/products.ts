@@ -52,6 +52,9 @@ export interface CanonicalProduct extends SimpleProductFields {
   version: string;
 }
 
+export type OperationProduct = Pick<CanonicalProduct, "id" | "name" | "sku" | "status">
+  & Partial<Omit<CanonicalProduct, "id" | "name" | "sku" | "status">>;
+
 export interface OperationError {
   code: string;
   fields: Record<string, string[]>;
@@ -71,6 +74,10 @@ export interface OperationResult {
   warnings: string[];
 }
 
+export interface OperationHistoryResult extends Omit<OperationResult, "product"> {
+  product: OperationProduct | null;
+}
+
 export interface PagedResult<T> {
   has_more: boolean;
   items: T[];
@@ -88,7 +95,7 @@ export interface OperationCounts {
   pending: number;
   synced: number;
 }
-export type OperationPage = PagedResult<OperationResult> & {
+export type OperationPage = PagedResult<OperationHistoryResult> & {
   counts: OperationCounts;
   total: number;
 };

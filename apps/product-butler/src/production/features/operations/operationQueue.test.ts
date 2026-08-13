@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { operationToQueueProduct } from "./operationQueue";
 import { workspaceSnapshot } from "../../test/workspaceFixtures";
-import type { OperationResult } from "../../domain/products";
+import type { OperationHistoryResult } from "../../domain/products";
 
 describe("operationToQueueProduct", () => {
   it("exposes server-authoritative reconciliation only for uncertain operations", () => {
@@ -13,7 +13,7 @@ describe("operationToQueueProduct", () => {
       retry: { can_reconcile: true, can_retry: false, safe_to_resubmit: false },
       state: "uncertain",
       warnings: [],
-    } satisfies OperationResult;
+    } satisfies OperationHistoryResult;
 
     const product = operationToQueueProduct(operation, workspaceSnapshot.bootstrap);
     expect(product.status).toBe("pending");

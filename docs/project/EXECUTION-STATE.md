@@ -39,19 +39,19 @@ owner's local `AGENTS.md` and `CLAUDE.md` edits remain preserved and outside Pha
 ## Verification state
 
 - `npm ci` completed from the lockfile; `npm run check` passed strict TypeScript, lint, the line
-  limit for 98 production files, 42 Vitest tests in 12 files, build, and 23-asset boundary scan.
+  limit for 98 production files, 43 Vitest tests in 12 files, build, and 23-asset boundary scan.
 - `npm run audit:production` reported zero vulnerabilities.
-- `composer check` passed strict validation, lint for 55 maintained PHP files, PHPCS, PHPStan, and
+- `composer check` passed strict validation, lint for 56 maintained PHP files, PHPCS, PHPStan, and
   19 unit tests with 52 assertions.
-- the LocalWP integration suite passed 24 tests with 273 assertions. Its only runtime noise is the
+- the LocalWP integration suite passed 25 tests with 286 assertions. Its only runtime noise is the
   pre-existing optional `php_imagick.dll` startup warning.
 - authenticated LocalWP browser QA completed the required create, edit/reload, duplicate,
   Save & Next, search/open, stale-conflict, failure/recovery, retry/reconciliation, dismissal, and
   trash workflows and inspected visible UI, network behavior, and resulting WooCommerce data.
 - visual QA covered 1440px, 1280px, 768px, 430px, and 375px; light/dark; Focus Mode;
   compact/comfortable; product entry/editing; queue; dialogs; error states; and structural RTL.
-- eight runtime issues found during QA were fixed and browser-retested. No browser errors remained
-  in the final session.
+- the eight runtime issues found during initial QA and the owner-found queue compatibility
+  regression were fixed and browser-retested. No browser errors remained in the final session.
 - all disposable products, QA operation rows, the temporary QA user, browser session, and credential
   profile were removed. The screenshot/report evidence remains in the local temporary QA folder.
 

@@ -60,10 +60,10 @@ paths remain operational; treat it as a failure only when the tested behavior re
 
 - `npm ci` installed 462 packages; the production audit reported zero vulnerabilities.
 - `npm run check` passed typecheck, lint, 98 maintained production files at or below 300 lines,
-  42 Vitest tests in 12 files, the production build, and a clean scan of 23 built assets.
-- `composer check` passed validation, lint for 55 maintained PHP files, PHPCS, PHPStan, and 19 unit
+  43 Vitest tests in 12 files, the production build, and a clean scan of 23 built assets.
+- `composer check` passed validation, lint for 56 maintained PHP files, PHPCS, PHPStan, and 19 unit
   tests with 52 assertions.
-- the LocalWP integration suite passed 24 tests with 273 assertions.
+- the LocalWP integration suite passed 25 tests with 286 assertions.
 - authenticated browser QA exercised the complete simple-product lifecycle, console/network state,
   persisted WooCommerce data, failure/recovery paths, and the required responsive/theme/density/RTL
   visual matrix. Disposable products, QA operations, and the temporary QA user were removed.

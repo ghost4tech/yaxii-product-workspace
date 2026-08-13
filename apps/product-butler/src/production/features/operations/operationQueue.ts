@@ -1,4 +1,4 @@
-import type { OperationResult } from "../../domain/products";
+import type { OperationHistoryResult } from "../../domain/products";
 import type { Product, ProductImage } from "@/types/product";
 import type { WorkspaceBootstrap } from "../../domain/workspace";
 
@@ -12,7 +12,7 @@ export function operationFilters(status: QueueStatus) {
   return { state: "all" };
 }
 
-function operationImages(result: OperationResult): ProductImage[] {
+function operationImages(result: OperationHistoryResult): ProductImage[] {
   return (result.product?.images ?? []).map((image) => ({
     id: `wp-${image.id}`,
     preview: image.url,
@@ -21,7 +21,7 @@ function operationImages(result: OperationResult): ProductImage[] {
 }
 
 export function operationToQueueProduct(
-  result: OperationResult,
+  result: OperationHistoryResult,
   bootstrap: WorkspaceBootstrap,
 ): Product {
   const product = result.product;
@@ -29,7 +29,7 @@ export function operationToQueueProduct(
   return {
     canReconcile: result.retry.can_reconcile,
     canRetry: result.retry.can_retry,
-    categoryId: String(product?.category_ids[0] ?? input?.category_ids[0] ?? ""),
+    categoryId: String(product?.category_ids?.[0] ?? input?.category_ids[0] ?? ""),
     createdAt: new Date(result.created_at ?? product?.created_at ?? Date.now()),
     createdBy: bootstrap.user.displayName,
     currencySymbol: bootstrap.woocommerce.currencySymbol,
