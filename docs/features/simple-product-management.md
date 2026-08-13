@@ -1,63 +1,69 @@
 # Simple Product Management
 
-**Status:** Phase 3 Checkpoint A backend implemented; Checkpoint C Lovable UI integration pending
+**Status:** Implemented and runtime-tested in Phase 3
 
-## Workflow
+## Merchant workflow
 
-Authorized users can search and open existing simple products, update their complete supported
-field set, start a new draft from a duplicate prefill, and move a product to the WooCommerce trash.
-These capabilities are exposed through the same-origin Yaxii REST API. They are not yet presented as
-a complete browser workflow until Phase 3 Checkpoint C connects them to the existing Lovable UI.
+The approved Lovable Entry workspace now supports the normal simple-product lifecycle without
+opening WooCommerce's native Add Product editor: create, find/open, edit, duplicate into an unsaved
+draft, Save & Next, reconcile or safely retry an operation, and move a product to trash.
 
-Product search and category, tag, and shipping-class lookups are server-side, paged, and bounded to
-at most 50 results per request. Search results contain real WooCommerce IDs and canonical product
-data; the browser does not receive or persist the entire catalog.
+The product finder searches WooCommerce on the server in pages of 20. Product, category, tag, and
+shipping-class searches are debounced and cancel superseded requests. Tax classes come from the
+bounded workspace bootstrap rather than a catalog load. No catalog mirror is loaded or persisted
+in the browser.
 
 ## Supported fields
 
-The resource supports name, slug, both descriptions, product status, catalog visibility, regular
-and sale price, sale schedule, SKU, stock management, quantity, stock status, backorders, sold
-individually, weight, dimensions, shipping class, tax status, tax class, categories, tags, featured
-image, and gallery.
+The Essentials and Extended panels persist the WooCommerce-owned simple-product fields:
 
-WooCommerce owns every product field. The plugin maps validated request data to
-`WC_Product_Simple` setters and reloads the saved object before returning it.
+- name, slug, description, short description, status, and catalog visibility;
+- regular price, sale price, and local-store sale start/end dates;
+- SKU, manage stock, quantity, stock status, backorders, and sold individually;
+- weight, length, width, height, shipping class, tax status, and tax class;
+- categories, tags, featured image, and gallery attachment IDs.
 
-## Editing and conflicts
+The server maps validated values to `WC_Product_Simple` setters. It does not create custom product
+meta for fields WooCommerce owns. Variable products remain excluded until Phase 4.
 
-Opening a product returns a `version` hash of its canonical editable fields. Update sends that value
-as `expected_version` with a complete product object. A stale version returns HTTP 409 and
-`ypw_product_conflict`; no incoming product fields are written. A client must reload and let the
-user decide how to proceed.
+## Editing and conflict protection
 
-Complete updates distinguish an omitted field from an explicit clear. Unknown fields and partial
-product objects are rejected rather than silently mutating a subset the client may not understand.
+Opening a product returns its canonical editable resource and a `version` hash. An update sends the
+version as `expected_version` with the complete allowlisted product object. A stale request returns
+HTTP 409 and `ypw_product_conflict` before any incoming field is written. The Lovable dialog lets
+the merchant keep the local draft or reload the latest server values.
+
+Complete updates make clearing explicit because every allowlisted field must be present. Unknown
+fields and partial update objects are rejected instead of silently mutating an unsupported subset.
 
 ## Duplicate and trash
 
-Duplicate is prefill-only. It copies safe field values, sets Draft status, appends “Copy” to the
-name, and clears SKU and slug. It performs no WooCommerce product write and returns no product ID.
+Duplicate is read-only until Save. The server supplies safe prefill values, appends `(Copy)` to the
+name, sets Draft status, and clears SKU and slug. It returns no new product ID and performs no
+WooCommerce write.
 
-Trash requires both the product-level delete capability and the current version. It uses the
-WooCommerce CRUD delete operation without force deletion, so the resulting WordPress product state
-is `trash`. Removing a queue row is a separate operation and is not implemented by this endpoint.
+Trash requires object-level delete capability and the current version. It calls WooCommerce CRUD
+without force deletion and returns a narrow `{id, status: "trash"}` result. Queue dismissal is a
+separate operation and explicitly does not trash the WooCommerce product.
 
 ## Security and validation
 
-The server enforces authentication, REST nonce validation, route permission callbacks, product
-object capabilities, publishing permission, term-assignment permission, and media access. It
-allowlists and sanitizes fields, validates SKU uniqueness, configured tax class slugs, taxonomy
-references, and image attachments, then writes through WooCommerce CRUD.
+Every route requires WordPress cookie authentication, a valid REST nonce, a permission callback,
+and application-layer capability checks. Publishing, term assignment, media use, object edit, and
+object delete are independently enforced. The server validates SKU uniqueness, configured tax
+classes, taxonomy references, image attachments, field types, and the field allowlist before a
+WooCommerce mutation.
 
 ## Evidence and limits
 
-Isolated unit coverage exercises stale versions and the publish, term, media, edit, and delete
-capability decisions. LocalWP integration coverage exercises a complete field round trip, bounded
-search, detail, persisted update, conflict without overwrite, duplicate without write, object-level
-route denial, and versioned trash with fixture cleanup.
+The PHP and REST suites cover create/read/query/update, complete field round trips, stale conflict,
+duplicate without write, object capabilities, references, and versioned trash. Frontend tests
+cover full mapping, hydration contracts, cancellation, duplicate drafts, and field errors.
 
-Save & Next, persistent preferences, bounded browser draft recovery, and the server-authoritative
-queue are implemented in Checkpoint B and documented in
-`docs/features/productivity-and-operation-workflow.md`. Complete product-management UI and the
-authenticated browser/visual acceptance matrix remain Checkpoint C work. Variable products remain
-excluded until Phase 4.
+Authenticated LocalWP QA created Draft and Published products, edited and reloaded name, price,
+stock, category, image, description, and weight, simulated a stale edit, duplicated without an
+early write, searched/opened products, and trashed a disposable product. All QA products and
+operation rows were removed afterward.
+
+French and Arabic copy is not complete. The production root and portals retain locale direction,
+logical spacing, and structural RTL support without a duplicated layout.

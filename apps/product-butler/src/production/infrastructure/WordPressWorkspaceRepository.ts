@@ -18,6 +18,7 @@ import {
   productPageSchema,
   simpleProductFieldsSchema,
   termPageSchema,
+  trashedProductSchema,
 } from "./restContracts";
 
 type JsonRecord = Record<string, unknown>;
@@ -137,9 +138,9 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
     return parse(await this.request(`products/${id}`, this.json("PUT", { expected_version: version, product }), true), canonicalProductSchema, "product");
   }
 
-  public async trashProduct(id: number, version: string): Promise<CanonicalProduct> {
+  public async trashProduct(id: number, version: string): Promise<void> {
     const params = new URLSearchParams({ expected_version: version });
-    return parse(await this.request(`products/${id}?${params}`, { method: "DELETE" }, true), canonicalProductSchema, "product");
+    parse(await this.request(`products/${id}?${params}`, { method: "DELETE" }, true), trashedProductSchema, "trashed product");
   }
 
   public async duplicateProduct(id: number): Promise<CreateProductRequest> {

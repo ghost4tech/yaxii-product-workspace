@@ -123,7 +123,8 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
             {group.key && <div className="label-eyebrow sticky top-0 z-10 border-b border-border/70 bg-background/95 px-4 py-1.5 backdrop-blur">{group.key}</div>}
             <ul className="divide-y divide-border/70">
               {group.items.map((product) => <QueueRow key={product.id} compact={compact} onDelete={requestDismiss}
-                onEdit={onEdit} onRetry={(item) => { if (item.canRetry) queue.retry(item.id); onRetry?.(item); }}
+                onEdit={onEdit} onReconcile={(item) => { if (item.canReconcile) queue.reconcile(item.id); }}
+                onRetry={(item) => { if (item.canRetry) queue.retry(item.id); onRetry?.(item); }}
                 product={product} relativeTimestamps={preferences.relative_timestamps} />)}
             </ul>
           </div>

@@ -2,80 +2,60 @@
 
 **Updated:** 2026-08-13
 
-**Current phase:** Phase 3 in progress; Checkpoints A and B implemented, Checkpoint C pending
+**Current phase:** Phase 3 implementation and acceptance gates complete; awaiting owner acceptance
 
-**Acceptance state:** IN PROGRESS — Phase 3 browser/runtime acceptance has not started
+**Acceptance state:** READY FOR OWNER ACCEPTANCE - branch is pushed and must not be merged yet
 
 ## Canonical repository
 
 - Repository: `https://github.com/ghost4tech/yaxii-product-workspace.git`
 - Accepted Phase 3 starting `main`: `4158bc7f52447e58c67603054e270ea24249c122`
 - Phase 3 branch: `phase/03-free-simple-product-workflow`
-- Phase 3 Checkpoint A: `fdf5ccde8038926013efea6271c8561ff0097318`
-- Phase 2 branch: `phase/02-simple-product-vertical-slice`
-- Checkpoint A: `8476d4b8d46e93a49e9d7892b4d987542f3c36b4`
-- Checkpoint B: `35cbba21ba09902a9e19ba75cb2a2b99e294cfbe`
-- Checkpoint C: `93a798082a5e6a79dd9cecf868dc5e284554c0e9`
-- Acceptance correction: `bbf451afb7bf311b04b10e87369b01cc85a3e952`
+- Checkpoint A: `fdf5ccde8038926013efea6271c8561ff0097318`
+- Checkpoint B: `c5ece83894ecd9a74423fddde8e9139cf2d8b133`
+- Checkpoint C: the commit containing this closeout; its exact verified remote SHA is reported in the
+  owner handoff
 - Package managers: Composer for PHP and npm for the frontend
-- Frontend lockfile: `apps/product-butler/package-lock.json`
 
-The Phase 3 branch was created from the exact accepted `main` SHA and pushed before implementation.
-Owner edits in `AGENTS.md` and `CLAUDE.md` remain preserved and outside Phase 3 commits.
+The branch was created from the exact accepted `main` SHA and pushed before implementation. The
+owner's local `AGENTS.md` and `CLAUDE.md` edits remain preserved and outside Phase 3 commits.
 
 ## Implemented Phase 3 state
 
-- Checkpoint A implements the full simple-product WooCommerce domain, bounded search/detail,
-  complete updates, optimistic conflict rejection, safe duplicate prefill, and versioned trash.
-- Checkpoint B implements WordPress-side workflow defaults, canonical Save & Next reset/repeat,
-  bounded and expiring browser draft recovery, and a server-authoritative recent-operation queue.
-- Queue search/filter/counts are server-side; manual retry is restricted to durable write failures
-  and atomically reuses the original operation identity and normalized request.
-- Complete Lovable product search/open/edit/duplicate/trash UI and browser/visual acceptance remain
-  Checkpoint C work. Phase 3 remains in progress.
+- The approved Lovable Entry workspace supports create, bounded find/open, complete simple-product
+  edit, optimistic conflict rejection, duplicate into an unsaved draft, Save & Next, operation
+  reconciliation and safe retry, and versioned trash.
+- The complete approved Free simple-product field set maps to WooCommerce CRUD; no WooCommerce-owned
+  product fields use custom plugin meta.
+- Product and taxonomy search are bounded and server-side; React debounces them and cancels
+  superseded requests. The browser stores no catalog mirror.
+- WordPress-side per-user defaults drive the approved repeat workflow. Browser draft recovery is
+  versioned, expires after seven days, is capped at 300 KB, and excludes credentials and raw files.
+- The recent-operation queue is server-authoritative, bounded, searchable, filterable, reconcilable,
+  retry-safe, and explicitly separates dismissal from WooCommerce trash.
+- Variable products and all Phase 4/Pro/Agency features remain excluded and hidden from Free
+  production while approved Lovable source stays preserved.
 
-## Implemented Phase 2 state
+## Verification state
 
-- Composer PSR-4, a small composition root, PHPCS/WPCS, PHPStan, PHPUnit, and current-site
-  WordPress/WooCommerce integration tests form the PHP foundation.
-- Same-origin REST resources expose a bounded bootstrap, product categories, simple-product create,
-  and per-user operation reconciliation.
-- `CreateProductService` enforces capabilities and durable idempotency before WooCommerce CRUD.
-- `WC_Product_Simple` persists the supported name, prices, SKU, stock, category, descriptions,
-  existing image attachment IDs, visibility, tax status, and Draft/Publish intent.
-- Same key plus same normalized payload returns or reconciles one result; conflicting key reuse is
-  rejected.
-- The approved Lovable form now drives the production create flow. Success and queue state come from
-  the server; failures retain the draft, and uncertain outcomes retain their idempotency identity.
-- Bounded category search and the current WordPress media library replace prototype catalog and
-  credential paths.
-- Variable products, sale schedules, pending review, and queue edit/retry/delete remain outside this
-  vertical slice and are truthfully unavailable.
+- `npm ci` completed from the lockfile; `npm run check` passed strict TypeScript, lint, the line
+  limit for 98 production files, 42 Vitest tests in 12 files, build, and 23-asset boundary scan.
+- `npm run audit:production` reported zero vulnerabilities.
+- `composer check` passed strict validation, lint for 55 maintained PHP files, PHPCS, PHPStan, and
+  19 unit tests with 52 assertions.
+- the LocalWP integration suite passed 24 tests with 273 assertions. Its only runtime noise is the
+  pre-existing optional `php_imagick.dll` startup warning.
+- authenticated LocalWP browser QA completed the required create, edit/reload, duplicate,
+  Save & Next, search/open, stale-conflict, failure/recovery, retry/reconciliation, dismissal, and
+  trash workflows and inspected visible UI, network behavior, and resulting WooCommerce data.
+- visual QA covered 1440px, 1280px, 768px, 430px, and 375px; light/dark; Focus Mode;
+  compact/comfortable; product entry/editing; queue; dialogs; error states; and structural RTL.
+- eight runtime issues found during QA were fixed and browser-retested. No browser errors remained
+  in the final session.
+- all disposable products, QA operation rows, the temporary QA user, browser session, and credential
+  profile were removed. The screenshot/report evidence remains in the local temporary QA folder.
 
-## Evidence state
+## Historical acceptance
 
-- `composer run check`: Composer validation, PHP lint, PHPCS, PHPStan, and 8 unit tests with 25
-  assertions pass.
-- `composer run test:integration`: 14 tests with 92 assertions pass against the active LocalWP site.
-- `npm ci`, `npm run check`, and `npm run audit:production`: 31 frontend tests pass, all 80 maintained
-  production files are at most 300 lines, the production build/boundary scan passes, and the
-  production dependency audit reports zero vulnerabilities.
-- LocalWP runtime REST dispatch created and inspected disposable Draft and Published products,
-  verified their canonical saved values, proved idempotent replay returned one product, rejected
-  conflicting key reuse with HTTP 409, and removed the fixtures.
-- A WooCommerce-inactive runtime check reported the dependency unavailable and produced zero product
-  writes; WooCommerce was then restored.
-- An unauthenticated HTTP bootstrap request returned HTTP 401.
-
-The local PHP runtime emits a pre-existing missing `php_imagick.dll` startup warning; it did not
-change command exit status or the passing results above.
-
-## Owner acceptance
-
-On 2026-08-13, the owner verified the active LocalWP Product Workspace through authenticated
-wp-admin testing. Draft and Published Save & Next both created real WooCommerce products, the queue
-showed server-authoritative results, repeated/double submission produced no duplicate, the
-`crypto.randomUUID` failure was absent, and no blocking console or network error remained.
-
-The owner accepted Phase 2 and authorized merge to `main`. Phase 2 is closed. Phase 3 has not
-started.
+Phase 2 was accepted and merged before this branch. Phase 3 is implemented and verified but has not
+been merged. Stop here for owner review; do not begin Phase 4.

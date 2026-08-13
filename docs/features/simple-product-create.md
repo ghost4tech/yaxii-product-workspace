@@ -1,73 +1,45 @@
 # Simple Product Create
 
-**Status:** Implemented in Phase 2; owner visual acceptance pending
+**Status:** Implemented and runtime-tested in Phase 3
 
 ## Purpose and workflow
 
-An authorized WordPress user can submit the approved Lovable `Save & next` action to create a
-simple product in the WooCommerce store on the same WordPress installation. The existing form,
-Essentials/Extended layout, Focus Mode, queue, responsive composition, themes, density, dialogs,
-and keyboard shortcut remain the presentation layer.
+An authorized merchant creates a real WooCommerce simple product from the approved Lovable Entry
+workspace. Save & Next submits the form through the same-site Yaxii REST boundary, uses the
+canonical server result, updates the operation queue, prepares the next draft according to the
+merchant's repeat preferences, and optionally returns focus to the product-name field.
 
-The Phase 2 request supports product name, SKU, regular and optional sale price, basic stock,
-one selected category, descriptions, up to 10 existing WordPress image attachment IDs, catalog
-visibility, tax status, and Draft or Publish intent.
+The current field contract and lifecycle are documented in
+[`simple-product-management.md`](simple-product-management.md). Variable products remain hidden
+from the Free production navigation and are deferred to Phase 4.
 
 ## Application flow
 
-`Lovable form -> useProductCreate -> WorkspaceClient -> WordPressWorkspaceRepository -> POST /products -> CreateProductService -> WooProductGateway -> WC_Product_Simple::save()`
+`Lovable form -> useProductEntryController -> WorkspaceClient -> WordPressWorkspaceRepository -> POST /products -> ProductManagementService -> WooProductGateway -> WC_Product_Simple::save()`
 
-The client sends an `Idempotency-Key` UUID and the WordPress REST nonce. The server revalidates the
-allowlisted request, capabilities, SKU, category terms, and media attachments before invoking the
-WooCommerce CRUD object. Client capabilities only control the button state; they do not authorize
-the write.
+The browser generates an idempotency key for the create intent. The server durably reserves the
+normalized request identity before the write, marks the product with the private operation
+identity, and returns the
+canonical product resource after persistence. An uncertain response is reconciled by operation ID;
+the browser does not blindly repeat a non-idempotent create.
 
-## Observable behavior
+## Security and validation
 
-- `Save & next` and Ctrl/Cmd+Enter invoke the same guarded submit path.
-- A synchronous in-flight lock and the disabled loading control prevent accidental double submit.
-- A successful server result creates or updates the matching queue row with the real operation ID
-  and WooCommerce product ID.
-- Published products appear as Synced; Draft products appear as Draft.
-- After success, the form clears. When `Keep values after save` is enabled, category, price, sale
-  price, and stock remain for the next entry.
-- Validation or write failure retains the draft, maps supported server field errors into the form,
-  and never displays success.
-- A lost response retains both the form and the idempotency identity. Submitting the unchanged
-  payload again reconciles the original command rather than issuing a blind create.
-- Category choices come from a bounded same-origin search. Clicking the approved image control in
-  WordPress opens the native media library and records attachment IDs.
+The route requires WordPress cookie authentication, a valid REST nonce, `edit_products`, and the
+more specific publish, taxonomy, and media capabilities when the submitted values require them.
+The server applies a strict field allowlist, validates references and configured values, checks SKU
+uniqueness, and maps the request through WooCommerce CRUD setters.
 
-## Security and persistence
+## Error and recovery behavior
 
-The REST route requires cookie authentication, a valid `X-WP-Nonce`, a non-public
-`permission_callback`, and server capability checks. Publish also requires `publish_products`.
-Inputs are allowlisted, validated, normalized, and sanitized before WooCommerce receives them.
-Products are written only through `WC_Product_Simple` setters and `save()`.
-
-The browser stores no WooCommerce keys and never calls `/wc/v3`. Product results are not persisted
-as a browser catalog. Draft preferences remain the only bounded browser persistence.
-
-## Phase 2 limits
-
-- Variable products are visible as preserved Lovable source but cannot be submitted in Phase 2.
-- Sale schedule dates are not persisted; entering them blocks the write with a truthful message.
-- Dragged or locally browsed browser files are not uploaded implicitly. Images must have a current
-  WordPress attachment ID before submission.
-- `pending` product status is not in the Phase 2 contract; users must choose Draft or Publish.
-- Product editing, deletion, and retry controls are not server-connected in this phase.
-- Full French and Arabic copy remains deferred. New operation copy is centralized behind the
-  existing locale selection boundary, and root/portal direction continues to support RTL.
+Validation errors return stable field paths for the existing inline error presentation. Known
+write failures become failed queue entries only when the server can state that no product was
+created. An ambiguous response retains the draft and exposes reconciliation. A retry is available
+only when the server's durable operation state explicitly authorizes it.
 
 ## Evidence
 
-PHP integration coverage exercises Draft and Publish persistence, capability denial, malformed
-input, duplicate SKU, invalid references, idempotent replay/conflict, operation lookup, bounded
-categories, invalid nonce behavior, and zero-write failure paths. Frontend tests cover DTO and
-field-error mapping, saving state, double-submit prevention, queue results, draft preservation,
-uncertain response reuse, reconciliation, and the keyboard shortcut.
-
-LocalWP runtime checks created real disposable Draft and Published products, inspected canonical
-WooCommerce values, proved replay used one product ID and conflict returned 409, then deleted the
-products. Authenticated browser visual verification remains pending because no browser backend was
-available in the execution session.
+Automated coverage exercises Draft and Published creates, validation, capabilities, idempotent
+replay, uncertain reconciliation, and WooCommerce round trips. Authenticated LocalWP browser QA
+created both statuses, tested duplicate SKU and nonce failures, and verified the resulting
+WooCommerce data before removing all disposable fixtures.

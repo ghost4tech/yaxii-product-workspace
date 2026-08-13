@@ -157,7 +157,13 @@ final class SimpleProductLifecycleTest extends TestCase {
 
 		$response = $this->dispatch( 'DELETE', '/products/' . $product['id'], array( 'expected_version' => $product['version'] ) );
 		self::assertSame( 200, $response->get_status() );
-		self::assertSame( 'trash', $this->data( $response )['status'] );
+		self::assertSame(
+			array(
+				'id'     => $product['id'],
+				'status' => 'trash',
+			),
+			$this->data( $response )
+		);
 		self::assertSame( 'trash', get_post_status( $product['id'] ) );
 	}
 

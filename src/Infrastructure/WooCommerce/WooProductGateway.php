@@ -102,9 +102,10 @@ final class WooProductGateway implements ProductGateway {
 			throw new RuntimeException( 'The requested simple product is unavailable.' );
 		}
 		$product->delete( false );
-		$resource           = $this->mapper->resource( $product );
-		$resource['status'] = (string) get_post_status( $product_id );
-		return $resource;
+		return array(
+			'id'     => $product_id,
+			'status' => (string) get_post_status( $product_id ),
+		);
 	}
 
 	public function duplicate_prefill( int $product_id ): ?array {

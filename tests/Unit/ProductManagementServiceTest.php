@@ -52,15 +52,9 @@ final class ProductManagementServiceTest extends TestCase {
 		self::assertArrayNotHasKey( 'id', $prefill );
 	}
 
-	public function test_delete_requires_object_capability(): void {
+	public function test_trash_requires_object_delete_capability(): void {
 		$this->capabilities->delete = false;
-
-		try {
-			$this->service->trash( 123, str_repeat( 'a', 64 ) );
-			self::fail( 'Expected trash to be denied.' );
-		} catch ( ApiException $exception ) {
-			self::assertSame( 'ypw_forbidden', $exception->api_code() );
-		}
+		$this->expectApiCode( 'ypw_forbidden', fn () => $this->service->trash( 123, str_repeat( 'a', 64 ) ) );
 	}
 
 	public function test_update_requires_object_edit_capability(): void {

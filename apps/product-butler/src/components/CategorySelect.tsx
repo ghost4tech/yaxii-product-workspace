@@ -118,7 +118,7 @@ export const CategorySelect: React.FC<CategorySelectProps> = ({
             aria-expanded={open}
             className="w-full justify-between h-10 font-normal"
           >
-            {selectedLabel || 'Select category...'}
+            {selectedLabel || (value ? `Category #${value}` : 'Select category...')}
             <ChevronsUpDown className="ms-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>

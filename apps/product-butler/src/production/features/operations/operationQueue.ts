@@ -27,6 +27,7 @@ export function operationToQueueProduct(
   const product = result.product;
   const input = result.input;
   return {
+    canReconcile: result.retry.can_reconcile,
     canRetry: result.retry.can_retry,
     categoryId: String(product?.category_ids[0] ?? input?.category_ids[0] ?? ""),
     createdAt: new Date(result.created_at ?? product?.created_at ?? Date.now()),

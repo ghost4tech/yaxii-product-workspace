@@ -1,46 +1,35 @@
 # Product Operation Results
 
-**Status:** Implemented for Phase 2 simple-product creation
+**Status:** Implemented and runtime-tested in Phase 3
 
-## Resource
+## Resource and queue
 
-`POST /wp-json/yaxii-product-workspace/v1/products` returns a stable operation resource under
-`data`. `GET /wp-json/yaxii-product-workspace/v1/operations/{operation_id}` returns the same resource
-for its owning site and user.
+Create operations are durable, per-user resources. The create response, single-operation endpoint,
+and paged operation collection expose the same canonical identity and state. A resource includes
+the operation ID, state, normalized request, canonical product/result when known, timestamps,
+structured errors, warnings, replay status, and server-owned retry permissions.
 
-The resource contains:
+The queue is read from the server rather than reconstructed from toasts or browser storage. Search,
+state and publish-status filters, pagination, and counts are server-side. Pages are capped at 50
+rows and terminal history at 200 rows per user; active operations are retained.
 
-- `operation_id`: server UUID;
-- `state`: `succeeded`, `failed`, `processing`, or `uncertain`;
-- `product`: canonical WooCommerce summary when known;
-- `warnings` and structured `errors`;
-- `replayed`: whether the result came from an existing operation;
-- `retry.can_reconcile` and `retry.safe_to_resubmit`.
+## Lifecycle
 
-The response also currently contains `http_status`, which records the operation's response status.
+- `processing` and `uncertain` operations may be reconciled read-only when the server allows it.
+- `failed` operations expose manual Retry only for the narrow stored write-failure state that is
+  safe to revalidate and claim.
+- `succeeded` operations carry the real WooCommerce product ID and result.
+- Dismiss removes an eligible row from the visible queue without modifying its WooCommerce product.
 
-## Idempotency contract
+Reconciliation checks the private product operation marker before changing state. Retry also checks
+for an existing product, revalidates the original request and current capabilities, and atomically
+claims the operation. Once claimed or succeeded, another retry returns a conflict instead of
+creating a duplicate.
 
-Every create request requires an `Idempotency-Key` UUID. The server stores an HMAC of the key rather
-than the raw key. Request identity is unique across site, user, operation type, and key, and the
-normalized allowlisted payload is bound by SHA-256.
+## Security and evidence
 
-- Same key and same payload returns or reconciles the original result.
-- Same key and different payload returns `ypw_idempotency_conflict` with HTTP 409.
-- A processing operation is reconciled against a bounded WooCommerce lookup using the private
-  `_ypw_operation_id` marker saved through the product CRUD object.
-- If the product is known but the operation result cannot be persisted, the response is
-  `uncertain`; it is never reported as success.
-
-The mechanism is a narrow product-create ledger in the `{$wpdb->prefix}ypw_operations` table. It is
-not a general queue or the future paid job engine.
-
-## Failure semantics
-
-Pre-write authentication, authorization, request validation, SKU, taxonomy, and media failures
-produce zero product writes. Validation failures expose field-addressable messages. WooCommerce
-write failures produce a durable failed operation when possible. A missing browser response is
-treated as unknown: the draft remains and the unchanged request retains its key for safe replay.
-
-Queue status is derived from the server operation. Only `succeeded` with a canonical product can
-become Draft or Synced. `failed` becomes Failed, while `processing` and `uncertain` remain Pending.
+All operation routes require the REST nonce, authentication, ownership, and applicable product
+capabilities. Integration tests cover ownership, filters, bounded history, reconciliation, retry
+authorization/state, second-retry rejection, and dismissal. Authenticated browser QA reconciled an
+uncertain operation, performed one safe retry, confirmed its second retry was rejected, and showed
+that queue dismissal left the WooCommerce product intact.

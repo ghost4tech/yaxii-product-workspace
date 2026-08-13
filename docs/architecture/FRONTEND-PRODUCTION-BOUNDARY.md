@@ -1,64 +1,57 @@
 # Frontend Production Boundary
 
-**Status:** Phase 2 data integration implemented; owner visual acceptance pending
+**Status:** Phase 3 integrated and runtime-tested
 
 ## Presentation authority
 
-The approved Phase 0 Lovable tree under `apps/product-butler/src` remains the presentation layer.
-The production entrypoint imports that application directly. There is no second workspace shell,
-form, queue, preferences screen, command menu, or visual token system for production.
+The approved Lovable tree under `apps/product-butler/src` remains the production presentation.
+Phase 3 extends its state and data boundaries without creating a second workspace shell, form,
+queue, preferences screen, or visual token system.
 
-The Phase 2 flow is:
+The maintained flow is:
 
-`Lovable component -> useProductCreate -> WorkspaceClient -> WordPressWorkspaceRepository -> Yaxii REST`
+`Lovable component -> feature controller/hook -> WorkspaceClient -> WordPressWorkspaceRepository -> same-origin Yaxii REST`
 
-## Host adapters
+React never calls `/wc/v3`, never receives WooCommerce consumer credentials, and never owns the
+catalog. The PHP application boundary performs WordPress/WooCommerce authorization and persistence.
 
-- `WordPressWorkspaceRepository` consumes validated host data, loads the server bootstrap, performs
-  same-origin product creates and operation reconciliation, and requests bounded category pages.
-- `DevelopmentWorkspaceRepository` supports the local Vite presentation with no mock products and
-  no writes.
-- `UnavailableWorkspaceRepository` fails closed when a production host is missing.
+## Data ownership
 
-The browser never receives WooCommerce consumer credentials and the active graph does not call
-`/wc/v3`. The old Lovable connector and service files remain preserved but are excluded from strict
-production compilation, linting, routing, and bundling. A built-asset scan rejects credential keys,
-direct Woo routes, wildcard CORS text, old credential-store keys, and deferred CSV/AI actions.
+- React Query owns bounded product, taxonomy, preference, and operation server state.
+- Feature controllers own form mapping, edit versions, Save & Next, duplicate drafts, and conflict
+  presentation without putting WooCommerce rules into JSX.
+- `WordPressWorkspaceRepository` supplies the REST nonce, maps stable contracts, and passes an
+  `AbortSignal` to superseded searches.
+- WordPress user meta owns approved workflow defaults.
+- `sessionStorage` owns one bounded, versioned, expiring product draft.
 
-## Routing and deferred source
+Product and taxonomy searches are paged and capped server-side. The finder requests 20 products per
+page, and current term lookup requests use one bounded page of 20 matching terms. Neither search
+results nor operation history are copied into browser persistence.
 
-The application uses `MemoryRouter`, so Entry and Settings navigation does not replace the wp-admin
-URL. Free production exposes only those two routes. Analytics, Stores, Team, License, plan controls,
-Connect WooCommerce, CSV, and AI remain preserved as deferred source and have no production route or
-action.
+## Operations and error truth
 
-## Scoped presentation
+Create requests use server operation identity. The queue reloads the durable ledger, reconciles
+ambiguous writes, and offers manual retry only when the server explicitly marks the operation safe.
+Update and trash carry the canonical product version; a 409 conflict preserves the local draft and
+offers reload-latest behavior.
 
-- Vite/PostCSS prefixes maintained application selectors with `#yaxii-product-workspace`.
-- Theme, density, accent, reduced-motion, language, and direction attributes are applied to the
-  plugin root, not `html` or `body`.
-- Radix dialogs, sheets, popovers, selects, and menus use the plugin-owned portal node.
-- Inter and JetBrains Mono are bundled locally; production does not load Google Fonts.
-- New directional changes use logical start/end properties and utilities.
+Network, validation, authorization, conflict, and uncertain states have distinct mappings. A
+request is not shown as successful merely because the browser submitted it.
 
-## Browser persistence
+## Routing, style, and deferred source
 
-Only the current form draft, local product-default preferences, and workspace preferences persist.
-The draft is versioned and bounded to `sessionStorage`; browser `File` objects are excluded. It
-contains no catalog or credentials. The production application never reads the legacy prototype
-credential/catalog stores. An idempotency identity is retained only for an unresolved unchanged
-create payload and is cleared after a canonical success.
+Production navigation exposes the Free simple-product workflow and settings required by it.
+Deferred Lovable screens remain in source but are absent from the production route graph. Variable
+products, templates, batches, AI, analytics, stores, team, licensing, and Agency features are not
+connected.
 
-## Deliberate Phase 2 limitations
+Styles remain scoped below the plugin root, including theme and direction state for portals and
+dialogs. Logical direction properties support structural RTL without a duplicated layout.
 
-- Save & next and Ctrl/Cmd+Enter create only supported simple products when the server capability and
-  feature flags allow it.
-- The queue and metrics derive new product states from server operation results; they do not infer
-  success from the request completing locally.
-- Category data comes from bounded same-origin search. Images must be existing WordPress media
-  attachment IDs selected through the native media library.
-- Variable creation, sale schedules, pending review, and queue edit/retry/delete server actions stay
-  disabled or truthfully unavailable.
-- Full interface translation is deferred; locale normalization, EN/FR/AR unavailable copy,
-  centralized operation copy, locale-aware formatters, direction, and RTL-safe root/portal
-  infrastructure are present.
+## Browser persistence limits
+
+The recoverable draft envelope is capped at 300 KB, expires after seven days, and keeps at most 20
+existing media attachment references. It excludes raw files, blob URLs, credentials, catalog data,
+operations, and variable-product structures. Presentation preferences remain local and bounded;
+workflow defaults are validated and saved WordPress-side.

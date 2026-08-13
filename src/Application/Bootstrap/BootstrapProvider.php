@@ -77,7 +77,7 @@ final class BootstrapProvider {
 			'available'          => true,
 			'version'            => (string) WC_VERSION,
 			'currency'           => get_woocommerce_currency(),
-			'currency_symbol'    => get_woocommerce_currency_symbol(),
+			'currency_symbol'    => html_entity_decode( get_woocommerce_currency_symbol(), ENT_QUOTES | ENT_HTML5, 'UTF-8' ),
 			'price_decimals'     => wc_get_price_decimals(),
 			'decimal_separator'  => wc_get_price_decimal_separator(),
 			'thousand_separator' => wc_get_price_thousand_separator(),

@@ -34,6 +34,11 @@ export function useOperationQueue(search: string, status: QueueStatus, perPage: 
     onError: (error: Error) => toast({ description: error.message, title: "Retry was not started", variant: "destructive" }),
     onSettled: invalidate,
   });
+  const reconcile = useMutation({
+    mutationFn: (operationId: string) => client.getOperation(operationId),
+    onError: (error: Error) => toast({ description: error.message, title: "Operation was not reconciled", variant: "destructive" }),
+    onSettled: invalidate,
+  });
   const pages = query.data?.pages ?? [];
 
   return {
@@ -43,8 +48,9 @@ export function useOperationQueue(search: string, status: QueueStatus, perPage: 
     hasNextPage: query.hasNextPage,
     isLoading: query.isPending,
     isError: query.isError,
-    isMutating: dismiss.isPending || retry.isPending,
+    isMutating: dismiss.isPending || reconcile.isPending || retry.isPending,
     products: pages.flatMap((page) => page.items.map((item) => operationToQueueProduct(item, bootstrap))),
+    reconcile: (operationId: string) => reconcile.mutate(operationId),
     retry: (operationId: string) => retry.mutate(operationId),
     total: pages[0]?.total ?? 0,
   };

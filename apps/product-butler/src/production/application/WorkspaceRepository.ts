@@ -24,7 +24,7 @@ export interface WorkspaceRepository {
   createProduct: (request: CreateProductRequest, idempotencyKey: string) => Promise<OperationResult>;
   getProduct: (productId: number) => Promise<CanonicalProduct>;
   updateProduct: (productId: number, version: string, product: CreateProductRequest) => Promise<CanonicalProduct>;
-  trashProduct: (productId: number, version: string) => Promise<CanonicalProduct>;
+  trashProduct: (productId: number, version: string) => Promise<void>;
   duplicateProduct: (productId: number) => Promise<CreateProductRequest>;
   searchProducts: (options: SearchOptions) => Promise<ProductPage>;
   getOperation: (operationId: string) => Promise<OperationResult>;

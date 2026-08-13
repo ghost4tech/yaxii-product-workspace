@@ -38,11 +38,21 @@ export const canonicalProductSchema = simpleProductFieldsSchema.extend({
   version: z.string().length(64),
 });
 
+export const trashedProductSchema = z.object({
+  id: z.number().int().positive(),
+  status: z.literal("trash"),
+});
+
+const operationFieldsSchema = z.union([
+  z.record(z.string(), z.array(z.string())),
+  z.tuple([]),
+]).transform((fields) => Array.isArray(fields) ? {} : fields);
+
 export const operationResultSchema = z.object({
   created_at: z.string().nullable().optional(),
   errors: z.array(z.object({
     code: z.string(),
-    fields: z.record(z.string(), z.array(z.string())),
+    fields: operationFieldsSchema,
     message: z.string(),
   })),
   input: simpleProductFieldsSchema.nullable().optional(),

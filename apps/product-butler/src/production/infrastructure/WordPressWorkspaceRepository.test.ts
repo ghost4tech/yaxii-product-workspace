@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { CreateProductRequest } from "../domain/products";
 import type { WorkspaceHostConfig } from "../domain/workspace";
+import { canonicalProduct, simpleProductFields } from "../test/workspaceFixtures";
 import { WordPressWorkspaceRepository } from "./WordPressWorkspaceRepository";
 
 const host: WorkspaceHostConfig = {
@@ -68,6 +69,30 @@ describe("WordPressWorkspaceRepository", () => {
     });
   });
 
+  it("normalizes WordPress empty error fields without rejecting the operation queue", async () => {
+    vi.stubGlobal("fetch", () => Promise.resolve(new Response(JSON.stringify({
+      data: {
+        counts: { all: 1, draft: 0, error: 1, pending: 0, synced: 0 },
+        has_more: false,
+        items: [{
+          errors: [{ code: "ypw_product_write_failed", fields: [], message: "Write failed" }],
+          operation_id: "11111111-1111-4111-8111-111111111111",
+          product: null,
+          replayed: false,
+          retry: { can_reconcile: false, can_retry: true, safe_to_resubmit: false },
+          state: "failed",
+          warnings: [],
+        }],
+        page: 1,
+        per_page: 25,
+        total: 1,
+      },
+    }), { status: 200, headers: { "Content-Type": "application/json" } })));
+
+    const page = await new WordPressWorkspaceRepository(host).listOperations({ perPage: 25 });
+    expect(page.items[0]?.errors[0]?.fields).toEqual({});
+  });
+
   it("passes cancellation through bounded product search", async () => {
     const fetchMock = vi.fn((...args: [RequestInfo | URL, RequestInit?]) => {
       void args;
@@ -85,5 +110,47 @@ describe("WordPressWorkspaceRepository", () => {
     const [url, init] = fetchMock.mock.calls[0] ?? [];
     expect(url).toBe("https://store.test/wp-json/yaxii-product-workspace/v1/products?page=1&per_page=20&search=canvas");
     expect(init?.signal).toBe(controller.signal);
+  });
+
+  it("sends the version contract for update and trash", async () => {
+    const fetchMock = vi.fn((...args: [RequestInfo | URL, RequestInit?]) => {
+      const [, init] = args;
+      return Promise.resolve(new Response(JSON.stringify({
+        data: init?.method === "DELETE" ? { id: 321, status: "trash" } : canonicalProduct,
+      }), { status: 200, headers: { "Content-Type": "application/json" } }));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const repository = new WordPressWorkspaceRepository(host);
+
+    await repository.updateProduct(321, canonicalProduct.version, simpleProductFields);
+    await repository.trashProduct(321, canonicalProduct.version);
+
+    const [updateUrl, updateInit] = fetchMock.mock.calls[0] ?? [];
+    expect(updateUrl).toBe("https://store.test/wp-json/yaxii-product-workspace/v1/products/321");
+    expect(updateInit?.method).toBe("PUT");
+    const updateBody = typeof updateInit?.body === "string" ? updateInit.body : "";
+    expect(JSON.parse(updateBody)).toEqual({
+      expected_version: canonicalProduct.version,
+      product: simpleProductFields,
+    });
+    const [trashUrl, trashInit] = fetchMock.mock.calls[1] ?? [];
+    expect(trashUrl).toContain(`expected_version=${canonicalProduct.version}`);
+    expect(trashInit?.method).toBe("DELETE");
+  });
+
+  it("uses a read-only duplicate-prefill route", async () => {
+    const fetchMock = vi.fn((...args: [RequestInfo | URL, RequestInit?]) => {
+      void args;
+      return Promise.resolve(new Response(JSON.stringify({
+      data: simpleProductFields,
+      }), { status: 200, headers: { "Content-Type": "application/json" } }));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+
+    await new WordPressWorkspaceRepository(host).duplicateProduct(321);
+
+    const [url, init] = fetchMock.mock.calls[0] ?? [];
+    expect(url).toBe("https://store.test/wp-json/yaxii-product-workspace/v1/products/321/duplicate");
+    expect(init?.method).toBeUndefined();
   });
 });

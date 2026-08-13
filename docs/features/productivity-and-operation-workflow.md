@@ -1,72 +1,70 @@
 # Productivity and Operation Workflow
 
-**Status:** Phase 3 Checkpoint B implemented; complete edit UX and browser acceptance pending
+**Status:** Implemented and runtime-tested in Phase 3
 
 ## Save & Next
 
-The approved Lovable Save & Next control creates a product through the same-origin Yaxii endpoint
-and uses the canonical server response as the source for the next draft. Product name, SKU,
-descriptions, media, and sale dates reset. The currently wired repeat choices are category,
-regular price, sale price, and stock quantity. Their values come from the saved product rather than
-optimistic form state. The product-name input is focused after success. Additional approved repeat
-choices become visible only when their corresponding Checkpoint C form fields are functional.
+Save & Next uses the canonical server product to prepare the next entry. Name, SKU, slug,
+descriptions, media, sale dates, tags, and product status reset to their configured defaults. Only
+the merchant's configured repeat fields are retained; current choices cover categories, prices,
+inventory, shipping values, tax values, and catalog visibility. Entering a stock quantity activates
+stock management so the saved quantity can be repeated truthfully. The next name field receives
+focus when autofocus is enabled.
 
-An uncertain response does not clear the draft or its idempotency identity. The client first asks
-the operation resource to reconcile when the server marks reconciliation available. It never
-blindly submits a new create request as a retry.
+An uncertain response does not clear the draft or create identity. It is reconciled through the
+operation resource; a create is never blindly repeated.
+
+## Duplicate drafts
+
+A merchant can prefill a new draft from the previous saved product or a selected existing simple
+product. The draft contains no source product ID, SKU, or slug and defaults to Draft status. No
+WooCommerce write occurs until Save & Next is explicitly submitted.
 
 ## WordPress-side preferences
 
-Useful workflow defaults are stored per WordPress user in `ypw_workspace_preferences_v1`. The
-allowlisted contract includes autofocus, repeat fields, default status and visibility, inventory,
-backorders, sold-individually, tax defaults, queue grouping and page size, relative timestamps,
-and queue-dismiss confirmation. Unsupported keys and invalid values are rejected server-side.
+Useful workflow defaults are stored per WordPress user in `ypw_workspace_preferences_v1`:
 
-Theme, density, Focus Mode, and other device presentation preferences remain browser-local because
-they do not define WooCommerce writes. The obsolete prototype variation preference is hidden from
-Free production.
+- autofocus and repeat fields;
+- default product status and catalog visibility;
+- manage-stock, stock status, backorder, and sold-individually defaults;
+- tax defaults;
+- queue grouping, page size, relative timestamps, and dismissal confirmation.
+
+Unsupported keys and invalid values are rejected server-side. Theme, density, accent, Focus Mode,
+and other device presentation preferences remain bounded browser-local settings.
 
 ## Draft recovery
 
-The current form draft uses session storage under `ypw.product-draft.v2`. Its envelope is schema
-versioned, expires after seven days, and refuses payloads larger than 300 KB. It stores at most 20
-existing WordPress media references. Raw `File` objects, blob URLs, credentials, variation data,
-catalog data, and queue history are never persisted.
-
-If storage is unavailable, corrupt, expired, or over quota, the live in-memory draft continues to
-work and recovery remains best effort.
+The live draft uses `sessionStorage` key `ypw.product-draft.v2`. Its envelope is versioned, expires
+after seven days, and is capped at 300 KB. It retains at most 20 existing WordPress media
+references. It never stores raw `File` objects, blob URLs, credentials, variations, catalog data,
+or queue history. Corrupt, expired, unavailable, or over-quota storage fails open to the live
+in-memory form without claiming recovery succeeded.
 
 ## Server-authoritative operation queue
 
-The recent-product queue reads the durable operation ledger rather than a browser product array.
-It provides server-side name/SKU search, state and publish-status filters, aggregate tab counts,
-bounded pages of at most 50 rows, and a retained history capped at 200 terminal operations per
-user. Processing and uncertain operations are not removed by retention pruning.
+The queue reads the durable per-user operation ledger. Search, state filters, publish-status
+filters, counts, and pagination are server-side; requests are bounded to at most 50 rows and
+terminal history is capped at 200 rows per user. Processing and uncertain rows are not pruned.
 
-Each entry exposes the original normalized request, canonical product/result ID when available,
-timestamps, errors, and explicit retry flags. Removing an entry only sets its operation dismissal
-time; it does not trash the WooCommerce product. Active operations cannot be dismissed.
+Each row carries the normalized request, canonical result and product ID when available,
+timestamps, structured errors, and server retry flags. Pending entries marked `can_reconcile`
+offer a Reconcile action that checks server and WooCommerce state without issuing a product create.
+Manual Retry is offered only for a stored
+`ypw_product_write_failed` request. The server first checks the operation marker for an existing
+product, revalidates the original request and current permissions, and atomically claims the retry.
+A second retry after success returns HTTP 409 and cannot create another product.
 
-Manual retry is available only for a durable `ypw_product_write_failed` result with its original
-request. The server checks for an existing product carrying the operation marker, revalidates the
-stored request and current capabilities, then atomically claims the failed operation before one
-write attempt. A completed or already-claimed operation returns a conflict instead of creating a
-duplicate.
+Queue removal only sets a dismissal timestamp. The confirmation explicitly states that the
+WooCommerce product is not trashed, and active operations cannot be dismissed.
 
-## Search and performance boundaries
+## Evidence and limits
 
-Product, category, tag, shipping-class, and operation searches are server-side and paginated.
-React supplies an `AbortSignal`; debounced category and queue searches cancel superseded requests.
-The browser never mirrors the whole WooCommerce catalog. Only the current operation pages are held
-in React Query, and no operation history is written to browser persistence.
+Unit and integration tests cover preferences, reset/repeat behavior, bounded draft recovery,
+queue queries, cancellation, safe retry, reconciliation, dismissal, and authorization. Browser QA
+verified consecutive Save & Next entries, retained/reset values, a 711-byte credential-free draft
+recovery envelope, safe manual retry with exactly one product, second-retry rejection, uncertain
+operation reconciliation, and queue dismissal distinct from trash.
 
-## Evidence and remaining work
-
-Unit tests cover preferences, complete create mapping, canonical Save & Next retention, retry
-authorization, cancellation forwarding, and TTL/media draft recovery. LocalWP integration tests
-cover persisted preferences, bounded/searchable queue results, aggregate filters, safe retry,
-real product IDs, and queue dismissal without product trash.
-
-Checkpoint C still must expose complete product search/open/edit/duplicate/trash in the Lovable
-workspace and pass the authenticated browser, responsive, theme, Focus Mode, error, RTL, and data
-verification matrix. Until that succeeds, Phase 3 is not complete.
+This ledger is the Free simple-product operation history, not a batch system or future paid job
+engine. Batch operations, scheduling, AI, templates, and variable products remain excluded.

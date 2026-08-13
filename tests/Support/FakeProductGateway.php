@@ -86,9 +86,8 @@ final class FakeProductGateway implements ProductGateway {
 
 	public function trash( int $product_id ): array {
 		return array(
-			'id'      => $product_id,
-			'status'  => 'trash',
-			'version' => str_repeat( 'c', 64 ),
+			'id'     => $product_id,
+			'status' => 'trash',
 		);
 	}
 

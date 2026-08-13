@@ -1,0 +1,196 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { saveDraft } from "@/lib/entryActions";
+import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
+import type { CanonicalProduct } from "@/production/domain/products";
+import { useWorkspacePreferences } from "@/production/features/preferences/useWorkspacePreferences";
+import { fieldsToDraft, nextDraft, preferencesDraft } from "@/production/features/products/productDrafts";
+import type { ProductFieldErrors, ProductSubmission } from "@/production/features/products/productMapping";
+import { useProductCreate } from "@/production/features/products/useProductCreate";
+import { useProductManagement } from "@/production/features/products/useProductManagement";
+import { useProductStore } from "@/stores/productStore";
+import type { ProductFormData, ProductImage } from "@/types/product";
+import { productEntrySchema } from "./productEntrySchema";
+import { toProductEntryValues, type ProductEntryValues } from "./productEntryModel";
+
+interface Options {
+  onCloseEdit?: () => void;
+  onProductUpdated?: (product: CanonicalProduct) => void;
+  product?: CanonicalProduct | null;
+}
+
+function formData(
+  values: ProductEntryValues,
+  images: ProductImage[],
+  saleStart?: Date,
+  saleEnd?: Date,
+): ProductFormData {
+  return {
+    ...values,
+    images,
+    isVariable: false,
+    saleScheduleEnd: saleEnd,
+    saleScheduleStart: saleStart,
+    variations: [],
+  };
+}
+
+export function useProductEntryController(options: Options) {
+  const { onCloseEdit, onProductUpdated, product } = options;
+  const { bootstrap, client } = useWorkspaceRuntime();
+  const { isLoading: preferencesLoading, preferences } = useWorkspacePreferences();
+  const draftFormData = useProductStore((state) => state.draftFormData);
+  const draftRevision = useProductStore((state) => state.draftRevision);
+  const setDraftFormData = useProductStore((state) => state.setDraftFormData);
+  const create = useProductCreate(client, bootstrap);
+  const manage = useProductManagement(client, bootstrap.locale);
+  const [images, setImages] = useState<ProductImage[]>(draftFormData.images);
+  const [saleStart, setSaleStart] = useState<Date | undefined>(draftFormData.saleScheduleStart);
+  const [saleEnd, setSaleEnd] = useState<Date | undefined>(draftFormData.saleScheduleEnd);
+  const [conflictOpen, setConflictOpen] = useState(false);
+  const [trashOpen, setTrashOpen] = useState(false);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const firstRevision = useRef(draftRevision);
+  const priorProductId = useRef<number>();
+  const preferencesApplied = useRef(false);
+  const form = useForm<ProductEntryValues>({
+    defaultValues: toProductEntryValues(draftFormData),
+    resolver: zodResolver(productEntrySchema),
+  });
+  const editing = Boolean(product);
+  const canWrite = bootstrap.capabilities.createProducts
+    && (editing ? bootstrap.features.productManagement : bootstrap.features.simpleProductCreate);
+
+  const hydrate = useCallback((product: CanonicalProduct) => {
+    const draft = fieldsToDraft(product, product.images);
+    form.reset(toProductEntryValues(draft));
+    setImages(draft.images);
+    setSaleStart(draft.saleScheduleStart);
+    setSaleEnd(draft.saleScheduleEnd);
+  }, [form]);
+
+  useEffect(() => {
+    if (product) {
+      priorProductId.current = product.id;
+      hydrate(product);
+    } else if (priorProductId.current) {
+      priorProductId.current = undefined;
+      const draft = useProductStore.getState().draftFormData;
+      form.reset(toProductEntryValues(draft));
+      setImages(draft.images);
+      setSaleStart(draft.saleScheduleStart);
+      setSaleEnd(draft.saleScheduleEnd);
+    }
+  }, [form, hydrate, product]);
+
+  useEffect(() => {
+    if (editing) return;
+    const subscription = form.watch(() => {
+      setDraftFormData(formData(form.getValues(), images, saleStart, saleEnd));
+    });
+    return () => subscription.unsubscribe();
+  }, [editing, form, images, saleEnd, saleStart, setDraftFormData]);
+
+  useEffect(() => {
+    if (editing || draftRevision === firstRevision.current) return;
+    const draft = useProductStore.getState().draftFormData;
+    form.reset(toProductEntryValues(draft));
+    setImages(draft.images);
+    setSaleStart(draft.saleScheduleStart);
+    setSaleEnd(draft.saleScheduleEnd);
+    nameInputRef.current?.focus();
+  }, [draftRevision, editing, form]);
+
+  useEffect(() => {
+    if (preferences.auto_focus_name) nameInputRef.current?.focus();
+  }, [preferences.auto_focus_name]);
+
+  useEffect(() => {
+    if (editing || preferencesLoading || preferencesApplied.current || form.formState.isDirty) return;
+    preferencesApplied.current = true;
+    const values = form.getValues();
+    const hasContent = Boolean(values.name || values.sku || values.regularPrice
+      || values.categoryId || values.shortDescription || values.longDescription || images.length);
+    if (hasContent) return;
+    const draft = preferencesDraft(preferences);
+    form.reset(toProductEntryValues(draft));
+    setDraftFormData(draft);
+  }, [editing, form, images.length, preferences, preferencesLoading, setDraftFormData]);
+
+  const applyErrors = useCallback((fields: ProductFieldErrors) => {
+    Object.entries(fields).forEach(([field, message]) => {
+      if (!message) return;
+      if (field === "root") form.setError("root.server", { message });
+      else form.setError(field as keyof ProductEntryValues, { message });
+    });
+  }, [form]);
+
+  const submission = useCallback((values: ProductEntryValues): ProductSubmission => ({
+    images, isVariable: false, saleEnd, saleStart, values,
+  }), [images, saleEnd, saleStart]);
+
+  const submit = useCallback(async (values: ProductEntryValues) => {
+    form.clearErrors();
+    if (!canWrite) {
+      form.setError("root.server", { message: "This product operation is unavailable." });
+      return;
+    }
+    if (product) {
+      const outcome = await manage.update(product, submission(values));
+      applyErrors(outcome.fields);
+      if (outcome.state === "conflict") setConflictOpen(true);
+      if (outcome.product) {
+        onProductUpdated?.(outcome.product);
+        hydrate(outcome.product);
+      }
+      return;
+    }
+    const outcome = await create.submit(submission(values));
+    applyErrors(outcome.fields);
+    if (outcome.state !== "succeeded" || !outcome.result?.product) return;
+    const draft = nextDraft(outcome.result.product, preferences);
+    form.reset(toProductEntryValues(draft));
+    setImages(draft.images);
+    setSaleStart(draft.saleScheduleStart);
+    setSaleEnd(draft.saleScheduleEnd);
+    setDraftFormData(draft);
+    nameInputRef.current?.focus();
+  }, [applyErrors, canWrite, create, form, hydrate, manage, onProductUpdated, preferences, product, setDraftFormData, submission]);
+
+  const reset = useCallback(() => {
+    const draft = product ? fieldsToDraft(product, product.images) : preferencesDraft(preferences);
+    form.reset(toProductEntryValues(draft));
+    setImages(draft.images);
+    setSaleStart(draft.saleScheduleStart);
+    setSaleEnd(draft.saleScheduleEnd);
+    if (!product) setDraftFormData(draft);
+    nameInputRef.current?.focus();
+  }, [form, preferences, product, setDraftFormData]);
+
+  const reloadLatest = useCallback(async () => {
+    if (!product) return;
+    try {
+      const latest = await client.getProduct(product.id);
+      onProductUpdated?.(latest);
+      hydrate(latest);
+      setConflictOpen(false);
+    } catch (error) {
+      form.setError("root.server", {
+        message: error instanceof Error ? error.message : "The latest product could not be loaded.",
+      });
+    }
+  }, [client, form, hydrate, onProductUpdated, product]);
+
+  const trash = useCallback(async () => {
+    if (!product || !(await manage.trash(product))) return;
+    setTrashOpen(false);
+    onCloseEdit?.();
+  }, [manage, onCloseEdit, product]);
+
+  return {
+    bootstrap, canWrite, conflictOpen, create, editing, form, images, manage, nameInputRef,
+    reloadLatest, reset, saleEnd, saleStart, saveDraft, setConflictOpen, setImages,
+    setSaleEnd, setSaleStart, setTrashOpen, submit, trash, trashOpen,
+  };
+}

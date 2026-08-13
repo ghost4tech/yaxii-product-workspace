@@ -1,11 +1,10 @@
 import React from 'react';
-import { Package, Tags, Images, Layers } from 'lucide-react';
+import { Package, Tags, Images } from 'lucide-react';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ImageUpload } from '@/components/ImageUpload';
 import { CategorySelect } from '@/components/CategorySelect';
-import { VariationsEditor } from '@/components/VariationsEditor';
-import { ProductImage, ProductVariation } from '@/types/product';
+import { ProductImage } from '@/types/product';
 import { FormSection, FieldShell } from '@/components/entry/FormSection';
 import { cn } from '@/lib/utils';
 import type { UseFormReturn } from 'react-hook-form';
@@ -14,12 +13,8 @@ import type { ProductEntryValues } from '@/components/entry/productEntryModel';
 interface Props {
   form: UseFormReturn<ProductEntryValues>;
   isVariable: boolean;
-  onVariableChange: (v: boolean) => void;
   images: ProductImage[];
   onImagesChange: (i: ProductImage[]) => void;
-  variations: ProductVariation[];
-  onVariationsChange: (v: ProductVariation[]) => void;
-  hasValidVariations: boolean;
   nameRef: React.RefObject<HTMLInputElement>;
   currency?: string;
 }
@@ -27,28 +22,14 @@ interface Props {
 export const EssentialsFields: React.FC<Props> = ({
   form,
   isVariable,
-  onVariableChange,
   images,
   onImagesChange,
-  variations,
-  onVariationsChange,
-  hasValidVariations,
   nameRef,
   currency = '$',
 }) => {
   const typeToggle = (
     <div className="seg" role="group" aria-label="Product type">
-      {([false, true] as const).map((v) => (
-        <button
-          key={String(v)}
-          type="button"
-          onClick={() => onVariableChange(v)}
-          data-active={isVariable === v}
-          className="seg-item"
-        >
-          {v ? 'Variable' : 'Simple'}
-        </button>
-      ))}
+      <button type="button" data-active className="seg-item" aria-pressed="true">Simple</button>
     </div>
   );
 
@@ -184,6 +165,12 @@ export const EssentialsFields: React.FC<Props> = ({
                   <div className={cn('input-group', isVariable && 'opacity-60')}>
                     <input
                       {...field}
+                      onChange={(event) => {
+                        field.onChange(event);
+                        if (event.target.value.trim()) {
+                          form.setValue('manageStock', true, { shouldDirty: true });
+                        }
+                      }}
                       id="ypw-product-stock"
                       type="number"
                       inputMode="numeric"
@@ -200,17 +187,6 @@ export const EssentialsFields: React.FC<Props> = ({
           />
         </div>
       </FormSection>
-
-      {isVariable && (
-        <FormSection title="Variations" icon={Layers}>
-          <VariationsEditor variations={variations} onChange={onVariationsChange} />
-          {!hasValidVariations && (
-            <p className="text-[11px] text-warning">
-              Add at least one attribute with options before saving.
-            </p>
-          )}
-        </FormSection>
-      )}
 
       <FormSection
         title="Images"

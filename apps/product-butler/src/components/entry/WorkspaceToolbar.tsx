@@ -6,6 +6,7 @@ import {
   Minimize2,
   PanelRightClose,
   PanelRightOpen,
+  Search,
   Rows3,
   Undo2,
 } from "lucide-react";
@@ -19,6 +20,7 @@ interface Props {
   canUndo: boolean;
   onAdvancedToggle: () => void;
   onOpenQueue: () => void;
+  onOpenProducts: () => void;
   onUndo: () => void;
   queueCount: number;
 }
@@ -29,6 +31,7 @@ export const WorkspaceToolbar: React.FC<Props> = ({
   canUndo,
   onAdvancedToggle,
   onOpenQueue,
+  onOpenProducts,
   onUndo,
   queueCount,
 }) => {
@@ -52,6 +55,10 @@ export const WorkspaceToolbar: React.FC<Props> = ({
           <Undo2 className="me-1.5 h-3.5 w-3.5" /> Undo delete
         </Button>
       )}
+
+      <Button variant="outline" size="sm" onClick={onOpenProducts} className="h-8 text-[12px]">
+        <Search className="me-1.5 h-3.5 w-3.5" /> Find product
+      </Button>
 
       <div className="seg" role="group" aria-label="Density">
         <button
