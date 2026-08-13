@@ -12,13 +12,17 @@ use Yaxii\ProductWorkspace\Application\Access\WordPressCapabilityPolicy;
 use Yaxii\ProductWorkspace\Application\Bootstrap\BootstrapProvider;
 use Yaxii\ProductWorkspace\Application\Products\CreateProductRequestFactory;
 use Yaxii\ProductWorkspace\Application\Products\CreateProductService;
+use Yaxii\ProductWorkspace\Application\Products\ProductFieldParser;
+use Yaxii\ProductWorkspace\Application\Products\ProductManagementService;
 use Yaxii\ProductWorkspace\Infrastructure\Persistence\SchemaManager;
 use Yaxii\ProductWorkspace\Infrastructure\Persistence\WpdbOperationStore;
 use Yaxii\ProductWorkspace\Infrastructure\WooCommerce\WooProductGateway;
+use Yaxii\ProductWorkspace\Infrastructure\WooCommerce\WooProductMapper;
 use Yaxii\ProductWorkspace\Rest\BootstrapController;
-use Yaxii\ProductWorkspace\Rest\CategoryController;
 use Yaxii\ProductWorkspace\Rest\OperationController;
 use Yaxii\ProductWorkspace\Rest\ProductController;
+use Yaxii\ProductWorkspace\Rest\ProductItemController;
+use Yaxii\ProductWorkspace\Rest\ProductTermController;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -51,16 +55,21 @@ final class Plugin {
 		$schema       = SchemaManager::create();
 		global $wpdb;
 		$operations = new WpdbOperationStore( $wpdb, $schema->table_name() );
-		$products   = new WooProductGateway();
+		$products   = new WooProductGateway( new WooProductMapper() );
 		$service    = new CreateProductService( $capabilities, $operations, $products );
+		$management = new ProductManagementService( $capabilities, $products );
+		$factory    = new CreateProductRequestFactory( new ProductFieldParser() );
 
 		return new self(
 			new AdminPage( $plugin_file, $capabilities ),
 			$schema,
 			array(
 				new BootstrapController( $provider, $capabilities ),
-				new CategoryController( $capabilities ),
-				new ProductController( new CreateProductRequestFactory(), $service, $capabilities ),
+				new ProductTermController( $capabilities, 'categories', 'product_cat' ),
+				new ProductTermController( $capabilities, 'tags', 'product_tag' ),
+				new ProductTermController( $capabilities, 'shipping-classes', 'product_shipping_class' ),
+				new ProductController( $factory, $service, $management, $capabilities ),
+				new ProductItemController( $factory, $management, $capabilities ),
 				new OperationController( $operations, $service, $capabilities ),
 			)
 		);

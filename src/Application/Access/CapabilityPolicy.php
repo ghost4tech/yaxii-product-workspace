@@ -18,4 +18,12 @@ interface CapabilityPolicy {
 	public function can_publish_products(): bool;
 
 	public function can_upload_media(): bool;
+
+	public function can_edit_product( int $product_id ): bool;
+
+	public function can_delete_product( int $product_id ): bool;
+
+	public function can_use_media( int $attachment_id ): bool;
+
+	public function can_assign_product_terms(): bool;
 }

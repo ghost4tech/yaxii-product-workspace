@@ -29,6 +29,7 @@
 			<property name="custom_capabilities" type="array">
 				<element value="edit_products"/>
 				<element value="publish_products"/>
+				<element value="assign_product_terms"/>
 			</property>
 		</properties>
 	</rule>

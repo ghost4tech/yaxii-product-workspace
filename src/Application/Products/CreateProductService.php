@@ -44,6 +44,10 @@ final class CreateProductService {
 		int $user_id
 	): OperationResult {
 		$this->assert_command_allowed( $command );
+		$field_errors = $this->products->validate( $command );
+		if ( array() === $field_errors ) {
+			$this->assert_media_allowed( $command );
+		}
 		$payload_json = wp_json_encode( $command->to_array() );
 		if ( false === $payload_json ) {
 			throw new ApiException(
@@ -78,7 +82,6 @@ final class CreateProductService {
 			return $this->replay_or_reconcile( $record );
 		}
 
-		$field_errors = $this->products->validate( $command );
 		if ( array() !== $field_errors ) {
 			$result = OperationResult::failed(
 				$record->operation_id(),
@@ -127,6 +130,26 @@ final class CreateProductService {
 				403,
 				array( 'status' => array( __( 'Choose Draft or ask an administrator for publishing access.', 'yaxii-product-workspace' ) ) )
 			);
+		}
+
+		if ( ! $this->capabilities->can_assign_product_terms() ) {
+			throw new ApiException(
+				'ypw_term_assignment_forbidden',
+				__( 'You are not allowed to assign product terms.', 'yaxii-product-workspace' ),
+				403
+			);
+		}
+	}
+
+	private function assert_media_allowed( CreateProductCommand $command ): void {
+		foreach ( $command->image_ids() as $image_id ) {
+			if ( ! $this->capabilities->can_use_media( $image_id ) ) {
+				throw new ApiException(
+					'ypw_media_forbidden',
+					__( 'You are not allowed to use one or more selected images.', 'yaxii-product-workspace' ),
+					403
+				);
+			}
 		}
 	}
 

@@ -10,93 +10,106 @@ namespace Yaxii\ProductWorkspace\Infrastructure\WooCommerce;
 use RuntimeException;
 use Yaxii\ProductWorkspace\Application\Products\CreateProductCommand;
 use Yaxii\ProductWorkspace\Application\Products\ProductGateway;
+use Yaxii\ProductWorkspace\Application\Products\ProductQuery;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Maps the Phase 2 command to supported WooCommerce CRUD setters.
+ * Owns bounded product queries and supported WooCommerce CRUD operations.
  */
 final class WooProductGateway implements ProductGateway {
 	private const OPERATION_META_KEY = '_ypw_operation_id';
+
+	private WooProductMapper $mapper;
+
+	public function __construct( WooProductMapper $mapper ) {
+		$this->mapper = $mapper;
+	}
 
 	public function is_available(): bool {
 		return class_exists( 'WooCommerce' ) && class_exists( 'WC_Product_Simple' ) && defined( 'WC_VERSION' );
 	}
 
-	public function validate( CreateProductCommand $command ): array {
+	public function validate( CreateProductCommand $command, int $product_id = 0 ): array {
 		$fields = array();
-		if ( '' !== $command->sku() && ! wc_product_has_unique_sku( 0, $command->sku() ) ) {
+		if ( '' !== $command->sku() && ! wc_product_has_unique_sku( $product_id, $command->sku() ) ) {
 			$fields['sku'][] = __( 'This SKU is already used by another product.', 'yaxii-product-workspace' );
 		}
-
-		foreach ( $command->category_ids() as $category_id ) {
-			$term = get_term( $category_id, 'product_cat' );
-			if ( ! $term instanceof \WP_Term ) {
-				$fields['category_ids'][] = sprintf(
-					/* translators: %d: invalid product-category term ID. */
-					__( 'Category ID %d is not a valid product category.', 'yaxii-product-workspace' ),
-					$category_id
-				);
-			}
+		$fields = array_merge_recursive( $fields, $this->term_errors( $command->category_ids(), 'product_cat', 'category_ids' ) );
+		$fields = array_merge_recursive( $fields, $this->term_errors( $command->tag_ids(), 'product_tag', 'tag_ids' ) );
+		if ( 0 < $command->shipping_class_id() ) {
+			$fields = array_merge_recursive( $fields, $this->term_errors( array( $command->shipping_class_id() ), 'product_shipping_class', 'shipping_class_id' ) );
 		}
-
-		foreach ( $command->image_ids() as $image_id ) {
-			if ( 'attachment' !== get_post_type( $image_id ) || ! wp_attachment_is_image( $image_id ) ) {
-				$fields['image_ids'][] = sprintf(
-					/* translators: %d: invalid WordPress image attachment ID. */
-					__( 'Media ID %d is not a valid image attachment.', 'yaxii-product-workspace' ),
-					$image_id
-				);
-			}
-		}
-
-		return $fields;
+		return array_merge_recursive( $fields, $this->image_errors( $command->image_ids() ), $this->tax_class_errors( $command->tax_class() ) );
 	}
 
 	public function create( CreateProductCommand $command, string $operation_id ): array {
 		$product = new \WC_Product_Simple();
-		$this->configure_product( $product, $command );
+		$this->mapper->apply( $product, $command );
 		$product->update_meta_data( self::OPERATION_META_KEY, $operation_id );
-
 		$product_id = $product->save();
 		if ( 0 >= $product_id ) {
 			throw new RuntimeException( 'WooCommerce did not return a product ID.' );
 		}
-
-		return $this->summary( $product );
+		return $this->persisted_resource( $product_id );
 	}
 
-	private function configure_product( \WC_Product_Simple $product, CreateProductCommand $command ): void {
-		$product->set_name( $command->name() );
-		$product->set_status( $command->status() );
-		$product->set_regular_price( $command->regular_price() );
-		$product->set_sale_price( $command->sale_price() ?? '' );
-		$product->set_manage_stock( $command->manage_stock() );
-		$product->set_stock_status( $command->stock_status() );
-		$product->set_category_ids( $command->category_ids() );
-		$product->set_description( $command->description() );
-		$product->set_short_description( $command->short_description() );
-		$product->set_catalog_visibility( $command->catalog_visibility() );
-		$product->set_tax_status( $command->tax_status() );
-
-		if ( '' !== $command->sku() ) {
-			$product->set_sku( $command->sku() );
-		}
-		if ( $command->manage_stock() ) {
-			$product->set_stock_quantity( $command->stock_quantity() );
-		}
-
-		$this->assign_images( $product, $command->image_ids() );
+	public function get( int $product_id ): ?array {
+		$product = wc_get_product( $product_id );
+		return $product instanceof \WC_Product_Simple ? $this->mapper->resource( $product ) : null;
 	}
 
-	/**
-	 * @param array<int> $image_ids Valid image attachment IDs.
-	 */
-	private function assign_images( \WC_Product_Simple $product, array $image_ids ): void {
-		if ( array() !== $image_ids ) {
-			$product->set_image_id( (int) array_shift( $image_ids ) );
-			$product->set_gallery_image_ids( $image_ids );
+	public function query( ProductQuery $query ): array {
+		$exact_id = $this->exact_sku_id( $query );
+		$slots    = 0 < $exact_id && 1 === $query->page() ? $query->per_page() - 1 : $query->per_page();
+		$offset   = ( $query->page() - 1 ) * $query->per_page() - ( 0 < $exact_id && 1 < $query->page() ? 1 : 0 );
+		$wp_query = new \WP_Query( $this->query_args( $query, $exact_id, max( 1, $slots ), $offset ) );
+		$ids      = 0 === $slots ? array() : array_map( 'intval', $wp_query->posts );
+		if ( 0 < $exact_id && 1 === $query->page() ) {
+			array_unshift( $ids, $exact_id );
 		}
+		$items = array();
+		foreach ( $ids as $product_id ) {
+			$product = wc_get_product( $product_id );
+			if ( $product instanceof \WC_Product_Simple && current_user_can( 'edit_post', $product_id ) ) {
+				$items[] = $this->mapper->resource( $product );
+			}
+		}
+		$total = (int) $wp_query->found_posts + ( 0 < $exact_id ? 1 : 0 );
+
+		return array(
+			'items'    => $items,
+			'page'     => $query->page(),
+			'per_page' => $query->per_page(),
+			'has_more' => $query->page() * $query->per_page() < $total,
+			'total'    => $total,
+		);
+	}
+
+	public function update( int $product_id, CreateProductCommand $command ): array {
+		$product = wc_get_product( $product_id );
+		if ( ! $product instanceof \WC_Product_Simple ) {
+			throw new RuntimeException( 'The requested simple product is unavailable.' );
+		}
+		$this->mapper->apply( $product, $command );
+		$product->save();
+		return $this->persisted_resource( $product_id );
+	}
+
+	public function trash( int $product_id ): array {
+		$product = wc_get_product( $product_id );
+		if ( ! $product instanceof \WC_Product_Simple ) {
+			throw new RuntimeException( 'The requested simple product is unavailable.' );
+		}
+		$product->delete( false );
+		$resource           = $this->mapper->resource( $product );
+		$resource['status'] = (string) get_post_status( $product_id );
+		return $resource;
+	}
+
+	public function duplicate_prefill( int $product_id ): ?array {
+		$product = wc_get_product( $product_id );
+		return $product instanceof \WC_Product_Simple ? $this->mapper->duplicate_prefill( $product ) : null;
 	}
 
 	public function find_by_operation( string $operation_id ): ?array {
@@ -115,40 +128,103 @@ final class WooProductGateway implements ProductGateway {
 				'update_post_term_cache' => false,
 			)
 		);
+		return array() === $product_ids ? null : $this->get( (int) $product_ids[0] );
+	}
 
-		if ( array() === $product_ids ) {
-			return null;
+	/**
+	 * @param array<int> $term_ids Term IDs.
+	 * @return array<string, array<string>>
+	 */
+	private function term_errors( array $term_ids, string $taxonomy, string $field ): array {
+		$errors = array();
+		foreach ( $term_ids as $term_id ) {
+			if ( ! get_term( $term_id, $taxonomy ) instanceof \WP_Term ) {
+				$errors[ $field ][] = sprintf(
+					/* translators: %d: invalid term ID. */
+					__( 'Term ID %d is not valid for this product field.', 'yaxii-product-workspace' ),
+					$term_id
+				);
+			}
 		}
+		return $errors;
+	}
 
-		$product = wc_get_product( (int) $product_ids[0] );
-		return $product instanceof \WC_Product ? $this->summary( $product ) : null;
+	/**
+	 * @param array<int> $image_ids Image attachment IDs.
+	 * @return array<string, array<string>>
+	 */
+	private function image_errors( array $image_ids ): array {
+		$errors = array();
+		foreach ( $image_ids as $image_id ) {
+			if ( 'attachment' !== get_post_type( $image_id ) || ! wp_attachment_is_image( $image_id ) ) {
+				$errors['image_ids'][] = sprintf(
+					/* translators: %d: invalid image attachment ID. */
+					__( 'Media ID %d is not a valid image attachment.', 'yaxii-product-workspace' ),
+					$image_id
+				);
+			}
+		}
+		return $errors;
+	}
+
+	/** @return array<string, array<string>> */
+	private function tax_class_errors( string $tax_class ): array {
+		$classes = \WC_Tax::get_tax_class_slugs();
+		if ( '' !== $tax_class && ! in_array( $tax_class, $classes, true ) ) {
+			return array( 'tax_class' => array( __( 'Choose a configured WooCommerce tax class.', 'yaxii-product-workspace' ) ) );
+		}
+		return array();
 	}
 
 	/**
 	 * @return array<string, mixed>
 	 */
-	private function summary( \WC_Product $product ): array {
-		$created_at = $product->get_date_created();
-		$image_ids  = array_values(
-			array_filter(
-				array_merge( array( $product->get_image_id() ), $product->get_gallery_image_ids() )
-			)
-		);
-
+	private function query_args( ProductQuery $query, int $exact_id, int $limit, int $offset ): array {
+		$statuses = 'all' === $query->status()
+			? array( 'publish', 'draft', 'pending', 'private' )
+			: array( $query->status() );
 		return array(
-			'id'                 => $product->get_id(),
-			'name'               => $product->get_name(),
-			'sku'                => $product->get_sku(),
-			'status'             => $product->get_status(),
-			'regular_price'      => $product->get_regular_price(),
-			'sale_price'         => $product->get_sale_price(),
-			'manage_stock'       => $product->get_manage_stock(),
-			'stock_quantity'     => $product->get_stock_quantity(),
-			'stock_status'       => $product->get_stock_status(),
-			'category_ids'       => $product->get_category_ids(),
-			'image_ids'          => $image_ids,
-			'catalog_visibility' => $product->get_catalog_visibility(),
-			'created_at'         => $created_at ? $created_at->format( DATE_ATOM ) : null,
+			'post_type'              => 'product',
+			'post_status'            => $statuses,
+			'posts_per_page'         => $limit,
+			'offset'                 => max( 0, $offset ),
+			'post__not_in'           => 0 < $exact_id ? array( $exact_id ) : array(),
+			's'                      => $query->search(),
+			'fields'                 => 'ids',
+			'orderby'                => 'modified',
+			'order'                  => 'DESC',
+			'perm'                   => 'editable',
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'tax_query'              => array(
+				array(
+					'taxonomy' => 'product_type',
+					'field'    => 'slug',
+					'terms'    => array( 'simple' ),
+				),
+			),
 		);
+	}
+
+	private function exact_sku_id( ProductQuery $query ): int {
+		if ( '' === $query->search() ) {
+			return 0;
+		}
+		$sku_id  = wc_get_product_id_by_sku( $query->search() );
+		$product = $sku_id ? wc_get_product( $sku_id ) : false;
+		if ( ! $product instanceof \WC_Product_Simple || ! current_user_can( 'edit_post', $sku_id ) ) {
+			return 0;
+		}
+		$status = $product->get_status();
+		return 'all' === $query->status() || $query->status() === $status ? (int) $sku_id : 0;
+	}
+
+	/** @return array<string, mixed> */
+	private function persisted_resource( int $product_id ): array {
+		$product = wc_get_product( $product_id );
+		if ( ! $product instanceof \WC_Product_Simple ) {
+			throw new RuntimeException( 'WooCommerce could not reload the saved simple product.' );
+		}
+		return $this->mapper->resource( $product );
 	}
 }

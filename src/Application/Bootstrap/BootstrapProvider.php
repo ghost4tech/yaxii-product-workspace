@@ -43,8 +43,11 @@ final class BootstrapProvider {
 				'woocommerce'  => $this->woocommerce_data( $woo_available ),
 				'features'     => array(
 					'simple_product_create'   => $woo_available,
+					'simple_product_manage'   => $woo_available,
 					'variable_product_create' => false,
 					'category_lookup'         => $woo_available,
+					'tag_lookup'              => $woo_available,
+					'shipping_class_lookup'   => $woo_available,
 					'media_selection'         => $this->capabilities->can_upload_media(),
 					'operation_lookup'        => $woo_available,
 				),
@@ -79,6 +82,13 @@ final class BootstrapProvider {
 			'price_format'       => get_woocommerce_price_format(),
 			'weight_unit'        => get_option( 'woocommerce_weight_unit', 'kg' ),
 			'dimension_unit'     => get_option( 'woocommerce_dimension_unit', 'cm' ),
+			'tax_classes'        => array_map(
+				static fn ( string $name ): array => array(
+					'name' => $name,
+					'slug' => sanitize_title( $name ),
+				),
+				\WC_Tax::get_tax_classes()
+			),
 		);
 	}
 }

@@ -47,7 +47,23 @@ Run from the repository root:
 
 The integration bootstrap defaults to the WordPress root four directories above this plugin. Set
 `YPW_WP_ROOT` to an explicit WordPress root when running from another layout. Integration tests
-create uniquely named products and categories and remove them during teardown.
+create uniquely named products, terms, media, and tax classes and remove them during teardown. The
+bootstrap exits unsuccessfully if WordPress does not finish loading, so a database connection page
+cannot be mistaken for a passing PHPUnit run.
+
+LocalWP may define its database port only in the generated per-site PHP configuration. In that
+case, run PHPUnit with LocalWP's PHP executable and that site configuration. For the current
+`ysf-lite.local` runtime (`JoHLKltX2`), the verified PowerShell command is:
+
+```powershell
+$ypwRun = Join-Path $env:APPDATA 'Local\run\JoHLKltX2'
+$ypwPhp = Join-Path $env:APPDATA 'Local\lightning-services\php-8.3.23+0\bin\win64\php.exe'
+& $ypwPhp -c (Join-Path $ypwRun 'conf\php') vendor/bin/phpunit -c phpunit.integration.xml.dist
+```
+
+The LocalWP PHP configuration currently emits an Imagick startup warning because its optional DLL
+is absent. PHPUnit and the tested product/media paths remain operational; do not treat that warning
+as a test failure unless an image-processing workflow under test requires Imagick.
 
 ## Current verification
 
