@@ -2,10 +2,9 @@
 
 **Updated:** 2026-08-13
 
-**Current phase:** Phase 2 implementation complete; Phase 3 not started
+**Current phase:** Phase 2 owner accepted and complete; Phase 3 not started
 
-**Acceptance state:** OWNER ACCEPTANCE PENDING — authenticated Lovable UI runtime parity remains a
-HOLD
+**Acceptance state:** OWNER ACCEPTED — authenticated LocalWP wp-admin product creation verified
 
 ## Canonical repository
 
@@ -14,11 +13,13 @@ HOLD
 - Phase 2 branch: `phase/02-simple-product-vertical-slice`
 - Checkpoint A: `8476d4b8d46e93a49e9d7892b4d987542f3c36b4`
 - Checkpoint B: `35cbba21ba09902a9e19ba75cb2a2b99e294cfbe`
+- Checkpoint C: `93a798082a5e6a79dd9cecf868dc5e284554c0e9`
+- Acceptance correction: `bbf451afb7bf311b04b10e87369b01cc85a3e952`
 - Package managers: Composer for PHP and npm for the frontend
 - Frontend lockfile: `apps/product-butler/package-lock.json`
 
-The branch is not merged to `main`. Owner edits in `AGENTS.md` and `CLAUDE.md` remain preserved and
-outside the Phase 2 commits.
+The owner accepted Phase 2 on 2026-08-13 and authorized the phase branch to merge into `main`.
+Owner edits in `AGENTS.md` and `CLAUDE.md` remain preserved and outside the Phase 2 commits.
 
 ## Implemented Phase 2 state
 
@@ -43,7 +44,7 @@ outside the Phase 2 commits.
 - `composer run check`: Composer validation, PHP lint, PHPCS, PHPStan, and 8 unit tests with 25
   assertions pass.
 - `composer run test:integration`: 14 tests with 92 assertions pass against the active LocalWP site.
-- `npm ci`, `npm run check`, and `npm run audit:production`: 25 frontend tests pass, all 78 maintained
+- `npm ci`, `npm run check`, and `npm run audit:production`: 31 frontend tests pass, all 80 maintained
   production files are at most 300 lines, the production build/boundary scan passes, and the
   production dependency audit reports zero vulnerabilities.
 - LocalWP runtime REST dispatch created and inspected disposable Draft and Published products,
@@ -56,11 +57,12 @@ outside the Phase 2 commits.
 The local PHP runtime emits a pre-existing missing `php_imagick.dll` startup warning; it did not
 change command exit status or the passing results above.
 
-## Acceptance HOLD
+## Owner acceptance
 
-The in-app browser service reported that no browser backend was available. Authenticated desktop,
-tablet, 430 px, 375 px, light/dark, Focus Mode, and structural RTL checks therefore were not run and
-are not inferred from source, component tests, build output, or REST evidence.
+On 2026-08-13, the owner verified the active LocalWP Product Workspace through authenticated
+wp-admin testing. Draft and Published Save & Next both created real WooCommerce products, the queue
+showed server-authoritative results, repeated/double submission produced no duplicate, the
+`crypto.randomUUID` failure was absent, and no blocking console or network error remained.
 
-Phase 2 stops here for owner review. Do not merge to `main` or begin Phase 3 until the owner accepts
-the Lovable UI/runtime parity and the Phase 2 branch.
+The owner accepted Phase 2 and authorized merge to `main`. Phase 2 is closed. Phase 3 has not
+started.

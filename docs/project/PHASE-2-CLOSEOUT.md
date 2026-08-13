@@ -6,7 +6,7 @@
 
 **Starting main:** `13dde2b33c5fb43d5e3ac609235c17d018353e4e`
 
-**State:** Acceptance correction implemented and deployed; final authenticated Save re-test required before merge
+**State:** Owner accepted; Phase 2 complete and approved for merge
 
 ## Outcome
 
@@ -52,11 +52,12 @@ interaction was changed.
    (`feat: create simple products idempotently`)
 3. Checkpoint C — `93a798082a5e6a79dd9cecf868dc5e284554c0e9`
    (`feat: connect Lovable product creation flow`)
-4. Acceptance correction — final branch HEAD
+4. Acceptance correction — `bbf451afb7bf311b04b10e87369b01cc85a3e952`
    (`fix: support secure UUID fallback in LocalWP`)
 
 The branch was created and pushed before implementation. Remote `main` remained at the accepted
-starting SHA throughout the work. The phase branch is not merged to `main`.
+starting SHA throughout implementation and review. On 2026-08-13, the owner accepted the phase
+branch and authorized its merge to `main`. This closeout commit precedes that merge.
 
 Owner changes in `AGENTS.md` and `CLAUDE.md` were preserved in the checkout and excluded from every
 Phase 2 commit.
@@ -186,23 +187,17 @@ The unit suite separately covers write failures and WooCommerce-unavailable beha
 - [Development Tooling](../development/TOOLING.md)
 - [Execution State](EXECUTION-STATE.md)
 
-## Owner acceptance HOLD
+## Owner browser acceptance
 
-The correction environment still exposed no attached browser backend. It was therefore not
-possible to repeat the authenticated Save / Save & next click in the actual wp-admin page, inspect
-the console/network panel, or observe the queue after this rebuilt bundle was deployed. This report
-does not infer browser acceptance from component tests, a served-asset hash, or REST/WooCommerce
-integration evidence.
+On 2026-08-13, the owner completed authenticated testing on the active LocalWP wp-admin Product
+Workspace and accepted Phase 2. The owner verified:
 
-The owner-found failure is corrected in source and the exact corrected asset is active on LocalWP,
-but Phase 2 remains on HOLD until the real Product Workspace confirms that the REST request is sent,
-the queue shows the server result, repeat submission creates no duplicate, and Draft/Publish both
-reach WooCommerce.
+- Draft Save & Next creates a real WooCommerce product;
+- Published Save & Next creates a real WooCommerce product;
+- the queue displays the server-authoritative result;
+- the corrected workflow has no `crypto.randomUUID` exception;
+- repeated or double submission does not create a duplicate product;
+- no blocking console or network error remains.
 
-Owner review target:
-
-`http://ysf-lite.local/wp-admin/admin.php?page=yaxii-product-workspace`
-
-To close Phase 2, the owner should hard-refresh the page, verify one Draft and one Published Save &
-next workflow, repeat one submission to confirm a single WooCommerce product, and explicitly accept
-the branch. Do not merge or begin Phase 3 before that acceptance.
+This owner evidence closes the browser-runtime HOLD. Phase 2 is complete and approved for merge.
+Phase 3 has not started.
