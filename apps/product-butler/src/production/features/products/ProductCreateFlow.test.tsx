@@ -1,4 +1,4 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { defaultPreferences, usePrefsStore } from "@/stores/prefsStore";
@@ -7,8 +7,8 @@ import { WorkspaceApp } from "../../app/WorkspaceApp";
 import { WorkspaceClient } from "../../application/WorkspaceClient";
 import type { WorkspaceRepository } from "../../application/WorkspaceRepository";
 import { WorkspaceApiError } from "../../application/WorkspaceApiError";
-import type { CreateProductRequest, OperationResult } from "../../domain/products";
-import { operationResult, workspaceRepository, workspaceSnapshot } from "../../test/workspaceFixtures";
+import type { CreateProductRequest, OperationResult, VariableProductRequest } from "../../domain/products";
+import { canonicalProduct, operationResult, workspaceRepository, workspaceSnapshot } from "../../test/workspaceFixtures";
 import { DEFAULT_WORKSPACE_PREFERENCES } from "../../domain/products";
 
 function succeeded(state: OperationResult["state"] = "succeeded"): OperationResult {
@@ -221,5 +221,44 @@ describe("real product create flow", () => {
     expect(screen.getByLabelText(/^Price/i)).toHaveValue(20);
     expect(screen.getByRole("combobox", { name: /category/i })).toHaveTextContent("Accessories");
     expect(screen.getByLabelText(/^SKU/i)).toHaveValue("");
+  });
+
+  it("creates a variable product through one cohesive repository call", async () => {
+    const simpleCreate = vi.fn(() => Promise.resolve(succeeded()));
+    const repo = repository(simpleCreate);
+    const variableCreate = vi.fn((request: VariableProductRequest) => Promise.resolve({
+      ...succeeded(),
+      combination_results: request.combinations.map((combination, index) => ({
+        client_id: combination.clientId, error: null, fingerprint: `color-${index}`,
+        state: "succeeded" as const, variation_id: 900 + index,
+      })),
+      input: request,
+      product: {
+        ...canonicalProduct, attributes: request.attributes,
+        combinations: request.combinations.map((combination, index) => ({ ...combination, variationId: 900 + index })),
+        projected_count: request.combinations.length, type: "variable" as const,
+      },
+    }));
+    repo.createVariableProduct = variableCreate;
+    const user = userEvent.setup();
+    renderWorkspace(repo);
+
+    await user.click(await screen.findByRole("button", { name: "Variable" }));
+    fireEvent.change(screen.getByLabelText(/product name/i), { target: { value: "Variable tee" } });
+    await user.click(screen.getByRole("combobox", { name: /category/i }));
+    await user.click(await screen.findByText("Accessories"));
+    await user.click(screen.getByRole("button", { name: /add attribute/i }));
+    fireEvent.change(screen.getByPlaceholderText(/attribute name/i), { target: { value: "Color" } });
+    fireEvent.change(screen.getByPlaceholderText(/values separated/i), { target: { value: "Black, White" } });
+    fireEvent.blur(screen.getByPlaceholderText(/values separated/i));
+    await user.click(screen.getByRole("button", { name: /generate combinations/i }));
+    screen.getAllByLabelText("Price *").forEach((input, index) => {
+      fireEvent.change(input, { target: { value: String(20 + index) } });
+    });
+    await user.click(screen.getByRole("button", { name: /save & next/i }));
+
+    await waitFor(() => expect(variableCreate).toHaveBeenCalledTimes(1));
+    expect(simpleCreate).not.toHaveBeenCalled();
+    expect(variableCreate.mock.calls[0]?.[0].combinations).toHaveLength(2);
   });
 });

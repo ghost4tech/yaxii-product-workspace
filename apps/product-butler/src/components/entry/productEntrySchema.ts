@@ -17,7 +17,7 @@ export const productEntrySchema: z.ZodType<ProductEntryValues> = z.object({
   manageStock: z.boolean(),
   name: z.string().trim().min(1, "Product name is required"),
   productStatus: z.enum(["publish", "draft", "pending"]),
-  regularPrice: optionalDecimal.refine((value) => value.trim() !== "", "Price is required"),
+  regularPrice: optionalDecimal,
   salePrice: optionalDecimal,
   shippingClassId: z.number().int().nonnegative(),
   shortDescription: z.string(),

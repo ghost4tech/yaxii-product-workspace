@@ -39,6 +39,8 @@ final class WpdbOperationHistory {
 		$values     = $base_values;
 		if ( 'active' === $query->state() ) {
 			$conditions .= " AND state IN ('processing', 'uncertain')";
+		} elseif ( 'error' === $query->state() ) {
+			$conditions .= " AND state IN ('failed', 'partial')";
 		} elseif ( 'all' !== $query->state() ) {
 			$conditions .= ' AND state = %s';
 			$values[]    = $query->state();

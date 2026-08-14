@@ -253,7 +253,7 @@ final class OperationController extends \WP_REST_Controller {
 			'state'          => array(
 				'type'    => 'string',
 				'default' => 'all',
-				'enum'    => array( 'all', 'succeeded', 'partial', 'failed', 'processing', 'uncertain', 'active' ),
+				'enum'    => array( 'all', 'succeeded', 'partial', 'failed', 'processing', 'uncertain', 'active', 'error' ),
 			),
 			'product_status' => array(
 				'type'    => 'string',

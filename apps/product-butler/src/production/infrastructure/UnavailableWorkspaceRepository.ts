@@ -42,6 +42,7 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
   public createProduct(): Promise<never> {
     return Promise.reject(this.unavailable());
   }
+  public createVariableProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
 
   public getOperation(): Promise<never> {
     return Promise.reject(this.unavailable());
@@ -49,6 +50,7 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
 
   public getProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
   public updateProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public updateVariableProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
   public trashProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
   public duplicateProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
   public searchProducts(): Promise<never> { return Promise.reject(this.unavailable()); }
@@ -64,6 +66,8 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
 
   public searchTags(): Promise<never> { return Promise.reject(this.unavailable()); }
   public searchShippingClasses(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public listAttributes(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public listAttributeTerms(): Promise<never> { return Promise.reject(this.unavailable()); }
 
   private unavailable() {
     return new WorkspaceApiError("ypw_host_unavailable", "The WordPress host is unavailable.", 503);

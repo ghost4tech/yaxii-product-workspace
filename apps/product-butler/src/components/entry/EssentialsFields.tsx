@@ -13,7 +13,9 @@ import type { ProductEntryValues } from '@/components/entry/productEntryModel';
 interface Props {
   form: UseFormReturn<ProductEntryValues>;
   isVariable: boolean;
+  typeLocked?: boolean;
   images: ProductImage[];
+  onVariableChange: (variable: boolean) => void;
   onImagesChange: (i: ProductImage[]) => void;
   nameRef: React.RefObject<HTMLInputElement>;
   currency?: string;
@@ -22,14 +24,19 @@ interface Props {
 export const EssentialsFields: React.FC<Props> = ({
   form,
   isVariable,
+  typeLocked = false,
   images,
+  onVariableChange,
   onImagesChange,
   nameRef,
   currency = '$',
 }) => {
   const typeToggle = (
     <div className="seg" role="group" aria-label="Product type">
-      <button type="button" data-active className="seg-item" aria-pressed="true">Simple</button>
+      <button type="button" data-active={!isVariable || undefined} className="seg-item"
+        aria-pressed={!isVariable} disabled={typeLocked} onClick={() => onVariableChange(false)}>Simple</button>
+      <button type="button" data-active={isVariable || undefined} className="seg-item"
+        aria-pressed={isVariable} disabled={typeLocked} onClick={() => onVariableChange(true)}>Variable</button>
     </div>
   );
 

@@ -25,7 +25,7 @@ export function preferencesDraft(preferences: WorkspacePreferences): ProductForm
 }
 
 export function fieldsToDraft(
-  fields: SimpleProductFields,
+  fields: CanonicalProduct | SimpleProductFields,
   images: ProductImageResource[] = [],
 ): ProductFormData {
   return {
@@ -35,7 +35,7 @@ export function fieldsToDraft(
     categoryId: String(fields.category_ids[0] ?? ""),
     height: fields.height,
     images: imagesToDraft(images).filter((image) => fields.image_ids.includes(image.wpMediaId ?? 0)),
-    isVariable: false,
+    isVariable: "type" in fields && fields.type === "variable",
     length: fields.length,
     longDescription: fields.description,
     manageStock: fields.manage_stock,
@@ -56,6 +56,8 @@ export function fieldsToDraft(
     taxClass: fields.tax_class,
     taxStatus: fields.tax_status,
     variations: [],
+    variableAttributes: "type" in fields && fields.type === "variable" ? fields.attributes : [],
+    variationCombinations: "type" in fields && fields.type === "variable" ? fields.combinations : [],
     weight: fields.weight,
     width: fields.width,
   };

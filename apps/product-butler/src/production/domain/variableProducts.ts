@@ -51,3 +51,16 @@ export interface VariableProductPlan {
   combinations: VariationCombination[];
   projectedCount: number;
 }
+
+export interface AttributeCatalogItem {
+  id: number;
+  name: string;
+  orderBy: string;
+  taxonomy: `pa_${string}`;
+}
+
+export interface AttributeTerm {
+  id: number;
+  name: string;
+  slug: string;
+}

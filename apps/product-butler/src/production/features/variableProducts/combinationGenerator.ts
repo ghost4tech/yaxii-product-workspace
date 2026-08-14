@@ -67,7 +67,29 @@ export function validateVariationPlan(
     if (!expected.has(fingerprint)) fail(`combinations.${index}.selections`, "Unknown attribute option.");
     if (actual.has(fingerprint)) fail(`combinations.${index}.selections`, "Duplicate combination.");
     actual.add(fingerprint);
+    validateCommercialFields(combination, index);
   });
+  const skus = combinations.map((combination) => combination.sku.trim().toLocaleLowerCase()).filter(Boolean);
+  if (new Set(skus).size !== skus.length) fail("combinations", "Variation SKUs must be unique.");
+}
+
+function validateCommercialFields(combination: VariationCombination, index: number): void {
+  const price = Number(combination.regularPrice);
+  if (combination.enabled && (combination.regularPrice.trim() === "" || !Number.isFinite(price) || price < 0)) {
+    fail(`combinations.${index}.regularPrice`, "Enabled variations require a valid price.");
+  }
+  if (combination.salePrice !== null) {
+    const sale = Number(combination.salePrice);
+    if (combination.salePrice.trim() === "" || !Number.isFinite(sale) || sale < 0 || sale > price) {
+      fail(`combinations.${index}.salePrice`, "Sale price must be valid and cannot exceed the regular price.");
+    }
+  }
+  if (combination.manageStock && (!Number.isInteger(combination.stockQuantity) || (combination.stockQuantity ?? -1) < 0)) {
+    fail(`combinations.${index}.stockQuantity`, "Managed stock requires a non-negative whole number.");
+  }
+  if (!Number.isInteger(combination.imageId) || combination.imageId < 0) {
+    fail(`combinations.${index}.imageId`, "Variation image reference is invalid.");
+  }
 }
 
 export function combinationFingerprint(selections: VariationSelection[]): string {

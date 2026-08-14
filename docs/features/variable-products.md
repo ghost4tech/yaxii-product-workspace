@@ -1,6 +1,6 @@
 # Basic Variable Products
 
-**Status:** Backend and REST implemented and LocalWP-tested in Phase 4 Checkpoint B; Lovable UI integration pending
+**Status:** Phase 4 implemented and authenticated browser-tested; owner acceptance pending
 
 ## Implemented workflow
 
@@ -28,6 +28,12 @@ Create is one same-origin browser operation. The server writes the parent, attri
 variation set and then runs WooCommerce variable-product synchronization. Update can add, retain,
 change, or remove concrete variations through the same cohesive server operation.
 
+The production React graph uses the approved Lovable entry workspace. Its Simple/Variable product
+toggle, responsive attribute cards, concrete variation cards, Extended Options, Focus Mode, queue,
+theme, and density shell are preserved. The browser projects the Cartesian count before generation
+and sends the parent, attributes, and all variation combinations in one request; it never performs
+one request per variation. Existing product type is locked while editing.
+
 ## Idempotency and recovery
 
 Create uses the Phase 2-3 durable operation ledger with operation type
@@ -40,6 +46,10 @@ Draft, successful variation IDs remain known, and the queue offers retry. Reconc
 the existing parent by operation identity and variations by combination identity, then creates
 only missing combinations. It does not recreate the parent or successful variations.
 
+The production queue treats both `failed` and `partial` operations as errors, preserves the parent
+WooCommerce ID, displays exact failed-combination fingerprints/messages, and offers retry only
+when the server marks it safe.
+
 ## Security and evidence
 
 Routes require authenticated WordPress REST access plus create/edit, publish, term-assignment, and
@@ -50,6 +60,17 @@ price/SKU/stock/image fields, create and hydrate, versioned edit, stale conflict
 term lookup, invalid term, duplicate SKU, idempotent replay, controlled partial failure, queue
 visibility, and safe retry. The existing simple-product integration suite remains green.
 
-Checkpoint B does not claim production UI or browser acceptance. The approved Lovable editor,
-responsive behavior, theme/density/Focus Mode, structural RTL, and storefront browser acceptance
-remain pending Checkpoint C.
+Frontend tests cover DTO serialization/hydration, exact combination generation, invalid commercial
+values, concrete editor interaction, value preservation on regeneration, cohesive one-request
+create orchestration, server field errors, partial queue detail, and simple-product regressions.
+
+Authenticated LocalWP QA covered one- and two-attribute create, exact six-combination persistence,
+reopen/edit, independent image/price/SKU/stock/enabled fields, destructive validation,
+idempotent replay, partial recovery, durable queue refresh, and storefront variation selection.
+Visual inspection covered 1440, 1280, 768, 430, and 375 pixels; light/dark;
+compact/comfortable; Focus Mode; editor, queue, error detail, dialog; and structural RTL.
+
+The active Yaxii COD theme had its variation engine disabled by store configuration. QA temporarily
+enabled that existing setting to prove storefront selection and pricing, then restored it to
+disabled. Product Workspace requires only valid WooCommerce variable-product data and does not own
+the storefront theme's variation-handler configuration.

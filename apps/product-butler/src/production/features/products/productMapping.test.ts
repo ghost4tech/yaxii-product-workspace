@@ -8,6 +8,8 @@ const copy = productOperationCopy("en-US");
 
 function submission(): ProductSubmission {
   return {
+    attributes: [],
+    combinations: [],
     images: [{ id: "wp-42", preview: "https://example.test/image.jpg", wpMediaId: 42 }],
     isVariable: false,
     saleEnd: new Date(2030, 0, 20),
@@ -74,7 +76,7 @@ describe("product request mapping", () => {
     });
   });
 
-  it("blocks variable and browser-only media instead of pretending to save them", () => {
+  it("blocks browser-only media instead of pretending to save it", () => {
     const input = submission();
     input.isVariable = true;
     input.images = [{ id: "local", preview: "blob:local" }];

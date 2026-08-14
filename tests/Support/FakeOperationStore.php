@@ -78,6 +78,7 @@ final class FakeOperationStore implements OperationStore {
 				$records,
 				static fn ( OperationRecord $record ): bool => 'all' === $query->state()
 					|| ( 'active' === $query->state() && in_array( $record->state(), array( 'processing', 'uncertain' ), true ) )
+					|| ( 'error' === $query->state() && in_array( $record->state(), array( 'failed', 'partial' ), true ) )
 					|| $query->state() === $record->state()
 			)
 		);

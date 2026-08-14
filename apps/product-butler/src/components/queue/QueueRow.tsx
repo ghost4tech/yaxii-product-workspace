@@ -62,6 +62,9 @@ export function QueueRow({
         {product.status === "error" && product.errorMessage && (
           <p className="mt-1 truncate text-[11px] text-destructive">{product.errorMessage}</p>
         )}
+        {product.status === "error" && product.variationFailures?.map((failure) => (
+          <p key={failure} className="mt-1 break-words font-mono text-[10px] text-destructive">{failure}</p>
+        ))}
       </div>
 
       {!compact && (

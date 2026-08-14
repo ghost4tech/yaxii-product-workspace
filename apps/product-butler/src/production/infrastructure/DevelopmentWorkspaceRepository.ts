@@ -43,6 +43,7 @@ export class DevelopmentWorkspaceRepository implements WorkspaceRepository {
   public createProduct(): Promise<never> {
     return Promise.reject(this.unsupported());
   }
+  public createVariableProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
 
   public getOperation(): Promise<never> {
     return Promise.reject(this.unsupported());
@@ -50,6 +51,7 @@ export class DevelopmentWorkspaceRepository implements WorkspaceRepository {
 
   public getProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
   public updateProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
+  public updateVariableProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
   public trashProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
   public duplicateProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
   public searchProducts() { return Promise.resolve({ has_more: false, items: [], page: 1, per_page: 20, total: 0 }); }
@@ -74,6 +76,8 @@ export class DevelopmentWorkspaceRepository implements WorkspaceRepository {
 
   public searchTags() { return this.searchCategories(); }
   public searchShippingClasses() { return this.searchCategories(); }
+  public listAttributes() { return Promise.resolve([]); }
+  public listAttributeTerms() { return Promise.resolve([]); }
 
   private unsupported() {
     return new WorkspaceApiError("ypw_development_only", "WooCommerce writes require WordPress.", 503);

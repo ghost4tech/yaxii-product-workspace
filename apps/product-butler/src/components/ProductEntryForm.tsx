@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Layers3 } from "lucide-react";
 import React from "react";
 import type { CanonicalProduct } from "@/production/domain/products";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,9 @@ import {
 import { EntryActionBar } from "@/components/entry/EntryActionBar";
 import { EssentialsFields } from "@/components/entry/EssentialsFields";
 import { ExtendedFields } from "@/components/entry/ExtendedFields";
+import { FormSection } from "@/components/entry/FormSection";
 import { useProductEntryController } from "@/components/entry/useProductEntryController";
+import { VariationsEditor } from "@/components/VariationsEditor";
 
 interface Props {
   advancedOpen?: boolean;
@@ -56,33 +58,50 @@ export function ProductEntryForm({
       currency={controller.bootstrap.woocommerce.currencySymbol}
       form={form}
       images={controller.images}
-      isVariable={false}
+      isVariable={controller.isVariable}
       nameRef={controller.nameInputRef}
       onImagesChange={controller.setImages}
+      onVariableChange={controller.setIsVariable}
+      typeLocked={controller.editing}
     />
   );
   const extended = (
     <ExtendedFields
       form={form}
-      isVariable={false}
+      isVariable={controller.isVariable}
       onSaleEnd={controller.setSaleEnd}
       onSaleStart={controller.setSaleStart}
       saleEnd={controller.saleEnd}
       saleStart={controller.saleStart}
     />
   );
+  const variations = controller.isVariable ? (
+    <FormSection title="Attributes & variations" icon={Layers3}
+      hint={`${controller.variationCombinations.length} concrete variations`}>
+      <VariationsEditor
+        attributes={controller.variableAttributes}
+        combinations={controller.variationCombinations}
+        onAttributesChange={controller.setVariableAttributes}
+        onCombinationsChange={controller.setVariationCombinations}
+      />
+    </FormSection>
+  ) : null;
 
   return (
     <Form {...form}>
       <form onSubmit={(event) => void form.handleSubmit(controller.submit)(event)}>
         {twoColumn ? (
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
-            <div className="min-w-0">{essentials}</div>
-            <div className="min-w-0 lg:border-s lg:border-border lg:ps-8">{extended}</div>
+          <div className="space-y-8">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
+              <div className="min-w-0">{essentials}</div>
+              <div className="min-w-0 lg:border-s lg:border-border lg:ps-8">{extended}</div>
+            </div>
+            {variations}
           </div>
         ) : (
           <div className="stack-lg">
             {essentials}
+            {variations}
             {!controlled && (
               <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
                 <CollapsibleTrigger asChild>
@@ -108,7 +127,10 @@ export function ProductEntryForm({
           clearLabel={controller.editing ? "Reset changes" : "Clear"}
           disabled={!controller.canWrite}
           disabledReason={!controller.canWrite ? "This product operation is unavailable." : undefined}
-          dirty={controller.editing ? form.formState.isDirty : Boolean(watched.name || watched.regularPrice || watched.sku || controller.images.length)}
+          dirty={controller.editing
+            ? form.formState.isDirty || controller.variableDirty
+            : Boolean(watched.name || watched.regularPrice || watched.sku || controller.images.length
+              || controller.variableAttributes.length || controller.variationCombinations.length)}
           isSubmitting={controller.editing ? controller.manage.isSaving : controller.create.isSubmitting}
           onClear={controller.reset}
           onSaveDraft={controller.editing ? undefined : controller.saveDraft}

@@ -9,12 +9,12 @@ import { productOperationCopy } from "../../core/i18n/productMessages";
 import { SecureRandomUnavailableError } from "../../core/security/secureUuid";
 import { IdempotencyKeyManager } from "./idempotency";
 import { mapServerFields, operationErrorFields } from "./productErrors";
-import { mapProductRequest, ProductMappingError, type ProductFieldErrors, type ProductSubmission } from "./productMapping";
+import { mapProductRequest, mapVariableProductRequest, ProductMappingError, type ProductFieldErrors, type ProductSubmission } from "./productMapping";
 
 export interface ProductSubmitOutcome {
   fields: ProductFieldErrors;
   result?: OperationResult;
-  state: "succeeded" | "failed" | "uncertain";
+  state: "succeeded" | "partial" | "failed" | "uncertain";
 }
 
 export function useProductCreate(client: WorkspaceClient, bootstrap: WorkspaceBootstrap) {
@@ -33,7 +33,7 @@ export function useProductCreate(client: WorkspaceClient, bootstrap: WorkspaceBo
 
     let request;
     try {
-      request = mapProductRequest(input, copy);
+      request = input.isVariable ? mapVariableProductRequest(input, copy) : mapProductRequest(input, copy);
     } catch (error) {
       const fields = error instanceof ProductMappingError ? error.fields : { root: copy.reviewFields };
       return { fields, state: "failed" };
@@ -50,7 +50,9 @@ export function useProductCreate(client: WorkspaceClient, bootstrap: WorkspaceBo
     inFlight.current = true;
     setIsSubmitting(true);
     try {
-      let result = await client.createProduct(request, key);
+      let result = input.isVariable
+        ? await client.createVariableProduct(request as ReturnType<typeof mapVariableProductRequest>, key)
+        : await client.createProduct(request as ReturnType<typeof mapProductRequest>, key);
       if ((result.state === "processing" || result.state === "uncertain") && result.retry.can_reconcile) {
         result = await client.getOperation(result.operation_id).catch(() => result);
       }
@@ -60,6 +62,12 @@ export function useProductCreate(client: WorkspaceClient, bootstrap: WorkspaceBo
         keys.current.clear(key);
         toast({ title: copy.productSaved, description: `${result.product.name} · #${result.product.id}` });
         return { fields: {}, result, state: "succeeded" };
+      }
+
+      if (result.state === "partial" && result.product) {
+        keys.current.lock(key);
+        toast({ title: "Product needs recovery", description: result.warnings[0] ?? "Some variations were not saved.", variant: "destructive" });
+        return { fields: { root: result.warnings[0] ?? "Retry the partial operation from the queue." }, result, state: "partial" };
       }
 
       const fields = operationErrorFields(result.errors);

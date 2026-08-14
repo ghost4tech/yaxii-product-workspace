@@ -132,10 +132,11 @@ final class VariableProductLifecycleTest extends TestCase {
 		self::assertCount( 1, array_filter( $partial['combination_results'], static fn ( array $item ): bool => 'failed' === $item['state'] ) );
 		self::assertSame( 'draft', $partial['product']['status'] );
 		self::assertCount( 5, wc_get_product( $partial['product']['id'] )->get_children() );
-
 		$queue = $this->data( $this->dispatch( 'GET', '/operations', array( 'search' => $payload['product']['name'] ) ) );
 		self::assertSame( 'partial', $queue['items'][0]['state'] );
 		self::assertTrue( $queue['items'][0]['retry']['can_retry'] );
+		$error_queue = $this->data( $this->dispatch( 'GET', '/operations', array( 'state' => 'error' ) ) );
+		self::assertSame( 'partial', $error_queue['items'][0]['state'] );
 		$recovered = $this->data( $this->dispatch( 'POST', '/operations/' . $partial['operation_id'] . '/retry' ) );
 		self::assertSame( 'succeeded', $recovered['state'] );
 		self::assertSame( $partial['product']['id'], $recovered['product']['id'] );

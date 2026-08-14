@@ -8,7 +8,7 @@ export function operationFilters(status: QueueStatus) {
   if (status === "synced") return { productStatus: "publish", state: "succeeded" };
   if (status === "draft") return { productStatus: "unpublished", state: "succeeded" };
   if (status === "pending") return { state: "active" };
-  if (status === "error") return { state: "failed" };
+  if (status === "error") return { state: "error" };
   return { state: "all" };
 }
 
@@ -25,7 +25,7 @@ export function operationToQueueProduct(
   bootstrap: WorkspaceBootstrap,
 ): Product {
   const product = result.product;
-  const input = result.input;
+  const input = result.input && "product" in result.input ? result.input.product : result.input;
   return {
     canReconcile: result.retry.can_reconcile,
     canRetry: result.retry.can_retry,
@@ -33,10 +33,10 @@ export function operationToQueueProduct(
     createdAt: new Date(result.created_at ?? product?.created_at ?? Date.now()),
     createdBy: bootstrap.user.displayName,
     currencySymbol: bootstrap.woocommerce.currencySymbol,
-    errorMessage: result.errors[0]?.message,
+    errorMessage: result.errors[0]?.message ?? result.warnings[0],
     id: result.operation_id,
     images: operationImages(result),
-    isVariable: false,
+    isVariable: product?.type === "variable" || Boolean(result.input && "product" in result.input),
     longDescription: product?.description ?? input?.description ?? "",
     name: product?.name ?? input?.name ?? "Untitled product",
     regularPrice: product?.regular_price ?? input?.regular_price ?? "",
@@ -45,9 +45,12 @@ export function operationToQueueProduct(
     sku: product?.sku ?? input?.sku ?? "",
     status: result.state === "succeeded"
       ? product?.status === "publish" ? "synced" : "draft"
-      : result.state === "failed" ? "error" : "pending",
+      : result.state === "failed" || result.state === "partial" ? "error" : "pending",
     stockQuantity: String(product?.stock_quantity ?? input?.stock_quantity ?? ""),
     variations: [],
+    variationFailures: result.combination_results
+      .filter((combination) => combination.state === "failed")
+      .map((combination) => `${combination.fingerprint}: ${combination.error?.message ?? "Not saved"}`),
     wooCommerceId: product?.id,
   };
 }

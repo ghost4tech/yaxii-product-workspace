@@ -85,4 +85,21 @@ describe("variable combination generation", () => {
     expect(global).toMatchObject({ attributeId: 7, optionIds: [101, 102], taxonomy: "pa_color" });
     expect(custom).toMatchObject({ options: ["S", "M", "L"], source: "custom" });
   });
+
+  it("validates prices, managed stock, image references, and unique SKUs", () => {
+    let nextId = 0;
+    const combinations = generateVariationCombinations(attributes(), [], () => `commercial-${++nextId}`)
+      .map((combination, index) => ({ ...combination, regularPrice: String(20 + index), sku: `SKU-${index}` }));
+    expect(() => validateVariationPlan(attributes(), combinations)).not.toThrow();
+
+    expect(() => validateVariationPlan(attributes(), combinations.map((combination, index) => (
+      index === 0 ? { ...combination, salePrice: "999" } : combination
+    )))).toThrow(VariablePlanError);
+    expect(() => validateVariationPlan(attributes(), combinations.map((combination, index) => (
+      index === 0 ? { ...combination, manageStock: true, stockQuantity: null } : combination
+    )))).toThrow(VariablePlanError);
+    expect(() => validateVariationPlan(attributes(), combinations.map((combination, index) => (
+      index === 1 ? { ...combination, sku: "SKU-0" } : combination
+    )))).toThrow(VariablePlanError);
+  });
 });

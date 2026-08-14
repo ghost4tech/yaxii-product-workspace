@@ -1,6 +1,6 @@
 # Phase 4 Variable-Product Domain
 
-**Status:** Checkpoints A-B implemented and runtime-tested; production UI integration remains pending
+**Status:** Checkpoints A-C implemented and authenticated browser-tested; owner acceptance pending
 
 ## Model boundary
 
@@ -48,8 +48,16 @@ The adapter stores only two private recovery identities: the original operation 
 and the stable client combination ID on each variation. WooCommerce-owned prices, stock, SKUs,
 images, statuses, attributes, and term relationships remain in WooCommerce CRUD storage.
 
-## Current checkpoint boundary
+## Production UI boundary
 
-Checkpoint B supports real create, hydrate, versioned update, idempotent replay, partial result,
-and safe reconciliation. The server-authoritative queue recognizes `partial` as actionable. The
-approved Lovable editor is not yet wired to these routes; that observable UI work is Checkpoint C.
+Checkpoint C wires the approved Lovable editor to the same-site routes without changing the
+presentation contract. The production flow supports type selection, global and custom attribute
+configuration, projected count, concrete combination generation, per-combination editing,
+single-request create, canonical hydration, and versioned edit. The responsive card editor avoids
+a desktop spreadsheet matrix and retains the existing theme, density, Focus Mode, queue, dialog,
+and structural RTL behavior.
+
+The queue maps `partial` and `failed` into its error filter, retains successful product and
+variation IDs, shows exact failed-combination fingerprints, and exposes retry only when the server
+marks it safe. Phase 4 contains no bulk fill, mass editing, presets, templates, import, AI, or other
+advanced Pro matrix capability.

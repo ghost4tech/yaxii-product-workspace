@@ -30,6 +30,7 @@ export const canonicalProduct: CanonicalProduct = {
 
 export function operationResult(state: OperationResult["state"] = "succeeded"): OperationResult {
   return {
+    combination_results: [],
     created_at: "2026-08-13T12:00:00+00:00",
     errors: [],
     input: simpleProductFields,
@@ -53,7 +54,7 @@ export const workspaceSnapshot: WorkspaceSnapshot = {
       categoryLookup: true, mediaSelection: true, operationLookup: true,
       operationQueue: true, preferences: true, productManagement: true,
       shippingClassLookup: true, simpleProductCreate: true, tagLookup: true,
-      variableProductCreate: false,
+      variableProductCreate: true,
     },
     frontendAvailable: true,
     isWooCommerceAvailable: true,
@@ -72,11 +73,14 @@ export function workspaceRepository(overrides: Partial<WorkspaceRepository> = {}
   const emptyTerms = () => Promise.resolve({ has_more: false, items: [], page: 1, per_page: 20 });
   return {
     createProduct: unavailable,
+    createVariableProduct: unavailable,
     dismissOperation: () => Promise.resolve(),
     duplicateProduct: unavailable,
     getOperation: unavailable,
     getPreferences: () => Promise.resolve(DEFAULT_WORKSPACE_PREFERENCES),
     getProduct: unavailable,
+    listAttributes: () => Promise.resolve([]),
+    listAttributeTerms: () => Promise.resolve([]),
     listOperations: () => Promise.resolve({
       counts: { all: 0, draft: 0, error: 0, pending: 0, synced: 0 },
       has_more: false, items: [], page: 1, per_page: 25, total: 0,
@@ -90,6 +94,7 @@ export function workspaceRepository(overrides: Partial<WorkspaceRepository> = {}
     trashProduct: unavailable,
     updatePreferences: () => Promise.resolve(DEFAULT_WORKSPACE_PREFERENCES),
     updateProduct: unavailable,
+    updateVariableProduct: unavailable,
     ...overrides,
   };
 }

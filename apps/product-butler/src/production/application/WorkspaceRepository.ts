@@ -7,7 +7,10 @@ import type {
   OperationResult,
   ProductPage,
   WorkspacePreferences,
+  VariableProductRequest,
+  VariableUpdateResult,
 } from "../domain/products";
+import type { AttributeCatalogItem, AttributeTerm } from "../domain/variableProducts";
 
 export interface SearchOptions {
   page?: number;
@@ -22,8 +25,10 @@ export interface SearchOptions {
 export interface WorkspaceRepository {
   load: () => Promise<WorkspaceSnapshot>;
   createProduct: (request: CreateProductRequest, idempotencyKey: string) => Promise<OperationResult>;
+  createVariableProduct: (request: VariableProductRequest, idempotencyKey: string) => Promise<OperationResult>;
   getProduct: (productId: number) => Promise<CanonicalProduct>;
   updateProduct: (productId: number, version: string, product: CreateProductRequest) => Promise<CanonicalProduct>;
+  updateVariableProduct: (productId: number, version: string, product: VariableProductRequest) => Promise<VariableUpdateResult>;
   trashProduct: (productId: number, version: string) => Promise<void>;
   duplicateProduct: (productId: number) => Promise<CreateProductRequest>;
   searchProducts: (options: SearchOptions) => Promise<ProductPage>;
@@ -36,4 +41,6 @@ export interface WorkspaceRepository {
   searchCategories: (query: string, signal?: AbortSignal) => Promise<CategoryPage>;
   searchTags: (query: string, signal?: AbortSignal) => Promise<CategoryPage>;
   searchShippingClasses: (query: string, signal?: AbortSignal) => Promise<CategoryPage>;
+  listAttributes: () => Promise<AttributeCatalogItem[]>;
+  listAttributeTerms: (attributeId: number) => Promise<AttributeTerm[]>;
 }
