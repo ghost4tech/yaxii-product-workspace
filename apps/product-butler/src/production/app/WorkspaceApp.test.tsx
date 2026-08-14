@@ -80,6 +80,16 @@ describe("WorkspaceApp", () => {
     expect(screen.getByRole("button", { name: /save & next/i })).toBeEnabled();
   });
 
+  it("opens keyboard shortcuts from the header", async () => {
+    const user = userEvent.setup();
+    renderWorkspace();
+    await screen.findByRole("heading", { name: "Product entry" });
+
+    await user.click(screen.getByRole("button", { name: "Keyboard shortcuts" }));
+
+    expect(screen.getByRole("dialog", { name: "Keyboard shortcuts" })).toBeVisible();
+  });
+
   it("keeps the queue in a skeleton state until its first page resolves", async () => {
     const queueRequest = deferredRequest<OperationPage>();
     renderWorkspace(snapshot, { listOperations: () => queueRequest.promise });

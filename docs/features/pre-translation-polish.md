@@ -12,8 +12,9 @@ core collapsed-sidebar behavior.
 
 The Entry toolbar retains Find product, Extended, and Focus. Density remains available in Settings
 and the command menu, but no longer occupies the Entry toolbar or panel heading. Branding now reads **Yaxii Product
-Workspace** with **Create products faster.** The store indicator reads **Store ready**, successful
-queue rows are presented as **Published**, and current-store save feedback avoids remote-sync copy.
+Workspace** with **Create products faster.** The header opens the existing **Keyboard shortcuts**
+dialog directly, successful queue rows are presented as **Published**, and current-store save feedback
+avoids remote-sync copy.
 Internal operation state keys remain unchanged.
 
 Queue status filters remain a single horizontal row. The native overflow area hides its visual

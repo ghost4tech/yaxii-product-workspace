@@ -1,8 +1,7 @@
-import { LayoutGrid, Search, SlidersHorizontal } from "lucide-react";
+import { Keyboard, LayoutGrid, Search, SlidersHorizontal } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import workspaceLogo from "../../../../assets/img/yaxii-product-workspace-logo.svg";
 import { cn } from "@/lib/utils";
-import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
 import { usePrefsStore } from "@/stores/prefsStore";
 
 const TABS = [
@@ -13,9 +12,9 @@ const TABS = [
 export function AppShell({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const setCommandOpen = usePrefsStore((state) => state.setCommandOpen);
+  const setShortcutsOpen = usePrefsStore((state) => state.setShortcutsOpen);
   const showHints = usePrefsStore((state) => state.prefs.showKeyboardHints);
   const focusMode = usePrefsStore((state) => state.prefs.focusMode);
-  const { bootstrap } = useWorkspaceRuntime();
 
   return (
     <div className="workspace-shell flex min-h-screen flex-col bg-background">
@@ -41,10 +40,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <span>Search or jump to…</span>
               {showHints && <kbd className="kbd ms-6">Ctrl K</kbd>}
             </button>
-            <div className="hidden h-8 items-center gap-1.5 rounded-md border border-border px-2.5 text-[11px] font-medium text-muted-foreground lg:flex">
-              <span className="h-1.5 w-1.5 rounded-full bg-success" />
-              Store ready · {bootstrap.woocommerce.currency}
-            </div>
+            <button
+              aria-haspopup="dialog"
+              className="hidden h-8 items-center gap-1.5 rounded-md border border-border px-2.5 text-[11px] font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground lg:flex"
+              onClick={() => setShortcutsOpen(true)}
+              type="button"
+            >
+              <Keyboard className="h-3.5 w-3.5" />
+              Keyboard shortcuts
+            </button>
           </div>
         </div>
 
