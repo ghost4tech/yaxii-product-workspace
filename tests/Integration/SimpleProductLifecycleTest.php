@@ -28,6 +28,7 @@ final class SimpleProductLifecycleTest extends TestCase {
 
 	/** @var array<string> */
 	private array $operation_ids = array();
+	private int $additional_category_id;
 	private string $tax_class;
 
 	protected function setUp(): void {
@@ -54,6 +55,7 @@ final class SimpleProductLifecycleTest extends TestCase {
 		foreach ( $this->attachment_ids as $attachment_id ) {
 			wp_delete_attachment( $attachment_id, true );
 		}
+		wp_delete_term( $this->additional_category_id, 'product_cat' );
 		foreach ( $this->term_ids as $taxonomy => $term_id ) {
 			wp_delete_term( $term_id, $taxonomy );
 		}
@@ -80,6 +82,12 @@ final class SimpleProductLifecycleTest extends TestCase {
 		self::assertSame( $this->term_ids['product_shipping_class'], $product['shipping_class_id'] );
 		self::assertSame( $this->tax_class, $product['tax_class'] );
 		self::assertSame( $this->attachment_ids, $product['image_ids'] );
+		self::assertSame( array( $this->term_ids['product_cat'], $this->additional_category_id ), $product['category_ids'] );
+		self::assertStringContainsString( '<h2>Details</h2>', $product['description'] );
+		self::assertStringContainsString( '<ul><li>Durable formatting</li></ul>', $product['description'] );
+		self::assertStringContainsString( (string) wp_get_attachment_url( $this->attachment_ids[0] ), $product['description'] );
+		self::assertStringNotContainsString( '<script', $product['description'] );
+		self::assertStringNotContainsString( 'javascript:', $product['short_description'] );
 
 		$detail = $this->data( $this->dispatch( 'GET', '/products/' . $product['id'] ) );
 		self::assertSame( $product['version'], $detail['version'] );
@@ -192,6 +200,14 @@ final class SimpleProductLifecycleTest extends TestCase {
 			self::assertIsArray( $term );
 			$this->term_ids[ $taxonomy ] = (int) $term['term_id'];
 		}
+		$category = wp_insert_term(
+			'YPW lifecycle child ' . wp_generate_password( 5, false ),
+			'product_cat',
+			array( 'parent' => $this->term_ids['product_cat'] )
+		);
+		self::assertIsArray( $category );
+		$this->additional_category_id = (int) $category['term_id'];
+
 		$this->tax_class = 'ypw-tax-' . strtolower( wp_generate_password( 6, false ) );
 		self::assertIsArray( \WC_Tax::create_tax_class( 'YPW lifecycle tax ' . $this->tax_class, $this->tax_class ) );
 		foreach ( array( 'featured', 'gallery' ) as $label ) {
@@ -227,8 +243,8 @@ final class SimpleProductLifecycleTest extends TestCase {
 		return array(
 			'name'               => 'YPW lifecycle product',
 			'slug'               => 'ypw-lifecycle-product',
-			'description'        => '<p>Lifecycle long description.</p>',
-			'short_description'  => '<p>Lifecycle short description.</p>',
+			'description'        => '<h2>Details</h2><ul><li>Durable formatting</li></ul><p><a href="https://example.test/guide">Guide</a></p><img src="' . esc_url_raw( (string) wp_get_attachment_url( $this->attachment_ids[0] ) ) . '" alt="Guide"><script>alert(1)</script>',
+			'short_description'  => '<p><strong>Lifecycle short description.</strong> <a href="javascript:alert(1)">Unsafe</a></p>',
 			'status'             => 'publish',
 			'catalog_visibility' => 'catalog',
 			'regular_price'      => '12.50',
@@ -248,7 +264,7 @@ final class SimpleProductLifecycleTest extends TestCase {
 			'shipping_class_id'  => $this->term_ids['product_shipping_class'],
 			'tax_status'         => 'taxable',
 			'tax_class'          => $this->tax_class,
-			'category_ids'       => array( $this->term_ids['product_cat'] ),
+			'category_ids'       => array( $this->term_ids['product_cat'], $this->additional_category_id ),
 			'tag_ids'            => array( $this->term_ids['product_tag'] ),
 			'image_ids'          => $this->attachment_ids,
 		);

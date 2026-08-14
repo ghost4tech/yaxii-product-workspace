@@ -13,6 +13,7 @@ import "./production/styles/tokens.css";
 import "./index.css";
 import "./production/styles/components.css";
 import "./production/styles/preferences.css";
+import "./production/styles/rich-text.css";
 
 const mount = document.getElementById("yaxii-product-workspace-app");
 const scope = document.getElementById("yaxii-product-workspace");

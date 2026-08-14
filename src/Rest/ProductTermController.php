@@ -51,6 +51,19 @@ final class ProductTermController extends \WP_REST_Controller {
 						'default'   => '',
 						'maxLength' => 100,
 					),
+					'parent'   => array(
+						'type'    => 'integer',
+						'minimum' => 0,
+					),
+					'include'  => array(
+						'type'     => 'array',
+						'default'  => array(),
+						'maxItems' => 20,
+						'items'    => array(
+							'type'    => 'integer',
+							'minimum' => 1,
+						),
+					),
 				),
 			)
 		);
@@ -80,33 +93,35 @@ final class ProductTermController extends \WP_REST_Controller {
 			);
 		}
 
-		$page      = max( 1, (int) $request->get_param( 'page' ) );
-		$per_page  = min( 50, max( 1, (int) $request->get_param( 'per_page' ) ) );
-		$term_args = array(
+		$page         = max( 1, (int) $request->get_param( 'page' ) );
+		$per_page     = min( 50, max( 1, (int) $request->get_param( 'per_page' ) ) );
+		$search       = sanitize_text_field( (string) $request->get_param( 'search' ) );
+		$hierarchical = is_taxonomy_hierarchical( $this->taxonomy );
+		$include      = $hierarchical ? array_map( 'intval', (array) $request->get_param( 'include' ) ) : array();
+		$term_args    = array(
 			'taxonomy'   => $this->taxonomy,
 			'hide_empty' => false,
 			'number'     => $per_page + 1,
 			'offset'     => ( $page - 1 ) * $per_page,
 			'orderby'    => 'name',
 			'order'      => 'ASC',
-			'search'     => sanitize_text_field( (string) $request->get_param( 'search' ) ),
+			'search'     => $search,
 		);
-		$terms     = get_terms( $term_args );
+		if ( array() !== $include ) {
+			$term_args['include'] = array_slice( array_values( array_unique( $include ) ), 0, 20 );
+			$term_args['number']  = min( $per_page + 1, count( $term_args['include'] ) );
+			$term_args['offset']  = 0;
+		} elseif ( $hierarchical && '' === $search ) {
+			$term_args['parent'] = max( 0, (int) ( $request->get_param( 'parent' ) ?? 0 ) );
+		}
+
+		$terms = get_terms( $term_args );
 		if ( is_wp_error( $terms ) ) {
 			return new \WP_Error( 'ypw_term_query_failed', __( 'Product terms could not be loaded.', 'yaxii-product-workspace' ), array( 'status' => 500 ) );
 		}
 
 		$has_more = count( $terms ) > $per_page;
-		$items    = array_map(
-			static fn ( \WP_Term $term ): array => array(
-				'id'     => $term->term_id,
-				'name'   => $term->name,
-				'slug'   => $term->slug,
-				'parent' => $term->parent,
-				'count'  => $term->count,
-			),
-			array_slice( $terms, 0, $per_page )
-		);
+		$items    = array_map( array( $this, 'term_resource' ), array_slice( $terms, 0, $per_page ) );
 
 		return rest_ensure_response(
 			array(
@@ -118,5 +133,56 @@ final class ProductTermController extends \WP_REST_Controller {
 				),
 			)
 		);
+	}
+
+	/** @return array<string, mixed> */
+	private function term_resource( \WP_Term $term ): array {
+		$resource = array(
+			'id'     => $term->term_id,
+			'name'   => $term->name,
+			'slug'   => $term->slug,
+			'parent' => $term->parent,
+			'count'  => $term->count,
+		);
+		if ( ! is_taxonomy_hierarchical( $this->taxonomy ) ) {
+			return $resource;
+		}
+
+		$resource['has_children'] = $this->has_children( $term->term_id );
+		$resource['ancestors']    = array_values(
+			array_filter(
+				array_map(
+					fn ( int $term_id ): ?array => $this->ancestor_resource( $term_id ),
+					array_reverse( get_ancestors( $term->term_id, $this->taxonomy, 'taxonomy' ) )
+				)
+			)
+		);
+		return $resource;
+	}
+
+	private function has_children( int $term_id ): bool {
+		$children = get_terms(
+			array(
+				'taxonomy'   => $this->taxonomy,
+				'hide_empty' => false,
+				'parent'     => $term_id,
+				'number'     => 1,
+				'fields'     => 'ids',
+			)
+		);
+
+		return ! is_wp_error( $children ) && array() !== $children;
+	}
+
+	/** @return array<string, mixed>|null */
+	private function ancestor_resource( int $term_id ): ?array {
+		$term = get_term( $term_id, $this->taxonomy );
+		return $term instanceof \WP_Term ? array(
+			'id'     => $term->term_id,
+			'name'   => $term->name,
+			'slug'   => $term->slug,
+			'parent' => $term->parent,
+			'count'  => $term->count,
+		) : null;
 	}
 }

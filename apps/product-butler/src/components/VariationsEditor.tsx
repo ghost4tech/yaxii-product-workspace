@@ -1,153 +1,224 @@
 import { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
-import { ChevronDown, ChevronUp, GripVertical, Plus, Sparkles, Trash2 } from "lucide-react";
-import { VariationCombinationCard } from "@/components/variations/VariationCombinationCard";
+import { AlertTriangle, Layers, Plus, RefreshCw, Sparkles, Wand2 } from "lucide-react";
+import { AttributeEditor, GlobalAttributeSelect } from "@/components/variations/AttributeEditor";
+import { VariationRow } from "@/components/variations/VariationRow";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Explain, HelpTip } from "@/components/ui/help-tip";
+import { cn } from "@/lib/utils";
 import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
-import type { AttributeCatalogItem, AttributeTerm, VariableAttribute, VariationCombination } from "@/production/domain/variableProducts";
 import { generateSecureUuidV4 } from "@/production/core/security/secureUuid";
-import { generateVariationCombinations, projectedCombinationCount, VariablePlanError } from "@/production/features/variableProducts/combinationGenerator";
+import {
+  VARIABLE_PRODUCT_LIMITS, type AttributeCatalogItem, type AttributeTerm,
+  type VariableAttribute, type VariationCombination, type VariationSelection,
+} from "@/production/domain/variableProducts";
+import {
+  combinationFingerprint, generateVariationCombinations, projectedCombinationCount,
+  VariablePlanError,
+} from "@/production/features/variableProducts/combinationGenerator";
+import type { ProductImage } from "@/types/product";
 
 interface Props {
   attributes: VariableAttribute[];
+  baseSku?: string;
   combinations: VariationCombination[];
+  currency?: string;
   onAttributesChange: (attributes: VariableAttribute[]) => void;
   onCombinationsChange: (combinations: VariationCombination[]) => void;
+  onUploadImage: (file: File) => Promise<ProductImage>;
 }
 
-export const VariationsEditor = forwardRef<HTMLDivElement, Props>((props, ref) => {
-  const { attributes, combinations, onAttributesChange, onCombinationsChange } = props;
+function Step({ active, done, label, n }: { active: boolean; done: boolean; label: string; n: number }) {
+  return <div className="flex min-w-0 items-center gap-1.5">
+    <span className={cn(
+      "grid h-4 w-4 shrink-0 place-items-center rounded-full text-[9px] font-semibold",
+      done ? "bg-success text-success-foreground" : active ? "bg-foreground text-background" : "bg-muted text-muted-foreground",
+    )}>{n}</span>
+    <span className={cn("truncate text-[11px] font-medium", active || done ? "text-foreground" : "text-muted-foreground")}>{label}</span>
+  </div>;
+}
+
+export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
+  attributes, baseSku = "", combinations, currency = "$", onAttributesChange,
+  onCombinationsChange, onUploadImage,
+}, ref) => {
   const { client } = useWorkspaceRuntime();
   const [catalog, setCatalog] = useState<AttributeCatalogItem[]>([]);
   const [terms, setTerms] = useState<Record<number, AttributeTerm[]>>({});
-  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [imagePreviews, setImagePreviews] = useState<Record<number, ProductImage>>({});
+  const [bulkPrice, setBulkPrice] = useState("");
   const [error, setError] = useState("");
+  const [lookupError, setLookupError] = useState("");
 
-  useEffect(() => { void client.listAttributes().then(setCatalog).catch(() => setCatalog([])); }, [client]);
+  useEffect(() => {
+    void client.listAttributes().then(setCatalog).catch(() => {
+      setCatalog([]);
+      setLookupError("Global attributes could not be loaded.");
+    });
+  }, [client]);
   useEffect(() => {
     attributes.filter((attribute) => attribute.source === "global").forEach((attribute) => {
       if (terms[attribute.attributeId]) return;
       void client.listAttributeTerms(attribute.attributeId).then((items) => {
         setTerms((current) => ({ ...current, [attribute.attributeId]: items }));
-      }).catch(() => setTerms((current) => ({ ...current, [attribute.attributeId]: [] })));
+      }).catch(() => {
+        setTerms((current) => ({ ...current, [attribute.attributeId]: [] }));
+        setLookupError(`Terms for ${attribute.name} could not be loaded.`);
+      });
     });
   }, [attributes, client, terms]);
+  useEffect(() => {
+    const ids = [...new Set(combinations.map((combination) => combination.imageId).filter((id) => id > 0))];
+    ids.filter((id) => !imagePreviews[id]).forEach((id) => {
+      void client.getMedia(id).then((media) => setImagePreviews((current) => ({
+        ...current, [id]: { id: `wp-${id}`, preview: media.url, wpMediaId: id },
+      }))).catch(() => setLookupError("A variation image preview could not be loaded. Its attachment is unchanged."));
+    });
+  }, [client, combinations, imagePreviews]);
 
-  const projected = useMemo(() => projectedCombinationCount(attributes), [attributes]);
-  const addAttribute = useCallback(() => {
-    if (attributes.length >= 5) return;
-    const key = `custom:attribute-${generateSecureUuidV4().slice(0, 8)}`;
-    onAttributesChange([...attributes, { key, name: "", options: [], position: attributes.length, source: "custom", variation: true, visible: true }]);
-    setExpanded((current) => new Set(current).add(key));
-  }, [attributes, onAttributesChange]);
+  const ready = attributes.filter((attribute) => attribute.name.trim()
+    && (attribute.source === "global" ? attribute.optionIds.length : attribute.options.length));
+  const expected = useMemo(() => projectedCombinationCount(attributes), [attributes]);
+  const overLimit = expected > VARIABLE_PRODUCT_LIMITS.combinations;
+  const usedGlobalIds = new Set(attributes.filter((attribute) => attribute.source === "global").map((attribute) => attribute.attributeId));
+  const availableGlobals = catalog.filter((attribute) => !usedGlobalIds.has(attribute.id));
+  const missingPrices = combinations.filter((combination) => combination.enabled && !combination.regularPrice).length;
+  const enabledCount = combinations.filter((combination) => combination.enabled).length;
+  const stale = useMemo(() => {
+    if (!ready.length || overLimit) return false;
+    try {
+      const generated = generateVariationCombinations(attributes, combinations, generateSecureUuidV4);
+      const current = new Set(combinations.map((combination) => combinationFingerprint(combination.selections)));
+      return generated.length !== combinations.length
+        || generated.some((combination) => !current.has(combinationFingerprint(combination.selections)));
+    } catch {
+      return true;
+    }
+  }, [attributes, combinations, overLimit, ready.length]);
+  const previewFormula = ready.map((attribute) => {
+    const count = attribute.source === "global" ? attribute.optionIds.length : attribute.options.length;
+    return `${count} ${attribute.name.trim()}`;
+  }).join(" × ");
 
-  const update = useCallback((key: string, next: VariableAttribute) => {
+  const patchAttribute = (key: string, next: VariableAttribute) => {
     onAttributesChange(attributes.map((attribute) => attribute.key === key ? next : attribute));
-    if (next.key !== key) {
-      setExpanded((current) => {
-        const changed = new Set(current);
-        changed.delete(key);
-        changed.add(next.key);
-        return changed;
-      });
-    }
-  }, [attributes, onAttributesChange]);
-
-  const remove = useCallback((key: string) => {
-    onAttributesChange(attributes.filter((attribute) => attribute.key !== key).map((attribute, position) => ({ ...attribute, position })));
-  }, [attributes, onAttributesChange]);
-
-  const move = useCallback((key: string, direction: -1 | 1) => {
-    const index = attributes.findIndex((attribute) => attribute.key === key);
-    const target = index + direction;
-    if (index < 0 || target < 0 || target >= attributes.length) return;
-    const reordered = [...attributes];
-    [reordered[index], reordered[target]] = [reordered[target]!, reordered[index]!];
-    onAttributesChange(reordered.map((attribute, position) => ({ ...attribute, position })));
-  }, [attributes, onAttributesChange]);
-
-  const changeSource = useCallback((attribute: VariableAttribute, source: "custom" | "global") => {
-    if (source === attribute.source) return;
-    if (source === "custom") {
-      update(attribute.key, { key: attribute.key, name: "", options: [], position: attribute.position, source, variation: attribute.variation, visible: attribute.visible });
-      return;
-    }
-    const first = catalog[0];
-    if (!first) return;
-    update(attribute.key, { attributeId: first.id, key: `global:${first.id}`, name: first.name, optionIds: [], position: attribute.position, source, taxonomy: first.taxonomy, variation: attribute.variation, visible: attribute.visible });
-  }, [catalog, update]);
-
-  const generate = () => {
+  };
+  const removeAttribute = (key: string) => onAttributesChange(attributes
+    .filter((attribute) => attribute.key !== key)
+    .map((attribute, position) => ({ ...attribute, position })));
+  const addCustom = () => {
+    if (attributes.length >= VARIABLE_PRODUCT_LIMITS.attributes) return;
+    onAttributesChange([...attributes, {
+      key: `custom:attribute-${generateSecureUuidV4().slice(0, 8)}`,
+      name: "", options: [], position: attributes.length, source: "custom", variation: true, visible: true,
+    }]);
+  };
+  const addGlobal = (attribute: AttributeCatalogItem) => onAttributesChange([...attributes, {
+    attributeId: attribute.id, key: `global:${attribute.id}`, name: attribute.name, optionIds: [],
+    position: attributes.length, source: "global", taxonomy: attribute.taxonomy, variation: true, visible: true,
+  }]);
+  const generate = useCallback(() => {
     try {
       onCombinationsChange(generateVariationCombinations(attributes, combinations));
       setError("");
     } catch (reason) {
-      setError(reason instanceof VariablePlanError ? Object.values(reason.fields)[0] ?? reason.message : "Combinations could not be generated.");
+      setError(reason instanceof VariablePlanError
+        ? Object.values(reason.fields)[0] ?? reason.message : "Combinations could not be generated.");
     }
+  }, [attributes, combinations, onCombinationsChange]);
+  const patchCombination = (clientId: string, updates: Partial<VariationCombination>) => {
+    onCombinationsChange(combinations.map((combination) => combination.clientId === clientId
+      ? { ...combination, ...updates } : combination));
   };
+  const selectionLabels = (selections: VariationSelection[]) => selections.map((selection) => {
+    const attribute = attributes.find((item) => item.key === selection.attributeKey);
+    if (!attribute) return "Unknown";
+    if ("option" in selection) return selection.option;
+    return attribute.source === "global"
+      ? terms[attribute.attributeId]?.find((term) => term.id === selection.termId)?.name ?? String(selection.termId)
+      : "Unknown";
+  });
+  const autoSku = () => onCombinationsChange(combinations.map((combination) => ({
+    ...combination,
+    sku: [baseSku.trim() || "SKU", ...selectionLabels(combination.selections)
+      .map((label) => label.toUpperCase().replace(/[^A-Z0-9]+/g, "").slice(0, 8))].join("-"),
+  })));
 
-  return <div ref={ref} className="space-y-4">
-    {attributes.map((attribute, index) => <div key={attribute.key} className="overflow-hidden rounded-lg border border-border bg-card">
-      <div className="flex items-center gap-2 bg-muted/30 p-3 sm:p-4">
-        <GripVertical className="hidden h-4 w-4 text-muted-foreground sm:block" />
-        <select className="ctl h-9 rounded-md border border-input bg-background px-2 text-xs" value={attribute.source}
-          onChange={(event) => changeSource(attribute, event.target.value as "custom" | "global")}>
-          <option value="custom">Custom</option><option value="global" disabled={!catalog.length}>Global</option>
-        </select>
-        <button type="button" className="min-w-0 flex-1 truncate text-start text-sm font-medium"
-          onClick={() => setExpanded((current) => {
-            const next = new Set(current);
-            if (next.has(attribute.key)) next.delete(attribute.key);
-            else next.add(attribute.key);
-            return next;
-          })}>
-          {attribute.name || "New attribute"} <span className="ms-2 text-xs font-normal text-muted-foreground">{attribute.source === "global" ? attribute.optionIds.length : attribute.options.length} values</span>
-        </button>
-        <Button type="button" variant="ghost" size="icon" disabled={index === 0} onClick={() => move(attribute.key, -1)} aria-label="Move attribute up"><ChevronUp className="h-4 w-4" /></Button>
-        <Button type="button" variant="ghost" size="icon" disabled={index === attributes.length - 1} onClick={() => move(attribute.key, 1)} aria-label="Move attribute down"><ChevronDown className="h-4 w-4" /></Button>
-        <Button type="button" variant="ghost" size="icon" onClick={() => remove(attribute.key)} aria-label="Remove attribute" className="text-muted-foreground hover:text-destructive"><Trash2 className="h-4 w-4" /></Button>
+  return <div ref={ref} className="stack">
+    <div className="surface-inset flex flex-wrap items-center gap-3 px-3 py-2">
+      <Step n={1} label="Attributes" active={!ready.length} done={ready.length > 0} /><span className="text-muted-foreground/40">→</span>
+      <Step n={2} label="Preview" active={ready.length > 0 && !combinations.length} done={combinations.length > 0} /><span className="text-muted-foreground/40">→</span>
+      <Step n={3} label="Variations" active={combinations.length > 0} done={combinations.length > 0 && !missingPrices} />
+      <HelpTip className="ms-auto" side="left">Pick attributes, preview how many combinations they produce, then set price, SKU, stock and image on each concrete variation.</HelpTip>
+    </div>
+    <div className="stack">
+      {attributes.map((attribute) => <AttributeEditor key={attribute.key} attribute={attribute}
+        terms={attribute.source === "global" ? terms[attribute.attributeId] ?? [] : []}
+        onChange={(next) => patchAttribute(attribute.key, next)} onRemove={() => removeAttribute(attribute.key)} />)}
+      <div className="flex flex-wrap items-center gap-2">
+        <Explain tip="Reuse an attribute that already exists in your WooCommerce store, with its real terms.">
+          <div className="min-w-0"><GlobalAttributeSelect available={availableGlobals}
+            disabled={attributes.length >= VARIABLE_PRODUCT_LIMITS.attributes} onSelect={addGlobal} /></div>
+        </Explain>
+        <Explain tip="Create an attribute used only on this product — nothing is added to store taxonomies.">
+          <Button type="button" variant="outline" size="sm" onClick={addCustom}
+            disabled={attributes.length >= VARIABLE_PRODUCT_LIMITS.attributes} className="h-8 text-[12px]">
+            <Plus className="me-1.5 h-3.5 w-3.5" /> Custom attribute
+          </Button>
+        </Explain>
+        <span className="ms-auto text-[11px] tabular-nums text-muted-foreground">{attributes.length}/{VARIABLE_PRODUCT_LIMITS.attributes} attributes</span>
       </div>
-      {expanded.has(attribute.key) && <div className="space-y-3 p-4">
-        {attribute.source === "custom"
-          ? <CustomFields key={`${attribute.key}:${attribute.options.join("|")}`} attribute={attribute} onChange={(next) => update(attribute.key, next)} />
-          : <GlobalFields attribute={attribute} catalog={catalog} terms={terms[attribute.attributeId] ?? []} onChange={(next) => update(attribute.key, next)} />}
-        <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
-          <Toggle label="Visible on product" checked={attribute.visible} onChange={(visible) => update(attribute.key, { ...attribute, visible })} />
-          <Toggle label="Used for variations" checked={attribute.variation} onChange={(variation) => update(attribute.key, { ...attribute, variation })} />
+    </div>
+    {ready.length > 0 && <div className={cn(
+      "flex flex-wrap items-center gap-3 rounded-md border px-3 py-2.5",
+      overLimit ? "border-warning/40 bg-warning/[0.07]" : "border-info/25 bg-info/[0.06]",
+    )}>
+      <Layers className="h-4 w-4 shrink-0 text-info" /><p className="min-w-0 text-[12px]">
+        <span className="font-mono">{previewFormula}</span><span className="text-muted-foreground"> = </span>
+        <span className="font-semibold tabular-nums">{expected}</span> variation{expected !== 1 && "s"}
+      </p>
+      <HelpTip>Price, SKU, stock and image belong to each concrete WooCommerce combination.</HelpTip>
+      <Button type="button" size="sm" variant={stale ? "default" : "outline"} onClick={generate}
+        disabled={overLimit} className="ms-auto h-8 text-[12px]">
+        {combinations.length ? <RefreshCw className="me-1.5 h-3.5 w-3.5" /> : <Sparkles className="me-1.5 h-3.5 w-3.5" />}
+        {combinations.length ? "Regenerate combinations" : "Generate combinations"}
+      </Button>
+      {overLimit && <p className="flex w-full items-center gap-1.5 text-[11px] text-warning">
+        <AlertTriangle className="h-3.5 w-3.5" /> Over the {VARIABLE_PRODUCT_LIMITS.combinations}-combination limit. Remove options to continue.
+      </p>}
+    </div>}
+    {combinations.length > 0 && <div className="overflow-hidden rounded-md border border-border">
+      <div className="flex flex-wrap items-center gap-2 border-b border-border bg-muted/25 px-3 py-2">
+        <h4 className="text-[11px] font-semibold uppercase tracking-[0.09em] text-foreground/70">Variations</h4>
+        <span className="text-[11px] tabular-nums text-muted-foreground">{enabledCount} of {combinations.length} enabled</span>
+        {missingPrices > 0 && <span className="text-[11px] text-warning">· {missingPrices} missing a price</span>}
+        <div className="ms-auto flex items-center gap-2">
+          <div className="input-group w-[8.5rem]"><span className="input-affix">{currency}</span>
+            <input type="number" step="0.01" placeholder="Set all" className="font-mono" value={bulkPrice}
+              onChange={(event) => setBulkPrice(event.target.value)} /></div>
+          <Explain tip="Applies this price to every enabled variation. You can still override individual ones.">
+            <Button type="button" size="sm" variant="outline" disabled={!bulkPrice}
+              onClick={() => onCombinationsChange(combinations.map((combination) => combination.enabled
+                ? { ...combination, regularPrice: bulkPrice } : combination))} className="h-8 text-[12px]">Apply</Button>
+          </Explain>
+          <Explain tip="Builds SKUs from the product SKU plus each option.">
+            <Button type="button" size="sm" variant="ghost" onClick={autoSku} className="h-8 text-[12px]">
+              <Wand2 className="me-1.5 h-3.5 w-3.5" /> Auto SKU
+            </Button>
+          </Explain>
         </div>
-      </div>}
-    </div>)}
-    <Button variant="outline" type="button" onClick={addAttribute} disabled={attributes.length >= 5} className="w-full border-dashed"><Plus className="me-2 h-4 w-4" /> Add Attribute</Button>
-    {attributes.length > 0 && <div className="flex flex-col gap-3 rounded-lg border border-border bg-muted/20 p-4 sm:flex-row sm:items-center sm:justify-between">
-      <div><p className="text-sm font-medium">{projected} projected combinations</p><p className="text-xs text-muted-foreground">Free supports up to 50 concrete variations.</p></div>
-      <Button type="button" onClick={generate} disabled={projected < 1 || projected > 50}><Sparkles className="me-2 h-4 w-4" />Generate combinations</Button>
+      </div>
+      <div className="max-h-[26rem] overflow-y-auto">{combinations.map((combination, index) => <VariationRow
+        key={combination.clientId} combination={combination} currency={currency} index={index}
+        labels={selectionLabels(combination.selections)} image={imagePreviews[combination.imageId]}
+        onUploadImage={onUploadImage} onChange={(updates) => patchCombination(combination.clientId, updates)}
+        onImage={(image) => {
+          if (image?.wpMediaId) setImagePreviews((current) => ({ ...current, [image.wpMediaId as number]: image }));
+          patchCombination(combination.clientId, { imageId: image?.wpMediaId ?? 0 });
+        }} />)}</div>
     </div>}
-    {error && <p role="alert" className="text-xs text-destructive">{error}</p>}
-    {combinations.length > 0 && <div className="space-y-3">
-      <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">Concrete variations · {combinations.length}</p>
-      {combinations.map((combination) => <VariationCombinationCard key={combination.clientId} attributes={attributes} combination={combination} terms={terms}
-        onChange={(next) => onCombinationsChange(combinations.map((item) => item.clientId === next.clientId ? next : item))} />)}
-    </div>}
+    {error && <p role="alert" className="text-[11px] text-destructive">{error}</p>}
+    {lookupError && <p role="alert" className="text-[11px] text-destructive">{lookupError}</p>}
+    {!attributes.length && <p className="text-[12px] text-muted-foreground">Add a global or custom attribute to start. Mixing both is fine — Global Color (Black, White) plus Custom Size (S, M, L) generates 6 variations.</p>}
   </div>;
 });
 VariationsEditor.displayName = "VariationsEditor";
-
-function CustomFields({ attribute, onChange }: { attribute: Extract<VariableAttribute, { source: "custom" }>; onChange: (value: Extract<VariableAttribute, { source: "custom" }>) => void }) {
-  const [options, setOptions] = useState(attribute.options.join(", "));
-  return <><Input value={attribute.name} placeholder="Attribute name (e.g., Size)" onChange={(event) => onChange({ ...attribute, name: event.target.value })} />
-    <Input value={options} placeholder="Values separated by commas (S, M, L)"
-      onChange={(event) => setOptions(event.target.value)}
-      onBlur={() => onChange({ ...attribute, options: options.split(",").map((value) => value.trim()).filter(Boolean) })} /></>;
-}
-
-function GlobalFields({ attribute, catalog, terms, onChange }: { attribute: Extract<VariableAttribute, { source: "global" }>; catalog: AttributeCatalogItem[]; terms: AttributeTerm[]; onChange: (value: Extract<VariableAttribute, { source: "global" }>) => void }) {
-  return <><select className="ctl h-10 w-full rounded-md border border-input bg-background px-3 text-sm" value={attribute.attributeId} onChange={(event) => {
-    const selected = catalog.find((item) => item.id === Number(event.target.value));
-    if (selected) onChange({ ...attribute, attributeId: selected.id, key: `global:${selected.id}`, name: selected.name, optionIds: [], taxonomy: selected.taxonomy });
-  }}>{catalog.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)}</select>
-    <div className="flex flex-wrap gap-2">{terms.map((term) => <label key={term.id} className="flex items-center gap-2 rounded-md border border-border px-3 py-2 text-xs"><input type="checkbox" checked={attribute.optionIds.includes(term.id)} onChange={(event) => onChange({ ...attribute, optionIds: event.target.checked ? [...attribute.optionIds, term.id] : attribute.optionIds.filter((id) => id !== term.id) })} />{term.name}</label>)}</div></>;
-}
-
-function Toggle({ checked, label, onChange }: { checked: boolean; label: string; onChange: (checked: boolean) => void }) {
-  return <label className="flex items-center gap-2"><input type="checkbox" checked={checked} onChange={(event) => onChange(event.target.checked)} />{label}</label>;
-}

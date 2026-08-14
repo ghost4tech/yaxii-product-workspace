@@ -1,6 +1,6 @@
 # Basic Variable Products
 
-**Status:** Phase 4 implemented and authenticated browser-tested; owner acceptance pending
+**Status:** Phase 4 backend accepted; Phase 4.5 Lovable V2 presentation integrated and browser-tested; owner acceptance pending
 
 ## Implemented workflow
 
@@ -28,11 +28,17 @@ Create is one same-origin browser operation. The server writes the parent, attri
 variation set and then runs WooCommerce variable-product synchronization. Update can add, retain,
 change, or remove concrete variations through the same cohesive server operation.
 
-The production React graph uses the approved Lovable entry workspace. Its Simple/Variable product
-toggle, responsive attribute cards, concrete variation cards, Extended Options, Focus Mode, queue,
-theme, and density shell are preserved. The browser projects the Cartesian count before generation
-and sends the parent, attributes, and all variation combinations in one request; it never performs
-one request per variation. Existing product type is locked while editing.
+The production React graph uses the actual approved Lovable V2 Attributes -> Preview -> Variations
+presentation. It retains the numbered strip, Global/Custom badges, real global-term chips, custom
+chip entry, combination preview, Generate/Regenerate, over-limit state, compact responsive rows,
+advanced row expansion, and missing-price state. These components map to the Phase 4 domain model;
+they do not use Lovable mock attributes or option-level commercial values. The browser sends the
+parent, attributes, and all concrete combinations in one request and never writes one request per
+variation. Existing product type remains locked while editing.
+
+Free includes Set all price, basic Auto SKU, and the missing-price indicator. Formula pricing,
+advanced SKU patterns, matrix editing, mass image mapping, and sophisticated bulk tools remain
+outside this phase.
 
 ## Idempotency and recovery
 
@@ -64,13 +70,19 @@ Frontend tests cover DTO serialization/hydration, exact combination generation, 
 values, concrete editor interaction, value preservation on regeneration, cohesive one-request
 create orchestration, server field errors, partial queue detail, and simple-product regressions.
 
-Authenticated LocalWP QA covered one- and two-attribute create, exact six-combination persistence,
+Phase 4 authenticated LocalWP QA covered one- and two-attribute create, exact six-combination persistence,
 reopen/edit, independent image/price/SKU/stock/enabled fields, destructive validation,
 idempotent replay, partial recovery, durable queue refresh, and storefront variation selection.
-Visual inspection covered 1440, 1280, 768, 430, and 375 pixels; light/dark;
+Phase 4 visual inspection covered 1440, 1280, 768, 430, and 375 pixels; light/dark;
 compact/comfortable; Focus Mode; editor, queue, error detail, dialog; and structural RTL.
 
 The active Yaxii COD theme had its variation engine disabled by store configuration. QA temporarily
 enabled that existing setting to prove storefront selection and pricing, then restored it to
 disabled. Product Workspace requires only valid WooCommerce variable-product data and does not own
 the storefront theme's variation-handler configuration.
+
+Phase 4.5 authenticated LocalWP QA used real global Color terms plus custom Size options to produce
+exactly six combinations. Set all price, Auto SKU, per-row price/SKU/stock/image, reopen, edit,
+storefront selection, and the 56-combination UI limit state passed. The theme variation engine was
+temporarily enabled for storefront selection and restored to its original disabled value. Detailed
+evidence is recorded in `docs/project/PHASE-4-5-CLOSEOUT.md`.

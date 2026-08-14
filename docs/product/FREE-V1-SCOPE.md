@@ -27,7 +27,7 @@ The Free release must feel complete, not like a trial.
 ### Product fields
 
 - Name and optional/automatic slug.
-- Description and short description.
+- Rich HTML description and short description with WordPress-sanitized persistence.
 - Draft/publish intent.
 - Catalog visibility.
 - Regular/sale price and sale schedule.
@@ -37,7 +37,7 @@ The Free release must feel complete, not like a trial.
 - Weight/dimensions.
 - Shipping class.
 - Tax status/class.
-- Categories/tags.
+- Hierarchical multi-category selection and tags.
 - Featured image/gallery.
 - Basic attributes and variation images.
 
@@ -54,6 +54,8 @@ The Free release must feel complete, not like a trial.
 - Duplicate previous product.
 - Product defaults.
 - Recent categories/terms.
+- Contextual help tooltips with a global show/hide preference.
+- Basic Set all price and Auto SKU for generated variations.
 - Command menu/keyboard shortcuts.
 - Searchable recent-operation/product queue.
 - Truthful success/pending/partial/error states.
@@ -117,6 +119,9 @@ Pro can later add:
 - mass image mapping;
 - large combination tools;
 - advanced include/exclude filters.
+
+Basic Set all price, basic Auto SKU, and missing-price indicators remain Free. Advanced formulas,
+SKU patterns, matrix editing, and mass image mapping remain Pro candidates.
 
 ## Release blockers
 

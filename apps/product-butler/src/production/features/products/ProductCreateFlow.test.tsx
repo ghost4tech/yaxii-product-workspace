@@ -35,7 +35,7 @@ function repository(createProduct: WorkspaceRepository["createProduct"]): Worksp
       has_more: false, items: operations, page: 1, per_page: 25, total: operations.length,
     }),
     load: () => Promise.resolve(workspaceSnapshot),
-    searchCategories: () => Promise.resolve({
+    listCategories: () => Promise.resolve({
       has_more: false,
       items: [{ count: 0, id: 7, name: "Accessories", parent: 0, slug: "accessories" }],
       page: 1,
@@ -67,7 +67,7 @@ async function fillRequiredFields(user: ReturnType<typeof userEvent.setup>) {
   await user.type(await screen.findByLabelText(/product name/i), "Canvas tote");
   await user.type(screen.getByLabelText(/^Price/i), "19.99");
   await user.type(screen.getByLabelText(/^SKU/i), "TOTE-1");
-  await user.click(screen.getByRole("combobox"));
+  await user.click(screen.getByRole("combobox", { name: /categories/i }));
   await user.click(await screen.findByText("Accessories"));
 }
 
@@ -154,7 +154,7 @@ describe("real product create flow", () => {
     resolveCreate(succeeded());
 
     expect((await screen.findAllByText("Synced")).length).toBeGreaterThan(0);
-    expect(screen.getByText("Canvas tote")).toBeVisible();
+    expect(screen.getAllByText("Canvas tote").length).toBeGreaterThan(0);
     await waitFor(() => expect(screen.getByLabelText(/product name/i)).toHaveValue(""));
   });
 
@@ -219,7 +219,7 @@ describe("real product create flow", () => {
 
     await waitFor(() => expect(screen.getByLabelText(/product name/i)).toHaveValue(""));
     expect(screen.getByLabelText(/^Price/i)).toHaveValue(20);
-    expect(screen.getByRole("combobox", { name: /category/i })).toHaveTextContent("Accessories");
+    expect(screen.getByRole("combobox", { name: /categories/i })).toHaveTextContent("Accessories");
     expect(screen.getByLabelText(/^SKU/i)).toHaveValue("");
   });
 
@@ -245,14 +245,13 @@ describe("real product create flow", () => {
 
     await user.click(await screen.findByRole("button", { name: "Variable" }));
     fireEvent.change(screen.getByLabelText(/product name/i), { target: { value: "Variable tee" } });
-    await user.click(screen.getByRole("combobox", { name: /category/i }));
+    await user.click(screen.getByRole("combobox", { name: /categories/i }));
     await user.click(await screen.findByText("Accessories"));
-    await user.click(screen.getByRole("button", { name: /add attribute/i }));
+    await user.click(screen.getByRole("button", { name: /custom attribute/i }));
     fireEvent.change(screen.getByPlaceholderText(/attribute name/i), { target: { value: "Color" } });
-    fireEvent.change(screen.getByPlaceholderText(/values separated/i), { target: { value: "Black, White" } });
-    fireEvent.blur(screen.getByPlaceholderText(/values separated/i));
+    await user.type(screen.getByPlaceholderText(/type options/i), "Black, White{Enter}");
     await user.click(screen.getByRole("button", { name: /generate combinations/i }));
-    screen.getAllByLabelText("Price *").forEach((input, index) => {
+    screen.getAllByPlaceholderText("Price").forEach((input, index) => {
       fireEvent.change(input, { target: { value: String(20 + index) } });
     });
     await user.click(screen.getByRole("button", { name: /save & next/i }));

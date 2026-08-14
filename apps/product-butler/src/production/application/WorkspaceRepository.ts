@@ -6,6 +6,7 @@ import type {
   OperationPage,
   OperationResult,
   ProductPage,
+  ProductImageResource,
   WorkspacePreferences,
   VariableProductRequest,
   VariableUpdateResult,
@@ -22,6 +23,15 @@ export interface SearchOptions {
   status?: string;
 }
 
+export interface CategoryQueryOptions {
+  include?: number[];
+  page?: number;
+  parent?: number;
+  perPage?: number;
+  search?: string;
+  signal?: AbortSignal;
+}
+
 export interface WorkspaceRepository {
   load: () => Promise<WorkspaceSnapshot>;
   createProduct: (request: CreateProductRequest, idempotencyKey: string) => Promise<OperationResult>;
@@ -33,11 +43,14 @@ export interface WorkspaceRepository {
   duplicateProduct: (productId: number) => Promise<CreateProductRequest>;
   searchProducts: (options: SearchOptions) => Promise<ProductPage>;
   getOperation: (operationId: string) => Promise<OperationResult>;
+  getMedia: (mediaId: number) => Promise<ProductImageResource>;
   listOperations: (options: SearchOptions) => Promise<OperationPage>;
   retryOperation: (operationId: string) => Promise<OperationResult>;
   dismissOperation: (operationId: string) => Promise<void>;
   getPreferences: () => Promise<WorkspacePreferences>;
   updatePreferences: (preferences: Partial<WorkspacePreferences>) => Promise<WorkspacePreferences>;
+  uploadMedia: (file: File) => Promise<ProductImageResource>;
+  listCategories: (options: CategoryQueryOptions) => Promise<CategoryPage>;
   searchCategories: (query: string, signal?: AbortSignal) => Promise<CategoryPage>;
   searchTags: (query: string, signal?: AbortSignal) => Promise<CategoryPage>;
   searchShippingClasses: (query: string, signal?: AbortSignal) => Promise<CategoryPage>;

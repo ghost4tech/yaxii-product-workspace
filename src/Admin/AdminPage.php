@@ -135,6 +135,7 @@ final class AdminPage {
 			'locale'                 => determine_locale(),
 			'nonce'                  => wp_create_nonce( 'wp_rest' ),
 			'pluginVersion'          => YAXII_PRODUCT_WORKSPACE_VERSION,
+			'mediaRestUrl'           => esc_url_raw( rest_url( 'wp/v2/media' ) ),
 			'restUrl'                => esc_url_raw( rest_url( 'yaxii-product-workspace/v1/' ) ),
 		);
 	}

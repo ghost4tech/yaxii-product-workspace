@@ -5,10 +5,11 @@ import { Input } from "@/components/ui/input";
 import type { ProductImage } from "@/types/product";
 import type { AttributeTerm, VariableAttribute, VariationCombination, VariationSelection } from "@/production/domain/variableProducts";
 
-export function VariationCombinationCard({ attributes, combination, onChange, terms }: {
+export function VariationCombinationCard({ attributes, combination, onChange, onUploadImage, terms }: {
   attributes: VariableAttribute[];
   combination: VariationCombination;
   onChange: (combination: VariationCombination) => void;
+  onUploadImage: (file: File) => Promise<ProductImage>;
   terms: Record<number, AttributeTerm[]>;
 }) {
   const update = (fields: Partial<VariationCombination>) => onChange({ ...combination, ...fields });
@@ -29,7 +30,8 @@ export function VariationCombinationCard({ attributes, combination, onChange, te
     </div>
     <div className="rounded-md border border-dashed border-border p-3">
       {combination.imageId > 0 ? <div className="flex items-center justify-between gap-3 text-xs"><span className="flex items-center gap-2"><ImagePlus className="h-4 w-4" />WordPress image #{combination.imageId}</span><Button type="button" size="sm" variant="ghost" onClick={() => update({ imageId: 0 })}><X className="me-1 h-3.5 w-3.5" />Remove</Button></div>
-        : <ImageUpload images={selectedImage} onChange={(images) => update({ imageId: images[0]?.wpMediaId ?? 0 })} maxImages={1} />}
+        : <ImageUpload images={selectedImage} onChange={(images) => update({ imageId: images[0]?.wpMediaId ?? 0 })}
+          maxImages={1} onUpload={onUploadImage} />}
     </div>
   </div>;
 }

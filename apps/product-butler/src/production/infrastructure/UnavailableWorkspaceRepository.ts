@@ -47,6 +47,7 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
   public getOperation(): Promise<never> {
     return Promise.reject(this.unavailable());
   }
+  public getMedia(): Promise<never> { return Promise.reject(this.unavailable()); }
 
   public getProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
   public updateProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
@@ -59,10 +60,12 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
   public dismissOperation(): Promise<never> { return Promise.reject(this.unavailable()); }
   public getPreferences(): Promise<never> { return Promise.reject(this.unavailable()); }
   public updatePreferences(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public uploadMedia(): Promise<never> { return Promise.reject(this.unavailable()); }
 
   public searchCategories(): Promise<never> {
     return Promise.reject(this.unavailable());
   }
+  public listCategories(): Promise<never> { return Promise.reject(this.unavailable()); }
 
   public searchTags(): Promise<never> { return Promise.reject(this.unavailable()); }
   public searchShippingClasses(): Promise<never> { return Promise.reject(this.unavailable()); }

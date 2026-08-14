@@ -83,6 +83,7 @@ export function ProductDefaultsSettings() {
         </SettingRow>
         <SettingRow title="Stock management" description="Track inventory levels by default.">
           <Switch
+            aria-label="Stock management"
             checked={preferences.default_manage_stock}
             onCheckedChange={(value) => setSetting("default_manage_stock", value)}
           />
@@ -102,6 +103,7 @@ export function ProductDefaultsSettings() {
         </SettingRow>
         <SettingRow title="Sold individually" description="Limit each order to one unit.">
           <Switch
+            aria-label="Sold individually"
             checked={preferences.default_sold_individually}
             onCheckedChange={(value) => setSetting("default_sold_individually", value)}
           />

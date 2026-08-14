@@ -1,32 +1,41 @@
 {
-  "_react-vendor-ZC1Vym4P.js": {
-    "file": "assets/react-vendor-ZC1Vym4P.js",
-    "name": "react-vendor",
+  "_editor-vendor-D7Q2H7mx.js": {
+    "file": "assets/editor-vendor-D7Q2H7mx.js",
+    "name": "editor-vendor",
     "imports": [
       "_rolldown-runtime-CbXtAM7H.js"
+    ]
+  },
+  "_react-vendor-DDObbSoj.js": {
+    "file": "assets/react-vendor-DDObbSoj.js",
+    "name": "react-vendor",
+    "imports": [
+      "_rolldown-runtime-CbXtAM7H.js",
+      "_editor-vendor-D7Q2H7mx.js"
     ]
   },
   "_rolldown-runtime-CbXtAM7H.js": {
     "file": "assets/rolldown-runtime-CbXtAM7H.js",
     "name": "rolldown-runtime"
   },
-  "_ui-vendor-CsmjSVYX.js": {
-    "file": "assets/ui-vendor-CsmjSVYX.js",
+  "_ui-vendor-DnrPCysH.js": {
+    "file": "assets/ui-vendor-DnrPCysH.js",
     "name": "ui-vendor",
     "imports": [
       "_rolldown-runtime-CbXtAM7H.js",
-      "_react-vendor-ZC1Vym4P.js"
+      "_editor-vendor-D7Q2H7mx.js",
+      "_react-vendor-DDObbSoj.js"
     ]
   },
   "_vendor-D7NdHagc.css": {
     "file": "assets/vendor-D7NdHagc.css",
     "src": "_vendor-D7NdHagc.css"
   },
-  "_vendor-DZeChN8V.js": {
-    "file": "assets/vendor-DZeChN8V.js",
+  "_vendor-DQtsXa6v.js": {
+    "file": "assets/vendor-DQtsXa6v.js",
     "name": "vendor",
     "imports": [
-      "_react-vendor-ZC1Vym4P.js"
+      "_react-vendor-DDObbSoj.js"
     ],
     "css": [
       "assets/vendor-D7NdHagc.css"
@@ -115,18 +124,19 @@
     "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2"
   },
   "src/main.tsx": {
-    "file": "assets/main-C6gojEMO.js",
+    "file": "assets/main-BbZqgc6F.js",
     "name": "main",
     "src": "src/main.tsx",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-CbXtAM7H.js",
-      "_vendor-DZeChN8V.js",
-      "_react-vendor-ZC1Vym4P.js",
-      "_ui-vendor-CsmjSVYX.js"
+      "_vendor-DQtsXa6v.js",
+      "_editor-vendor-D7Q2H7mx.js",
+      "_react-vendor-DDObbSoj.js",
+      "_ui-vendor-DnrPCysH.js"
     ],
     "css": [
-      "assets/main-UutJ0cob.css"
+      "assets/main-DPtsELp3.css"
     ]
   }
 }

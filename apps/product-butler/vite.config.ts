@@ -26,6 +26,7 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (!id.includes("node_modules")) return undefined;
+          if (id.includes("@tiptap") || id.includes("prosemirror")) return "editor-vendor";
           if (id.includes("@radix-ui") || id.includes("cmdk")) return "ui-vendor";
           if (id.includes("react") || id.includes("scheduler")) return "react-vendor";
           return "vendor";

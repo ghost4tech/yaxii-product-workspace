@@ -9,7 +9,8 @@ export default tseslint.config(
     ignores: [
       "dist",
       "../../assets/build",
-      "src/components/ui",
+      "src/components/ui/*",
+      "!src/components/ui/help-tip.tsx",
       "src/components/ProLock.tsx",
       "src/components/deferred",
       "src/components/UpgradeModal.tsx",
@@ -33,7 +34,7 @@ export default tseslint.config(
       ecmaVersion: 2022,
       globals: { ...globals.browser, ...globals.node },
       parserOptions: {
-        projectService: true,
+        projectService: { allowDefaultProject: ["src/components/ui/help-tip.tsx"] },
         tsconfigRootDir: import.meta.dirname,
       },
     },

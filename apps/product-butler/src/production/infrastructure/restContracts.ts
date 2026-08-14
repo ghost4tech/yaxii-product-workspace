@@ -132,12 +132,28 @@ const operationHistoryResultSchema = operationResultSchema.extend({
 export const termPageSchema = z.object({
   has_more: z.boolean(),
   items: z.array(z.object({
+    ancestors: z.array(z.object({
+      count: z.number().int().nonnegative(),
+      id: z.number().int().positive(),
+      name: z.string(),
+      parent: z.number().int().nonnegative(),
+      slug: z.string(),
+    })).optional(),
     count: z.number().int().nonnegative(),
+    has_children: z.boolean().optional(),
     id: z.number().int().positive(),
     name: z.string(),
     parent: z.number().int().nonnegative(),
     slug: z.string(),
-  })),
+  }).transform((item) => ({
+    ancestors: item.ancestors,
+    count: item.count,
+    hasChildren: item.has_children,
+    id: item.id,
+    name: item.name,
+    parent: item.parent,
+    slug: item.slug,
+  }))),
   page: z.number().int().positive(),
   per_page: z.number().int().positive().max(50),
 });
@@ -192,3 +208,9 @@ export const attributeCatalogSchema = z.array(z.object({
 export const attributeTermsSchema = z.array(z.object({
   id: z.number().int().positive(), name: z.string(), slug: z.string(),
 }));
+
+export const mediaResourceSchema = z.object({
+  alt_text: z.string(),
+  id: z.number().int().positive(),
+  source_url: z.string().url(),
+}).transform((item) => ({ alt: item.alt_text, id: item.id, url: item.source_url }));

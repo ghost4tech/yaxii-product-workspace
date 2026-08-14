@@ -24,6 +24,7 @@ export interface Preferences {
   defaultTab: '/' | '/settings';
   showKpiTrends: boolean;
   showKeyboardHints: boolean;
+  showTooltips: boolean;
   stickyQueue: boolean;
 
   /* Focus mode */
@@ -42,6 +43,7 @@ export const defaultPreferences: Preferences = {
   defaultTab: '/',
   showKpiTrends: true,
   showKeyboardHints: true,
+  showTooltips: true,
   stickyQueue: true,
 
   focusMode: false,
@@ -73,7 +75,11 @@ export const usePrefsStore = create<PrefsStore>()(
     }),
     {
       name: 'ypw.preferences.v1',
-      version: 1,
+      version: 2,
+      merge: (persisted, current) => {
+        const saved = persisted as Partial<PrefsStore>;
+        return { ...current, ...saved, prefs: { ...current.prefs, ...saved.prefs } };
+      },
       partialize: (s) => ({ prefs: s.prefs }),
     }
   )

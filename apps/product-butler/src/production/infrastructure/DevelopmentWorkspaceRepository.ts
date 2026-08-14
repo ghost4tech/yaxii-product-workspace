@@ -48,6 +48,7 @@ export class DevelopmentWorkspaceRepository implements WorkspaceRepository {
   public getOperation(): Promise<never> {
     return Promise.reject(this.unsupported());
   }
+  public getMedia(): Promise<never> { return Promise.reject(this.unsupported()); }
 
   public getProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
   public updateProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
@@ -69,10 +70,12 @@ export class DevelopmentWorkspaceRepository implements WorkspaceRepository {
   public dismissOperation(): Promise<never> { return Promise.reject(this.unsupported()); }
   public getPreferences() { return Promise.resolve(DEFAULT_WORKSPACE_PREFERENCES); }
   public updatePreferences() { return Promise.resolve(DEFAULT_WORKSPACE_PREFERENCES); }
+  public uploadMedia(): Promise<never> { return Promise.reject(this.unsupported()); }
 
   public searchCategories() {
     return Promise.resolve({ has_more: false, items: [], page: 1, per_page: 20 });
   }
+  public listCategories() { return this.searchCategories(); }
 
   public searchTags() { return this.searchCategories(); }
   public searchShippingClasses() { return this.searchCategories(); }

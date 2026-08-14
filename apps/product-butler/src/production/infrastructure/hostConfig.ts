@@ -25,6 +25,7 @@ export function parseHostConfig(value: unknown): WorkspaceHostConfig | null {
     typeof value.frontendAvailable !== "boolean" ||
     typeof value.isWooCommerceAvailable !== "boolean" ||
     typeof value.locale !== "string" ||
+    typeof value.mediaRestUrl !== "string" ||
     typeof value.nonce !== "string" ||
     typeof value.pluginVersion !== "string" ||
     typeof value.restUrl !== "string"
@@ -38,6 +39,7 @@ export function parseHostConfig(value: unknown): WorkspaceHostConfig | null {
     frontendAvailable: value.frontendAvailable,
     isWooCommerceAvailable: value.isWooCommerceAvailable,
     locale: value.locale,
+    mediaRestUrl: value.mediaRestUrl,
     nonce: value.nonce,
     pluginVersion: value.pluginVersion,
     restUrl: value.restUrl,

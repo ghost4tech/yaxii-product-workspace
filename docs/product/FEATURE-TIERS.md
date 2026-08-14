@@ -17,10 +17,12 @@
 | Simple product create/edit | ✓ | | | Core |
 | Duplicate/prefill/trash | ✓ | | | Core |
 | Essential Woo fields | ✓ | | | Core |
-| Categories/tags/media | ✓ | | | Core |
+| Hierarchical multi-categories/tags/media | ✓ | | | Core |
+| Rich short/full descriptions | ✓ | | | WordPress-sanitized HTML |
 | Basic global/custom attributes | ✓ | | | Core |
 | Basic variable CRUD | ✓ | | | Must not be crippled |
 | Basic variation price/SKU/stock/image | ✓ | | | Core |
+| Set all price / basic Auto SKU / missing-price indicator | ✓ | | | Basic Free productivity |
 | Save & Next | ✓ | | | Signature workflow |
 | Focus Mode | ✓ | | | Signature workflow |
 | Compact/Comfortable density | ✓ | | | |
@@ -30,13 +32,14 @@
 | Product defaults | ✓ | | | |
 | Keyboard/command menu | ✓ | | | |
 | Dark mode/reduced motion | ✓ | | | |
+| Contextual tooltips + visibility preference | ✓ | | | Free guidance |
 | Mobile simple entry | ✓ | | | |
 | EN/FR/AR + RTL | ✓ | | | |
 | Manual safe retry | ✓ | | | Reliability is not premium |
 | Named templates/presets | | ✓ | shared packs later | Strong Pro v1 |
 | Selective template apply | | ✓ | ✓ | |
 | Advanced variation matrix | basic only | ✓ | ✓ | Strong Pro v1 |
-| Bulk price/stock/SKU/image | | ✓ | ✓ | |
+| Advanced bulk price/stock/SKU/image | | ✓ | ✓ | Basic price/SKU helpers stay Free |
 | SKU rules/collision preview | | ✓ | ✓ | |
 | Advanced combination tooling | | ✓ | ✓ | |
 | Batch create/update | | ✓ | ✓ | After core |

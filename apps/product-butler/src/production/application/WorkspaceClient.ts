@@ -1,5 +1,5 @@
 import type { CreateProductRequest, VariableProductRequest, WorkspacePreferences } from "../domain/products";
-import type { SearchOptions, WorkspaceRepository } from "./WorkspaceRepository";
+import type { CategoryQueryOptions, SearchOptions, WorkspaceRepository } from "./WorkspaceRepository";
 
 export class WorkspaceClient {
   public constructor(private readonly repository: WorkspaceRepository) {}
@@ -18,6 +18,7 @@ export class WorkspaceClient {
   public duplicateProduct(id: number) { return this.repository.duplicateProduct(id); }
   public searchProducts(options: SearchOptions) { return this.repository.searchProducts(options); }
   public getOperation(id: string) { return this.repository.getOperation(id); }
+  public getMedia(id: number) { return this.repository.getMedia(id); }
   public listOperations(options: SearchOptions = {}) { return this.repository.listOperations(options); }
   public retryOperation(id: string) { return this.repository.retryOperation(id); }
   public dismissOperation(id: string) { return this.repository.dismissOperation(id); }
@@ -25,6 +26,8 @@ export class WorkspaceClient {
   public updatePreferences(preferences: Partial<WorkspacePreferences>) {
     return this.repository.updatePreferences(preferences);
   }
+  public uploadMedia(file: File) { return this.repository.uploadMedia(file); }
+  public listCategories(options: CategoryQueryOptions) { return this.repository.listCategories(options); }
   public searchCategories(query: string, signal?: AbortSignal) { return this.repository.searchCategories(query, signal); }
   public searchTags(query: string, signal?: AbortSignal) { return this.repository.searchTags(query, signal); }
   public searchShippingClasses(query: string, signal?: AbortSignal) {
