@@ -7,6 +7,7 @@ export interface WorkspaceHostConfig {
   frontendAvailable: boolean;
   isWooCommerceAvailable: boolean;
   locale: string;
+  mediaRestUrl: string;
   nonce: string;
   pluginVersion: string;
   restUrl: string;

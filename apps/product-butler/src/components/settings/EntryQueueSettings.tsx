@@ -33,6 +33,7 @@ export function EntryQueueSettings() {
       <SettingsPanel title="Entry flow" description="Optimised for fast, repetitive data entry.">
         <SettingRow title="Auto-focus product name" description="Cursor lands in the name field on load.">
           <Switch
+            aria-label="Auto-focus product name"
             checked={preferences.auto_focus_name}
             onCheckedChange={(value) => update("auto_focus_name", value)}
           />
@@ -52,6 +53,7 @@ export function EntryQueueSettings() {
         </SettingRow>
         <SettingRow title="Confirm before delete" description="Ask before removing a queued product." last>
           <Switch
+            aria-label="Confirm before delete"
             checked={preferences.confirm_queue_dismiss}
             onCheckedChange={(value) => update("confirm_queue_dismiss", value)}
           />
@@ -61,12 +63,14 @@ export function EntryQueueSettings() {
       <SettingsPanel title="Queue display" description="How queued products are grouped and listed.">
         <SettingRow title="Group by day" description="Adds date headers between queue rows.">
           <Switch
+            aria-label="Group by day"
             checked={preferences.queue_group_by_day}
             onCheckedChange={(value) => update("queue_group_by_day", value)}
           />
         </SettingRow>
         <SettingRow title="Relative timestamps" description="“3 hours ago” instead of a fixed date.">
           <Switch
+            aria-label="Relative timestamps"
             checked={preferences.relative_timestamps}
             onCheckedChange={(value) => update("relative_timestamps", value)}
           />

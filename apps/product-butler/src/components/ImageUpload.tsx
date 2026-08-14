@@ -1,255 +1,176 @@
-import React, { useCallback, useState } from 'react';
-import { Upload, X, GripVertical } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { ProductImage } from '@/types/product';
-import { Button } from '@/components/ui/button';
-import { generateSecureUuidV4 } from '@/production/core/security/secureUuid';
+import { useCallback, useEffect, useRef, useState } from "react";
+import { GripVertical, ImagePlus, Loader2, Plus, Star, Upload, X } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { appendSelectedMedia } from "@/production/features/media/productImages";
+import type { ProductImage } from "@/types/product";
 
-interface ImageUploadProps {
+interface Props {
   images: ProductImage[];
-  onChange: (images: ProductImage[]) => void;
   maxImages?: number;
+  onChange: (images: ProductImage[]) => void;
+  onUpload: (file: File) => Promise<ProductImage>;
 }
 
-export const ImageUpload: React.FC<ImageUploadProps> = ({
-  images,
-  onChange,
-  maxImages = 10,
-}) => {
+export function ImageUpload({ images, maxImages = 10, onChange, onUpload }: Props) {
   const [isDragging, setIsDragging] = useState(false);
+  const [windowDrag, setWindowDrag] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dragDepth = useRef(0);
+  const hasImages = images.length > 0;
+  const isFull = images.length >= maxImages;
 
-  const handleDragOver = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  useEffect(() => {
+    const onEnter = (event: DragEvent) => {
+      if (!event.dataTransfer?.types.includes("Files")) return;
+      dragDepth.current += 1;
+      setWindowDrag(true);
+    };
+    const onLeave = () => {
+      dragDepth.current = Math.max(0, dragDepth.current - 1);
+      if (dragDepth.current === 0) setWindowDrag(false);
+    };
+    const onDrop = () => {
+      dragDepth.current = 0;
+      setWindowDrag(false);
+    };
+    window.addEventListener("dragenter", onEnter);
+    window.addEventListener("dragleave", onLeave);
+    window.addEventListener("drop", onDrop);
+    return () => {
+      window.removeEventListener("dragenter", onEnter);
+      window.removeEventListener("dragleave", onLeave);
+      window.removeEventListener("drop", onDrop);
+    };
   }, []);
 
-  const handleDragEnter = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.dataTransfer.types.includes('Files')) {
-      setIsDragging(true);
+  const uploadFiles = useCallback(async (files: FileList | null) => {
+    if (!files || isFull) return;
+    const accepted = Array.from(files).filter((file) => file.type.startsWith("image/"))
+      .slice(0, maxImages - images.length);
+    if (!accepted.length) return;
+    setUploading(true);
+    setUploadError("");
+    let nextImages = images;
+    try {
+      for (const file of accepted) {
+        nextImages = [...nextImages, await onUpload(file)];
+        onChange(nextImages);
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Images could not be uploaded.";
+      setUploadError(nextImages.length > images.length ? `${message} Uploaded images were kept.` : message);
+    } finally {
+      setUploading(false);
     }
-  }, []);
+  }, [images, isFull, maxImages, onChange, onUpload]);
 
-  const handleDragLeave = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const rect = e.currentTarget.getBoundingClientRect();
-    if (
-      e.clientX < rect.left ||
-      e.clientX > rect.right ||
-      e.clientY < rect.top ||
-      e.clientY > rect.bottom
-    ) {
-      setIsDragging(false);
-    }
-  }, []);
-
-  const processFiles = useCallback(
-    (files: FileList | null) => {
-      if (!files) return;
-
-      const remainingSlots = maxImages - images.length;
-      const filesToProcess = Array.from(files)
-        .filter((file) => file.type.startsWith('image/'))
-        .slice(0, remainingSlots);
-
-      const newImages: ProductImage[] = filesToProcess.map((file) => ({
-        id: generateSecureUuidV4(),
-        file,
-        preview: URL.createObjectURL(file),
-        uploading: false,
-        progress: 0,
-      }));
-
-      onChange([...images, ...newImages]);
-    },
-    [images, onChange, maxImages]
-  );
-
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
-      processFiles(e.dataTransfer.files);
-    },
-    [processFiles]
-  );
-
-  const handleFileSelect = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      processFiles(e.target.files);
-      e.target.value = '';
-    },
-    [processFiles]
-  );
-
-  const openMediaLibrary = useCallback(() => {
+  const openPicker = useCallback(() => {
+    if (isFull) return;
     if (!window.wp?.media) {
-      document.getElementById('image-upload-input')?.click();
+      inputRef.current?.click();
       return;
     }
-
-    const frame = window.wp.media({
-      library: { type: 'image' },
-      multiple: true,
-    });
-    frame.on('select', () => {
-      const remainingSlots = maxImages - images.length;
-      const selected = frame.state().get('selection').toJSON().slice(0, remainingSlots);
-      const mediaImages: ProductImage[] = selected.map((attachment) => ({
-        id: `wp-${attachment.id}`,
-        preview: attachment.url,
-        wpMediaId: attachment.id,
-      }));
-      onChange([...images, ...mediaImages]);
+    const frame = window.wp.media({ library: { type: "image" }, multiple: true, title: "Product images" });
+    frame.on("select", () => {
+      const selected = frame.state().get("selection").toJSON();
+      onChange(appendSelectedMedia(images, selected, maxImages));
     });
     frame.open();
-  }, [images, maxImages, onChange]);
+  }, [images, isFull, maxImages, onChange]);
 
-  const removeImage = useCallback(
-    (id: string) => {
-      const image = images.find((img) => img.id === id);
-      if (image) {
-        URL.revokeObjectURL(image.preview);
-      }
-      onChange(images.filter((img) => img.id !== id));
-    },
-    [images, onChange]
-  );
-
-  const handleImageDragStart = (index: number) => {
-    setDraggedIndex(index);
+  const removeImage = (id: string) => onChange(images.filter((image) => image.id !== id));
+  const makeMain = (index: number) => {
+    if (index === 0) return;
+    const next = [...images];
+    const [item] = next.splice(index, 1);
+    if (item) onChange([item, ...next]);
   };
-
-  const handleImageDragOver = (e: React.DragEvent, index: number) => {
-    e.preventDefault();
+  const reorder = (event: React.DragEvent, index: number) => {
+    event.preventDefault();
     if (draggedIndex === null || draggedIndex === index) return;
-
-    const newImages = [...images];
-    const draggedImage = newImages[draggedIndex];
-    if (!draggedImage) return;
-    newImages.splice(draggedIndex, 1);
-    newImages.splice(index, 0, draggedImage);
-    onChange(newImages);
+    const next = [...images];
+    const [dragged] = next.splice(draggedIndex, 1);
+    if (!dragged) return;
+    next.splice(index, 0, dragged);
+    onChange(next);
     setDraggedIndex(index);
   };
+  const dropSurfaceVisible = !hasImages || windowDrag || isDragging;
 
-  const handleImageDragEnd = () => {
-    setDraggedIndex(null);
-  };
+  return <div className="relative space-y-2.5" onDragOver={(event) => {
+    event.preventDefault();
+    if (event.dataTransfer.types.includes("Files")) setIsDragging(true);
+  }} onDragLeave={(event) => {
+    const bounds = event.currentTarget.getBoundingClientRect();
+    if (event.clientX < bounds.left || event.clientX > bounds.right
+      || event.clientY < bounds.top || event.clientY > bounds.bottom) setIsDragging(false);
+  }} onDrop={(event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsDragging(false);
+    setWindowDrag(false);
+    dragDepth.current = 0;
+    void uploadFiles(event.dataTransfer.files);
+  }}>
+    <input ref={inputRef} type="file" accept="image/*" multiple className="hidden" disabled={isFull}
+      onChange={(event) => {
+        void uploadFiles(event.target.files);
+        event.target.value = "";
+      }} />
 
-  return (
-    <div className="space-y-3">
-      {/* Drop Zone */}
-      <div
-        onDragOver={handleDragOver}
-        onDragEnter={handleDragEnter}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
+    {hasImages && <div className="flex items-center gap-2">
+      <button type="button" onClick={openPicker} disabled={isFull || uploading}
         className={cn(
-          'drag-zone p-6 text-center cursor-pointer',
-          isDragging && 'drag-zone-active',
-          images.length >= maxImages && 'opacity-50 cursor-not-allowed'
-        )}
-        onClick={() => {
-          if (images.length < maxImages) {
-            openMediaLibrary();
-          }
-        }}
-      >
-        <input
-          id="image-upload-input"
-          type="file"
-          accept="image/*"
-          multiple
-          className="hidden"
-          onChange={handleFileSelect}
-          disabled={images.length >= maxImages}
-        />
-        <div className="flex flex-col items-center gap-2">
-          <div className={cn(
-            'p-3 rounded-full transition-colors',
-            isDragging ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'
-          )}>
-            <Upload className="h-6 w-6" />
-          </div>
-          <div>
-            <p className="font-medium text-foreground">
-              {isDragging ? 'Drop images here' : 'Drag & drop images'}
-            </p>
-            <p className="text-sm text-muted-foreground">
-              or click to browse ({images.length}/{maxImages})
-            </p>
-          </div>
+          "inline-flex h-7 items-center gap-1.5 rounded-md border border-border bg-muted/40 px-2.5",
+          "text-[12px] font-medium transition-colors hover:bg-muted disabled:opacity-50",
+        )}><ImagePlus className="h-3.5 w-3.5" /> Add images</button>
+      <span className="text-[11px] tabular-nums text-muted-foreground">
+        {images.length}/{maxImages} · drag to reorder
+      </span>
+    </div>}
+
+    {hasImages && <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">{images.map((image, index) => (
+      <div key={image.id} draggable onDragStart={() => setDraggedIndex(index)}
+        onDragOver={(event) => reorder(event, index)} onDragEnd={() => setDraggedIndex(null)}
+        className={cn(
+          "group relative aspect-square cursor-grab overflow-hidden rounded-md border border-border bg-muted active:cursor-grabbing",
+          index === 0 && "ring-1 ring-foreground/25", draggedIndex === index && "opacity-40",
+        )}>
+        <img src={image.preview} alt={`Product image ${index + 1}`} className="h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-foreground/0 transition-colors group-hover:bg-foreground/45">
+          <GripVertical className="absolute start-1 top-1 h-3.5 w-3.5 text-white opacity-0 drop-shadow group-hover:opacity-90" />
+          <button type="button" onClick={() => removeImage(image.id)}
+            className="absolute end-1 top-1 grid h-5 w-5 place-items-center rounded bg-background/90 text-destructive opacity-0 transition-opacity group-hover:opacity-100"
+            aria-label="Remove image"><X className="h-3 w-3" /></button>
+          {index !== 0 && <button type="button" onClick={() => makeMain(index)}
+            className="absolute bottom-1 start-1 inline-flex h-5 items-center gap-1 rounded bg-background/90 px-1.5 text-[10px] font-medium opacity-0 transition-opacity group-hover:opacity-100">
+            <Star className="h-2.5 w-2.5" /> Main
+          </button>}
         </div>
+        {index === 0 && <span className="absolute bottom-1 start-1 inline-flex h-4 items-center rounded bg-foreground px-1.5 text-[9px] font-semibold uppercase tracking-wide text-background">Main</span>}
       </div>
+    ))}{!isFull && <button type="button" onClick={openPicker}
+      className="grid aspect-square place-items-center rounded-md border border-dashed border-border text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-muted/40 hover:text-foreground"
+      aria-label="Add more images"><Plus className="h-4 w-4" /></button>}</div>}
 
-      {/* Image Gallery */}
-      {images.length > 0 && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-          {images.map((image, index) => (
-            <div
-              key={image.id}
-              draggable
-              onDragStart={() => handleImageDragStart(index)}
-              onDragOver={(e) => handleImageDragOver(e, index)}
-              onDragEnd={handleImageDragEnd}
-              className={cn(
-                'relative group aspect-square rounded-lg overflow-hidden border border-border bg-muted',
-                'cursor-grab active:cursor-grabbing',
-                draggedIndex === index && 'opacity-50'
-              )}
-            >
-              <img
-                src={image.preview}
-                alt={`Product image ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-              
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/40 transition-colors">
-                <div className="absolute top-2 start-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <GripVertical className="h-5 w-5 text-primary-foreground drop-shadow-md" />
-                </div>
-                <Button
-                  aria-label={`Remove product image ${index + 1}`}
-                  variant="destructive"
-                  size="icon"
-                  className="absolute top-2 end-2 h-7 w-7 opacity-0 group-hover:opacity-100 transition-opacity"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeImage(image.id);
-                  }}
-                >
-                  <X className="h-4 w-4" />
-                </Button>
-              </div>
-
-              {/* First image badge */}
-              {index === 0 && (
-                <div className="absolute bottom-2 start-2 px-2 py-0.5 bg-primary text-primary-foreground text-xs rounded font-medium">
-                  Main
-                </div>
-              )}
-
-              {/* Upload progress */}
-              {image.uploading && (
-                <div className="absolute inset-0 bg-background/80 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-12 h-12 border-4 border-muted border-t-primary rounded-full animate-spin" />
-                    <span className="text-sm mt-2 text-muted-foreground">
-                      {image.progress}%
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+    {dropSurfaceVisible && <div onClick={openPicker} className={cn(
+      "drag-zone flex cursor-pointer flex-col items-center justify-center gap-1.5 text-center",
+      hasImages ? "absolute inset-0 z-20 border-foreground/40 bg-background/95 backdrop-blur-sm" : "py-6",
+      (isDragging || (windowDrag && !hasImages)) && "drag-zone-active",
+      (isFull || uploading) && "cursor-not-allowed opacity-50",
+    )}>
+      <div className={cn("rounded-full p-2 transition-colors", isDragging ? "bg-foreground text-background" : "bg-muted text-muted-foreground")}>
+        {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+      </div>
+      <p className="text-[13px] font-medium">{uploading ? "Uploading to WordPress…"
+        : isDragging ? "Drop to upload" : hasImages ? "Drop images to add" : "Drag & drop product images"}</p>
+      {!hasImages && <p className="text-[11px] text-muted-foreground">
+        {uploadError || `or click to browse · up to ${maxImages} · first image becomes the thumbnail`}
+      </p>}
+    </div>}
+    {hasImages && uploadError && <p role="alert" className="text-[11px] text-destructive">{uploadError}</p>}
+  </div>;
+}

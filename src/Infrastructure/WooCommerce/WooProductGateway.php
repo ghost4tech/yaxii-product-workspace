@@ -76,8 +76,13 @@ final class WooProductGateway implements ProductGateway {
 		$items = array();
 		foreach ( $ids as $product_id ) {
 			$product = wc_get_product( $product_id );
-			if ( ( $product instanceof \WC_Product_Simple || $product instanceof \WC_Product_Variable ) && current_user_can( 'edit_post', $product_id ) ) {
+			if ( ! current_user_can( 'edit_post', $product_id ) ) {
+				continue;
+			}
+			if ( $product instanceof \WC_Product_Simple ) {
 				$items[] = $this->mapper->resource( $product );
+			} elseif ( $product instanceof \WC_Product_Variable && null !== $this->variable_mapper ) {
+				$items[] = $this->variable_mapper->resource( $product );
 			}
 		}
 		$total = (int) $wp_query->found_posts + ( 0 < $exact_id ? 1 : 0 );
@@ -187,7 +192,7 @@ final class WooProductGateway implements ProductGateway {
 	 */
 	private function query_args( ProductQuery $query, int $exact_id, int $limit, int $offset ): array {
 		$statuses = 'all' === $query->status()
-			? array( 'publish', 'draft', 'pending', 'private' )
+			? array( 'publish', 'draft', 'pending' )
 			: array( $query->status() );
 		return array(
 			'post_type'              => 'product',
@@ -206,7 +211,7 @@ final class WooProductGateway implements ProductGateway {
 				array(
 					'taxonomy' => 'product_type',
 					'field'    => 'slug',
-					'terms'    => array( 'simple', 'variable' ),
+					'terms'    => null === $this->variable_mapper ? array( 'simple' ) : array( 'simple', 'variable' ),
 				),
 			),
 		);
@@ -216,12 +221,17 @@ final class WooProductGateway implements ProductGateway {
 		if ( '' === $query->search() ) {
 			return 0;
 		}
-		$sku_id  = wc_get_product_id_by_sku( $query->search() );
-		$product = $sku_id ? wc_get_product( $sku_id ) : false;
-		if ( ( ! $product instanceof \WC_Product_Simple && ! $product instanceof \WC_Product_Variable ) || ! current_user_can( 'edit_post', $sku_id ) ) {
+		$sku_id    = wc_get_product_id_by_sku( $query->search() );
+		$product   = $sku_id ? wc_get_product( $sku_id ) : false;
+		$supported = $product instanceof \WC_Product_Simple
+			|| ( $product instanceof \WC_Product_Variable && null !== $this->variable_mapper );
+		if ( ! $supported || ! current_user_can( 'edit_post', $sku_id ) ) {
 			return 0;
 		}
 		$status = $product->get_status();
+		if ( ! in_array( $status, array( 'publish', 'draft', 'pending' ), true ) ) {
+			return 0;
+		}
 		return 'all' === $query->status() || $query->status() === $status ? (int) $sku_id : 0;
 	}
 

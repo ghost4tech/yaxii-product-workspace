@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import workspaceLogo from "../../../../../assets/img/yaxii-product-workspace-logo.svg";
 import App from "@/App";
 import type { WorkspaceClient } from "../application/WorkspaceClient";
 import { useWorkspaceSnapshot } from "../application/useWorkspaceSnapshot";
@@ -11,6 +12,23 @@ import { WorkspaceRuntimeProvider } from "./WorkspaceRuntime";
 interface WorkspaceAppProps {
   client: WorkspaceClient;
   scope: HTMLElement;
+}
+
+function WorkspaceLoading() {
+  return (
+    <div className="workspace-shell flex min-h-screen items-center justify-center bg-background px-6" role="status" aria-label="Loading Yaxii Product Workspace">
+      <div className="flex flex-col items-center text-center">
+        <div className="relative">
+          <img src={workspaceLogo} alt="" className="h-11 w-11" />
+          <span className="absolute -inset-2 -z-10 rounded-2xl bg-primary/10 motion-safe:animate-pulse" aria-hidden="true" />
+        </div>
+        <p className="mt-4 text-[13px] font-semibold">Yaxii Product Workspace</p>
+        <div className="mt-3 h-1 w-20 overflow-hidden rounded-full bg-muted" aria-hidden="true">
+          <div className="h-full w-full rounded-full bg-primary/70 motion-safe:animate-pulse" />
+        </div>
+      </div>
+    </div>
+  );
 }
 
 function WorkspaceBoundary({ client, scope }: WorkspaceAppProps) {
@@ -25,7 +43,7 @@ function WorkspaceBoundary({ client, scope }: WorkspaceAppProps) {
   }, [query.data, scope]);
 
   if (query.isPending) {
-    return <div className="panel m-4 p-5 text-sm">Loading Yaxii Product Workspace…</div>;
+    return <WorkspaceLoading />;
   }
 
   if (query.isError || !query.data) {

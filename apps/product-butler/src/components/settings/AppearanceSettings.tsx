@@ -74,6 +74,7 @@ export function AppearanceSettings() {
           last
         >
           <Switch
+            aria-label="Reduce motion"
             checked={prefs.reduceMotion}
             onCheckedChange={(value) => setPref("reduceMotion", value)}
           />

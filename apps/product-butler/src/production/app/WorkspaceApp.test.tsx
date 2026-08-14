@@ -1,16 +1,27 @@
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { defaultPreferences, usePrefsStore } from "@/stores/prefsStore";
 import { useProductStore } from "@/stores/productStore";
 import { WorkspaceClient } from "../application/WorkspaceClient";
+import type { WorkspaceRepository } from "../application/WorkspaceRepository";
+import type { OperationPage } from "../domain/products";
 import type { WorkspaceSnapshot } from "../domain/workspace";
 import { workspaceRepository, workspaceSnapshot } from "../test/workspaceFixtures";
 import { WorkspaceApp } from "./WorkspaceApp";
 
 const snapshot: WorkspaceSnapshot = workspaceSnapshot;
 
-function renderWorkspace(value = snapshot) {
+function deferredRequest<T>() {
+  let resolve!: (value: T) => void;
+  const promise = new Promise<T>((requestResolve) => { resolve = requestResolve; });
+  return { promise, resolve };
+}
+
+function renderWorkspace(
+  workspace: WorkspaceSnapshot | Promise<WorkspaceSnapshot> = snapshot,
+  overrides: Partial<WorkspaceRepository> = {},
+) {
   const scope = document.createElement("div");
   scope.id = "yaxii-product-workspace";
   const app = document.createElement("div");
@@ -18,7 +29,7 @@ function renderWorkspace(value = snapshot) {
   portals.id = "yaxii-product-workspace-portals";
   scope.append(app, portals);
   document.body.append(scope);
-  const repository = workspaceRepository({ load: () => Promise.resolve(value) });
+  const repository = workspaceRepository({ load: () => Promise.resolve(workspace), ...overrides });
   render(<WorkspaceApp client={new WorkspaceClient(repository)} scope={scope} />, { container: app });
   return { portals, scope };
 }
@@ -39,6 +50,17 @@ afterEach(() => {
 });
 
 describe("WorkspaceApp", () => {
+  it("shows a minimal loading screen until the workspace bootstrap resolves", async () => {
+    const bootstrapRequest = deferredRequest<WorkspaceSnapshot>();
+    renderWorkspace(bootstrapRequest.promise);
+
+    expect(screen.getByRole("status", { name: "Loading Yaxii Product Workspace" })).toBeVisible();
+    expect(screen.queryByRole("heading", { name: "Product entry" })).not.toBeInTheDocument();
+
+    act(() => bootstrapRequest.resolve(snapshot));
+    expect(await screen.findByRole("heading", { name: "Product entry" })).toBeVisible();
+  });
+
   it("renders the approved Lovable Entry surface and hides deferred product routes", async () => {
     renderWorkspace();
 
@@ -48,8 +70,45 @@ describe("WorkspaceApp", () => {
     expect(screen.queryByRole("link", { name: /analytics/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /connect store/i })).not.toBeInTheDocument();
     expect(screen.queryByText("0/50 this month")).not.toBeInTheDocument();
+    expect(screen.queryByText("Comfortable", { exact: true })).not.toBeInTheDocument();
+    const queue = within(screen.getByRole("region", { name: "Recent products" }));
+    expect(queue.queryByText("Product", { exact: true })).not.toBeInTheDocument();
+    expect(queue.queryByText("Status", { exact: true })).not.toBeInTheDocument();
+    expect(queue.queryByText(/clear search/i)).not.toBeInTheDocument();
+    expect(queue.queryByText("Store history", { exact: true })).not.toBeInTheDocument();
     expect(screen.getByText("Queue is empty")).toBeVisible();
     expect(screen.getByRole("button", { name: /save & next/i })).toBeEnabled();
+  });
+
+  it("opens keyboard shortcuts from the header", async () => {
+    const user = userEvent.setup();
+    renderWorkspace();
+    await screen.findByRole("heading", { name: "Product entry" });
+
+    const shortcutsButton = screen.getByRole("button", { name: "Keyboard shortcuts" });
+    expect(shortcutsButton).not.toHaveTextContent("Keyboard shortcuts");
+    await user.click(shortcutsButton);
+
+    expect(screen.getByRole("dialog", { name: "Keyboard shortcuts" })).toBeVisible();
+  });
+
+  it("keeps the queue in a skeleton state until its first page resolves", async () => {
+    const queueRequest = deferredRequest<OperationPage>();
+    renderWorkspace(snapshot, { listOperations: () => queueRequest.promise });
+    await screen.findByRole("heading", { name: "Product entry" });
+
+    expect(screen.getByRole("status", { name: "Loading recent products" })).toBeVisible();
+    expect(screen.queryByText("Queue is empty")).not.toBeInTheDocument();
+
+    act(() => queueRequest.resolve({
+      counts: { all: 0, draft: 0, error: 0, pending: 0, synced: 0 },
+      has_more: false,
+      items: [],
+      page: 1,
+      per_page: 25,
+      total: 0,
+    }));
+    expect(await screen.findByText("Queue is empty")).toBeVisible();
   });
 
   it("keeps the current draft while entering and leaving Focus Mode", async () => {

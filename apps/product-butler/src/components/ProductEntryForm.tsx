@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp, Layers3 } from "lucide-react";
+import { ChevronDown, ChevronUp, Pencil, X } from "lucide-react";
 import React from "react";
 import type { CanonicalProduct } from "@/production/domain/products";
 import { Button } from "@/components/ui/button";
@@ -11,16 +11,16 @@ import {
   AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { EntryActionBar } from "@/components/entry/EntryActionBar";
+import { DescriptionFields } from "@/components/entry/DescriptionFields";
 import { EssentialsFields } from "@/components/entry/EssentialsFields";
 import { ExtendedFields } from "@/components/entry/ExtendedFields";
-import { FormSection } from "@/components/entry/FormSection";
 import { useProductEntryController } from "@/components/entry/useProductEntryController";
-import { VariationsEditor } from "@/components/VariationsEditor";
 
 interface Props {
   advancedOpen?: boolean;
   onAdvancedChange?: (open: boolean) => void;
   onCloseEdit?: () => void;
+  onProductSaved?: (product: CanonicalProduct, updated: boolean) => void;
   onProductUpdated?: (product: CanonicalProduct) => void;
   product?: CanonicalProduct | null;
   twoColumn?: boolean;
@@ -30,6 +30,7 @@ export function ProductEntryForm({
   advancedOpen,
   onAdvancedChange,
   onCloseEdit,
+  onProductSaved,
   onProductUpdated,
   product,
   twoColumn = false,
@@ -38,7 +39,7 @@ export function ProductEntryForm({
   const controlled = advancedOpen !== undefined;
   const showAdvanced = controlled ? advancedOpen : internalAdvanced;
   const setShowAdvanced = controlled ? (onAdvancedChange ?? (() => undefined)) : setInternalAdvanced;
-  const controller = useProductEntryController({ onCloseEdit, onProductUpdated, product });
+  const controller = useProductEntryController({ onCloseEdit, onProductSaved, onProductUpdated, product });
   const { form } = controller;
   const watched = form.watch();
 
@@ -56,11 +57,16 @@ export function ProductEntryForm({
   const essentials = (
     <EssentialsFields
       currency={controller.bootstrap.woocommerce.currencySymbol}
+      attributes={controller.variableAttributes}
+      combinations={controller.variationCombinations}
       form={form}
       images={controller.images}
       isVariable={controller.isVariable}
       nameRef={controller.nameInputRef}
       onImagesChange={controller.setImages}
+      onAttributesChange={controller.setVariableAttributes}
+      onCombinationsChange={controller.setVariationCombinations}
+      onUploadImage={controller.uploadMedia}
       onVariableChange={controller.setIsVariable}
       typeLocked={controller.editing}
     />
@@ -75,33 +81,30 @@ export function ProductEntryForm({
       saleStart={controller.saleStart}
     />
   );
-  const variations = controller.isVariable ? (
-    <FormSection title="Attributes & variations" icon={Layers3}
-      hint={`${controller.variationCombinations.length} concrete variations`}>
-      <VariationsEditor
-        attributes={controller.variableAttributes}
-        combinations={controller.variationCombinations}
-        onAttributesChange={controller.setVariableAttributes}
-        onCombinationsChange={controller.setVariationCombinations}
-      />
-    </FormSection>
-  ) : null;
+  const descriptions = <DescriptionFields form={form} onUploadImage={controller.uploadMedia} />;
 
   return (
     <Form {...form}>
       <form onSubmit={(event) => void form.handleSubmit(controller.submit)(event)}>
+        {controller.editing && <div className="mb-4 flex h-9 items-center gap-2 rounded-md border border-info/25 bg-info/[0.07] px-3 text-[12px]">
+          <Pencil className="h-3.5 w-3.5 shrink-0 text-info" />
+          <span className="truncate">Editing <span className="font-semibold">{product?.name}</span></span>
+          <button type="button" onClick={controller.cancelEdit}
+            className="ms-auto inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">
+            <X className="h-3 w-3" /> Cancel
+          </button>
+        </div>}
         {twoColumn ? (
           <div className="space-y-8">
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-8">
               <div className="min-w-0">{essentials}</div>
-              <div className="min-w-0 lg:border-s lg:border-border lg:ps-8">{extended}</div>
+              <div className="min-w-0 stack-lg lg:border-s lg:border-border lg:ps-8">{descriptions}{extended}</div>
             </div>
-            {variations}
           </div>
         ) : (
           <div className="stack-lg">
             {essentials}
-            {variations}
+            <DescriptionFields compact form={form} onUploadImage={controller.uploadMedia} />
             {!controlled && (
               <Collapsible open={showAdvanced} onOpenChange={setShowAdvanced}>
                 <CollapsibleTrigger asChild>
@@ -136,7 +139,7 @@ export function ProductEntryForm({
           onSaveDraft={controller.editing ? undefined : controller.saveDraft}
           onTrash={controller.editing ? () => controller.setTrashOpen(true) : undefined}
           productName={watched.name}
-          submitLabel={controller.editing ? "Save changes" : "Save & next"}
+          submitLabel={controller.editing ? "Update product" : "Save & next"}
         />
       </form>
 

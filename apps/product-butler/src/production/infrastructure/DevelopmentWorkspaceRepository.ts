@@ -48,6 +48,7 @@ export class DevelopmentWorkspaceRepository implements WorkspaceRepository {
   public getOperation(): Promise<never> {
     return Promise.reject(this.unsupported());
   }
+  public getMedia(): Promise<never> { return Promise.reject(this.unsupported()); }
 
   public getProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
   public updateProduct(): Promise<never> { return Promise.reject(this.unsupported()); }
@@ -65,14 +66,33 @@ export class DevelopmentWorkspaceRepository implements WorkspaceRepository {
       total: 0,
     });
   }
+  public getOperationSummary() {
+    const counts = { eligible: 0, needs_attention: 0, operations: 0, published: 0, succeeded: 0 };
+    const endsAt = new Date();
+    const startsAt = new Date(endsAt.getTime() - 7 * 86_400_000);
+    const previousStartsAt = new Date(startsAt.getTime() - 7 * 86_400_000);
+    return Promise.resolve({
+      buckets: Array.from({ length: 7 }, () => ({ ...counts })),
+      current: { ...counts },
+      previous: { ...counts },
+      window: {
+        bucket_hours: 24 as const,
+        ends_at: endsAt.toISOString(),
+        previous_starts_at: previousStartsAt.toISOString(),
+        starts_at: startsAt.toISOString(),
+      },
+    });
+  }
   public retryOperation(): Promise<never> { return Promise.reject(this.unsupported()); }
   public dismissOperation(): Promise<never> { return Promise.reject(this.unsupported()); }
   public getPreferences() { return Promise.resolve(DEFAULT_WORKSPACE_PREFERENCES); }
   public updatePreferences() { return Promise.resolve(DEFAULT_WORKSPACE_PREFERENCES); }
+  public uploadMedia(): Promise<never> { return Promise.reject(this.unsupported()); }
 
   public searchCategories() {
     return Promise.resolve({ has_more: false, items: [], page: 1, per_page: 20 });
   }
+  public listCategories() { return this.searchCategories(); }
 
   public searchTags() { return this.searchCategories(); }
   public searchShippingClasses() { return this.searchCategories(); }

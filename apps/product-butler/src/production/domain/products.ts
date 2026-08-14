@@ -130,6 +130,26 @@ export type OperationPage = PagedResult<OperationHistoryResult> & {
   total: number;
 };
 
+export interface OperationMetricCounts {
+  eligible: number;
+  needs_attention: number;
+  operations: number;
+  published: number;
+  succeeded: number;
+}
+
+export interface OperationSummary {
+  buckets: OperationMetricCounts[];
+  current: OperationMetricCounts;
+  previous: OperationMetricCounts;
+  window: {
+    bucket_hours: 24;
+    ends_at: string;
+    previous_starts_at: string;
+    starts_at: string;
+  };
+}
+
 export type RepeatField =
   | "category_ids"
   | "regular_price"

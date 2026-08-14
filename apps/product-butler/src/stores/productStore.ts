@@ -5,6 +5,7 @@ import { createDraftStorage, sanitizeDraft } from '@/production/infrastructure/d
 
 interface ProductStore {
   categories: Category[];
+  mergeCategories: (categories: Category[]) => void;
   setCategories: (categories: Category[]) => void;
   recentCategoryIds: number[];
   addRecentCategory: (categoryId: number) => void;
@@ -22,6 +23,11 @@ export const useProductStore = create<ProductStore>()(
   persist(
     (set) => ({
       categories: [],
+      mergeCategories: (categories) => set((state) => {
+        const merged = new Map(state.categories.map((category) => [category.id, category]));
+        categories.forEach((category) => merged.set(category.id, { ...merged.get(category.id), ...category }));
+        return { categories: [...merged.values()] };
+      }),
       setCategories: (categories) => set({ categories }),
       recentCategoryIds: [],
       addRecentCategory: (categoryId) => set((state) => {
@@ -47,6 +53,7 @@ export const useProductStore = create<ProductStore>()(
       version: 2,
       partialize: (state) => ({
         draftFormData: sanitizeDraft(state.draftFormData),
+        recentCategoryIds: state.recentCategoryIds,
       }),
     }
   )

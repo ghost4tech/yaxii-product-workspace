@@ -10,6 +10,7 @@ const host: WorkspaceHostConfig = {
   frontendAvailable: true,
   isWooCommerceAvailable: true,
   locale: "en-US",
+  mediaRestUrl: "https://store.test/wp-json/wp/v2/media",
   nonce: "rest-nonce",
   pluginVersion: "0.2.0",
   restUrl: "https://store.test/wp-json/yaxii-product-workspace/v1/",
@@ -221,6 +222,32 @@ describe("WordPressWorkspaceRepository", () => {
     const [url, init] = fetchMock.mock.calls[0] ?? [];
     expect(url).toBe("https://store.test/wp-json/yaxii-product-workspace/v1/products?page=1&per_page=20&search=canvas");
     expect(init?.signal).toBe(controller.signal);
+  });
+
+  it("requests bounded category roots, children, selected ids, and search context", async () => {
+    const fetchMock = vi.fn((...args: [RequestInfo | URL, RequestInit?]) => {
+      void args;
+      return Promise.resolve(new Response(JSON.stringify({
+      data: { has_more: false, items: [], page: 1, per_page: 25 },
+      }), { status: 200, headers: { "Content-Type": "application/json" } }));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const repository = new WordPressWorkspaceRepository(host);
+
+    await repository.listCategories({ parent: 0, perPage: 25 });
+    await repository.listCategories({ include: [41, 72], perPage: 20 });
+    await repository.listCategories({ search: "hoodies", signal: new AbortController().signal });
+
+    expect(fetchMock.mock.calls[0]?.[0]).toBe(
+      "https://store.test/wp-json/yaxii-product-workspace/v1/categories?page=1&per_page=25&search=&parent=0",
+    );
+    const selectedUrl = fetchMock.mock.calls[1]?.[0];
+    if (typeof selectedUrl !== "string") throw new Error("Expected a string category URL.");
+    expect(selectedUrl).toContain("include%5B%5D=41");
+    expect(selectedUrl).toContain("include%5B%5D=72");
+    expect(fetchMock.mock.calls[2]?.[0]).toBe(
+      "https://store.test/wp-json/yaxii-product-workspace/v1/categories?page=1&per_page=25&search=hoodies",
+    );
   });
 
   it("sends the version contract for update and trash", async () => {

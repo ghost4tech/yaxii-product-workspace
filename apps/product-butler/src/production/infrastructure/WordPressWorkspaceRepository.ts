@@ -1,4 +1,4 @@
-import type { SearchOptions, WorkspaceRepository } from "../application/WorkspaceRepository";
+import type { CategoryQueryOptions, SearchOptions, WorkspaceRepository } from "../application/WorkspaceRepository";
 import { WorkspaceApiError } from "../application/WorkspaceApiError";
 import type {
   CanonicalProduct,
@@ -6,17 +6,19 @@ import type {
   CreateProductRequest,
   OperationPage,
   OperationResult,
+  OperationSummary,
   ProductPage,
   WorkspacePreferences,
   VariableProductRequest,
   VariableUpdateResult,
 } from "../domain/products";
-import type { AttributeCatalogItem, AttributeTerm, VariableAttribute, VariationCombination } from "../domain/variableProducts";
+import type { AttributeCatalogItem, AttributeTerm } from "../domain/variableProducts";
 import type { WorkspaceBootstrap, WorkspaceHostConfig, WorkspaceSnapshot } from "../domain/workspace";
 import {
   canonicalProductSchema,
   operationPageSchema,
   operationResultSchema,
+  operationSummarySchema,
   preferencesSchema,
   productPageSchema,
   simpleProductFieldsSchema,
@@ -25,7 +27,9 @@ import {
   variableUpdateResultSchema,
   attributeCatalogSchema,
   attributeTermsSchema,
+  mediaResourceSchema,
 } from "./restContracts";
+import { variablePayload } from "./restPayloads";
 
 type JsonRecord = Record<string, unknown>;
 
@@ -119,36 +123,6 @@ function queryString(options: SearchOptions): string {
   return params.toString();
 }
 
-function attributePayload(attribute: VariableAttribute) {
-  const common = {
-    key: attribute.key, name: attribute.name, position: attribute.position,
-    source: attribute.source, variation: attribute.variation, visible: attribute.visible,
-  };
-  return attribute.source === "global"
-    ? { ...common, attribute_id: attribute.attributeId, option_ids: attribute.optionIds, taxonomy: attribute.taxonomy }
-    : { ...common, options: attribute.options };
-}
-
-function combinationPayload(combination: VariationCombination) {
-  return {
-    client_id: combination.clientId, enabled: combination.enabled, image_id: combination.imageId,
-    manage_stock: combination.manageStock, regular_price: combination.regularPrice,
-    sale_price: combination.salePrice, selections: combination.selections.map((selection) => (
-      "termId" in selection
-        ? { attribute_key: selection.attributeKey, term_id: selection.termId }
-        : { attribute_key: selection.attributeKey, option: selection.option }
-    )), sku: combination.sku, stock_quantity: combination.stockQuantity,
-    stock_status: combination.stockStatus, variation_id: combination.variationId,
-  };
-}
-
-function variablePayload(request: VariableProductRequest) {
-  return {
-    attributes: request.attributes.map(attributePayload), combinations: request.combinations.map(combinationPayload),
-    product: request.product,
-  };
-}
-
 export class WordPressWorkspaceRepository implements WorkspaceRepository {
   public constructor(private readonly host: WorkspaceHostConfig) {}
 
@@ -204,6 +178,10 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
     return parse(await this.request(`operations?${queryString(options)}`, { signal: options.signal }), operationPageSchema, "operations");
   }
 
+  public async getOperationSummary(): Promise<OperationSummary> {
+    return parse(await this.request("operations/summary"), operationSummarySchema, "operation summary");
+  }
+
   public async retryOperation(id: string): Promise<OperationResult> {
     return parse(await this.request(`operations/${encodeURIComponent(id)}/retry`, this.json("POST", {}), true), operationResultSchema, "operation");
   }
@@ -220,8 +198,38 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
     return parse(await this.request("preferences", this.json("PUT", preferences)), preferencesSchema, "preferences");
   }
 
+  public async uploadMedia(file: File) {
+    const body = new FormData();
+    body.append("file", file, file.name);
+    body.append("title", file.name.replace(/\.[^.]+$/, ""));
+    const payload = await this.request(this.host.mediaRestUrl, { body, method: "POST" }, false, true);
+    const parsed = mediaResourceSchema.safeParse(payload);
+    if (!parsed.success) {
+      throw new WorkspaceApiError("ypw_invalid_response", "WordPress returned invalid media data.", 502);
+    }
+    return parsed.data;
+  }
+
+  public async getMedia(id: number) {
+    const payload = await this.request(`${this.host.mediaRestUrl}/${id}`, {}, false, true);
+    const parsed = mediaResourceSchema.safeParse(payload);
+    if (!parsed.success) throw new WorkspaceApiError("ypw_invalid_response", "WordPress returned invalid media data.", 502);
+    return parsed.data;
+  }
+
+  public listCategories(options: CategoryQueryOptions): Promise<CategoryPage> {
+    const params = new URLSearchParams({
+      page: String(options.page ?? 1),
+      per_page: String(options.perPage ?? 25),
+      search: options.search ?? "",
+    });
+    if (options.parent !== undefined) params.set("parent", String(options.parent));
+    options.include?.forEach((id) => params.append("include[]", String(id)));
+    return this.termPage(`categories?${params}`, options.signal);
+  }
+
   public searchCategories(query: string, signal?: AbortSignal): Promise<CategoryPage> {
-    return this.searchTerms("categories", query, signal);
+    return this.listCategories({ perPage: 20, search: query, signal });
   }
 
   public searchTags(query: string, signal?: AbortSignal): Promise<CategoryPage> {
@@ -243,17 +251,21 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
 
   private async searchTerms(path: string, query: string, signal?: AbortSignal): Promise<CategoryPage> {
     const params = new URLSearchParams({ page: "1", per_page: "20", search: query });
-    return parse(await this.request(`${path}?${params}`, { signal }), termPageSchema, "product terms");
+    return this.termPage(`${path}?${params}`, signal);
+  }
+
+  private async termPage(path: string, signal?: AbortSignal): Promise<CategoryPage> {
+    return parse(await this.request(path, { signal }), termPageSchema, "product terms");
   }
 
   private json(method: string, body: unknown, headers: Record<string, string> = {}): RequestInit {
     return { body: JSON.stringify(body), headers: { "Content-Type": "application/json", ...headers }, method };
   }
 
-  private async request(path: string, init: RequestInit = {}, outcomeUncertain = false): Promise<unknown> {
+  private async request(path: string, init: RequestInit = {}, outcomeUncertain = false, absolute = false): Promise<unknown> {
     let response: Response;
     try {
-      response = await fetch(`${this.host.restUrl}${path}`, {
+      response = await fetch(absolute ? path : `${this.host.restUrl}${path}`, {
         ...init,
         credentials: "same-origin",
         headers: { Accept: "application/json", "X-WP-Nonce": this.host.nonce, ...init.headers },

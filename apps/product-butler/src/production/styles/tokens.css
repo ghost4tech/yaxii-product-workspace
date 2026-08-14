@@ -30,6 +30,23 @@
   margin: 0;
 }
 
+#yaxii-product-workspace #yaxii-product-workspace-app :where(input, select, textarea, button),
+#yaxii-product-workspace #yaxii-product-workspace-portals :where(input, select, textarea, button) {
+  box-shadow: none;
+  max-width: none;
+  text-transform: none;
+}
+
+#yaxii-product-workspace #yaxii-product-workspace-app :where(input, select, textarea),
+#yaxii-product-workspace #yaxii-product-workspace-portals :where(input, select, textarea) {
+  margin: 0;
+}
+
+#yaxii-product-workspace #yaxii-product-workspace-app :where(input[type="number"]),
+#yaxii-product-workspace #yaxii-product-workspace-portals :where(input[type="number"]) {
+  min-height: 0;
+}
+
 #yaxii-product-workspace img,
 #yaxii-product-workspace svg {
   display: block;

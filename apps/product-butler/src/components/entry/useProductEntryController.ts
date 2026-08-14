@@ -17,6 +17,7 @@ import { toProductEntryValues, type ProductEntryValues } from "./productEntryMod
 
 interface Options {
   onCloseEdit?: () => void;
+  onProductSaved?: (product: CanonicalProduct, updated: boolean) => void;
   onProductUpdated?: (product: CanonicalProduct) => void;
   product?: CanonicalProduct | null;
 }
@@ -41,7 +42,7 @@ function formData(
 }
 
 export function useProductEntryController(options: Options) {
-  const { onCloseEdit, onProductUpdated, product } = options;
+  const { onCloseEdit, onProductSaved, onProductUpdated, product } = options;
   const { bootstrap, client } = useWorkspaceRuntime();
   const { isLoading: preferencesLoading, preferences } = useWorkspacePreferences();
   const draftFormData = useProductStore((state) => state.draftFormData);
@@ -151,6 +152,14 @@ export function useProductEntryController(options: Options) {
     });
   }, [form]);
 
+  const uploadMedia = useCallback(async (file: File): Promise<ProductImage> => {
+    if (!bootstrap.capabilities.uploadMedia) {
+      throw new Error("You are not allowed to upload media.");
+    }
+    const media = await client.uploadMedia(file);
+    return { id: `wp-${media.id}`, preview: media.url, wpMediaId: media.id };
+  }, [bootstrap.capabilities.uploadMedia, client]);
+
   const submission = useCallback((values: ProductEntryValues): ProductSubmission => ({
     attributes: variableAttributes, combinations: variationCombinations,
     images, isVariable, saleEnd, saleStart, values,
@@ -168,6 +177,7 @@ export function useProductEntryController(options: Options) {
       if (outcome.product) {
         onProductUpdated?.(outcome.product);
         hydrate(outcome.product);
+        if (outcome.state === "succeeded") onProductSaved?.(outcome.product, true);
       }
       applyErrors(outcome.fields);
       return;
@@ -175,6 +185,7 @@ export function useProductEntryController(options: Options) {
     const outcome = await create.submit(submission(values));
     applyErrors(outcome.fields);
     if (outcome.state !== "succeeded" || !outcome.result?.product) return;
+    onProductSaved?.(outcome.result.product, false);
     const draft = nextDraft(outcome.result.product, preferences);
     form.reset(toProductEntryValues(draft));
     setImages(draft.images);
@@ -186,7 +197,7 @@ export function useProductEntryController(options: Options) {
     setVariableDirty(false);
     setDraftFormData(draft);
     nameInputRef.current?.focus();
-  }, [applyErrors, canWrite, create, form, hydrate, manage, onProductUpdated, preferences, product, setDraftFormData, submission]);
+  }, [applyErrors, canWrite, create, form, hydrate, manage, onProductSaved, onProductUpdated, preferences, product, setDraftFormData, submission]);
 
   const reset = useCallback(() => {
     const draft = product ? fieldsToDraft(product, product.images) : preferencesDraft(preferences);
@@ -235,11 +246,13 @@ export function useProductEntryController(options: Options) {
     setVariableDirty(true);
   }, []);
 
+  const cancelEdit = useCallback(() => onCloseEdit?.(), [onCloseEdit]);
+
   return {
-    bootstrap, canWrite, conflictOpen, create, editing, form, images, manage, nameInputRef,
+    bootstrap, cancelEdit, canWrite, conflictOpen, create, editing, form, images, manage, nameInputRef,
     isVariable, reloadLatest, reset, saleEnd, saleStart, saveDraft, setConflictOpen, setImages,
     setIsVariable: changeVariableType, setVariableAttributes: changeVariableAttributes,
     setVariationCombinations: changeVariationCombinations, variableAttributes, variableDirty, variationCombinations,
-    setSaleEnd, setSaleStart, setTrashOpen, submit, trash, trashOpen,
+    setSaleEnd, setSaleStart, setTrashOpen, submit, trash, trashOpen, uploadMedia,
   };
 }

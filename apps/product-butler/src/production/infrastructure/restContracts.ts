@@ -132,12 +132,28 @@ const operationHistoryResultSchema = operationResultSchema.extend({
 export const termPageSchema = z.object({
   has_more: z.boolean(),
   items: z.array(z.object({
+    ancestors: z.array(z.object({
+      count: z.number().int().nonnegative(),
+      id: z.number().int().positive(),
+      name: z.string(),
+      parent: z.number().int().nonnegative(),
+      slug: z.string(),
+    })).optional(),
     count: z.number().int().nonnegative(),
+    has_children: z.boolean().optional(),
     id: z.number().int().positive(),
     name: z.string(),
     parent: z.number().int().nonnegative(),
     slug: z.string(),
-  })),
+  }).transform((item) => ({
+    ancestors: item.ancestors,
+    count: item.count,
+    hasChildren: item.has_children,
+    id: item.id,
+    name: item.name,
+    parent: item.parent,
+    slug: item.slug,
+  }))),
   page: z.number().int().positive(),
   per_page: z.number().int().positive().max(50),
 });
@@ -163,6 +179,26 @@ export const operationPageSchema = z.object({
   page: z.number().int().positive(),
   per_page: z.number().int().positive().max(50),
   total: z.number().int().nonnegative(),
+});
+
+const operationMetricCountsSchema = z.object({
+  eligible: z.number().int().nonnegative(),
+  needs_attention: z.number().int().nonnegative(),
+  operations: z.number().int().nonnegative(),
+  published: z.number().int().nonnegative(),
+  succeeded: z.number().int().nonnegative(),
+});
+
+export const operationSummarySchema = z.object({
+  buckets: z.array(operationMetricCountsSchema).length(7),
+  current: operationMetricCountsSchema,
+  previous: operationMetricCountsSchema,
+  window: z.object({
+    bucket_hours: z.literal(24),
+    ends_at: z.string().datetime({ offset: true }),
+    previous_starts_at: z.string().datetime({ offset: true }),
+    starts_at: z.string().datetime({ offset: true }),
+  }),
 });
 
 export const preferencesSchema = z.object({
@@ -192,3 +228,9 @@ export const attributeCatalogSchema = z.array(z.object({
 export const attributeTermsSchema = z.array(z.object({
   id: z.number().int().positive(), name: z.string(), slug: z.string(),
 }));
+
+export const mediaResourceSchema = z.object({
+  alt_text: z.string(),
+  id: z.number().int().positive(),
+  source_url: z.string().url(),
+}).transform((item) => ({ alt: item.alt_text, id: item.id, url: item.source_url }));

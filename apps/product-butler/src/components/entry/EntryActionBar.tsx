@@ -3,6 +3,7 @@ import { ArrowRight, Circle, Loader2, RotateCcw, Save, Trash2 } from 'lucide-rea
 import { Button } from '@/components/ui/button';
 import { usePrefsStore } from '@/stores/prefsStore';
 import { cn } from '@/lib/utils';
+import { Explain } from '@/components/ui/help-tip';
 
 interface Props {
   disabled?: boolean;
@@ -88,6 +89,7 @@ export const EntryActionBar: React.FC<Props> = ({
         >
           <RotateCcw className="h-3.5 w-3.5 me-1.5" /> {clearLabel}
         </Button>
+        <Explain tip="Saves this product and clears the form for the next one. Shortcut: Ctrl + Enter." side="top">
         <Button
           type="submit"
           disabled={disabled || isSubmitting}
@@ -107,6 +109,7 @@ export const EntryActionBar: React.FC<Props> = ({
           )}
           <ArrowRight className="h-3.5 w-3.5 ms-1.5 opacity-0 -translate-x-1 transition group-hover:opacity-70 group-hover:translate-x-0" />
         </Button>
+        </Explain>
       </div>
     </div>
   );

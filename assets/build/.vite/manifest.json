@@ -1,32 +1,37 @@
 {
-  "_react-vendor-ZC1Vym4P.js": {
-    "file": "assets/react-vendor-ZC1Vym4P.js",
-    "name": "react-vendor",
+  "_editor-vendor-D7Q2H7mx.js": {
+    "file": "assets/editor-vendor-D7Q2H7mx.js",
+    "name": "editor-vendor",
     "imports": [
       "_rolldown-runtime-CbXtAM7H.js"
+    ]
+  },
+  "_react-vendor-jr2q-VVG.js": {
+    "file": "assets/react-vendor-jr2q-VVG.js",
+    "name": "react-vendor",
+    "imports": [
+      "_rolldown-runtime-CbXtAM7H.js",
+      "_editor-vendor-D7Q2H7mx.js"
     ]
   },
   "_rolldown-runtime-CbXtAM7H.js": {
     "file": "assets/rolldown-runtime-CbXtAM7H.js",
     "name": "rolldown-runtime"
   },
-  "_ui-vendor-CsmjSVYX.js": {
-    "file": "assets/ui-vendor-CsmjSVYX.js",
+  "_ui-vendor-bfOXQzdY.js": {
+    "file": "assets/ui-vendor-bfOXQzdY.js",
     "name": "ui-vendor",
     "imports": [
       "_rolldown-runtime-CbXtAM7H.js",
-      "_react-vendor-ZC1Vym4P.js"
+      "_editor-vendor-D7Q2H7mx.js",
+      "_react-vendor-jr2q-VVG.js"
     ]
   },
-  "_vendor-D7NdHagc.css": {
-    "file": "assets/vendor-D7NdHagc.css",
-    "src": "_vendor-D7NdHagc.css"
-  },
-  "_vendor-DZeChN8V.js": {
-    "file": "assets/vendor-DZeChN8V.js",
+  "_vendor-C87kvK4p.js": {
+    "file": "assets/vendor-C87kvK4p.js",
     "name": "vendor",
     "imports": [
-      "_react-vendor-ZC1Vym4P.js"
+      "_react-vendor-jr2q-VVG.js"
     ],
     "css": [
       "assets/vendor-D7NdHagc.css"
@@ -49,6 +54,10 @@
       "assets/jetbrains-mono-latin-600-normal-C8RAYTDA.woff2",
       "assets/jetbrains-mono-latin-600-normal-BfsvjouI.woff"
     ]
+  },
+  "_vendor-D7NdHagc.css": {
+    "file": "assets/vendor-D7NdHagc.css",
+    "src": "_vendor-D7NdHagc.css"
   },
   "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff": {
     "file": "assets/inter-latin-400-normal-CyCys3Eg.woff",
@@ -115,18 +124,19 @@
     "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2"
   },
   "src/main.tsx": {
-    "file": "assets/main-C6gojEMO.js",
+    "file": "assets/main-BPmGM3zU.js",
     "name": "main",
     "src": "src/main.tsx",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-CbXtAM7H.js",
-      "_vendor-DZeChN8V.js",
-      "_react-vendor-ZC1Vym4P.js",
-      "_ui-vendor-CsmjSVYX.js"
+      "_vendor-C87kvK4p.js",
+      "_editor-vendor-D7Q2H7mx.js",
+      "_react-vendor-jr2q-VVG.js",
+      "_ui-vendor-bfOXQzdY.js"
     ],
     "css": [
-      "assets/main-UutJ0cob.css"
+      "assets/main-CS__jORd.css"
     ]
   }
 }

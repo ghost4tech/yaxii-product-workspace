@@ -2,12 +2,10 @@ import type React from "react";
 import {
   Columns2,
   Focus,
-  ListChecks,
   Minimize2,
   PanelRightClose,
   PanelRightOpen,
   Search,
-  Rows3,
   Undo2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -38,7 +36,6 @@ export const WorkspaceToolbar: React.FC<Props> = ({
   const { prefs, setPref } = usePrefsStore();
   const { bootstrap } = useWorkspaceRuntime();
   const productCopy = productOperationCopy(bootstrap.locale);
-  const compact = prefs.density === "compact";
   const focus = prefs.focusMode;
 
   return (
@@ -59,27 +56,6 @@ export const WorkspaceToolbar: React.FC<Props> = ({
       <Button variant="outline" size="sm" onClick={onOpenProducts} className="h-8 text-[12px]">
         <Search className="me-1.5 h-3.5 w-3.5" /> Find product
       </Button>
-
-      <div className="seg" role="group" aria-label="Density">
-        <button
-          type="button"
-          className="seg-item"
-          data-active={!compact}
-          onClick={() => setPref("density", "comfortable")}
-          title="Comfortable density"
-        >
-          <Rows3 className="h-3.5 w-3.5" />
-        </button>
-        <button
-          type="button"
-          className="seg-item"
-          data-active={compact}
-          onClick={() => setPref("density", "compact")}
-          title="Compact density"
-        >
-          <ListChecks className="h-3.5 w-3.5" />
-        </button>
-      </div>
 
       <Button
         variant="outline"

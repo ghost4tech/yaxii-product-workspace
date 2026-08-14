@@ -44,7 +44,7 @@ The integration bootstrap defaults to the WordPress root four directories above 
 `YPW_WP_ROOT` when using another layout. Tests create unique products, terms, media, tax classes,
 users, and operations and remove them during teardown. Failure to boot WordPress is a failed run.
 
-For the current `ysf-lite.local` LocalWP runtime (`JoHLKltX2`), use its generated PHP configuration
+For the current `choufi-store` LocalWP runtime (`JoHLKltX2`), use its generated PHP configuration
 so the database port resolves correctly:
 
 ```powershell

@@ -4,6 +4,7 @@ import {
   type CanonicalProduct,
   type CreateProductRequest,
   type OperationResult,
+  type OperationSummary,
 } from "../domain/products";
 import type { WorkspaceSnapshot } from "../domain/workspace";
 
@@ -68,6 +69,20 @@ export const workspaceSnapshot: WorkspaceSnapshot = {
   },
 };
 
+export const emptyOperationSummary: OperationSummary = {
+  buckets: Array.from({ length: 7 }, () => ({
+    eligible: 0, needs_attention: 0, operations: 0, published: 0, succeeded: 0,
+  })),
+  current: { eligible: 0, needs_attention: 0, operations: 0, published: 0, succeeded: 0 },
+  previous: { eligible: 0, needs_attention: 0, operations: 0, published: 0, succeeded: 0 },
+  window: {
+    bucket_hours: 24,
+    ends_at: "2026-08-14T12:00:00+00:00",
+    previous_starts_at: "2026-07-31T12:00:00+00:00",
+    starts_at: "2026-08-07T12:00:00+00:00",
+  },
+};
+
 export function workspaceRepository(overrides: Partial<WorkspaceRepository> = {}): WorkspaceRepository {
   const unavailable = () => Promise.reject(new Error("Not configured for this test."));
   const emptyTerms = () => Promise.resolve({ has_more: false, items: [], page: 1, per_page: 20 });
@@ -77,10 +92,13 @@ export function workspaceRepository(overrides: Partial<WorkspaceRepository> = {}
     dismissOperation: () => Promise.resolve(),
     duplicateProduct: unavailable,
     getOperation: unavailable,
+    getOperationSummary: () => Promise.resolve(emptyOperationSummary),
+    getMedia: unavailable,
     getPreferences: () => Promise.resolve(DEFAULT_WORKSPACE_PREFERENCES),
     getProduct: unavailable,
     listAttributes: () => Promise.resolve([]),
     listAttributeTerms: () => Promise.resolve([]),
+    listCategories: emptyTerms,
     listOperations: () => Promise.resolve({
       counts: { all: 0, draft: 0, error: 0, pending: 0, synced: 0 },
       has_more: false, items: [], page: 1, per_page: 25, total: 0,
@@ -93,6 +111,7 @@ export function workspaceRepository(overrides: Partial<WorkspaceRepository> = {}
     searchTags: emptyTerms,
     trashProduct: unavailable,
     updatePreferences: () => Promise.resolve(DEFAULT_WORKSPACE_PREFERENCES),
+    uploadMedia: unavailable,
     updateProduct: unavailable,
     updateVariableProduct: unavailable,
     ...overrides,

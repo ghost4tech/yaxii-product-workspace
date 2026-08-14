@@ -1,12 +1,15 @@
 import React from 'react';
-import { Package, Tags, Images } from 'lucide-react';
+import { Package, Tags, Images, Layers } from 'lucide-react';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ImageUpload } from '@/components/ImageUpload';
-import { CategorySelect } from '@/components/CategorySelect';
+import { CategoryTreeSelect } from '@/components/CategoryTreeSelect';
 import { ProductImage } from '@/types/product';
 import { FormSection, FieldShell } from '@/components/entry/FormSection';
 import { cn } from '@/lib/utils';
+import { HelpTip } from '@/components/ui/help-tip';
+import { VariationsEditor } from '@/components/VariationsEditor';
+import type { VariableAttribute, VariationCombination } from '@/production/domain/variableProducts';
 import type { UseFormReturn } from 'react-hook-form';
 import type { ProductEntryValues } from '@/components/entry/productEntryModel';
 
@@ -17,6 +20,11 @@ interface Props {
   images: ProductImage[];
   onVariableChange: (variable: boolean) => void;
   onImagesChange: (i: ProductImage[]) => void;
+  onUploadImage: (file: File) => Promise<ProductImage>;
+  attributes: VariableAttribute[];
+  combinations: VariationCombination[];
+  onAttributesChange: (attributes: VariableAttribute[]) => void;
+  onCombinationsChange: (combinations: VariationCombination[]) => void;
   nameRef: React.RefObject<HTMLInputElement>;
   currency?: string;
 }
@@ -28,15 +36,23 @@ export const EssentialsFields: React.FC<Props> = ({
   images,
   onVariableChange,
   onImagesChange,
+  onUploadImage,
+  attributes,
+  combinations,
+  onAttributesChange,
+  onCombinationsChange,
   nameRef,
   currency = '$',
 }) => {
   const typeToggle = (
+    <div className="flex items-center gap-1.5">
+      <HelpTip side="left"><strong>Simple</strong> — one price and stock value. <strong>Variable</strong> — attributes like Color or Size produce separate variations, each with its own price, SKU, stock and image.</HelpTip>
     <div className="seg" role="group" aria-label="Product type">
       <button type="button" data-active={!isVariable || undefined} className="seg-item"
         aria-pressed={!isVariable} disabled={typeLocked} onClick={() => onVariableChange(false)}>Simple</button>
       <button type="button" data-active={isVariable || undefined} className="seg-item"
         aria-pressed={isVariable} disabled={typeLocked} onClick={() => onVariableChange(true)}>Variable</button>
+    </div>
     </div>
   );
 
@@ -90,9 +106,21 @@ export const EssentialsFields: React.FC<Props> = ({
           name="categoryId"
           render={({ field }) => (
             <FormItem className="space-y-0">
-              <label className="field-label" htmlFor="ypw-product-category">Category *</label>
+              <label className="field-label flex items-center gap-1.5">Categories * · multiple allowed
+                <HelpTip side="right">Pick any level of the tree. Selecting a sub-category does not automatically add its parent in WooCommerce.</HelpTip>
+              </label>
               <FormControl>
-                <CategorySelect id="ypw-product-category" value={field.value} onChange={field.onChange} />
+                <CategoryTreeSelect
+                  value={[field.value, ...form.watch('additionalCategoryIds').map(String)].filter(Boolean)}
+                  onChange={(categoryIds) => {
+                    field.onChange(categoryIds[0] ?? '');
+                    form.setValue(
+                      'additionalCategoryIds',
+                      categoryIds.slice(1).map(Number).filter((id) => Number.isInteger(id) && id > 0),
+                      { shouldDirty: true, shouldValidate: true },
+                    );
+                  }}
+                />
               </FormControl>
               <FormMessage className="text-[11px] mt-1" />
             </FormItem>
@@ -100,10 +128,9 @@ export const EssentialsFields: React.FC<Props> = ({
         />
       </FormSection>
 
-      <FormSection
+      {!isVariable && <FormSection
         title="Pricing & stock"
         icon={Tags}
-        hint={isVariable ? 'Managed per variation' : undefined}
       >
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           <FormField
@@ -138,8 +165,8 @@ export const EssentialsFields: React.FC<Props> = ({
             name="salePrice"
             render={({ field }) => (
               <FormItem className="space-y-0">
-                <label htmlFor="ypw-product-sale-price" className={cn('field-label', isVariable && 'text-muted-foreground')}>
-                  Sale price
+                <label htmlFor="ypw-product-sale-price" className={cn('field-label flex items-center gap-1.5', isVariable && 'text-muted-foreground')}>
+                  Sale price <HelpTip>Optional discounted price. Leave empty for no sale. Schedule a window under Extended options.</HelpTip>
                 </label>
                 <FormControl>
                   <div className={cn('input-group', isVariable && 'opacity-60')}>
@@ -165,8 +192,8 @@ export const EssentialsFields: React.FC<Props> = ({
             name="stockQuantity"
             render={({ field }) => (
               <FormItem className="col-span-2 sm:col-span-1 space-y-0">
-                <label htmlFor="ypw-product-stock" className={cn('field-label', isVariable && 'text-muted-foreground')}>
-                  Stock
+                <label htmlFor="ypw-product-stock" className={cn('field-label flex items-center gap-1.5', isVariable && 'text-muted-foreground')}>
+                  Stock <HelpTip>Units on hand. Entering a quantity enables WooCommerce stock management for this product.</HelpTip>
                 </label>
                 <FormControl>
                   <div className={cn('input-group', isVariable && 'opacity-60')}>
@@ -193,7 +220,15 @@ export const EssentialsFields: React.FC<Props> = ({
             )}
           />
         </div>
-      </FormSection>
+      </FormSection>}
+
+      {isVariable && <FormSection title="Variations" icon={Layers}
+        hint="Price, SKU & stock live on each combination"
+        action={<HelpTip side="left">Attributes → combination preview → variations. Global attributes are reusable store taxonomies; custom attributes exist only on this product.</HelpTip>}>
+        <VariationsEditor attributes={attributes} combinations={combinations}
+          onAttributesChange={onAttributesChange} onCombinationsChange={onCombinationsChange}
+          onUploadImage={onUploadImage} baseSku={form.watch('sku')} currency={currency} />
+      </FormSection>}
 
       <FormSection
         title="Images"
@@ -201,7 +236,7 @@ export const EssentialsFields: React.FC<Props> = ({
         hint={images.length ? `${images.length} selected` : 'First image becomes the thumbnail'}
       >
         <FieldShell label="Product images">
-          <ImageUpload images={images} onChange={onImagesChange} />
+          <ImageUpload images={images} onChange={onImagesChange} onUpload={onUploadImage} />
         </FieldShell>
       </FormSection>
     </div>

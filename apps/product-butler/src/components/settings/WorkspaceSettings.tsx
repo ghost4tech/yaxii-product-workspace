@@ -32,12 +32,19 @@ export function WorkspaceSettings() {
         </SettingRow>
         <SettingRow title="Inline keyboard hints" description="Show key badges on buttons and footers.">
           <Switch
+            aria-label="Inline keyboard hints"
             checked={prefs.showKeyboardHints}
             onCheckedChange={(value) => setPref("showKeyboardHints", value)}
           />
         </SettingRow>
+        <SettingRow title="Help tooltips"
+          description="Inline “?” explanations on fields and controls. Turn off for a cleaner interface.">
+          <Switch aria-label="Help tooltips" checked={prefs.showTooltips}
+            onCheckedChange={(value) => setPref("showTooltips", value)} />
+        </SettingRow>
         <SettingRow title="KPI trends" description="Show sparklines and deltas on the metric strip.">
           <Switch
+            aria-label="KPI trends"
             checked={prefs.showKpiTrends}
             onCheckedChange={(value) => setPref("showKpiTrends", value)}
           />
@@ -48,6 +55,7 @@ export function WorkspaceSettings() {
           last
         >
           <Switch
+            aria-label="Sticky queue panel"
             checked={prefs.stickyQueue}
             onCheckedChange={(value) => setPref("stickyQueue", value)}
           />
@@ -60,6 +68,7 @@ export function WorkspaceSettings() {
       >
         <SettingRow title="Start in focus mode" description="Hide navigation and metrics when the workspace opens.">
           <Switch
+            aria-label="Start in focus mode"
             checked={prefs.focusMode}
             onCheckedChange={(value) => setPref("focusMode", value)}
           />
@@ -70,6 +79,7 @@ export function WorkspaceSettings() {
           last
         >
           <Switch
+            aria-label="Keep the queue in focus mode"
             checked={prefs.focusModeShowQueue}
             onCheckedChange={(value) => setPref("focusModeShowQueue", value)}
           />

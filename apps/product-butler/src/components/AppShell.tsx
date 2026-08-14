@@ -1,7 +1,7 @@
-import { LayoutGrid, Package, Search, SlidersHorizontal } from "lucide-react";
+import { Keyboard, LayoutGrid, Search, SlidersHorizontal } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
+import workspaceLogo from "../../../../assets/img/yaxii-product-workspace-logo.svg";
 import { cn } from "@/lib/utils";
-import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
 import { usePrefsStore } from "@/stores/prefsStore";
 
 const TABS = [
@@ -12,22 +12,20 @@ const TABS = [
 export function AppShell({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const setCommandOpen = usePrefsStore((state) => state.setCommandOpen);
+  const setShortcutsOpen = usePrefsStore((state) => state.setShortcutsOpen);
   const showHints = usePrefsStore((state) => state.prefs.showKeyboardHints);
   const focusMode = usePrefsStore((state) => state.prefs.focusMode);
-  const { bootstrap } = useWorkspaceRuntime();
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="workspace-shell flex min-h-screen flex-col bg-background">
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <Package className="h-3.5 w-3.5" />
-            </div>
+            <img src={workspaceLogo} alt="" className="h-7 w-7 shrink-0" />
             <div className="hidden min-w-0 sm:block">
-              <div className="truncate text-[13px] font-semibold leading-tight">Woo Bulk Entry</div>
-              <div className="text-[10px] font-medium uppercase tracking-[0.08em] text-muted-foreground">
-                Free workspace
+              <div className="truncate text-[13px] font-semibold leading-tight">Yaxii Product Workspace</div>
+              <div className="text-[10px] font-medium tracking-[0.04em] text-muted-foreground">
+                Create products faster.
               </div>
             </div>
           </div>
@@ -42,10 +40,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <span>Search or jump to…</span>
               {showHints && <kbd className="kbd ms-6">Ctrl K</kbd>}
             </button>
-            <div className="hidden h-8 items-center gap-1.5 rounded-md border border-border px-2.5 text-[11px] font-medium text-muted-foreground lg:flex">
-              <span className="h-1.5 w-1.5 rounded-full bg-success" />
-              Connected · {bootstrap.woocommerce.currency}
-            </div>
+            <button
+              aria-label="Keyboard shortcuts"
+              aria-haspopup="dialog"
+              className="hidden h-8 w-8 items-center justify-center rounded-md border border-border text-muted-foreground transition hover:bg-muted hover:text-foreground lg:flex"
+              onClick={() => setShortcutsOpen(true)}
+              title="Keyboard shortcuts"
+              type="button"
+            >
+              <Keyboard aria-hidden="true" className="h-3.5 w-3.5" />
+            </button>
           </div>
         </div>
 
@@ -74,7 +78,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         )}
       </header>
 
-      <main className="workspace-canvas min-h-[calc(100vh-3.5rem)]">
+      <main className="workspace-canvas flex-1">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">{children}</div>
       </main>
     </div>

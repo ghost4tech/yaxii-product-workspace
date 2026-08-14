@@ -47,6 +47,7 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
   public getOperation(): Promise<never> {
     return Promise.reject(this.unavailable());
   }
+  public getMedia(): Promise<never> { return Promise.reject(this.unavailable()); }
 
   public getProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
   public updateProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
@@ -55,14 +56,17 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
   public duplicateProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
   public searchProducts(): Promise<never> { return Promise.reject(this.unavailable()); }
   public listOperations(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public getOperationSummary(): Promise<never> { return Promise.reject(this.unavailable()); }
   public retryOperation(): Promise<never> { return Promise.reject(this.unavailable()); }
   public dismissOperation(): Promise<never> { return Promise.reject(this.unavailable()); }
   public getPreferences(): Promise<never> { return Promise.reject(this.unavailable()); }
   public updatePreferences(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public uploadMedia(): Promise<never> { return Promise.reject(this.unavailable()); }
 
   public searchCategories(): Promise<never> {
     return Promise.reject(this.unavailable());
   }
+  public listCategories(): Promise<never> { return Promise.reject(this.unavailable()); }
 
   public searchTags(): Promise<never> { return Promise.reject(this.unavailable()); }
   public searchShippingClasses(): Promise<never> { return Promise.reject(this.unavailable()); }

@@ -34,6 +34,7 @@ use Yaxii\ProductWorkspace\Infrastructure\WooCommerce\WooVariableReferenceValida
 use Yaxii\ProductWorkspace\Infrastructure\WooCommerce\WooVariationWriter;
 use Yaxii\ProductWorkspace\Rest\BootstrapController;
 use Yaxii\ProductWorkspace\Rest\OperationController;
+use Yaxii\ProductWorkspace\Rest\OperationSummaryController;
 use Yaxii\ProductWorkspace\Rest\PreferenceController;
 use Yaxii\ProductWorkspace\Rest\ProductController;
 use Yaxii\ProductWorkspace\Rest\ProductItemController;
@@ -109,6 +110,7 @@ final class Plugin {
 				new ProductItemController( $factory, $management, $capabilities ),
 				new VariableProductController( $variable_requests, $variable_service, $variable_management, $capabilities ),
 				new OperationController( $operations, new OperationPresenter(), $service, $capabilities, $variable_service ),
+				new OperationSummaryController( $operations, $capabilities ),
 				new PreferenceController( $preferences, $capabilities ),
 			)
 		);

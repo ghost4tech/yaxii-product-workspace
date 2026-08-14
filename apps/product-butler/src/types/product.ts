@@ -50,11 +50,13 @@ export interface Product {
 }
 
 export interface Category {
+  ancestors?: Category[];
   id: number;
   name: string;
   slug: string;
   parent: number;
   count: number;
+  hasChildren?: boolean;
 }
 
 export interface WooCommerceConfig {
