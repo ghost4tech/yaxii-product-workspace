@@ -41,13 +41,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               {showHints && <kbd className="kbd ms-6">Ctrl K</kbd>}
             </button>
             <button
+              aria-label="Keyboard shortcuts"
               aria-haspopup="dialog"
-              className="hidden h-8 items-center gap-1.5 rounded-md border border-border px-2.5 text-[11px] font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground lg:flex"
+              className="hidden h-8 w-8 items-center justify-center rounded-md border border-border text-muted-foreground transition hover:bg-muted hover:text-foreground lg:flex"
               onClick={() => setShortcutsOpen(true)}
+              title="Keyboard shortcuts"
               type="button"
             >
-              <Keyboard className="h-3.5 w-3.5" />
-              Keyboard shortcuts
+              <Keyboard aria-hidden="true" className="h-3.5 w-3.5" />
             </button>
           </div>
         </div>

@@ -85,7 +85,9 @@ describe("WorkspaceApp", () => {
     renderWorkspace();
     await screen.findByRole("heading", { name: "Product entry" });
 
-    await user.click(screen.getByRole("button", { name: "Keyboard shortcuts" }));
+    const shortcutsButton = screen.getByRole("button", { name: "Keyboard shortcuts" });
+    expect(shortcutsButton).not.toHaveTextContent("Keyboard shortcuts");
+    await user.click(shortcutsButton);
 
     expect(screen.getByRole("dialog", { name: "Keyboard shortcuts" })).toBeVisible();
   });
