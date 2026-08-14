@@ -1,0 +1,29 @@
+body.yaxii-product-workspace-admin #wpcontent {
+  padding-left: 0;
+}
+
+body.yaxii-product-workspace-admin #wpbody-content {
+  min-height: calc(100vh - 32px);
+  padding-bottom: 0;
+}
+
+body.yaxii-product-workspace-admin .wrap.yaxii-product-workspace-page {
+  margin: 0;
+}
+
+body.yaxii-product-workspace-admin #yaxii-product-workspace,
+body.yaxii-product-workspace-admin #yaxii-product-workspace .workspace-shell {
+  min-height: calc(100vh - 32px);
+}
+
+body.yaxii-product-workspace-admin #wpfooter {
+  display: none;
+}
+
+@media (max-width: 782px) {
+  body.yaxii-product-workspace-admin #wpbody-content,
+  body.yaxii-product-workspace-admin #yaxii-product-workspace,
+  body.yaxii-product-workspace-admin #yaxii-product-workspace .workspace-shell {
+    min-height: calc(100vh - 46px);
+  }
+}

@@ -4,6 +4,7 @@ import { EntryQueueSettings } from "@/components/settings/EntryQueueSettings";
 import { ProductDefaultsSettings } from "@/components/settings/ProductDefaultsSettings";
 import { SettingsReset } from "@/components/settings/SettingsReset";
 import { WorkspaceSettings } from "@/components/settings/WorkspaceSettings";
+import { YaxiiEcosystem } from "@/components/settings/YaxiiEcosystem";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const tabs = [
@@ -39,6 +40,7 @@ const Settings = () => (
       <ProductDefaultsSettings />
     </Tabs>
 
+    <YaxiiEcosystem />
     <SettingsReset />
   </div>
 );

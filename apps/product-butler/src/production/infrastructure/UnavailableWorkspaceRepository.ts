@@ -56,6 +56,7 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
   public duplicateProduct(): Promise<never> { return Promise.reject(this.unavailable()); }
   public searchProducts(): Promise<never> { return Promise.reject(this.unavailable()); }
   public listOperations(): Promise<never> { return Promise.reject(this.unavailable()); }
+  public getOperationSummary(): Promise<never> { return Promise.reject(this.unavailable()); }
   public retryOperation(): Promise<never> { return Promise.reject(this.unavailable()); }
   public dismissOperation(): Promise<never> { return Promise.reject(this.unavailable()); }
   public getPreferences(): Promise<never> { return Promise.reject(this.unavailable()); }

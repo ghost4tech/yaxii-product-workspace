@@ -12,6 +12,8 @@ use Yaxii\ProductWorkspace\Application\Operations\OperationRecord;
 use Yaxii\ProductWorkspace\Application\Operations\OperationRequest;
 use Yaxii\ProductWorkspace\Application\Operations\OperationReservation;
 use Yaxii\ProductWorkspace\Application\Operations\OperationQuery;
+use Yaxii\ProductWorkspace\Application\Operations\OperationMetricsStore;
+use Yaxii\ProductWorkspace\Application\Operations\OperationSummaryWindow;
 use Yaxii\ProductWorkspace\Application\Operations\OperationStore;
 
 defined( 'ABSPATH' ) || exit;
@@ -19,17 +21,19 @@ defined( 'ABSPATH' ) || exit;
 /**
  * Uses a unique database key to serialize create commands safely.
  */
-final class WpdbOperationStore implements OperationStore {
+final class WpdbOperationStore implements OperationStore, OperationMetricsStore {
 	private \wpdb $database;
 	private string $table_name;
 	private OperationRecordMapper $mapper;
 	private WpdbOperationHistory $history;
+	private WpdbOperationMetrics $metrics;
 
 	public function __construct( \wpdb $database, string $table_name ) {
 		$this->database   = $database;
 		$this->table_name = $table_name;
 		$this->mapper     = new OperationRecordMapper();
 		$this->history    = new WpdbOperationHistory( $database, $table_name, $this->mapper );
+		$this->metrics    = new WpdbOperationMetrics( $database, $table_name );
 	}
 
 	public function reserve( OperationRequest $request ): OperationReservation {
@@ -105,6 +109,10 @@ final class WpdbOperationStore implements OperationStore {
 
 	public function query_for_user( OperationQuery $query, int $site_id, int $user_id ): array {
 		return $this->history->query( $query, $site_id, $user_id );
+	}
+
+	public function summarize_for_user( OperationSummaryWindow $window, int $site_id, int $user_id ): array {
+		return $this->metrics->summarize( $window, $site_id, $user_id );
 	}
 
 	public function claim_retry( string $operation_id, int $site_id, int $user_id ): bool {

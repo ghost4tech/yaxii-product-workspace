@@ -99,3 +99,32 @@ terms, media, owner data, and operation history were preserved. The theme variat
 temporarily enabled for storefront verification was restored to its original disabled value.
 
 Phase 4.5 is ready for owner acceptance. It has not been merged, and Phase 5 has not started.
+
+## Pre-translation polish checkpoint
+
+The Phase 4.5 line now includes the focused polish checkpoint requested before translation. The
+Lovable V2 Entry, KPI, form, queue, Settings, and responsive geometry remain intact. Density moved
+out of the Entry toolbar without removing the preference; Product Workspace branding and
+current-store terminology replaced prototype/synchronization copy; and Settings gained a compact,
+non-tracking Yaxii ecosystem section.
+
+The plugin screen alone now removes WordPress content gutters, bottom spacing, and footer content.
+Authenticated comparison against the Dashboard and WooCommerce Products screens confirmed the
+page body class and shell stylesheet are absent there and the normal WordPress/WooCommerce footer
+remains visible.
+
+The KPI strip now uses one bounded, indexed ledger aggregate for the rolling current seven days,
+the adjacent prior seven days, and seven 24-hour current buckets. It reports operation volume,
+successful publishes, final-outcome success rate, and undismissed failed/partial/uncertain work.
+Neutral trends replace guesses when comparison history is insufficient.
+
+The refreshed gates pass 87 PHP files, PHPCS, PHPStan, 32 unit tests with 90 assertions, 36 live
+WordPress/WooCommerce integration tests with 442 assertions, and 68 frontend tests in 20 files.
+The 124-file production line limit, production build, 24-asset boundary scan, and zero-vulnerability
+production audit also pass. Live responsive inspection again covered 1440, 1280, 768, 430, and 375
+pixels with zero measured horizontal document overflow. Pointer drag, keyboard queue scrolling,
+real KPI values/sparklines, dark mode, Focus Mode, category/variation/editor controls, Settings,
+footer isolation, console, and network behavior passed.
+
+Translation and Phase 5 hardening remain unstarted. The branch remains unmerged for owner
+acceptance.

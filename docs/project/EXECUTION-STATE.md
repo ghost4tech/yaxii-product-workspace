@@ -2,7 +2,7 @@
 
 **Updated:** 2026-08-14
 
-**Current phase:** Phase 4.5 Lovable V2 UI integration ready for owner acceptance
+**Current phase:** Phase 4.5 pre-translation polish ready for owner acceptance
 
 **Acceptance state:** IMPLEMENTATION AND QA PASSED - owner acceptance pending
 
@@ -39,16 +39,19 @@ change set.
 
 ## Phase 4.5 verification state
 
-- `composer run check` passed lint for 81 maintained PHP files, PHPCS, PHPStan, and 31 unit tests
-  with 84 assertions.
-- The active LocalWP integration suite passed 34 tests with 419 assertions.
-- `npm run check` passed strict typing, lint, the 118-file line cap, 65 tests in 18 files, build,
+- `composer run check` passed lint for 87 maintained PHP files, PHPCS, PHPStan, and 32 unit tests
+  with 90 assertions.
+- The active LocalWP integration suite passed 36 tests with 442 assertions.
+- `npm run check` passed strict typing, lint, the 124-file line cap, 68 tests in 20 files, build,
   and 24-asset boundary scan; `npm run audit:production` reported zero vulnerabilities.
 - Authenticated LocalWP browser QA passed the requested simple-product, rich-description, image,
   edit, success, tooltip, and variable-product workflows with direct REST, WooCommerce, and
   storefront inspection.
 - Visual QA passed 1440, 1280, 768, 430, and 375; light/dark; compact/comfortable; Focus Mode;
   editor, queue, errors/dialog; and structural RTL, with zero measured horizontal overflow.
+- The pre-translation pass added page-only wp-admin shell ownership, footer removal, production
+  branding/current-store copy, accessible queue overflow, real seven-day KPI trends/sparklines,
+  and the Settings ecosystem section without automatic external requests.
 - All five mandatory guard reviews completed; actionable findings were fixed and affected gates
   were rerun.
 - Disposable QA data and authentication material were removed; evidence remains in the local
@@ -56,5 +59,4 @@ change set.
 
 ## Next action
 
-Commit and push the reviewed Phase 4.5 change set, verify the exact remote SHA, and stop for owner
-acceptance without merging. Phase 5 has not started.
+Await owner acceptance without merging. Translation and Phase 5 release hardening have not started.

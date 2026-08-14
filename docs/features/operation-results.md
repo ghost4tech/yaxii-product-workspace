@@ -20,6 +20,20 @@ Schema version 4 backfills missing denormalized product ID/name/SKU/status colum
 successful results in bounded 200-row pages. This makes pre-Phase-3 rows searchable and countable
 without rewriting their result snapshot or touching the WooCommerce product.
 
+## Operational pulse
+
+The Entry KPI strip reads a bounded server summary rather than client fixtures. It compares the
+rolling seven days ending at request time with the immediately preceding seven days and renders
+seven current-window 24-hour buckets. Recent operations counts all ledger outcomes; Published
+counts successful writes with product status `publish`; Success rate divides succeeded outcomes by
+succeeded, failed, and partial outcomes; Needs attention counts undismissed failed, partial, and
+uncertain rows. Processing and uncertain states are excluded from the success-rate denominator
+until a final result exists.
+
+Dismissal continues to hide an eligible queue row without rewriting operation volume or historical
+success. It does remove that row from Needs attention. Missing comparison history produces a
+neutral trend rather than an inferred arrow or fabricated value.
+
 ## Lifecycle
 
 - `processing` and `uncertain` operations may be reconciled read-only when the server allows it.

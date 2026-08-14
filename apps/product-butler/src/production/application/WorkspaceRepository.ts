@@ -5,6 +5,7 @@ import type {
   CreateProductRequest,
   OperationPage,
   OperationResult,
+  OperationSummary,
   ProductPage,
   ProductImageResource,
   WorkspacePreferences,
@@ -45,6 +46,7 @@ export interface WorkspaceRepository {
   getOperation: (operationId: string) => Promise<OperationResult>;
   getMedia: (mediaId: number) => Promise<ProductImageResource>;
   listOperations: (options: SearchOptions) => Promise<OperationPage>;
+  getOperationSummary: () => Promise<OperationSummary>;
   retryOperation: (operationId: string) => Promise<OperationResult>;
   dismissOperation: (operationId: string) => Promise<void>;
   getPreferences: () => Promise<WorkspacePreferences>;

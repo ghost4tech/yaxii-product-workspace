@@ -35,7 +35,7 @@ export function ProductDefaultsSettings() {
             </SelectContent>
           </Select>
         </SettingRow>
-        <SettingRow title="Product status" description="Publish state used when syncing.">
+        <SettingRow title="Product status" description="Publish state used for new products.">
           <Select
             value={preferences.default_product_status}
             onValueChange={(value) =>

@@ -7,6 +7,18 @@
   cursor: not-allowed;
 }
 
+#yaxii-product-workspace .queue-filter-scroll[data-overflow="true"] {
+  mask-image: linear-gradient(to right, transparent, black 12px, black calc(100% - 12px), transparent);
+}
+
+#yaxii-product-workspace .rte-content.ProseMirror {
+  border: 0;
+  box-shadow: none;
+  color: inherit;
+  margin: 0;
+  max-width: none;
+}
+
 @media (max-width: 782px) {
   #yaxii-product-workspace {
     min-height: calc(100vh - 46px);

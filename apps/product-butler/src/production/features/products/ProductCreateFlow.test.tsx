@@ -111,7 +111,7 @@ describe("real product create flow", () => {
       expect(create.mock.calls[0]?.[1]).toMatch(
         /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/,
       );
-      expect((await screen.findAllByText("Synced")).length).toBeGreaterThan(0);
+      expect((await screen.findAllByText("Published")).length).toBeGreaterThan(0);
     } finally {
       restoreCrypto();
     }
@@ -153,7 +153,7 @@ describe("real product create flow", () => {
     expect(screen.getByRole("button", { name: /saving/i })).toBeDisabled();
     resolveCreate(succeeded());
 
-    expect((await screen.findAllByText("Synced")).length).toBeGreaterThan(0);
+    expect((await screen.findAllByText("Published")).length).toBeGreaterThan(0);
     expect(screen.getAllByText("Canvas tote").length).toBeGreaterThan(0);
     await waitFor(() => expect(screen.getByLabelText(/product name/i)).toHaveValue(""));
   });
@@ -201,7 +201,7 @@ describe("real product create flow", () => {
 
     await waitFor(() => expect(create).toHaveBeenCalledTimes(1));
     expect(reconcile).toHaveBeenCalledWith("11111111-1111-4111-8111-111111111111");
-    expect((await screen.findAllByText("Synced")).length).toBeGreaterThan(0);
+    expect((await screen.findAllByText("Published")).length).toBeGreaterThan(0);
   });
 
   it("retains only configured fields from the canonical server result", async () => {

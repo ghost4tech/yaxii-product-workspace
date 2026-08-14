@@ -10,6 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
+import { useHorizontalDragScroll } from "@/production/components/useHorizontalDragScroll";
 import { productOperationCopy } from "@/production/core/i18n/productMessages";
 import { useOperationQueue } from "@/production/features/operations/useOperationQueue";
 import { useWorkspacePreferences } from "@/production/features/preferences/useWorkspacePreferences";
@@ -38,6 +39,7 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
   const localPrefs = usePrefsStore((state) => state.prefs);
   const { preferences } = useWorkspacePreferences();
   const queue = useOperationQueue(debouncedSearch, status, preferences.queue_rows_per_page);
+  const filterScroll = useHorizontalDragScroll();
   const shown = queue.products;
 
   useEffect(() => {
@@ -91,7 +93,12 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
               className={cn("h-8 w-full bg-muted/40 ps-8 text-xs", compact ? "sm:w-40" : "sm:w-52")} />
           </div>
         </div>
-        <div className="-mx-0.5 flex items-center gap-1 overflow-x-auto px-0.5">
+        <div {...filterScroll.props} aria-label="Operation status filters"
+          className={cn(
+            "queue-filter-scroll no-scrollbar -mx-0.5 flex items-center gap-1 overflow-x-auto px-0.5 outline-none focus-visible:ring-2 focus-visible:ring-ring/30",
+            filterScroll.dragging ? "cursor-grabbing select-none" : "cursor-grab",
+          )}
+          data-overflow={filterScroll.overflowing || undefined}>
           {tabs.map((tab) => (
             <button key={tab.key} onClick={() => setStatus(tab.key)} type="button"
               className={cn("inline-flex h-7 items-center gap-1.5 whitespace-nowrap rounded-md px-2.5 text-[12px] font-medium transition-colors",
@@ -134,7 +141,7 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
       <div className="flex items-center justify-between border-t border-border bg-muted/30 px-4 py-2.5 text-[11px] text-muted-foreground">
         {queue.hasNextPage ? <button onClick={() => void queue.fetchNextPage()} className="font-medium text-foreground hover:underline" type="button">Load more</button>
           : localPrefs.showKeyboardHints ? <span><kbd className="kbd">Esc</kbd> clear search</span> : <span>Showing {shown.length}</span>}
-        <span className="flex items-center gap-1.5 font-medium"><span className="h-1.5 w-1.5 rounded-full bg-success" />Server history</span>
+        <span className="flex items-center gap-1.5 font-medium"><span className="h-1.5 w-1.5 rounded-full bg-success" />Store history</span>
       </div>
 
       <AlertDialog open={Boolean(pendingDismiss)} onOpenChange={(open) => !open && setPendingDismiss(null)}>

@@ -6,6 +6,7 @@ import type {
   CreateProductRequest,
   OperationPage,
   OperationResult,
+  OperationSummary,
   ProductPage,
   WorkspacePreferences,
   VariableProductRequest,
@@ -17,6 +18,7 @@ import {
   canonicalProductSchema,
   operationPageSchema,
   operationResultSchema,
+  operationSummarySchema,
   preferencesSchema,
   productPageSchema,
   simpleProductFieldsSchema,
@@ -174,6 +176,10 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
 
   public async listOperations(options: SearchOptions): Promise<OperationPage> {
     return parse(await this.request(`operations?${queryString(options)}`, { signal: options.signal }), operationPageSchema, "operations");
+  }
+
+  public async getOperationSummary(): Promise<OperationSummary> {
+    return parse(await this.request("operations/summary"), operationSummarySchema, "operation summary");
   }
 
   public async retryOperation(id: string): Promise<OperationResult> {

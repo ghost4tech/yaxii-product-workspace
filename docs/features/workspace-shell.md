@@ -1,6 +1,6 @@
 # Workspace Shell
 
-**Status:** Approved Lovable presentation integrated and runtime-tested in Phase 3
+**Status:** Approved Lovable presentation integrated and polished through Phase 4.5
 
 ## Purpose and observable behavior
 
@@ -26,6 +26,13 @@ does not store credentials, raw files, the WooCommerce catalog, or operation his
 The workspace status reflects the real same-site bootstrap and no longer displays a false offline
 state. Frontend permission hints affect presentation only; REST controllers and application
 services enforce the authoritative capabilities.
+
+The pre-translation Phase 4.5 polish gives the workspace full ownership of its wp-admin content
+surface. Page-specific WordPress gutters, wrapper spacing, bottom padding, and footer content are
+removed without changing another admin screen. Branding and current-store terminology are
+production-correct, while density remains a Settings preference rather than an Entry-toolbar
+control. Queue filters retain their one-row Lovable presentation with touch, pointer-drag, and
+keyboard overflow access.
 
 ## Runtime evidence and limits
 

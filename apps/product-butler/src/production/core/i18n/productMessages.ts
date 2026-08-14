@@ -31,7 +31,7 @@ const english: ProductOperationCopy = {
   productNotSaved: "Product was not saved",
   productSaved: "Product saved",
   reviewFields: "Review the product fields and try again.",
-  savedProductsAppearHere: "Products saved in this session will appear here.",
+  savedProductsAppearHere: "Saved products and operations appear here.",
   saleScheduleUnsupported: "Sale scheduling arrives in Phase 3. Clear the dates to save now.",
   secureRandomUnavailable: "Secure product identity could not be generated. Product creation was not attempted.",
   saveOutcomePending: "Save outcome pending",

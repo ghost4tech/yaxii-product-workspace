@@ -41,7 +41,7 @@ export function SaveSuccess({ autoDismiss = 1600, info, onDismiss, onDuplicate, 
         {info.sku && <span className="font-mono"> · {info.sku}</span>}
       </p>
       <div className="mt-3 inline-flex h-6 items-center gap-1.5 rounded-md border border-border bg-muted/50 px-2 text-[11px] font-medium">
-        <CloudUpload className="h-3 w-3 text-success" /> Synced to WooCommerce
+        <CloudUpload className="h-3 w-3 text-success" /> Saved to current store
       </div>
       <div className="mt-4 flex flex-col gap-2">
         <Button onClick={onDismiss} className="h-9 text-[13px] font-semibold">

@@ -20,6 +20,7 @@ export class WorkspaceClient {
   public getOperation(id: string) { return this.repository.getOperation(id); }
   public getMedia(id: number) { return this.repository.getMedia(id); }
   public listOperations(options: SearchOptions = {}) { return this.repository.listOperations(options); }
+  public getOperationSummary() { return this.repository.getOperationSummary(); }
   public retryOperation(id: string) { return this.repository.retryOperation(id); }
   public dismissOperation(id: string) { return this.repository.dismissOperation(id); }
   public getPreferences() { return this.repository.getPreferences(); }

@@ -181,6 +181,26 @@ export const operationPageSchema = z.object({
   total: z.number().int().nonnegative(),
 });
 
+const operationMetricCountsSchema = z.object({
+  eligible: z.number().int().nonnegative(),
+  needs_attention: z.number().int().nonnegative(),
+  operations: z.number().int().nonnegative(),
+  published: z.number().int().nonnegative(),
+  succeeded: z.number().int().nonnegative(),
+});
+
+export const operationSummarySchema = z.object({
+  buckets: z.array(operationMetricCountsSchema).length(7),
+  current: operationMetricCountsSchema,
+  previous: operationMetricCountsSchema,
+  window: z.object({
+    bucket_hours: z.literal(24),
+    ends_at: z.string().datetime({ offset: true }),
+    previous_starts_at: z.string().datetime({ offset: true }),
+    starts_at: z.string().datetime({ offset: true }),
+  }),
+});
+
 export const preferencesSchema = z.object({
   auto_focus_name: z.boolean(),
   confirm_queue_dismiss: z.boolean(),

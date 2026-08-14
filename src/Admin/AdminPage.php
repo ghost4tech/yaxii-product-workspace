@@ -17,6 +17,7 @@ defined( 'ABSPATH' ) || exit;
 final class AdminPage {
 	private const MENU_SLUG    = 'yaxii-product-workspace';
 	private const SCRIPT_NAME  = 'yaxii-product-workspace-app';
+	private const SHELL_STYLE  = 'yaxii-product-workspace-admin-shell';
 	private const STYLE_PREFIX = 'yaxii-product-workspace-app';
 
 	private string $hook_suffix = '';
@@ -31,6 +32,9 @@ final class AdminPage {
 	public function register(): void {
 		add_action( 'admin_menu', array( $this, 'add_menu_page' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
+		add_filter( 'admin_footer_text', array( $this, 'footer_text' ), 99 );
+		add_filter( 'update_footer', array( $this, 'footer_text' ), 99 );
 		add_filter( 'script_loader_tag', array( $this, 'mark_script_as_module' ), 10, 2 );
 	}
 
@@ -51,6 +55,7 @@ final class AdminPage {
 			return;
 		}
 
+		$this->enqueue_shell_style();
 		$entry = $this->manifest_entry();
 		if ( null === $entry ) {
 			return;
@@ -61,6 +66,30 @@ final class AdminPage {
 		$build_url  = plugin_dir_url( $this->plugin_file ) . 'assets/build/';
 		$this->enqueue_application_script( $entry['file'], $build_path, $build_url );
 		$this->enqueue_styles( $entry['css'], $build_path, $build_url );
+	}
+
+	private function enqueue_shell_style(): void {
+		$relative_path = 'assets/admin-shell.css';
+		$path          = plugin_dir_path( $this->plugin_file ) . $relative_path;
+		wp_enqueue_style(
+			self::SHELL_STYLE,
+			plugin_dir_url( $this->plugin_file ) . $relative_path,
+			array(),
+			$this->asset_version( $path )
+		);
+	}
+
+	public function admin_body_class( string $classes ): string {
+		return $this->is_workspace_screen() ? trim( $classes . ' yaxii-product-workspace-admin' ) : $classes;
+	}
+
+	public function footer_text( string $text ): string {
+		return $this->is_workspace_screen() ? '' : $text;
+	}
+
+	private function is_workspace_screen(): bool {
+		$screen = get_current_screen();
+		return $screen instanceof \WP_Screen && $screen->id === $this->hook_suffix;
 	}
 
 	private function enqueue_application_script( string $script, string $build_path, string $build_url ): void {
