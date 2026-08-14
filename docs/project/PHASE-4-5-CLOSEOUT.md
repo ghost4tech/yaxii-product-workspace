@@ -199,6 +199,10 @@ the first bounded page is pending. The truthful empty, filtered-empty, and unava
 only after the request resolves, preventing an empty-state flash before real operations appear.
 The stray **Comfortable** density label was removed from the Entry panel header; density remains an
 intentional Settings preference and still affects workspace spacing.
+The queue's redundant **Product** and **Status** column labels, **Esc clear search** hint, and
+**Store history** label were removed while bounded pagination remains available when needed.
+Search fields no longer gain an extra focus border or ring; keyboard focus remains visible through
+a subtle workspace-scoped background change.
 
 Focused frontend regression coverage verifies both loading transitions and the absent Entry-header
 label. The final frontend gate passes 76 tests in 22 files, the 127-file production line limit,

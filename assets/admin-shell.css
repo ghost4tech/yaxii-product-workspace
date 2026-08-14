@@ -51,6 +51,14 @@ body.yaxii-product-workspace-admin #yaxii-product-workspace :where(
   outline-offset: 2px !important;
 }
 
+body.yaxii-product-workspace-admin #yaxii-product-workspace .workspace-search-input:focus,
+body.yaxii-product-workspace-admin #yaxii-product-workspace .workspace-search-input:focus-visible {
+  border-color: hsl(var(--input)) !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: hsl(var(--muted) / 0.55);
+}
+
 @media (max-width: 782px) {
   body.yaxii-product-workspace-admin #wpbody-content,
   body.yaxii-product-workspace-admin #yaxii-product-workspace,

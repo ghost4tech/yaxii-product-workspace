@@ -25,7 +25,8 @@ content exists and mirror under RTL.
 
 Initial bootstrap uses a centered Product Workspace loading surface rather than a notice panel.
 The operation queue renders row-shaped skeletons until its first bounded page resolves, so the
-empty state never appears before the actual queue response.
+empty state never appears before the actual queue response. Redundant column labels and footer
+hints are omitted, while bounded pagination remains available when more history exists.
 
 ## Operational pulse
 
@@ -58,7 +59,8 @@ TipTap, dropdowns, dialogs, the command menu, category tree, and variation contr
 to the plugin root or its owned portal boundary. The admin-shell stylesheet is enqueued only for
 the Product Workspace hook. A root-scoped `:focus-visible` reset replaces WordPress admin blue
 shadows with the Product Workspace ring without disabling keyboard focus. No generic WordPress
-`.button` styling is used by the application.
+`.button` styling is used by the application. Search fields use a quieter focused background
+without an extra border or ring; other interactive controls retain the full workspace focus treatment.
 
 Settings contains a compact **Explore the Yaxii ecosystem** section listing Yaxii Smart Form, Yaxii
 COD Theme, and Yaxii Shipping Manager. Its bundled Yaxii Dev SVG, restrained accent surface, and

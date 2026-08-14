@@ -109,7 +109,7 @@ export function CategoryTreeSelect({ value, onChange }: Props) {
             <Search className="h-3.5 w-3.5 shrink-0 text-muted-foreground" />
             <input autoFocus value={query} onChange={(event) => setQuery(event.target.value)}
               placeholder="Search categories…"
-              className="flex-1 bg-transparent text-[13px] outline-none placeholder:text-muted-foreground/70" />
+              className="workspace-search-input flex-1 bg-transparent text-[13px] outline-none placeholder:text-muted-foreground/70" />
             {value.length > 0 && <button type="button" onClick={() => onChange([])}
               className="text-[11px] text-muted-foreground hover:text-foreground">Clear</button>}
           </div>

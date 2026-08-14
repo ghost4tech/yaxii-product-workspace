@@ -93,7 +93,7 @@ export function ProductFinder({ onDraftPrepared, onOpenChange, onOpenProduct, op
           <div className="relative">
             <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input autoFocus value={query} onChange={(event) => setQuery(event.target.value)}
-              className="ps-9" placeholder="Search by product name or SKU…" />
+              className="workspace-search-input ps-9" placeholder="Search by product name or SKU…" />
           </div>
           {error && <p role="alert" className="text-xs text-destructive">{error}</p>}
           <div className="max-h-[52vh] overflow-y-auto rounded-md border border-border">

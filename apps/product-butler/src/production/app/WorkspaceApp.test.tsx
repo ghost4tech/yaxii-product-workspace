@@ -1,4 +1,4 @@
-import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
+import { act, cleanup, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { defaultPreferences, usePrefsStore } from "@/stores/prefsStore";
@@ -71,6 +71,11 @@ describe("WorkspaceApp", () => {
     expect(screen.queryByRole("button", { name: /connect store/i })).not.toBeInTheDocument();
     expect(screen.queryByText("0/50 this month")).not.toBeInTheDocument();
     expect(screen.queryByText("Comfortable", { exact: true })).not.toBeInTheDocument();
+    const queue = within(screen.getByRole("region", { name: "Recent products" }));
+    expect(queue.queryByText("Product", { exact: true })).not.toBeInTheDocument();
+    expect(queue.queryByText("Status", { exact: true })).not.toBeInTheDocument();
+    expect(queue.queryByText(/clear search/i)).not.toBeInTheDocument();
+    expect(queue.queryByText("Store history", { exact: true })).not.toBeInTheDocument();
     expect(screen.getByText("Queue is empty")).toBeVisible();
     expect(screen.getByRole("button", { name: /save & next/i })).toBeEnabled();
   });

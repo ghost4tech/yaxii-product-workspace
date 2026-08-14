@@ -124,7 +124,7 @@
     "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2"
   },
   "src/main.tsx": {
-    "file": "assets/main-Cae5cJ-X.js",
+    "file": "assets/main-CTBOiM5o.js",
     "name": "main",
     "src": "src/main.tsx",
     "isEntry": true,
@@ -136,7 +136,7 @@
       "_ui-vendor-abF05yDD.js"
     ],
     "css": [
-      "assets/main-Dalvphd6.css"
+      "assets/main-BrBwsdBj.css"
     ]
   }
 }

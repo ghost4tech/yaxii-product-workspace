@@ -16,7 +16,6 @@ import { useHorizontalDragScroll } from "@/production/components/useHorizontalDr
 import { productOperationCopy } from "@/production/core/i18n/productMessages";
 import { useOperationQueue } from "@/production/features/operations/useOperationQueue";
 import { useWorkspacePreferences } from "@/production/features/preferences/useWorkspacePreferences";
-import { usePrefsStore } from "@/stores/prefsStore";
 import type { Product } from "@/types/product";
 
 interface ProductQueueProps {
@@ -38,7 +37,6 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
   const [pendingDismiss, setPendingDismiss] = useState<Product | null>(null);
   const { bootstrap } = useWorkspaceRuntime();
   const copy = productOperationCopy(bootstrap.locale);
-  const localPrefs = usePrefsStore((state) => state.prefs);
   const { preferences } = useWorkspacePreferences();
   const queue = useOperationQueue(debouncedSearch, status, preferences.queue_rows_per_page);
   const filterScroll = useHorizontalDragScroll();
@@ -80,11 +78,11 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
   ];
 
   return (
-    <div className="panel flex h-full flex-col overflow-hidden">
+    <div aria-labelledby="product-queue-heading" className="panel flex h-full flex-col overflow-hidden" role="region">
       <div className="space-y-3 border-b border-border px-4 pb-3 pt-3.5">
         <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center sm:gap-3">
           <div className="flex min-w-0 items-baseline gap-2">
-            <h2 className="text-[14px] font-semibold">Recent products</h2>
+            <h2 className="text-[14px] font-semibold" id="product-queue-heading">Recent products</h2>
             {queue.isLoading ? <Skeleton className="h-3 w-16" aria-hidden="true" />
               : <span className="text-xs tabular-nums text-muted-foreground">
                 {debouncedSearch ? `${queue.total} matches` : `${queue.counts.all} operations`}
@@ -93,7 +91,7 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
           <div className="relative w-full sm:w-auto">
             <Search className="pointer-events-none absolute start-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
             <Input placeholder="Name or SKU…" value={search} onChange={(event) => setSearch(event.target.value)}
-              className={cn("h-8 w-full bg-muted/40 ps-8 text-xs", compact ? "sm:w-40" : "sm:w-52")} />
+              className={cn("workspace-search-input h-8 w-full bg-muted/40 ps-8 text-xs", compact ? "sm:w-40" : "sm:w-52")} />
           </div>
         </div>
         <div className="queue-filter-shell relative -mx-0.5">
@@ -118,9 +116,6 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
             data-visible={filterScroll.canScrollEnd || undefined} />
         </div>
       </div>
-
-      {(queue.isLoading || shown.length > 0) && <div className="data-head"><span className="w-8" /><span className="flex-1">Product</span>
-        {!compact && <span className="w-24 text-end">Price</span>}<span className="w-20">Status</span><span className="w-8" /></div>}
 
       <div className="flex-1 overflow-auto">
         {queue.isLoading ? <QueueSkeleton compact={compact} /> : shown.length === 0 ? (
@@ -147,12 +142,11 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
         ))}
       </div>
 
-      <div className="flex items-center justify-between border-t border-border bg-muted/30 px-4 py-2.5 text-[11px] text-muted-foreground">
-        {queue.isLoading ? <><Skeleton className="h-3 w-20" aria-hidden="true" /><Skeleton className="h-3 w-16" aria-hidden="true" /></>
-          : queue.hasNextPage ? <button onClick={() => void queue.fetchNextPage()} className="font-medium text-foreground hover:underline" type="button">Load more</button>
-          : localPrefs.showKeyboardHints ? <span><kbd className="kbd">Esc</kbd> clear search</span> : <span>Showing {shown.length}</span>}
-        {!queue.isLoading && <span className="flex items-center gap-1.5 font-medium"><span className="h-1.5 w-1.5 rounded-full bg-success" />Store history</span>}
-      </div>
+      {queue.hasNextPage && <div className="flex items-center justify-center border-t border-border bg-muted/30 px-4 py-2.5 text-[11px] text-muted-foreground">
+        <button onClick={() => void queue.fetchNextPage()} className="font-medium text-foreground hover:underline" type="button">
+          Load more
+        </button>
+      </div>}
 
       <AlertDialog open={Boolean(pendingDismiss)} onOpenChange={(open) => !open && setPendingDismiss(null)}>
         <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Remove this queue entry?</AlertDialogTitle>
