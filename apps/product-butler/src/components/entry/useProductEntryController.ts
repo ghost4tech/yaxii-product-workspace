@@ -11,6 +11,7 @@ import { useProductCreate } from "@/production/features/products/useProductCreat
 import { useProductManagement } from "@/production/features/products/useProductManagement";
 import { useProductStore } from "@/stores/productStore";
 import type { ProductFormData, ProductImage } from "@/types/product";
+import type { VariableAttribute, VariationCombination } from "@/production/domain/variableProducts";
 import { productEntrySchema } from "./productEntrySchema";
 import { toProductEntryValues, type ProductEntryValues } from "./productEntryModel";
 
@@ -25,14 +26,17 @@ function formData(
   images: ProductImage[],
   saleStart?: Date,
   saleEnd?: Date,
+  isVariable = false,
+  attributes: VariableAttribute[] = [],
+  combinations: VariationCombination[] = [],
 ): ProductFormData {
   return {
     ...values,
     images,
-    isVariable: false,
+    isVariable,
     saleScheduleEnd: saleEnd,
     saleScheduleStart: saleStart,
-    variations: [],
+    variations: [], variableAttributes: attributes, variationCombinations: combinations,
   };
 }
 
@@ -48,6 +52,10 @@ export function useProductEntryController(options: Options) {
   const [images, setImages] = useState<ProductImage[]>(draftFormData.images);
   const [saleStart, setSaleStart] = useState<Date | undefined>(draftFormData.saleScheduleStart);
   const [saleEnd, setSaleEnd] = useState<Date | undefined>(draftFormData.saleScheduleEnd);
+  const [isVariable, setIsVariable] = useState(Boolean(draftFormData.isVariable));
+  const [variableAttributes, setVariableAttributes] = useState<VariableAttribute[]>(draftFormData.variableAttributes);
+  const [variationCombinations, setVariationCombinations] = useState<VariationCombination[]>(draftFormData.variationCombinations);
+  const [variableDirty, setVariableDirty] = useState(false);
   const [conflictOpen, setConflictOpen] = useState(false);
   const [trashOpen, setTrashOpen] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
@@ -60,7 +68,7 @@ export function useProductEntryController(options: Options) {
   });
   const editing = Boolean(product);
   const canWrite = bootstrap.capabilities.createProducts
-    && (editing ? bootstrap.features.productManagement : bootstrap.features.simpleProductCreate);
+    && (editing ? bootstrap.features.productManagement : (isVariable ? bootstrap.features.variableProductCreate : bootstrap.features.simpleProductCreate));
 
   const hydrate = useCallback((product: CanonicalProduct) => {
     const draft = fieldsToDraft(product, product.images);
@@ -68,6 +76,10 @@ export function useProductEntryController(options: Options) {
     setImages(draft.images);
     setSaleStart(draft.saleScheduleStart);
     setSaleEnd(draft.saleScheduleEnd);
+    setIsVariable(Boolean(draft.isVariable));
+    setVariableAttributes(draft.variableAttributes);
+    setVariationCombinations(draft.variationCombinations);
+    setVariableDirty(false);
   }, [form]);
 
   useEffect(() => {
@@ -81,16 +93,25 @@ export function useProductEntryController(options: Options) {
       setImages(draft.images);
       setSaleStart(draft.saleScheduleStart);
       setSaleEnd(draft.saleScheduleEnd);
+      setIsVariable(Boolean(draft.isVariable));
+      setVariableAttributes(draft.variableAttributes);
+      setVariationCombinations(draft.variationCombinations);
+      setVariableDirty(false);
     }
   }, [form, hydrate, product]);
 
   useEffect(() => {
     if (editing) return;
     const subscription = form.watch(() => {
-      setDraftFormData(formData(form.getValues(), images, saleStart, saleEnd));
+      setDraftFormData(formData(form.getValues(), images, saleStart, saleEnd, isVariable, variableAttributes, variationCombinations));
     });
     return () => subscription.unsubscribe();
-  }, [editing, form, images, saleEnd, saleStart, setDraftFormData]);
+  }, [editing, form, images, isVariable, saleEnd, saleStart, setDraftFormData, variableAttributes, variationCombinations]);
+
+  useEffect(() => {
+    if (editing) return;
+    setDraftFormData(formData(form.getValues(), images, saleStart, saleEnd, isVariable, variableAttributes, variationCombinations));
+  }, [editing, form, images, isVariable, saleEnd, saleStart, setDraftFormData, variableAttributes, variationCombinations]);
 
   useEffect(() => {
     if (editing || draftRevision === firstRevision.current) return;
@@ -99,6 +120,10 @@ export function useProductEntryController(options: Options) {
     setImages(draft.images);
     setSaleStart(draft.saleScheduleStart);
     setSaleEnd(draft.saleScheduleEnd);
+    setIsVariable(Boolean(draft.isVariable));
+    setVariableAttributes(draft.variableAttributes);
+    setVariationCombinations(draft.variationCombinations);
+    setVariableDirty(false);
     nameInputRef.current?.focus();
   }, [draftRevision, editing, form]);
 
@@ -127,8 +152,9 @@ export function useProductEntryController(options: Options) {
   }, [form]);
 
   const submission = useCallback((values: ProductEntryValues): ProductSubmission => ({
-    images, isVariable: false, saleEnd, saleStart, values,
-  }), [images, saleEnd, saleStart]);
+    attributes: variableAttributes, combinations: variationCombinations,
+    images, isVariable, saleEnd, saleStart, values,
+  }), [images, isVariable, saleEnd, saleStart, variableAttributes, variationCombinations]);
 
   const submit = useCallback(async (values: ProductEntryValues) => {
     form.clearErrors();
@@ -138,12 +164,12 @@ export function useProductEntryController(options: Options) {
     }
     if (product) {
       const outcome = await manage.update(product, submission(values));
-      applyErrors(outcome.fields);
       if (outcome.state === "conflict") setConflictOpen(true);
       if (outcome.product) {
         onProductUpdated?.(outcome.product);
         hydrate(outcome.product);
       }
+      applyErrors(outcome.fields);
       return;
     }
     const outcome = await create.submit(submission(values));
@@ -154,6 +180,10 @@ export function useProductEntryController(options: Options) {
     setImages(draft.images);
     setSaleStart(draft.saleScheduleStart);
     setSaleEnd(draft.saleScheduleEnd);
+    setIsVariable(Boolean(draft.isVariable));
+    setVariableAttributes(draft.variableAttributes);
+    setVariationCombinations(draft.variationCombinations);
+    setVariableDirty(false);
     setDraftFormData(draft);
     nameInputRef.current?.focus();
   }, [applyErrors, canWrite, create, form, hydrate, manage, onProductUpdated, preferences, product, setDraftFormData, submission]);
@@ -164,6 +194,10 @@ export function useProductEntryController(options: Options) {
     setImages(draft.images);
     setSaleStart(draft.saleScheduleStart);
     setSaleEnd(draft.saleScheduleEnd);
+    setIsVariable(Boolean(draft.isVariable));
+    setVariableAttributes(draft.variableAttributes);
+    setVariationCombinations(draft.variationCombinations);
+    setVariableDirty(false);
     if (!product) setDraftFormData(draft);
     nameInputRef.current?.focus();
   }, [form, preferences, product, setDraftFormData]);
@@ -188,9 +222,24 @@ export function useProductEntryController(options: Options) {
     onCloseEdit?.();
   }, [manage, onCloseEdit, product]);
 
+  const changeVariableType = useCallback((value: boolean) => {
+    setIsVariable(value);
+    setVariableDirty(true);
+  }, []);
+  const changeVariableAttributes = useCallback((value: VariableAttribute[]) => {
+    setVariableAttributes(value);
+    setVariableDirty(true);
+  }, []);
+  const changeVariationCombinations = useCallback((value: VariationCombination[]) => {
+    setVariationCombinations(value);
+    setVariableDirty(true);
+  }, []);
+
   return {
     bootstrap, canWrite, conflictOpen, create, editing, form, images, manage, nameInputRef,
-    reloadLatest, reset, saleEnd, saleStart, saveDraft, setConflictOpen, setImages,
+    isVariable, reloadLatest, reset, saleEnd, saleStart, saveDraft, setConflictOpen, setImages,
+    setIsVariable: changeVariableType, setVariableAttributes: changeVariableAttributes,
+    setVariationCombinations: changeVariationCombinations, variableAttributes, variableDirty, variationCombinations,
     setSaleEnd, setSaleStart, setTrashOpen, submit, trash, trashOpen,
   };
 }

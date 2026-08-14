@@ -46,6 +46,7 @@ export interface Product {
   currencySymbol?: string;
   wooCommerceId?: number;
   isVariable?: boolean;
+  variationFailures?: string[];
 }
 
 export interface Category {
@@ -117,6 +118,8 @@ export interface ProductFormData {
   longDescription: string;
   images: ProductImage[];
   variations: ProductVariation[];
+  variableAttributes: import("@/production/domain/variableProducts").VariableAttribute[];
+  variationCombinations: import("@/production/domain/variableProducts").VariationCombination[];
   isVariable?: boolean;
 }
 
@@ -147,5 +150,7 @@ export const emptyProductFormData: ProductFormData = {
   longDescription: '',
   images: [],
   variations: [],
+  variableAttributes: [],
+  variationCombinations: [],
   isVariable: false,
 };

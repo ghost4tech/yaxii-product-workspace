@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { CreateProductRequest } from "../domain/products";
+import type { CreateProductRequest, VariableProductRequest } from "../domain/products";
 import type { WorkspaceHostConfig } from "../domain/workspace";
 import { canonicalProduct, simpleProductFields } from "../test/workspaceFixtures";
 import { WordPressWorkspaceRepository } from "./WordPressWorkspaceRepository";
@@ -40,6 +40,76 @@ describe("WordPressWorkspaceRepository", () => {
     expect(init?.method).toBe("POST");
     expect(headers.get("Idempotency-Key")).toBe("request-key");
     expect(headers.get("X-WP-Nonce")).toBe("rest-nonce");
+  });
+
+  it("submits all concrete variations in one variable-product request", async () => {
+    const fetchMock = vi.fn((...args: [RequestInfo | URL, RequestInit?]) => {
+      void args;
+      return Promise.resolve(new Response(JSON.stringify({
+      data: {
+        combination_results: [], errors: [], operation_id: "11111111-1111-4111-8111-111111111111",
+        product: null, replayed: false,
+        retry: { can_reconcile: true, can_retry: false, safe_to_resubmit: false },
+        state: "processing", warnings: [],
+      },
+      }), { status: 202, headers: { "Content-Type": "application/json" } }));
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const variable: VariableProductRequest = {
+      attributes: [{ key: "custom:color", name: "Color", options: ["Black", "White"], position: 0, source: "custom", variation: true, visible: true }],
+      combinations: ["Black", "White"].map((option, index) => ({
+        clientId: `11111111-1111-4111-8111-11111111111${index}`, enabled: true, imageId: 0,
+        manageStock: true, regularPrice: `${19 + index}.00`, salePrice: null,
+        selections: [{ attributeKey: "custom:color", option }], sku: `COLOR-${index}`,
+        stockQuantity: index + 1, stockStatus: "instock", variationId: 0,
+      })),
+      product: simpleProductFields,
+    };
+
+    await new WordPressWorkspaceRepository(host).createVariableProduct(variable, "variable-key");
+
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [url, init] = fetchMock.mock.calls[0] ?? [];
+    expect(url).toBe("https://store.test/wp-json/yaxii-product-workspace/v1/variable-products");
+    expect(new Headers(init?.headers).get("Idempotency-Key")).toBe("variable-key");
+    const body = JSON.parse(typeof init?.body === "string" ? init.body : "{}") as Record<string, unknown>;
+    expect(body).toMatchObject({
+      attributes: [{ key: "custom:color", options: ["Black", "White"], source: "custom" }],
+      combinations: [
+        { client_id: variable.combinations[0]?.clientId, selections: [{ attribute_key: "custom:color", option: "Black" }] },
+        { client_id: variable.combinations[1]?.clientId, selections: [{ attribute_key: "custom:color", option: "White" }] },
+      ],
+    });
+  });
+
+  it("hydrates global attributes and concrete variation values from WooCommerce", async () => {
+    vi.stubGlobal("fetch", () => Promise.resolve(new Response(JSON.stringify({
+      data: {
+        ...simpleProductFields, attributes: [{
+          attribute_id: 7, key: "global:7", name: "Color", option_ids: [101], position: 0,
+          source: "global", taxonomy: "pa_color", variation: true, visible: true,
+        }],
+        combinations: [{
+          client_id: "11111111-1111-4111-8111-111111111111", enabled: true, image_id: 42,
+          manage_stock: true, regular_price: "29.00", sale_price: "25.00",
+          selections: [{ attribute_key: "global:7", term_id: 101 }], sku: "BLACK-1",
+          stock_quantity: 4, stock_status: "instock", variation_id: 900,
+        }],
+        created_at: "2026-08-13T12:00:00+00:00", id: 800, images: [],
+        modified_at: "2026-08-13T12:00:00+00:00", projected_count: 1,
+        type: "variable", version: "1".repeat(64),
+      },
+    }), { status: 200, headers: { "Content-Type": "application/json" } })));
+
+    const product = await new WordPressWorkspaceRepository(host).getProduct(800);
+
+    expect(product.type).toBe("variable");
+    if (product.type !== "variable") throw new Error("Expected a variable product.");
+    expect(product.attributes[0]).toMatchObject({ attributeId: 7, optionIds: [101], taxonomy: "pa_color" });
+    expect(product.combinations[0]).toMatchObject({
+      imageId: 42, regularPrice: "29.00", selections: [{ attributeKey: "global:7", termId: 101 }],
+      sku: "BLACK-1", stockQuantity: 4, variationId: 900,
+    });
   });
 
   it("preserves structured operation failures returned with an error status", async () => {

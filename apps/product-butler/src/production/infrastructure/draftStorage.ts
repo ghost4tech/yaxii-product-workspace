@@ -67,5 +67,7 @@ export function sanitizeDraft(data: ProductFormData): ProductFormData {
       return recovered ? [recovered] : [];
     }),
     variations: [],
+    variableAttributes: data.variableAttributes.slice(0, 5),
+    variationCombinations: data.variationCombinations.slice(0, 50),
   };
 }

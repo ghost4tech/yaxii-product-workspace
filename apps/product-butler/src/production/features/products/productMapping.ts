@@ -1,6 +1,9 @@
 import type { ProductEntryValues } from "@/components/entry/productEntryModel";
 import type { ProductImage } from "@/types/product";
 import type { CreateProductRequest } from "../../domain/products";
+import type { VariableProductRequest } from "../../domain/products";
+import type { VariableAttribute, VariationCombination } from "../../domain/variableProducts";
+import { validateVariationPlan, VariablePlanError } from "../variableProducts/combinationGenerator";
 import type { ProductOperationCopy } from "../../core/i18n/productMessages";
 
 export type ProductFieldErrors = Partial<Record<keyof ProductEntryValues | "root", string>>;
@@ -8,6 +11,8 @@ export type ProductFieldErrors = Partial<Record<keyof ProductEntryValues | "root
 export interface ProductSubmission {
   images: ProductImage[];
   isVariable: boolean;
+  attributes: VariableAttribute[];
+  combinations: VariationCombination[];
   saleEnd?: Date;
   saleStart?: Date;
   values: ProductEntryValues;
@@ -29,7 +34,7 @@ function localDate(value?: Date): string | null {
 export function mapProductRequest(input: ProductSubmission, copy: ProductOperationCopy): CreateProductRequest {
   const { images, isVariable, saleEnd, saleStart, values } = input;
   const fields: ProductFieldErrors = {};
-  if (isVariable) fields.root = copy.variableUnsupported;
+  if (!isVariable && !values.regularPrice.trim()) fields.regularPrice = "Price is required";
   const categoryId = Number(values.categoryId);
   if (!Number.isInteger(categoryId) || categoryId <= 0) fields.categoryId = copy.chooseCategory;
 
@@ -73,4 +78,17 @@ export function mapProductRequest(input: ProductSubmission, copy: ProductOperati
     weight: values.weight.trim(),
     width: values.width.trim(),
   };
+}
+
+export function mapVariableProductRequest(input: ProductSubmission, copy: ProductOperationCopy): VariableProductRequest {
+  try {
+    validateVariationPlan(input.attributes, input.combinations);
+  } catch (error) {
+    if (error instanceof VariablePlanError) {
+      throw new ProductMappingError({ root: Object.values(error.fields)[0] ?? copy.reviewFields });
+    }
+    throw error;
+  }
+  const product = mapProductRequest({ ...input, isVariable: true }, copy);
+  return { attributes: input.attributes, combinations: input.combinations, product };
 }

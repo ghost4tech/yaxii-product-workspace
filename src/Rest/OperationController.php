@@ -15,6 +15,7 @@ use Yaxii\ProductWorkspace\Application\Operations\OperationRecord;
 use Yaxii\ProductWorkspace\Application\Operations\OperationStore;
 use Yaxii\ProductWorkspace\Application\Products\ApiException;
 use Yaxii\ProductWorkspace\Application\Products\CreateProductService;
+use Yaxii\ProductWorkspace\Application\VariableProducts\VariableProductService;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -25,20 +26,23 @@ final class OperationController extends \WP_REST_Controller {
 	private OperationStore $operations;
 	private OperationPresenter $presenter;
 	private CreateProductService $service;
+	private ?VariableProductService $variable_service;
 	private CapabilityPolicy $capabilities;
 
 	public function __construct(
 		OperationStore $operations,
 		OperationPresenter $presenter,
 		CreateProductService $service,
-		CapabilityPolicy $capabilities
+		CapabilityPolicy $capabilities,
+		?VariableProductService $variable_service = null
 	) {
-		$this->namespace    = 'yaxii-product-workspace/v1';
-		$this->rest_base    = 'operations';
-		$this->operations   = $operations;
-		$this->presenter    = $presenter;
-		$this->service      = $service;
-		$this->capabilities = $capabilities;
+		$this->namespace        = 'yaxii-product-workspace/v1';
+		$this->rest_base        = 'operations';
+		$this->operations       = $operations;
+		$this->presenter        = $presenter;
+		$this->service          = $service;
+		$this->capabilities     = $capabilities;
+		$this->variable_service = $variable_service;
 	}
 
 	public function register_routes(): void {
@@ -123,7 +127,7 @@ final class OperationController extends \WP_REST_Controller {
 		return $this->respond(
 			function () use ( $request ): array {
 				$record = $this->require_record( (string) $request->get_param( 'id' ) );
-				return $this->presenter->present( $record, $this->service->reconcile( $record ) );
+				return $this->presenter->present( $record, $this->reconcile( $record ) );
 			}
 		);
 	}
@@ -134,11 +138,33 @@ final class OperationController extends \WP_REST_Controller {
 		return $this->respond(
 			function () use ( $request ): array {
 				$record = $this->require_record( (string) $request->get_param( 'id' ) );
-				$result = $this->service->retry( $record, get_current_blog_id(), get_current_user_id() );
+				$result = $this->retry( $record );
 				$fresh  = $this->require_record( $record->operation_id() );
 				return $this->presenter->present( $fresh, $result );
 			}
 		);
+	}
+
+	private function reconcile( OperationRecord $record ): \Yaxii\ProductWorkspace\Application\Products\OperationResult {
+		if ( 'variable_product_create' === $record->operation_type() ) {
+			if ( null === $this->variable_service ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- ApiException is serialized by ApiError.
+				throw new ApiException( 'ypw_operation_unavailable', __( 'Variable-product reconciliation is unavailable.', 'yaxii-product-workspace' ), 503 );
+			}
+			return $this->variable_service->reconcile( $record );
+		}
+		return $this->service->reconcile( $record );
+	}
+
+	private function retry( OperationRecord $record ): \Yaxii\ProductWorkspace\Application\Products\OperationResult {
+		if ( 'variable_product_create' === $record->operation_type() ) {
+			if ( null === $this->variable_service ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- ApiException is serialized by ApiError.
+				throw new ApiException( 'ypw_operation_unavailable', __( 'Variable-product retry is unavailable.', 'yaxii-product-workspace' ), 503 );
+			}
+			return $this->variable_service->retry( $record, get_current_blog_id(), get_current_user_id() );
+		}
+		return $this->service->retry( $record, get_current_blog_id(), get_current_user_id() );
 	}
 
 	/** @param \WP_REST_Request $request Request object.
@@ -227,7 +253,7 @@ final class OperationController extends \WP_REST_Controller {
 			'state'          => array(
 				'type'    => 'string',
 				'default' => 'all',
-				'enum'    => array( 'all', 'succeeded', 'failed', 'processing', 'uncertain', 'active' ),
+				'enum'    => array( 'all', 'succeeded', 'partial', 'failed', 'processing', 'uncertain', 'active', 'error' ),
 			),
 			'product_status' => array(
 				'type'    => 'string',

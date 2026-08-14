@@ -44,7 +44,7 @@ final class BootstrapProvider {
 				'features'     => array(
 					'simple_product_create'   => $woo_available,
 					'simple_product_manage'   => $woo_available,
-					'variable_product_create' => false,
+					'variable_product_create' => $woo_available,
 					'category_lookup'         => $woo_available,
 					'tag_lookup'              => $woo_available,
 					'shipping_class_lookup'   => $woo_available,
@@ -54,9 +54,12 @@ final class BootstrapProvider {
 					'preferences'             => $woo_available,
 				),
 				'limits'       => array(
-					'category_page_size'     => 20,
-					'max_category_page_size' => 50,
-					'max_images'             => 10,
+					'category_page_size'         => 20,
+					'max_category_page_size'     => 50,
+					'max_images'                 => 10,
+					'max_variable_attributes'    => 5,
+					'max_variable_options'       => 20,
+					'max_variation_combinations' => 50,
 				),
 			)
 		);

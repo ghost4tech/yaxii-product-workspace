@@ -8,7 +8,10 @@ import type {
   OperationResult,
   ProductPage,
   WorkspacePreferences,
+  VariableProductRequest,
+  VariableUpdateResult,
 } from "../domain/products";
+import type { AttributeCatalogItem, AttributeTerm, VariableAttribute, VariationCombination } from "../domain/variableProducts";
 import type { WorkspaceBootstrap, WorkspaceHostConfig, WorkspaceSnapshot } from "../domain/workspace";
 import {
   canonicalProductSchema,
@@ -19,6 +22,9 @@ import {
   simpleProductFieldsSchema,
   termPageSchema,
   trashedProductSchema,
+  variableUpdateResultSchema,
+  attributeCatalogSchema,
+  attributeTermsSchema,
 } from "./restContracts";
 
 type JsonRecord = Record<string, unknown>;
@@ -113,6 +119,36 @@ function queryString(options: SearchOptions): string {
   return params.toString();
 }
 
+function attributePayload(attribute: VariableAttribute) {
+  const common = {
+    key: attribute.key, name: attribute.name, position: attribute.position,
+    source: attribute.source, variation: attribute.variation, visible: attribute.visible,
+  };
+  return attribute.source === "global"
+    ? { ...common, attribute_id: attribute.attributeId, option_ids: attribute.optionIds, taxonomy: attribute.taxonomy }
+    : { ...common, options: attribute.options };
+}
+
+function combinationPayload(combination: VariationCombination) {
+  return {
+    client_id: combination.clientId, enabled: combination.enabled, image_id: combination.imageId,
+    manage_stock: combination.manageStock, regular_price: combination.regularPrice,
+    sale_price: combination.salePrice, selections: combination.selections.map((selection) => (
+      "termId" in selection
+        ? { attribute_key: selection.attributeKey, term_id: selection.termId }
+        : { attribute_key: selection.attributeKey, option: selection.option }
+    )), sku: combination.sku, stock_quantity: combination.stockQuantity,
+    stock_status: combination.stockStatus, variation_id: combination.variationId,
+  };
+}
+
+function variablePayload(request: VariableProductRequest) {
+  return {
+    attributes: request.attributes.map(attributePayload), combinations: request.combinations.map(combinationPayload),
+    product: request.product,
+  };
+}
+
 export class WordPressWorkspaceRepository implements WorkspaceRepository {
   public constructor(private readonly host: WorkspaceHostConfig) {}
 
@@ -130,12 +166,21 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
     return parse(await this.request("products", this.json("POST", request, { "Idempotency-Key": key }), true), operationResultSchema, "operation");
   }
 
+  public async createVariableProduct(request: VariableProductRequest, key: string): Promise<OperationResult> {
+    return parse(await this.request("variable-products", this.json("POST", variablePayload(request), { "Idempotency-Key": key }), true), operationResultSchema, "variable operation");
+  }
+
   public async getProduct(id: number): Promise<CanonicalProduct> {
     return parse(await this.request(`products/${id}`), canonicalProductSchema, "product");
   }
 
   public async updateProduct(id: number, version: string, product: CreateProductRequest): Promise<CanonicalProduct> {
     return parse(await this.request(`products/${id}`, this.json("PUT", { expected_version: version, product }), true), canonicalProductSchema, "product");
+  }
+
+  public async updateVariableProduct(id: number, version: string, product: VariableProductRequest): Promise<VariableUpdateResult> {
+    const payload = { ...variablePayload(product), expected_version: version };
+    return parse(await this.request(`variable-products/${id}`, this.json("PUT", payload), true), variableUpdateResultSchema, "variable product");
   }
 
   public async trashProduct(id: number, version: string): Promise<void> {
@@ -185,6 +230,15 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
 
   public searchShippingClasses(query: string, signal?: AbortSignal): Promise<CategoryPage> {
     return this.searchTerms("shipping-classes", query, signal);
+  }
+
+  public async listAttributes(): Promise<AttributeCatalogItem[]> {
+    const items = parse(await this.request("attributes"), attributeCatalogSchema, "attributes");
+    return items.map((item) => ({ id: item.id, name: item.name, orderBy: item.order_by, taxonomy: item.taxonomy as `pa_${string}` }));
+  }
+
+  public async listAttributeTerms(attributeId: number): Promise<AttributeTerm[]> {
+    return parse(await this.request(`attributes/${attributeId}/terms?limit=100`), attributeTermsSchema, "attribute terms");
   }
 
   private async searchTerms(path: string, query: string, signal?: AbortSignal): Promise<CategoryPage> {

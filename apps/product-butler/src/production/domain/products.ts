@@ -1,4 +1,5 @@
 import type { Category } from "@/types/product";
+import type { VariableAttribute, VariationCombination } from "./variableProducts";
 
 export type ProductStatus = "draft" | "publish" | "pending";
 export type CatalogVisibility = "visible" | "catalog" | "search" | "hidden";
@@ -43,13 +44,41 @@ export interface ProductImageResource {
   url: string;
 }
 
-export interface CanonicalProduct extends SimpleProductFields {
+interface CanonicalProductBase extends SimpleProductFields {
   created_at: string | null;
   id: number;
   images: ProductImageResource[];
   modified_at: string | null;
-  type: "simple";
   version: string;
+}
+
+export interface CanonicalSimpleProduct extends CanonicalProductBase { type: "simple"; }
+export interface CanonicalVariableProduct extends CanonicalProductBase {
+  attributes: VariableAttribute[];
+  combinations: VariationCombination[];
+  projected_count: number;
+  type: "variable";
+}
+export type CanonicalProduct = CanonicalSimpleProduct | CanonicalVariableProduct;
+
+export interface VariableProductRequest {
+  attributes: VariableAttribute[];
+  combinations: VariationCombination[];
+  product: CreateProductRequest;
+}
+
+export interface VariableUpdateResult {
+  combination_results: CombinationWriteResult[];
+  product: CanonicalVariableProduct;
+  state: "succeeded" | "partial";
+}
+
+export interface CombinationWriteResult {
+  client_id: string;
+  error: { code: string; message: string } | null;
+  fingerprint: string;
+  state: "succeeded" | "failed" | "deleted";
+  variation_id: number;
 }
 
 export type OperationProduct = Pick<CanonicalProduct, "id" | "name" | "sku" | "status">
@@ -64,12 +93,13 @@ export interface OperationError {
 export interface OperationResult {
   created_at?: string | null;
   errors: OperationError[];
-  input?: CreateProductRequest | null;
+  combination_results: CombinationWriteResult[];
+  input?: CreateProductRequest | VariableProductRequest | null;
   operation_id: string;
   product: CanonicalProduct | null;
   replayed: boolean;
   retry: { can_reconcile: boolean; can_retry: boolean; safe_to_resubmit: false };
-  state: "succeeded" | "failed" | "processing" | "uncertain";
+  state: "succeeded" | "partial" | "failed" | "processing" | "uncertain";
   updated_at?: string | null;
   warnings: string[];
 }

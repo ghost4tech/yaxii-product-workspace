@@ -17,4 +17,14 @@ describe("IdempotencyKeyManager", () => {
     const manager = new IdempotencyKeyManager();
     expect(manager.forRequest(request)).not.toBe(manager.forRequest({ ...request, name: "Changed" }));
   });
+
+  it("locks a partial create to its parent identity until reconciliation succeeds", () => {
+    const manager = new IdempotencyKeyManager();
+    const partialKey = manager.forRequest(request);
+    manager.lock(partialKey);
+
+    expect(manager.forRequest({ ...request, name: "Edited after partial" })).toBe(partialKey);
+    manager.clear(partialKey);
+    expect(manager.forRequest(request)).not.toBe(partialKey);
+  });
 });

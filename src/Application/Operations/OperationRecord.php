@@ -87,8 +87,11 @@ final class OperationRecord {
 	}
 
 	public function can_retry(): bool {
-		if ( 'failed' !== $this->state || null === $this->request || null === $this->result ) {
+		if ( ! in_array( $this->state, array( 'failed', 'partial' ), true ) || null === $this->request || null === $this->result ) {
 			return false;
+		}
+		if ( 'partial' === $this->state && 'variable_product_create' === $this->operation_type ) {
+			return true;
 		}
 		$errors = $this->result['errors'] ?? null;
 		return is_array( $errors )

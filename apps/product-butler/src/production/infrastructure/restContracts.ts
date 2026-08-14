@@ -29,21 +29,69 @@ export const simpleProductFieldsSchema = z.object({
   width: z.string(),
 });
 
-export const canonicalProductSchema = simpleProductFieldsSchema.extend({
+const canonicalBaseSchema = simpleProductFieldsSchema.extend({
   created_at: z.string().nullable(),
   id: z.number().int().positive(),
   images: z.array(z.object({ alt: z.string(), id: z.number().int().positive(), url: z.string() })),
   modified_at: z.string().nullable(),
-  type: z.literal("simple"),
   version: z.string().length(64),
 });
 
-const operationProductSchema = canonicalProductSchema.partial().extend({
+const globalAttributeSchema = z.object({
+  attribute_id: z.number().int().positive(), key: z.string(), name: z.string(),
+  option_ids: z.array(z.number().int().positive()), position: z.number().int().nonnegative(),
+  source: z.literal("global"), taxonomy: z.string().startsWith("pa_"), variation: z.boolean(), visible: z.boolean(),
+}).transform((item) => ({
+  attributeId: item.attribute_id, key: item.key, name: item.name, optionIds: item.option_ids,
+  position: item.position, source: item.source, taxonomy: item.taxonomy as `pa_${string}`,
+  variation: item.variation, visible: item.visible,
+}));
+const customAttributeSchema = z.object({
+  key: z.string(), name: z.string(), options: z.array(z.string()), position: z.number().int().nonnegative(),
+  source: z.literal("custom"), variation: z.boolean(), visible: z.boolean(),
+});
+const selectionSchema = z.union([
+  z.object({ attribute_key: z.string(), term_id: z.number().int().positive() })
+    .transform((item) => ({ attributeKey: item.attribute_key, termId: item.term_id })),
+  z.object({ attribute_key: z.string(), option: z.string() })
+    .transform((item) => ({ attributeKey: item.attribute_key, option: item.option })),
+]);
+const combinationSchema = z.object({
+  client_id: z.string().uuid(), enabled: z.boolean(), image_id: z.number().int().nonnegative(),
+  manage_stock: z.boolean(), regular_price: z.string(), sale_price: z.string().nullable(),
+  selections: z.array(selectionSchema), sku: z.string(), stock_quantity: z.number().int().nonnegative().nullable(),
+  stock_status: z.enum(["instock", "outofstock", "onbackorder"]), variation_id: z.number().int().nonnegative(),
+}).transform((item) => ({
+  clientId: item.client_id, enabled: item.enabled, imageId: item.image_id, manageStock: item.manage_stock,
+  regularPrice: item.regular_price, salePrice: item.sale_price, selections: item.selections, sku: item.sku,
+  stockQuantity: item.stock_quantity, stockStatus: item.stock_status, variationId: item.variation_id,
+}));
+
+const canonicalSimpleProductSchema = canonicalBaseSchema.extend({ type: z.literal("simple") });
+export const canonicalVariableProductSchema = canonicalBaseSchema.extend({
+  attributes: z.array(z.union([globalAttributeSchema, customAttributeSchema])),
+  combinations: z.array(combinationSchema), projected_count: z.number().int().nonnegative(), type: z.literal("variable"),
+});
+export const canonicalProductSchema = z.discriminatedUnion("type", [canonicalSimpleProductSchema, canonicalVariableProductSchema]);
+export const variableProductRequestSchema = z.object({
+  attributes: z.array(z.union([globalAttributeSchema, customAttributeSchema])),
+  combinations: z.array(combinationSchema), product: simpleProductFieldsSchema,
+});
+const combinationWriteResultSchema = z.object({
+  client_id: z.string(), error: z.object({ code: z.string(), message: z.string() }).nullable(),
+  fingerprint: z.string(), state: z.enum(["succeeded", "failed", "deleted"]), variation_id: z.number().int().nonnegative(),
+});
+export const variableUpdateResultSchema = z.object({
+  combination_results: z.array(combinationWriteResultSchema), product: canonicalVariableProductSchema,
+  state: z.enum(["succeeded", "partial"]),
+});
+
+const operationProductSchema = canonicalProductSchema.or(z.object({
   id: z.number().int().positive(),
   name: z.string(),
   sku: z.string(),
   status: z.enum(["draft", "publish", "pending"]),
-});
+}).passthrough());
 
 export const trashedProductSchema = z.object({
   id: z.number().int().positive(),
@@ -62,7 +110,8 @@ export const operationResultSchema = z.object({
     fields: operationFieldsSchema,
     message: z.string(),
   })),
-  input: simpleProductFieldsSchema.nullable().optional(),
+  combination_results: z.array(combinationWriteResultSchema).default([]),
+  input: z.union([simpleProductFieldsSchema, variableProductRequestSchema]).nullable().optional(),
   operation_id: z.string().uuid(),
   product: canonicalProductSchema.nullable(),
   replayed: z.boolean(),
@@ -71,7 +120,7 @@ export const operationResultSchema = z.object({
     can_retry: z.boolean(),
     safe_to_resubmit: z.literal(false),
   }),
-  state: z.enum(["succeeded", "failed", "processing", "uncertain"]),
+  state: z.enum(["succeeded", "partial", "failed", "processing", "uncertain"]),
   updated_at: z.string().nullable().optional(),
   warnings: z.array(z.string()),
 });
@@ -136,3 +185,10 @@ export const preferencesSchema = z.object({
     "shipping_class_id", "tax_status", "tax_class", "catalog_visibility",
   ])),
 });
+
+export const attributeCatalogSchema = z.array(z.object({
+  id: z.number().int().positive(), name: z.string(), order_by: z.string(), taxonomy: z.string().startsWith("pa_"),
+}));
+export const attributeTermsSchema = z.array(z.object({
+  id: z.number().int().positive(), name: z.string(), slug: z.string(),
+}));

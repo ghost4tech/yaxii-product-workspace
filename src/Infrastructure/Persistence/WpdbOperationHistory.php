@@ -39,6 +39,8 @@ final class WpdbOperationHistory {
 		$values     = $base_values;
 		if ( 'active' === $query->state() ) {
 			$conditions .= " AND state IN ('processing', 'uncertain')";
+		} elseif ( 'error' === $query->state() ) {
+			$conditions .= " AND state IN ('failed', 'partial')";
 		} elseif ( 'all' !== $query->state() ) {
 			$conditions .= ' AND state = %s';
 			$values[]    = $query->state();
@@ -80,7 +82,7 @@ final class WpdbOperationHistory {
 			SUM(state = 'succeeded' AND product_status = 'publish') AS synced_count,
 			SUM(state = 'succeeded' AND product_status <> 'publish') AS draft_count,
 			SUM(state IN ('processing', 'uncertain')) AS pending_count,
-			SUM(state = 'failed') AS error_count" . $conditions,
+			SUM(state IN ('failed', 'partial')) AS error_count" . $conditions,
 			$values
 		);
 		$row = $this->database->get_row( $sql, ARRAY_A );
@@ -97,7 +99,7 @@ final class WpdbOperationHistory {
 		$sql     = $this->database->prepare(
 			"UPDATE %i SET dismissed_at = %s
 			WHERE operation_id = %s AND site_id = %d AND user_id = %d
-			AND state IN ('succeeded', 'failed') AND dismissed_at IS NULL",
+			AND state IN ('succeeded', 'failed', 'partial') AND dismissed_at IS NULL",
 			$this->table_name,
 			current_time( 'mysql', true ),
 			$operation_id,

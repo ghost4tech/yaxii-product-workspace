@@ -78,6 +78,7 @@ final class FakeOperationStore implements OperationStore {
 				$records,
 				static fn ( OperationRecord $record ): bool => 'all' === $query->state()
 					|| ( 'active' === $query->state() && in_array( $record->state(), array( 'processing', 'uncertain' ), true ) )
+					|| ( 'error' === $query->state() && in_array( $record->state(), array( 'failed', 'partial' ), true ) )
 					|| $query->state() === $record->state()
 			)
 		);
@@ -89,7 +90,7 @@ final class FakeOperationStore implements OperationStore {
 				'synced'  => $this->count_status( $all, 'succeeded', 'publish' ),
 				'draft'   => $this->count_non_published_success( $all ),
 				'pending' => $this->count_active( $all ),
-				'error'   => $this->count_status( $all, 'failed' ),
+				'error'   => $this->count_status( $all, 'failed' ) + $this->count_status( $all, 'partial' ),
 			),
 		);
 	}
@@ -97,7 +98,7 @@ final class FakeOperationStore implements OperationStore {
 	public function claim_retry( string $operation_id, int $site_id, int $user_id ): bool {
 		unset( $site_id, $user_id );
 		$key = $this->keys_by_operation[ $operation_id ] ?? null;
-		if ( ! is_string( $key ) || 'failed' !== $this->records_by_key[ $key ]->state() ) {
+		if ( ! is_string( $key ) || ! in_array( $this->records_by_key[ $key ]->state(), array( 'failed', 'partial' ), true ) ) {
 			return false;
 		}
 		$this->replace_record( $key, 'processing', null, null, false );
