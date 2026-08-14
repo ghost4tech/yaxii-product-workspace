@@ -2,18 +2,19 @@
 
 **Updated:** 2026-08-14
 
-**Current phase:** Phase 4 implementation and required QA complete; awaiting owner acceptance
+**Current phase:** Phase 4 accepted and closed; Phase 5 is the next authorized phase
 
-**Acceptance state:** READY FOR OWNER REVIEW - do not merge; do not begin Phase 5
+**Acceptance state:** OWNER ACCEPTED - real variable-product workflow manually verified
 
 ## Canonical repository
 
 - Repository: `https://github.com/ghost4tech/yaxii-product-workspace.git`
 - Accepted Phase 4 starting `main`: `338d0fb1f0a2edf40aceb31ae57c712e1175b079`
 - Phase 4 branch: `phase/04-free-variable-products`
+- Accepted Phase 4 SHA: `97801792b112d47d5b3a99caccb8512d7ba370d3`
 - Checkpoint A: `27379b7748421cb00438265409328c15c3006952`
 - Checkpoint B: `a19805e64c9b3ff5bd621f64493287201b0772c9`
-- Checkpoint C: final pushed branch head, to be reported with remote verification
+- Checkpoint C: `97801792b112d47d5b3a99caccb8512d7ba370d3`
 - Package managers: Composer for PHP and npm for the frontend
 
 The branch was created from the exact accepted clean remote main and pushed before implementation.
@@ -50,4 +51,5 @@ The owner's local `AGENTS.md` and `CLAUDE.md` edits remain preserved and outside
 
 ## Next action
 
-Stop for owner review of the pushed Phase 4 branch. Do not merge to `main` and do not begin Phase 5.
+Phase 5 is the next authorized phase. It has not started, and no Phase 5 branch was created during
+this closeout.

@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-14
 
-**State:** Implementation and required QA complete; awaiting owner acceptance; do not merge
+**State:** Owner accepted; authorized for closeout merge into `main`
 
 ## Git boundary
 
@@ -10,11 +10,18 @@
 - Branch: `phase/04-free-variable-products`
 - Checkpoint A: `27379b7748421cb00438265409328c15c3006952`
 - Checkpoint B: `a19805e64c9b3ff5bd621f64493287201b0772c9`
-- Checkpoint C: final branch-head commit containing UI integration, QA corrections, and this closeout
-- Merge disposition: stop for owner acceptance; Phase 5 is not authorized
+- Checkpoint C and accepted Phase 4 SHA:
+  `97801792b112d47d5b3a99caccb8512d7ba370d3`
+- Merge disposition: owner accepted the branch for a history-preserving merge into `main`
 
 The branch started from the exact clean remote `main` and was pushed before implementation. The
 owner's existing local `AGENTS.md` and `CLAUDE.md` edits remained unmodified and unstaged.
+
+## Owner acceptance
+
+On 2026-08-14, the owner confirmed manual testing of the real variable-product workflow and
+accepted Phase 4 at `97801792b112d47d5b3a99caccb8512d7ba370d3`. Before closeout, the local
+branch, its upstream, and the remote Phase 4 ref all resolved to that exact SHA.
 
 ## Delivered Free workflow
 
@@ -84,5 +91,5 @@ the temporary fault-injection hook were removed after testing. Existing owner pr
 settings, and operation history were preserved. The active theme setting changed for storefront QA
 was restored exactly.
 
-Phase 4 is ready for owner review. It must not be merged and Phase 5 must not begin without explicit
-owner acceptance.
+Phase 4 is owner-accepted for closeout. Phase 5 is the next authorized phase, but it has not started
+and no Phase 5 branch was created during this closeout.
