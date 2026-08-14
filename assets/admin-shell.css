@@ -59,6 +59,13 @@ body.yaxii-product-workspace-admin #yaxii-product-workspace .workspace-search-in
   background-color: hsl(var(--muted) / 0.55);
 }
 
+body.yaxii-product-workspace-admin #yaxii-product-workspace .rte-content:focus,
+body.yaxii-product-workspace-admin #yaxii-product-workspace .rte-content:focus-visible {
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: hsl(var(--muted) / 0.22) !important;
+}
+
 @media (max-width: 782px) {
   body.yaxii-product-workspace-admin #wpbody-content,
   body.yaxii-product-workspace-admin #yaxii-product-workspace,

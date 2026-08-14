@@ -139,7 +139,6 @@ export function RichTextEditor({ ariaLabel, className, minHeight = 140, onChange
   if (!editor) return null;
   return <div className={cn(
     "overflow-hidden rounded-md border border-input bg-background transition-colors",
-    "focus-within:border-foreground/40 focus-within:ring-2 focus-within:ring-ring/10",
     className,
   )} onDrop={(event) => {
     if (event.dataTransfer.files?.length) {

@@ -59,8 +59,9 @@ TipTap, dropdowns, dialogs, the command menu, category tree, and variation contr
 to the plugin root or its owned portal boundary. The admin-shell stylesheet is enqueued only for
 the Product Workspace hook. A root-scoped `:focus-visible` reset replaces WordPress admin blue
 shadows with the Product Workspace ring without disabling keyboard focus. No generic WordPress
-`.button` styling is used by the application. Search fields use a quieter focused background
-without an extra border or ring; other interactive controls retain the full workspace focus treatment.
+`.button` styling is used by the application. Search fields and TipTap description canvases use a
+quieter focused background without an extra border or ring; other interactive controls retain the
+full workspace focus treatment.
 
 Settings contains a compact **Explore the Yaxii ecosystem** section listing Yaxii Smart Form, Yaxii
 COD Theme, and Yaxii Shipping Manager. Its bundled Yaxii Dev SVG, restrained accent surface, and
