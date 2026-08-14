@@ -7,8 +7,58 @@
   cursor: not-allowed;
 }
 
-#yaxii-product-workspace .queue-filter-scroll[data-overflow="true"] {
-  mask-image: linear-gradient(to right, transparent, black 12px, black calc(100% - 12px), transparent);
+#yaxii-product-workspace .queue-filter-fade {
+  inset-block: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 150ms ease;
+  width: 16px;
+  z-index: 1;
+}
+
+#yaxii-product-workspace .queue-filter-fade[data-visible="true"] {
+  opacity: 1;
+}
+
+#yaxii-product-workspace .queue-filter-fade-start {
+  background: linear-gradient(to right, hsl(var(--card) / 0.98), transparent);
+  inset-inline-start: 0;
+}
+
+#yaxii-product-workspace .queue-filter-fade-end {
+  background: linear-gradient(to left, hsl(var(--card) / 0.98), transparent);
+  inset-inline-end: 0;
+}
+
+#yaxii-product-workspace :dir(rtl) > .queue-filter-fade-start {
+  background: linear-gradient(to left, hsl(var(--card) / 0.98), transparent);
+}
+
+#yaxii-product-workspace :dir(rtl) > .queue-filter-fade-end {
+  background: linear-gradient(to right, hsl(var(--card) / 0.98), transparent);
+}
+
+#yaxii-product-workspace .yaxii-ecosystem {
+  background: linear-gradient(135deg, hsl(var(--brand) / 0.09), hsl(var(--info) / 0.045) 55%, hsl(var(--card)));
+}
+
+#yaxii-product-workspace .variation-image-remove {
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #yaxii-product-workspace .variation-image-remove {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 150ms ease;
+  }
+
+  #yaxii-product-workspace .group:hover > .variation-image-remove,
+  #yaxii-product-workspace .variation-image-remove:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
 }
 
 #yaxii-product-workspace .rte-content.ProseMirror {

@@ -19,7 +19,9 @@ Internal operation state keys remain unchanged.
 Queue status filters remain a single horizontal row. The native overflow area hides its visual
 scrollbar, keeps touch scrolling, supports mouse and pen drag with grab feedback, and handles
 Arrow Left, Arrow Right, Home, and End when keyboard-focused. A subtle edge mask appears only when
-the row overflows.
+the row overflows. Pointer capture starts only after a six-pixel drag threshold, so ordinary clicks
+and small movements activate filters. Independent logical start/end fades show only where more
+content exists and mirror under RTL.
 
 ## Operational pulse
 
@@ -50,12 +52,26 @@ claims, revenue claims, or analytics service are involved.
 Form resets for text and numeric inputs, selects, buttons, switches, tabs, segmented controls,
 TipTap, dropdowns, dialogs, the command menu, category tree, and variation controls remain scoped
 to the plugin root or its owned portal boundary. The admin-shell stylesheet is enqueued only for
-the Product Workspace hook. No generic WordPress `.button` styling is used by the application.
+the Product Workspace hook. A root-scoped `:focus-visible` reset replaces WordPress admin blue
+shadows with the Product Workspace ring without disabling keyboard focus. No generic WordPress
+`.button` styling is used by the application.
 
 Settings contains a compact **Explore the Yaxii ecosystem** section listing Yaxii Smart Form, Yaxii
-COD Theme, and Yaxii Shipping Manager. Rendering the section performs no external request. The only
-external action is the deliberate **Explore all Yaxii products** link to `https://yaxii.dev/`, opened
-with `noreferrer`.
+COD Theme, and Yaxii Shipping Manager. Its bundled Yaxii Dev SVG, restrained accent surface, and
+product tiles separate discovery from normal setting rows without turning Settings into a
+marketplace. Rendering the section performs no external request. The only external action is the
+deliberate **Explore all Yaxii products** link to `https://yaxii.dev/`, opened with `noreferrer`.
+
+Find Product accepts the canonical simple/variable discriminated union returned by the same-origin
+product collection route. The WooCommerce gateway maps each supported product through its matching
+mapper and excludes private products, whose status is outside the editor contract. Strict frontend
+validation remains in place, pagination stays bounded, superseded searches remain cancelable, and
+selecting a result loads the existing edit workflow.
+
+Variation image controls disable repeat activation and expose a spinner overlay plus `aria-busy`
+while WordPress media work is pending. A successful upload resolves to the durable attachment;
+errors remain visible and retryable. Image removal is revealed on hover for fine pointers, remains
+keyboard-focusable, and stays visible on touch/coarse-pointer devices.
 
 ## Security, limits, and evidence
 
@@ -69,5 +85,8 @@ neutral-history behavior, production boundary scanning, and all existing product
 Authenticated LocalWP QA covered 1440, 1280, 768, 430, and 375 pixels, light and dark appearance,
 Focus Mode, category/variation/editor controls, queue pointer and keyboard scrolling, Settings,
 footer and shell isolation, console errors, network failures, and an unrelated wp-admin page.
+The final acceptance pass additionally covered strict mixed-product search/open/edit, queue pill
+clicks and logical LTR/RTL fades, scoped keyboard focus, variation-image pending/success/failure,
+hover/focus/touch removal access, and the ecosystem section at desktop and 430 pixels.
 
 Translation and Phase 5 release hardening are intentionally outside this checkpoint.

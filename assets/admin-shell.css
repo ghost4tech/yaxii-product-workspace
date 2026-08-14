@@ -20,6 +20,37 @@ body.yaxii-product-workspace-admin #wpfooter {
   display: none;
 }
 
+body.yaxii-product-workspace-admin #yaxii-product-workspace :where(
+  a[href],
+  button,
+  input:not([type="hidden"]),
+  select,
+  textarea,
+  [contenteditable="true"],
+  [role="button"],
+  [role="tab"],
+  [tabindex]:not([tabindex="-1"])
+):focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+body.yaxii-product-workspace-admin #yaxii-product-workspace :where(
+  a[href],
+  button,
+  input:not([type="hidden"]),
+  select,
+  textarea,
+  [contenteditable="true"],
+  [role="button"],
+  [role="tab"],
+  [tabindex]:not([tabindex="-1"])
+):focus-visible {
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.32) !important;
+  outline: 2px solid transparent !important;
+  outline-offset: 2px !important;
+}
+
 @media (max-width: 782px) {
   body.yaxii-product-workspace-admin #wpbody-content,
   body.yaxii-product-workspace-admin #yaxii-product-workspace,

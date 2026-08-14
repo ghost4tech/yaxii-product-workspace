@@ -128,3 +128,62 @@ footer isolation, console, and network behavior passed.
 
 Translation and Phase 5 hardening remain unstarted. The branch remains unmerged for owner
 acceptance.
+
+## Final acceptance-fix pass
+
+Owner testing after the pre-translation checkpoint found five targeted issues. WordPress admin
+focus shadows were still winning on several controls; Find Product rejected otherwise successful
+mixed product responses; pointer capture prevented queue filter clicks; variation-image uploads
+did not communicate their pending state strongly enough; and the Settings ecosystem area blended
+into ordinary settings.
+
+The Find Product failure came from the collection gateway accepting both simple and variable
+products but mapping every row through the simple-product mapper. A variable row therefore declared
+`type: variable` without the variable contract's `attributes`, `combinations`, and
+`projected_count`, so the strict frontend discriminated union correctly rejected the entire page.
+The gateway now selects the mapper by product type, excludes unsupported private products from the
+collection contract, and preserves bounded pagination and exact-SKU lookup. The Zod contract was
+not weakened. A live mixed simple/variable response now opens, searches, renders, and loads the
+selected variable product into the existing edit workflow.
+
+Product Workspace now owns a scoped `:focus-visible` treatment for links, buttons, form controls,
+content-editable regions, tabs, and custom interactive controls. The reset and replacement ring
+are limited to the plugin body class and root, so WordPress blue focus shadows no longer leak into
+Entry/Settings tabs, Find Product, category and editor controls, queue filters, dialogs, or
+ecosystem actions while keyboard focus remains visible.
+
+Queue drag capture now begins only after a six-pixel movement threshold. Ordinary clicks and small
+pointer movement activate pills, a real mouse/pen drag scrolls and suppresses only its following
+click, native touch panning remains enabled, and the existing keyboard controls remain intact.
+Separate logical start/end fades are driven by measured overflow: the end fade appears initially,
+the start fade appears only after scrolling, and the behavior mirrors under structural RTL without
+hardcoded positioning.
+
+Variation image controls now expose `aria-busy`, disable repeated activation while media work is
+pending, and show a purposeful overlay and spinner. Success resolves to the selected thumbnail;
+failure remains visible and retryable. The remove action appears on pointer hover, remains available
+through keyboard focus, and stays visible on coarse-pointer/touch devices. The disposable media
+attachment used to verify the success path was deleted and confirmed absent.
+
+The ecosystem section is now a compact branded discovery surface with the bundled Yaxii Dev SVG,
+subtle accent surfaces, and three restrained product tiles. It retains the deliberate
+**Explore all Yaxii products** action, makes no automatic remote request, and adds no marketplace,
+tracking, entitlement, or Pro claim.
+
+Targeted authenticated QA on `ysf-lite.local` covered mouse and keyboard focus, Entry/Settings,
+Find Product search/open/edit, queue click/drag/keyboard behavior, logical LTR/RTL fades, native
+touch-pan configuration, variation-image pending/success/failure/removal, and the ecosystem section
+at desktop and 430 pixels in light and dark modes. The section had zero horizontal document
+overflow, and the targeted Product Workspace console/network checks introduced no application
+error. Screenshots are outside the repository at
+`C:\Users\Aymen\AppData\Local\Temp\ypw-phase4-5-final-20260814`.
+
+The refreshed gates pass 88 maintained PHP files, PHPCS, PHPStan, 32 unit tests with 90 assertions,
+37 live WordPress/WooCommerce integration tests with 452 assertions, and 74 frontend tests in 22
+files. The 126-file production line limit, production build, 24-asset boundary scan,
+maintained-source whitespace check, and zero-vulnerability production audit also pass. The known
+optional Local `php_imagick.dll`, stale Browserslist data, and 544 kB editor chunk warnings remain
+unchanged and are outside this targeted pass.
+
+This pass remains on `phase/04-5-lovable-v2-ui-integration`, unmerged, with translation and Phase 5
+still unstarted. Stop for owner acceptance.

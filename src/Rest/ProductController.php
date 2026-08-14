@@ -150,7 +150,7 @@ final class ProductController extends \WP_REST_Controller {
 			'status'   => array(
 				'type'    => 'string',
 				'default' => 'all',
-				'enum'    => array( 'all', 'publish', 'draft', 'pending', 'private' ),
+				'enum'    => array( 'all', 'publish', 'draft', 'pending' ),
 			),
 		);
 	}

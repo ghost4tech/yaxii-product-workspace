@@ -93,20 +93,25 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
               className={cn("h-8 w-full bg-muted/40 ps-8 text-xs", compact ? "sm:w-40" : "sm:w-52")} />
           </div>
         </div>
-        <div {...filterScroll.props} aria-label="Operation status filters"
-          className={cn(
-            "queue-filter-scroll no-scrollbar -mx-0.5 flex items-center gap-1 overflow-x-auto px-0.5 outline-none focus-visible:ring-2 focus-visible:ring-ring/30",
-            filterScroll.dragging ? "cursor-grabbing select-none" : "cursor-grab",
-          )}
-          data-overflow={filterScroll.overflowing || undefined}>
-          {tabs.map((tab) => (
-            <button key={tab.key} onClick={() => setStatus(tab.key)} type="button"
-              className={cn("inline-flex h-7 items-center gap-1.5 whitespace-nowrap rounded-md px-2.5 text-[12px] font-medium transition-colors",
-                status === tab.key ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted hover:text-foreground")}>
-              {tab.key !== "all" && <span className={cn("h-1.5 w-1.5 rounded-full", STATUS_META[tab.key].dot)} />}
-              {tab.label} <span className="tabular-nums opacity-60">{tab.count}</span>
-            </button>
-          ))}
+        <div className="queue-filter-shell relative -mx-0.5">
+          <div {...filterScroll.props} aria-label="Operation status filters"
+            className={cn(
+              "queue-filter-scroll no-scrollbar flex touch-pan-x items-center gap-1 overflow-x-auto px-0.5 outline-none focus-visible:ring-2 focus-visible:ring-ring/30",
+              filterScroll.dragging ? "cursor-grabbing select-none" : "cursor-grab",
+            )}>
+            {tabs.map((tab) => (
+              <button key={tab.key} onClick={() => setStatus(tab.key)} type="button"
+                className={cn("inline-flex h-7 items-center gap-1.5 whitespace-nowrap rounded-md px-2.5 text-[12px] font-medium transition-colors",
+                  status === tab.key ? "bg-foreground text-background" : "text-muted-foreground hover:bg-muted hover:text-foreground")}>
+                {tab.key !== "all" && <span className={cn("h-1.5 w-1.5 rounded-full", STATUS_META[tab.key].dot)} />}
+                {tab.label} <span className="tabular-nums opacity-60">{tab.count}</span>
+              </button>
+            ))}
+          </div>
+          <span aria-hidden="true" className="queue-filter-fade queue-filter-fade-start"
+            data-visible={filterScroll.canScrollStart || undefined} />
+          <span aria-hidden="true" className="queue-filter-fade queue-filter-fade-end"
+            data-visible={filterScroll.canScrollEnd || undefined} />
         </div>
       </div>
 

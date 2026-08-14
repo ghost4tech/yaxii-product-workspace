@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { ChevronDown, ImagePlus } from "lucide-react";
+import { ChevronDown, ImagePlus, Loader2, X } from "lucide-react";
 import { Explain } from "@/components/ui/help-tip";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
@@ -44,19 +44,27 @@ export function VariationRow({ combination, currency, image, index, labels, onCh
     <div className="flex flex-wrap items-center gap-2 px-3 py-2">
       <span className="w-5 shrink-0 font-mono text-[11px] tabular-nums text-muted-foreground">{index + 1}</span>
       <Explain tip="Variation image. Shown when a shopper picks this exact combination.">
-        <button type="button" onClick={() => inputRef.current?.click()}
-          className="relative grid h-9 w-9 shrink-0 cursor-pointer place-items-center overflow-hidden rounded-md border border-dashed border-border hover:border-foreground/40">
-          {image ? <><img src={image.preview} alt={labels.join(" ")} className="h-full w-full object-cover" />
-            <span onClick={(event) => {
-              event.stopPropagation();
-              onImage(null);
-            }} className="absolute inset-x-0 bottom-0 bg-foreground/70 text-center text-[9px] leading-4 text-background">remove</span>
-          </> : <ImagePlus className={cn("h-3.5 w-3.5 text-muted-foreground", uploading && "animate-pulse")} />}
+        <div className="group relative h-9 w-9 shrink-0">
+          <button type="button" onClick={() => inputRef.current?.click()} disabled={uploading}
+            aria-busy={uploading} aria-label={image ? "Replace variation image" : "Add variation image"}
+            className="relative grid h-full w-full cursor-pointer place-items-center overflow-hidden rounded-md border border-dashed border-border hover:border-foreground/40 disabled:cursor-wait">
+            {image ? <img src={image.preview} alt={labels.join(" ")} className="h-full w-full object-cover" />
+              : <ImagePlus className="h-3.5 w-3.5 text-muted-foreground" />}
+            {uploading && <span className="absolute inset-0 grid place-items-center bg-card/90 backdrop-blur-[1px]">
+              <Loader2 className="h-4 w-4 animate-spin text-foreground" />
+              <span className="sr-only">Uploading variation image</span>
+            </span>}
+          </button>
+          {image && !uploading && <button type="button" onClick={() => onImage(null)}
+            aria-label="Remove variation image"
+            className="variation-image-remove absolute -end-1 -top-1 grid h-4 w-4 place-items-center rounded-full bg-foreground text-background shadow-sm">
+            <X className="h-2.5 w-2.5" />
+          </button>}
           <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={(event) => {
             void pickImage(event.target.files?.[0]);
             event.target.value = "";
           }} />
-        </button>
+        </div>
       </Explain>
       <div className="flex min-w-0 flex-1 basis-[9rem] items-center gap-1">{labels.map((label, labelIndex) => <span key={`${label}-${labelIndex}`} className="contents">
         {labelIndex > 0 && <span className="text-[11px] text-muted-foreground/50">·</span>}
