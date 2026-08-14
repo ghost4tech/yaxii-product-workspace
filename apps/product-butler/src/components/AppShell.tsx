@@ -1,5 +1,6 @@
-import { LayoutGrid, Package, Search, SlidersHorizontal } from "lucide-react";
+import { LayoutGrid, Search, SlidersHorizontal } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
+import workspaceLogo from "../../../../assets/img/yaxii-product-workspace-logo.svg";
 import { cn } from "@/lib/utils";
 import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
 import { usePrefsStore } from "@/stores/prefsStore";
@@ -21,9 +22,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <header className="sticky top-0 z-30 border-b border-border bg-background/85 backdrop-blur">
         <div className="mx-auto flex h-14 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
-            <div className="flex h-7 w-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <Package className="h-3.5 w-3.5" />
-            </div>
+            <img src={workspaceLogo} alt="" className="h-7 w-7 shrink-0" />
             <div className="hidden min-w-0 sm:block">
               <div className="truncate text-[13px] font-semibold leading-tight">Yaxii Product Workspace</div>
               <div className="text-[10px] font-medium tracking-[0.04em] text-muted-foreground">

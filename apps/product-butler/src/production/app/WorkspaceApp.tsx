@@ -1,6 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Package } from "lucide-react";
 import { useEffect, useState } from "react";
+import workspaceLogo from "../../../../../assets/img/yaxii-product-workspace-logo.svg";
 import App from "@/App";
 import type { WorkspaceClient } from "../application/WorkspaceClient";
 import { useWorkspaceSnapshot } from "../application/useWorkspaceSnapshot";
@@ -18,8 +18,8 @@ function WorkspaceLoading() {
   return (
     <div className="workspace-shell flex min-h-screen items-center justify-center bg-background px-6" role="status" aria-label="Loading Yaxii Product Workspace">
       <div className="flex flex-col items-center text-center">
-        <div className="relative grid h-11 w-11 place-items-center rounded-xl bg-primary text-primary-foreground shadow-lg shadow-primary/10">
-          <Package className="h-5 w-5" />
+        <div className="relative">
+          <img src={workspaceLogo} alt="" className="h-11 w-11" />
           <span className="absolute -inset-2 -z-10 rounded-2xl bg-primary/10 motion-safe:animate-pulse" aria-hidden="true" />
         </div>
         <p className="mt-4 text-[13px] font-semibold">Yaxii Product Workspace</p>
