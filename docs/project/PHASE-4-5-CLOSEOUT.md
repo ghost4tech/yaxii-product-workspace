@@ -2,7 +2,7 @@
 
 **Date:** 2026-08-14
 
-**State:** Implementation and authenticated QA passed; owner acceptance pending
+**State:** Final implementation complete; owner verification and merge pending
 
 ## Git boundary
 
@@ -187,3 +187,20 @@ unchanged and are outside this targeted pass.
 
 This pass remains on `phase/04-5-lovable-v2-ui-integration`, unmerged, with translation and Phase 5
 still unstarted. Stop for owner acceptance.
+
+## Final loading polish
+
+The workspace bootstrap now uses a centered, minimal Product Workspace loading screen instead of a
+notice-style panel. Its restrained icon and pulse treatment respect reduced-motion preferences and
+disappear as soon as the real bootstrap resolves; unavailable-host behavior remains unchanged.
+
+The operation queue now holds its header, filters, rows, and footer geometry with skeletons while
+the first bounded page is pending. The truthful empty, filtered-empty, and unavailable states render
+only after the request resolves, preventing an empty-state flash before real operations appear.
+The stray **Comfortable** density label was removed from the Entry panel header; density remains an
+intentional Settings preference and still affects workspace spacing.
+
+Focused frontend regression coverage verifies both loading transitions and the absent Entry-header
+label. The final frontend gate passes 76 tests in 22 files, the 127-file production line limit,
+typecheck, lint, build, and the 24-asset production-boundary scan. The Phase 4.5 implementation is
+finished on its dedicated branch and remains unmerged.

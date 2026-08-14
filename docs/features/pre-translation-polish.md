@@ -11,7 +11,7 @@ normal WordPress admin bar and sidebar continue to determine the available viewp
 core collapsed-sidebar behavior.
 
 The Entry toolbar retains Find product, Extended, and Focus. Density remains available in Settings
-and the command menu, but no longer occupies the Entry toolbar. Branding now reads **Yaxii Product
+and the command menu, but no longer occupies the Entry toolbar or panel heading. Branding now reads **Yaxii Product
 Workspace** with **Create products faster.** The store indicator reads **Store ready**, successful
 queue rows are presented as **Published**, and current-store save feedback avoids remote-sync copy.
 Internal operation state keys remain unchanged.
@@ -22,6 +22,10 @@ Arrow Left, Arrow Right, Home, and End when keyboard-focused. A subtle edge mask
 the row overflows. Pointer capture starts only after a six-pixel drag threshold, so ordinary clicks
 and small movements activate filters. Independent logical start/end fades show only where more
 content exists and mirror under RTL.
+
+Initial bootstrap uses a centered Product Workspace loading surface rather than a notice panel.
+The operation queue renders row-shaped skeletons until its first bounded page resolves, so the
+empty state never appears before the actual queue response.
 
 ## Operational pulse
 

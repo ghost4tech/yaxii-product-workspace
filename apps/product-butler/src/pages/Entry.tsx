@@ -78,9 +78,6 @@ const Entry = () => {
               <h2 className="truncate text-[14px] font-semibold">{editingProduct ? "Edit product" : "Add new product"}</h2>
               <span className="label-eyebrow">{editingProduct ? "Editing" : "Draft"}</span>
             </div>
-            {!editingProduct && <span className="hidden text-[11px] text-muted-foreground sm:inline">
-              {prefs.density === "compact" ? "Compact" : "Comfortable"}
-            </span>}
           </div>
           <div className="panel-body relative">
             <ProductEntryForm
