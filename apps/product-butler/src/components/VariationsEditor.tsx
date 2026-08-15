@@ -16,6 +16,7 @@ import {
   VariablePlanError,
 } from "@/production/features/variableProducts/combinationGenerator";
 import type { ProductImage } from "@/types/product";
+import { __, _n, sprintf } from "@/production/core/i18n/wordpress";
 
 interface Props {
   attributes: VariableAttribute[];
@@ -52,7 +53,7 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
   useEffect(() => {
     void client.listAttributes().then(setCatalog).catch(() => {
       setCatalog([]);
-      setLookupError("Global attributes could not be loaded.");
+      setLookupError(__("Global attributes could not be loaded.", "yaxii-product-workspace"));
     });
   }, [client]);
   useEffect(() => {
@@ -62,7 +63,8 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
         setTerms((current) => ({ ...current, [attribute.attributeId]: items }));
       }).catch(() => {
         setTerms((current) => ({ ...current, [attribute.attributeId]: [] }));
-        setLookupError(`Terms for ${attribute.name} could not be loaded.`);
+        /* translators: %s: attribute name. */
+        setLookupError(sprintf(__("Terms for %s could not be loaded.", "yaxii-product-workspace"), attribute.name));
       });
     });
   }, [attributes, client, terms]);
@@ -71,7 +73,7 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
     ids.filter((id) => !imagePreviews[id]).forEach((id) => {
       void client.getMedia(id).then((media) => setImagePreviews((current) => ({
         ...current, [id]: { id: `wp-${id}`, preview: media.url, wpMediaId: id },
-      }))).catch(() => setLookupError("A variation image preview could not be loaded. Its attachment is unchanged."));
+      }))).catch(() => setLookupError(__("A variation image preview could not be loaded. Its attachment is unchanged.", "yaxii-product-workspace")));
     });
   }, [client, combinations, imagePreviews]);
 
@@ -122,7 +124,7 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
       setError("");
     } catch (reason) {
       setError(reason instanceof VariablePlanError
-        ? Object.values(reason.fields)[0] ?? reason.message : "Combinations could not be generated.");
+        ? Object.values(reason.fields)[0] ?? reason.message : __("Combinations could not be generated.", "yaxii-product-workspace"));
     }
   }, [attributes, combinations, onCombinationsChange]);
   const patchCombination = (clientId: string, updates: Partial<VariationCombination>) => {
@@ -131,11 +133,11 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
   };
   const selectionLabels = (selections: VariationSelection[]) => selections.map((selection) => {
     const attribute = attributes.find((item) => item.key === selection.attributeKey);
-    if (!attribute) return "Unknown";
+    if (!attribute) return __("Unknown", "yaxii-product-workspace");
     if ("option" in selection) return selection.option;
     return attribute.source === "global"
       ? terms[attribute.attributeId]?.find((term) => term.id === selection.termId)?.name ?? String(selection.termId)
-      : "Unknown";
+      : __("Unknown", "yaxii-product-workspace");
   });
   const autoSku = () => onCombinationsChange(combinations.map((combination) => ({
     ...combination,
@@ -145,27 +147,30 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
 
   return <div ref={ref} className="stack">
     <div className="surface-inset flex flex-wrap items-center gap-3 px-3 py-2">
-      <Step n={1} label="Attributes" active={!ready.length} done={ready.length > 0} /><span className="text-muted-foreground/40">→</span>
-      <Step n={2} label="Preview" active={ready.length > 0 && !combinations.length} done={combinations.length > 0} /><span className="text-muted-foreground/40">→</span>
-      <Step n={3} label="Variations" active={combinations.length > 0} done={combinations.length > 0 && !missingPrices} />
-      <HelpTip className="ms-auto" side="left">Pick attributes, preview how many combinations they produce, then set price, SKU, stock and image on each concrete variation.</HelpTip>
+      <Step n={1} label={__("Attributes", "yaxii-product-workspace")} active={!ready.length} done={ready.length > 0} /><span className="text-muted-foreground/40 rtl:-scale-x-100">→</span>
+      <Step n={2} label={__("Preview", "yaxii-product-workspace")} active={ready.length > 0 && !combinations.length} done={combinations.length > 0} /><span className="text-muted-foreground/40 rtl:-scale-x-100">→</span>
+      <Step n={3} label={__("Variations", "yaxii-product-workspace")} active={combinations.length > 0} done={combinations.length > 0 && !missingPrices} />
+      <HelpTip className="ms-auto" side="left">{__("Pick attributes, preview how many combinations they produce, then set the price, SKU, stock, and image on each concrete variation.", "yaxii-product-workspace")}</HelpTip>
     </div>
     <div className="stack">
       {attributes.map((attribute) => <AttributeEditor key={attribute.key} attribute={attribute}
         terms={attribute.source === "global" ? terms[attribute.attributeId] ?? [] : []}
         onChange={(next) => patchAttribute(attribute.key, next)} onRemove={() => removeAttribute(attribute.key)} />)}
       <div className="flex flex-wrap items-center gap-2">
-        <Explain tip="Reuse an attribute that already exists in your WooCommerce store, with its real terms.">
+        <Explain tip={__("Reuse an attribute that already exists in your WooCommerce store, with its real terms.", "yaxii-product-workspace")}>
           <div className="min-w-0"><GlobalAttributeSelect available={availableGlobals}
             disabled={attributes.length >= VARIABLE_PRODUCT_LIMITS.attributes} onSelect={addGlobal} /></div>
         </Explain>
-        <Explain tip="Create an attribute used only on this product — nothing is added to store taxonomies.">
+        <Explain tip={__("Create an attribute used only on this product — nothing is added to store taxonomies.", "yaxii-product-workspace")}>
           <Button type="button" variant="outline" size="sm" onClick={addCustom}
             disabled={attributes.length >= VARIABLE_PRODUCT_LIMITS.attributes} className="h-8 text-[12px]">
-            <Plus className="me-1.5 h-3.5 w-3.5" /> Custom attribute
+            <Plus className="me-1.5 h-3.5 w-3.5" /> {__("Custom attribute", "yaxii-product-workspace")}
           </Button>
         </Explain>
-        <span className="ms-auto text-[11px] tabular-nums text-muted-foreground">{attributes.length}/{VARIABLE_PRODUCT_LIMITS.attributes} attributes</span>
+        <span className="ms-auto text-[11px] tabular-nums text-muted-foreground">{
+          /* translators: 1: current attribute count, 2: maximum attribute count. */
+          sprintf(_n("%1$s/%2$s attribute", "%1$s/%2$s attributes", attributes.length, "yaxii-product-workspace"), attributes.length, VARIABLE_PRODUCT_LIMITS.attributes)
+        }</span>
       </div>
     </div>
     {ready.length > 0 && <div className={cn(
@@ -174,35 +179,47 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
     )}>
       <Layers className="h-4 w-4 shrink-0 text-info" /><p className="min-w-0 text-[12px]">
         <span className="font-mono">{previewFormula}</span><span className="text-muted-foreground"> = </span>
-        <span className="font-semibold tabular-nums">{expected}</span> variation{expected !== 1 && "s"}
+        <span className="font-semibold tabular-nums">{
+          /* translators: %s: variation count. */
+          sprintf(_n("%s variation", "%s variations", expected, "yaxii-product-workspace"), expected)
+        }</span>
       </p>
-      <HelpTip>Price, SKU, stock and image belong to each concrete WooCommerce combination.</HelpTip>
+      <HelpTip>{__("Price, SKU, stock, and image belong to each concrete WooCommerce combination.", "yaxii-product-workspace")}</HelpTip>
       <Button type="button" size="sm" variant={stale ? "default" : "outline"} onClick={generate}
         disabled={overLimit} className="ms-auto h-8 text-[12px]">
         {combinations.length ? <RefreshCw className="me-1.5 h-3.5 w-3.5" /> : <Sparkles className="me-1.5 h-3.5 w-3.5" />}
-        {combinations.length ? "Regenerate combinations" : "Generate combinations"}
+        {combinations.length ? __("Regenerate combinations", "yaxii-product-workspace") : __("Generate combinations", "yaxii-product-workspace")}
       </Button>
       {overLimit && <p className="flex w-full items-center gap-1.5 text-[11px] text-warning">
-        <AlertTriangle className="h-3.5 w-3.5" /> Over the {VARIABLE_PRODUCT_LIMITS.combinations}-combination limit. Remove options to continue.
+        <AlertTriangle className="h-3.5 w-3.5" /> {
+          /* translators: %s: maximum combination count. */
+          sprintf(__("Over the %s-combination limit. Remove options to continue.", "yaxii-product-workspace"), VARIABLE_PRODUCT_LIMITS.combinations)
+        }
       </p>}
     </div>}
     {combinations.length > 0 && <div className="overflow-hidden rounded-md border border-border">
       <div className="flex flex-wrap items-center gap-2 border-b border-border bg-muted/25 px-3 py-2">
-        <h4 className="text-[11px] font-semibold uppercase tracking-[0.09em] text-foreground/70">Variations</h4>
-        <span className="text-[11px] tabular-nums text-muted-foreground">{enabledCount} of {combinations.length} enabled</span>
-        {missingPrices > 0 && <span className="text-[11px] text-warning">· {missingPrices} missing a price</span>}
+        <h4 className="text-[11px] font-semibold uppercase tracking-[0.09em] text-foreground/70">{__("Variations", "yaxii-product-workspace")}</h4>
+        <span className="text-[11px] tabular-nums text-muted-foreground">{
+          /* translators: 1: enabled variation count, 2: total variation count. */
+          sprintf(__("%1$s of %2$s enabled", "yaxii-product-workspace"), enabledCount, combinations.length)
+        }</span>
+        {missingPrices > 0 && <span className="text-[11px] text-warning">· {
+          /* translators: %s: number of variations missing a price. */
+          sprintf(_n("%s variation missing a price", "%s variations missing a price", missingPrices, "yaxii-product-workspace"), missingPrices)
+        }</span>}
         <div className="ms-auto flex items-center gap-2">
           <div className="input-group w-[8.5rem]"><span className="input-affix">{currency}</span>
-            <input type="number" step="0.01" placeholder="Set all" className="font-mono" value={bulkPrice}
+            <input type="number" step="0.01" placeholder={__("Set all", "yaxii-product-workspace")} className="font-mono" value={bulkPrice}
               onChange={(event) => setBulkPrice(event.target.value)} /></div>
-          <Explain tip="Applies this price to every enabled variation. You can still override individual ones.">
+          <Explain tip={__("Applies this price to every enabled variation. You can still override individual ones.", "yaxii-product-workspace")}>
             <Button type="button" size="sm" variant="outline" disabled={!bulkPrice}
               onClick={() => onCombinationsChange(combinations.map((combination) => combination.enabled
-                ? { ...combination, regularPrice: bulkPrice } : combination))} className="h-8 text-[12px]">Apply</Button>
+                ? { ...combination, regularPrice: bulkPrice } : combination))} className="h-8 text-[12px]">{__("Apply", "yaxii-product-workspace")}</Button>
           </Explain>
-          <Explain tip="Builds SKUs from the product SKU plus each option.">
+          <Explain tip={__("Builds SKUs from the product SKU plus each option.", "yaxii-product-workspace")}>
             <Button type="button" size="sm" variant="ghost" onClick={autoSku} className="h-8 text-[12px]">
-              <Wand2 className="me-1.5 h-3.5 w-3.5" /> Auto SKU
+              <Wand2 className="me-1.5 h-3.5 w-3.5" /> {__("Auto SKU", "yaxii-product-workspace")}
             </Button>
           </Explain>
         </div>
@@ -218,7 +235,7 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
     </div>}
     {error && <p role="alert" className="text-[11px] text-destructive">{error}</p>}
     {lookupError && <p role="alert" className="text-[11px] text-destructive">{lookupError}</p>}
-    {!attributes.length && <p className="text-[12px] text-muted-foreground">Add a global or custom attribute to start. Mixing both is fine — Global Color (Black, White) plus Custom Size (S, M, L) generates 6 variations.</p>}
+    {!attributes.length && <p className="text-[12px] text-muted-foreground">{__("Add a global or custom attribute to start. You can mix both: Global Color (Black, White) plus Custom Size (S, M, L) generates 6 variations.", "yaxii-product-workspace")}</p>}
   </div>;
 });
 VariationsEditor.displayName = "VariationsEditor";

@@ -8,6 +8,7 @@ import type { WorkspaceRepository } from "../application/WorkspaceRepository";
 import type { OperationPage } from "../domain/products";
 import type { WorkspaceSnapshot } from "../domain/workspace";
 import { workspaceRepository, workspaceSnapshot } from "../test/workspaceFixtures";
+import { installWordPressI18n } from "../test/wordpressI18n";
 import { WorkspaceApp } from "./WorkspaceApp";
 
 const snapshot: WorkspaceSnapshot = workspaceSnapshot;
@@ -176,6 +177,11 @@ describe("WorkspaceApp", () => {
   });
 
   it("applies RTL and representative Arabic unavailable content", async () => {
+    const restoreI18n = installWordPressI18n({
+      "Workspace unavailable": "مساحة العمل غير متاحة",
+      "WooCommerce must be installed and active before this workspace can be used.":
+        "يجب تثبيت WooCommerce وتنشيطه قبل استخدام مساحة العمل هذه.",
+    });
     const { scope } = renderWorkspace({
       ...snapshot,
       availability: { kind: "woocommerce-unavailable" },
@@ -190,5 +196,6 @@ describe("WorkspaceApp", () => {
     expect(await screen.findByRole("heading", { name: "مساحة العمل غير متاحة" })).toBeVisible();
     expect(scope).toHaveAttribute("dir", "rtl");
     expect(scope).toHaveAttribute("lang", "ar-DZ");
+    restoreI18n();
   });
 });

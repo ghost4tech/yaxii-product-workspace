@@ -10,6 +10,7 @@ import { SecureRandomUnavailableError } from "../../core/security/secureUuid";
 import { IdempotencyKeyManager } from "./idempotency";
 import { mapServerFields, operationErrorFields } from "./productErrors";
 import { mapProductRequest, mapVariableProductRequest, ProductMappingError, type ProductFieldErrors, type ProductSubmission } from "./productMapping";
+import { __ } from "../../core/i18n/wordpress";
 
 export interface ProductSubmitOutcome {
   fields: ProductFieldErrors;
@@ -66,8 +67,8 @@ export function useProductCreate(client: WorkspaceClient, bootstrap: WorkspaceBo
 
       if (result.state === "partial" && result.product) {
         keys.current.lock(key);
-        toast({ title: "Product needs recovery", description: result.warnings[0] ?? "Some variations were not saved.", variant: "destructive" });
-        return { fields: { root: result.warnings[0] ?? "Retry the partial operation from the queue." }, result, state: "partial" };
+        toast({ title: __("Product needs recovery", "yaxii-product-workspace"), description: result.warnings[0] ?? __("Some variations were not saved.", "yaxii-product-workspace"), variant: "destructive" });
+        return { fields: { root: result.warnings[0] ?? __("Retry the partial operation from the queue.", "yaxii-product-workspace") }, result, state: "partial" };
       }
 
       const fields = operationErrorFields(result.errors);

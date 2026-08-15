@@ -3,10 +3,11 @@ import { NavLink, useLocation } from "react-router-dom";
 import workspaceLogo from "../../../../assets/img/yaxii-product-workspace-logo.svg";
 import { cn } from "@/lib/utils";
 import { usePrefsStore } from "@/stores/prefsStore";
+import { __, _x } from "@/production/core/i18n/wordpress";
 
 const TABS = [
-  { to: "/", label: "Entry", icon: LayoutGrid },
-  { to: "/settings", label: "Settings", icon: SlidersHorizontal },
+  { to: "/", label: _x("Entry", "Main navigation tab", "yaxii-product-workspace"), icon: LayoutGrid },
+  { to: "/settings", label: _x("Settings", "Main navigation tab", "yaxii-product-workspace"), icon: SlidersHorizontal },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -25,7 +26,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <div className="hidden min-w-0 sm:block">
               <div className="truncate text-[13px] font-semibold leading-tight">Yaxii Product Workspace</div>
               <div className="text-[10px] font-medium tracking-[0.04em] text-muted-foreground">
-                Create products faster.
+                {__("Create products faster.", "yaxii-product-workspace")}
               </div>
             </div>
           </div>
@@ -37,15 +38,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               type="button"
             >
               <Search className="h-3.5 w-3.5" />
-              <span>Search or jump to…</span>
+              <span>{__("Search or jump to…", "yaxii-product-workspace")}</span>
               {showHints && <kbd className="kbd ms-6">Ctrl K</kbd>}
             </button>
             <button
-              aria-label="Keyboard shortcuts"
+              aria-label={__("Keyboard shortcuts", "yaxii-product-workspace")}
               aria-haspopup="dialog"
               className="hidden h-8 w-8 items-center justify-center rounded-md border border-border text-muted-foreground transition hover:bg-muted hover:text-foreground lg:flex"
               onClick={() => setShortcutsOpen(true)}
-              title="Keyboard shortcuts"
+              title={__("Keyboard shortcuts", "yaxii-product-workspace")}
               type="button"
             >
               <Keyboard aria-hidden="true" className="h-3.5 w-3.5" />

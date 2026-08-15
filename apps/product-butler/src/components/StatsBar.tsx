@@ -7,6 +7,7 @@ import {
 } from "@/production/features/operations/operationPulse";
 import { useOperationPulse } from "@/production/features/operations/useOperationPulse";
 import { usePrefsStore } from "@/stores/prefsStore";
+import { __ } from "@/production/core/i18n/wordpress";
 
 function sparkPath(points: Array<number | null>): string | null {
   const finite = points.filter((point): point is number => point !== null);
@@ -40,7 +41,7 @@ function trendTone(trend: PulseTrend): string {
 
 function Delta({ trend }: { trend: PulseTrend | null }) {
   if (!trend) return <span className="inline-flex items-center text-[11px] text-muted-foreground"
-    aria-label="Not enough previous-period data"><Minus className="h-3 w-3" />—</span>;
+    aria-label={__("Not enough previous-period data", "yaxii-product-workspace")}><Minus className="h-3 w-3" />—</span>;
   const Icon = trend.amount > 0 ? ArrowUpRight : trend.amount < 0 ? ArrowDownRight : Minus;
   const unit = trend.unit === "percentage-points" ? " pp" : "";
   const sign = trend.amount > 0 ? "+" : trend.amount < 0 ? "−" : "";
@@ -50,7 +51,7 @@ function Delta({ trend }: { trend: PulseTrend | null }) {
 }
 
 function unavailableMetrics(hint: string): PulseMetric[] {
-  return ["Recent operations", "Published", "Success rate", "Needs attention"].map((label) => ({
+  return [__("Recent operations", "yaxii-product-workspace"), __("Published", "yaxii-product-workspace"), __("Success rate", "yaxii-product-workspace"), __("Needs attention", "yaxii-product-workspace")].map((label) => ({
     hint, label, spark: [], trend: null, value: "—",
   }));
 }
@@ -60,7 +61,7 @@ export function StatsBar() {
   const showTrends = usePrefsStore((state) => state.prefs.showKpiTrends);
   const metrics = pulse.data
     ? operationPulseMetrics(pulse.data)
-    : unavailableMetrics(pulse.isError ? "unavailable" : "loading");
+    : unavailableMetrics(pulse.isError ? __("unavailable", "yaxii-product-workspace") : __("loading", "yaxii-product-workspace"));
 
   return (
     <div className="surface-card grid grid-cols-2 divide-y divide-border overflow-hidden sm:grid-cols-4 sm:divide-x sm:divide-y-0">

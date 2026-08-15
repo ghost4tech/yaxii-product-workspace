@@ -54,10 +54,10 @@ describe("Lovable variable editor", () => {
     await user.type(options[1]!, "S, M, L{Enter}");
 
     expect(screen.getByText(/2 Color/)).toBeVisible();
-    expect(screen.getByText("6")).toBeVisible();
+    expect(screen.getByText("6 variations")).toBeVisible();
     await user.click(screen.getByRole("button", { name: /generate combinations/i }));
     expect(screen.getAllByPlaceholderText("Price")).toHaveLength(6);
-    expect(screen.getByText(/6 missing a price/i)).toBeVisible();
+    expect(screen.getByText(/variations missing a price/i)).toBeVisible();
 
     const prices = screen.getAllByPlaceholderText("Price");
     const skus = screen.getAllByPlaceholderText("SKU");
@@ -97,7 +97,7 @@ describe("Lovable variable editor", () => {
     await user.type(screen.getByPlaceholderText(/type options/i), "S, M, L{Enter}");
 
     expect(screen.getByText(/2 Color/)).toBeVisible();
-    expect(screen.getByText("6")).toBeVisible();
+    expect(screen.getByText("6 variations")).toBeVisible();
     await user.click(screen.getByRole("button", { name: /generate combinations/i }));
     expect(screen.getAllByPlaceholderText("Price")).toHaveLength(6);
   });

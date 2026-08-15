@@ -3,6 +3,7 @@ import { GripVertical, ImagePlus, Loader2, Plus, Star, Upload, X } from "lucide-
 import { cn } from "@/lib/utils";
 import { appendSelectedMedia } from "@/production/features/media/productImages";
 import type { ProductImage } from "@/types/product";
+import { __, _n, sprintf } from "@/production/core/i18n/wordpress";
 
 interface Props {
   images: ProductImage[];
@@ -60,8 +61,8 @@ export function ImageUpload({ images, maxImages = 10, onChange, onUpload }: Prop
         onChange(nextImages);
       }
     } catch (error) {
-      const message = error instanceof Error ? error.message : "Images could not be uploaded.";
-      setUploadError(nextImages.length > images.length ? `${message} Uploaded images were kept.` : message);
+      const message = error instanceof Error ? error.message : __("Images could not be uploaded.", "yaxii-product-workspace");
+      setUploadError(nextImages.length > images.length ? `${message} ${__("Uploaded images were kept.", "yaxii-product-workspace")}` : message);
     } finally {
       setUploading(false);
     }
@@ -73,7 +74,12 @@ export function ImageUpload({ images, maxImages = 10, onChange, onUpload }: Prop
       inputRef.current?.click();
       return;
     }
-    const frame = window.wp.media({ library: { type: "image" }, multiple: true, title: "Product images" });
+    const frame = window.wp.media({
+      button: { text: __("Add images", "yaxii-product-workspace") },
+      library: { type: "image" },
+      multiple: true,
+      title: __("Product images", "yaxii-product-workspace"),
+    });
     frame.on("select", () => {
       const selected = frame.state().get("selection").toJSON();
       onChange(appendSelectedMedia(images, selected, maxImages));
@@ -126,9 +132,10 @@ export function ImageUpload({ images, maxImages = 10, onChange, onUpload }: Prop
         className={cn(
           "inline-flex h-7 items-center gap-1.5 rounded-md border border-border bg-muted/40 px-2.5",
           "text-[12px] font-medium transition-colors hover:bg-muted disabled:opacity-50",
-        )}><ImagePlus className="h-3.5 w-3.5" /> Add images</button>
+        )}><ImagePlus className="h-3.5 w-3.5" /> {__("Add images", "yaxii-product-workspace")}</button>
       <span className="text-[11px] tabular-nums text-muted-foreground">
-        {images.length}/{maxImages} · drag to reorder
+        {/* translators: 1: current image count, 2: maximum image count. */}
+        {sprintf(__("%1$s/%2$s · drag to reorder", "yaxii-product-workspace"), images.length, maxImages)}
       </span>
     </div>}
 
@@ -139,22 +146,25 @@ export function ImageUpload({ images, maxImages = 10, onChange, onUpload }: Prop
           "group relative aspect-square cursor-grab overflow-hidden rounded-md border border-border bg-muted active:cursor-grabbing",
           index === 0 && "ring-1 ring-foreground/25", draggedIndex === index && "opacity-40",
         )}>
-        <img src={image.preview} alt={`Product image ${index + 1}`} className="h-full w-full object-cover" />
+        <img src={image.preview} alt={
+          /* translators: %s: image position. */
+          sprintf(__("Product image %s", "yaxii-product-workspace"), index + 1)
+        } className="h-full w-full object-cover" />
         <div className="absolute inset-0 bg-foreground/0 transition-colors group-hover:bg-foreground/45">
           <GripVertical className="absolute start-1 top-1 h-3.5 w-3.5 text-white opacity-0 drop-shadow group-hover:opacity-90" />
           <button type="button" onClick={() => removeImage(image.id)}
             className="absolute end-1 top-1 grid h-5 w-5 place-items-center rounded bg-background/90 text-destructive opacity-0 transition-opacity group-hover:opacity-100"
-            aria-label="Remove image"><X className="h-3 w-3" /></button>
+            aria-label={__("Remove image", "yaxii-product-workspace")}><X className="h-3 w-3" /></button>
           {index !== 0 && <button type="button" onClick={() => makeMain(index)}
             className="absolute bottom-1 start-1 inline-flex h-5 items-center gap-1 rounded bg-background/90 px-1.5 text-[10px] font-medium opacity-0 transition-opacity group-hover:opacity-100">
-            <Star className="h-2.5 w-2.5" /> Main
+            <Star className="h-2.5 w-2.5" /> {__("Main", "yaxii-product-workspace")}
           </button>}
         </div>
-        {index === 0 && <span className="absolute bottom-1 start-1 inline-flex h-4 items-center rounded bg-foreground px-1.5 text-[9px] font-semibold uppercase tracking-wide text-background">Main</span>}
+        {index === 0 && <span className="absolute bottom-1 start-1 inline-flex h-4 items-center rounded bg-foreground px-1.5 text-[9px] font-semibold uppercase tracking-wide text-background">{__("Main", "yaxii-product-workspace")}</span>}
       </div>
     ))}{!isFull && <button type="button" onClick={openPicker}
       className="grid aspect-square place-items-center rounded-md border border-dashed border-border text-muted-foreground transition-colors hover:border-foreground/40 hover:bg-muted/40 hover:text-foreground"
-      aria-label="Add more images"><Plus className="h-4 w-4" /></button>}</div>}
+      aria-label={__("Add more images", "yaxii-product-workspace")}><Plus className="h-4 w-4" /></button>}</div>}
 
     {dropSurfaceVisible && <div onClick={openPicker} className={cn(
       "drag-zone flex cursor-pointer flex-col items-center justify-center gap-1.5 text-center",
@@ -165,10 +175,10 @@ export function ImageUpload({ images, maxImages = 10, onChange, onUpload }: Prop
       <div className={cn("rounded-full p-2 transition-colors", isDragging ? "bg-foreground text-background" : "bg-muted text-muted-foreground")}>
         {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
       </div>
-      <p className="text-[13px] font-medium">{uploading ? "Uploading to WordPress…"
-        : isDragging ? "Drop to upload" : hasImages ? "Drop images to add" : "Drag & drop product images"}</p>
+      <p className="text-[13px] font-medium">{uploading ? __("Uploading to WordPress…", "yaxii-product-workspace")
+        : isDragging ? __("Drop to upload", "yaxii-product-workspace") : hasImages ? __("Drop images to add", "yaxii-product-workspace") : __("Drag & drop product images", "yaxii-product-workspace")}</p>
       {!hasImages && <p className="text-[11px] text-muted-foreground">
-        {uploadError || `or click to browse · up to ${maxImages} · first image becomes the thumbnail`}
+        {uploadError || /* translators: %s: maximum image count. */ sprintf(_n("or click to browse · up to %s image · first image becomes the thumbnail", "or click to browse · up to %s images · first image becomes the thumbnail", maxImages, "yaxii-product-workspace"), maxImages)}
       </p>}
     </div>}
     {hasImages && uploadError && <p role="alert" className="text-[11px] text-destructive">{uploadError}</p>}

@@ -6,7 +6,8 @@
   }
   .rte-content p.is-editor-empty:first-child::before {
     content: attr(data-placeholder);
-    @apply text-muted-foreground/60 float-left h-0 pointer-events-none;
+    @apply text-muted-foreground/60 h-0 pointer-events-none;
+    float: inline-start;
   }
   .rte-content h2 {
     @apply text-[16px] font-semibold tracking-tight mt-3;

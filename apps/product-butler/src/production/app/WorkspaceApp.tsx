@@ -8,6 +8,7 @@ import { PortalProvider } from "../components/PortalProvider";
 import { UnavailableState } from "../components/UnavailableState";
 import { toLanguageTag } from "../core/i18n/locale";
 import { WorkspaceRuntimeProvider } from "./WorkspaceRuntime";
+import { __ } from "../core/i18n/wordpress";
 
 interface WorkspaceAppProps {
   client: WorkspaceClient;
@@ -16,7 +17,7 @@ interface WorkspaceAppProps {
 
 function WorkspaceLoading() {
   return (
-    <div className="workspace-shell flex min-h-screen items-center justify-center bg-background px-6" role="status" aria-label="Loading Yaxii Product Workspace">
+    <div className="workspace-shell flex min-h-screen items-center justify-center bg-background px-6" role="status" aria-label={__("Loading Yaxii Product Workspace", "yaxii-product-workspace")}>
       <div className="flex flex-col items-center text-center">
         <div className="relative">
           <img src={workspaceLogo} alt="" className="h-11 w-11" />

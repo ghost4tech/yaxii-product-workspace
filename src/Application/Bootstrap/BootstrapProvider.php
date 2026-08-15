@@ -8,7 +8,7 @@
 namespace Yaxii\ProductWorkspace\Application\Bootstrap;
 
 use Yaxii\ProductWorkspace\Application\Access\CapabilityPolicy;
-
+use Yaxii\ProductWorkspace\Infrastructure\WordPress\UserLocaleContext;
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -16,9 +16,12 @@ defined( 'ABSPATH' ) || exit;
  */
 final class BootstrapProvider {
 	private CapabilityPolicy $capabilities;
+	private UserLocaleContext $locale;
 
-	public function __construct( CapabilityPolicy $capabilities ) {
+	public function __construct( CapabilityPolicy $capabilities, UserLocaleContext $locale ) {
+
 		$this->capabilities = $capabilities;
+		$this->locale       = $locale;
 	}
 
 	public function get(): BootstrapResource {
@@ -36,10 +39,7 @@ final class BootstrapProvider {
 					'publish_products' => $this->capabilities->can_publish_products(),
 					'upload_media'     => $this->capabilities->can_upload_media(),
 				),
-				'locale'       => array(
-					'code'      => determine_locale(),
-					'direction' => is_rtl() ? 'rtl' : 'ltr',
-				),
+				'locale'       => $this->locale->current(),
 				'woocommerce'  => $this->woocommerce_data( $woo_available ),
 				'features'     => array(
 					'simple_product_create'   => $woo_available,

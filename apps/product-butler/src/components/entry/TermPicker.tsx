@@ -6,6 +6,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { cn } from "@/lib/utils";
 import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
 import type { Category } from "@/types/product";
+import { __, _x, sprintf } from "@/production/core/i18n/wordpress";
 
 type TermKind = "category" | "shipping" | "tag";
 
@@ -48,8 +49,11 @@ export function TermPicker({ kind, label, multiple = true, onChange, value }: Pr
   }, [client, kind, open, query]);
 
   const summary = useMemo(() => {
-    if (value.length === 0) return `Select ${label.toLowerCase()}…`;
-    return value.map((id) => labels.current.get(id) ?? `#${id}`).join(", ");
+    if (value.length === 0) {
+      /* translators: %s: taxonomy field label. */
+      return sprintf(__("Select %s…", "yaxii-product-workspace"), label.toLocaleLowerCase());
+    }
+    return value.map((id) => labels.current.get(id) ?? `#${id}`).join(_x(", ", "List separator", "yaxii-product-workspace"));
   }, [label, value]);
 
   const toggle = (item: Category) => {
@@ -67,19 +71,24 @@ export function TermPicker({ kind, label, multiple = true, onChange, value }: Pr
       <PopoverTrigger asChild>
         <Button type="button" variant="outline" role="combobox" aria-label={label}
           className="ctl w-full justify-between overflow-hidden font-normal">
-          <span className="truncate">{summary}</span>
+          <bdi className="truncate" dir="auto">{summary}</bdi>
           <ChevronsUpDown className="ms-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent align="start" className="w-[300px] p-0">
         <Command shouldFilter={false}>
-          <CommandInput value={query} onValueChange={setQuery} placeholder={`Search ${label.toLowerCase()}…`} />
+          <CommandInput value={query} onValueChange={setQuery} placeholder={
+            /* translators: %s: taxonomy field label. */
+            sprintf(__("Search %s…", "yaxii-product-workspace"), label.toLocaleLowerCase())
+          } />
           <CommandList>
-            <CommandEmpty>{loading ? "Searching…" : `No ${label.toLowerCase()} found.`}</CommandEmpty>
+            <CommandEmpty>{loading
+              ? __("Searching…", "yaxii-product-workspace")
+              : /* translators: %s: taxonomy field label. */ sprintf(__("No %s found.", "yaxii-product-workspace"), label.toLocaleLowerCase())}</CommandEmpty>
             {items.map((item) => (
               <CommandItem key={item.id} value={`${item.name}-${item.id}`} onSelect={() => toggle(item)}>
                 <Check className={cn("me-2 h-4 w-4", value.includes(item.id) ? "opacity-100" : "opacity-0")} />
-                <span className="min-w-0 flex-1 truncate">{item.name}</span>
+                <bdi className="min-w-0 flex-1 truncate" dir="auto">{item.name}</bdi>
                 {loading && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
               </CommandItem>
             ))}

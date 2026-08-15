@@ -1,10 +1,11 @@
 import { Skeleton } from "@/components/ui/skeleton";
+import { __ } from "@/production/core/i18n/wordpress";
 
 const ROW_WIDTHS = ["w-28", "w-36", "w-24", "w-32"];
 
 export function QueueSkeleton({ compact }: { compact: boolean }) {
   return (
-    <div className="divide-y divide-border/70" role="status" aria-label="Loading recent products">
+    <div className="divide-y divide-border/70" role="status" aria-label={__("Loading recent products", "yaxii-product-workspace")}>
       {ROW_WIDTHS.map((nameWidth) => (
         <div className="data-row" key={nameWidth}>
           <Skeleton className="h-8 w-8 shrink-0" />

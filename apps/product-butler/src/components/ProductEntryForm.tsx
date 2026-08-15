@@ -15,6 +15,7 @@ import { DescriptionFields } from "@/components/entry/DescriptionFields";
 import { EssentialsFields } from "@/components/entry/EssentialsFields";
 import { ExtendedFields } from "@/components/entry/ExtendedFields";
 import { useProductEntryController } from "@/components/entry/useProductEntryController";
+import { __, sprintf } from "@/production/core/i18n/wordpress";
 
 interface Props {
   advancedOpen?: boolean;
@@ -88,10 +89,10 @@ export function ProductEntryForm({
       <form onSubmit={(event) => void form.handleSubmit(controller.submit)(event)}>
         {controller.editing && <div className="mb-4 flex h-9 items-center gap-2 rounded-md border border-info/25 bg-info/[0.07] px-3 text-[12px]">
           <Pencil className="h-3.5 w-3.5 shrink-0 text-info" />
-          <span className="truncate">Editing <span className="font-semibold">{product?.name}</span></span>
+          <span className="truncate" dir="auto">{__("Editing", "yaxii-product-workspace")} <span className="font-semibold">{product?.name}</span></span>
           <button type="button" onClick={controller.cancelEdit}
             className="ms-auto inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">
-            <X className="h-3 w-3" /> Cancel
+            <X className="h-3 w-3" /> {__("Cancel", "yaxii-product-workspace")}
           </button>
         </div>}
         {twoColumn ? (
@@ -110,7 +111,7 @@ export function ProductEntryForm({
                 <CollapsibleTrigger asChild>
                   <Button type="button" variant="ghost"
                     className="h-9 w-full justify-between text-[12px] text-muted-foreground hover:text-foreground">
-                    <span>Extended options</span>
+                    <span>{__("Extended options", "yaxii-product-workspace")}</span>
                     {showAdvanced ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
                   </Button>
                 </CollapsibleTrigger>
@@ -127,9 +128,9 @@ export function ProductEntryForm({
         )}
 
         <EntryActionBar
-          clearLabel={controller.editing ? "Reset changes" : "Clear"}
+          clearLabel={controller.editing ? __("Reset changes", "yaxii-product-workspace") : __("Clear", "yaxii-product-workspace")}
           disabled={!controller.canWrite}
-          disabledReason={!controller.canWrite ? "This product operation is unavailable." : undefined}
+          disabledReason={!controller.canWrite ? __("This product operation is unavailable.", "yaxii-product-workspace") : undefined}
           dirty={controller.editing
             ? form.formState.isDirty || controller.variableDirty
             : Boolean(watched.name || watched.regularPrice || watched.sku || controller.images.length
@@ -139,23 +140,26 @@ export function ProductEntryForm({
           onSaveDraft={controller.editing ? undefined : controller.saveDraft}
           onTrash={controller.editing ? () => controller.setTrashOpen(true) : undefined}
           productName={watched.name}
-          submitLabel={controller.editing ? "Update product" : "Save & next"}
+          submitLabel={controller.editing ? __("Update product", "yaxii-product-workspace") : __("Save & next", "yaxii-product-workspace")}
         />
       </form>
 
       <AlertDialog open={controller.conflictOpen} onOpenChange={controller.setConflictOpen}>
-        <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Newer product changes found</AlertDialogTitle>
-          <AlertDialogDescription>Your edit was not saved because this product changed after you opened it. Reload the latest values before editing again.</AlertDialogDescription>
-        </AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Keep this draft</AlertDialogCancel>
-          <AlertDialogAction onClick={() => void controller.reloadLatest()}>Reload latest</AlertDialogAction>
+        <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>{__("Newer product changes found", "yaxii-product-workspace")}</AlertDialogTitle>
+          <AlertDialogDescription>{__("Your edit was not saved because this product changed after you opened it. Reload the latest values before editing again.", "yaxii-product-workspace")}</AlertDialogDescription>
+        </AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>{__("Keep this draft", "yaxii-product-workspace")}</AlertDialogCancel>
+          <AlertDialogAction onClick={() => void controller.reloadLatest()}>{__("Reload latest", "yaxii-product-workspace")}</AlertDialogAction>
         </AlertDialogFooter></AlertDialogContent>
       </AlertDialog>
 
       <AlertDialog open={controller.trashOpen} onOpenChange={controller.setTrashOpen}>
-        <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Trash this WooCommerce product?</AlertDialogTitle>
-          <AlertDialogDescription>This moves “{product?.name}” to WooCommerce trash. It is different from removing an entry from recent operations.</AlertDialogDescription>
-        </AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => void controller.trash()}>Move to trash</AlertDialogAction>
+        <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>{__("Trash this WooCommerce product?", "yaxii-product-workspace")}</AlertDialogTitle>
+          <AlertDialogDescription dir="auto">{
+            /* translators: %s: product name. */
+            sprintf(__("This moves “%s” to WooCommerce trash. It is different from removing an entry from recent operations.", "yaxii-product-workspace"), product?.name ?? "")
+          }</AlertDialogDescription>
+        </AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>{__("Cancel", "yaxii-product-workspace")}</AlertDialogCancel>
+          <AlertDialogAction onClick={() => void controller.trash()}>{__("Move to trash", "yaxii-product-workspace")}</AlertDialogAction>
         </AlertDialogFooter></AlertDialogContent>
       </AlertDialog>
     </Form>

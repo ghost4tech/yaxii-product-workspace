@@ -9,14 +9,15 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { TabsContent } from "@/components/ui/tabs";
 import { type Preferences, usePrefsStore } from "@/stores/prefsStore";
+import { __ } from "@/production/core/i18n/wordpress";
 
 export function WorkspaceSettings() {
   const { prefs, setPref } = usePrefsStore();
 
   return (
     <TabsContent value="workspace" className="mt-4 space-y-4">
-      <SettingsPanel title="Workspace behaviour" description="Navigation and on-screen guidance.">
-        <SettingRow title="Landing tab" description="Where the app opens by default.">
+      <SettingsPanel title={__("Workspace behavior", "yaxii-product-workspace")} description={__("Navigation and on-screen guidance.", "yaxii-product-workspace")}>
+        <SettingRow title={__("Landing tab", "yaxii-product-workspace")} description={__("Where the app opens by default.", "yaxii-product-workspace")}>
           <Select
             value={prefs.defaultTab}
             onValueChange={(value) => setPref("defaultTab", value as Preferences["defaultTab"])}
@@ -25,37 +26,37 @@ export function WorkspaceSettings() {
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="/">Entry workspace</SelectItem>
-              <SelectItem value="/settings">Settings</SelectItem>
+              <SelectItem value="/">{__("Entry workspace", "yaxii-product-workspace")}</SelectItem>
+              <SelectItem value="/settings">{__("Settings", "yaxii-product-workspace")}</SelectItem>
             </SelectContent>
           </Select>
         </SettingRow>
-        <SettingRow title="Inline keyboard hints" description="Show key badges on buttons and footers.">
+        <SettingRow title={__("Inline keyboard hints", "yaxii-product-workspace")} description={__("Show key badges on buttons and footers.", "yaxii-product-workspace")}>
           <Switch
-            aria-label="Inline keyboard hints"
+            aria-label={__("Inline keyboard hints", "yaxii-product-workspace")}
             checked={prefs.showKeyboardHints}
             onCheckedChange={(value) => setPref("showKeyboardHints", value)}
           />
         </SettingRow>
-        <SettingRow title="Help tooltips"
-          description="Inline “?” explanations on fields and controls. Turn off for a cleaner interface.">
-          <Switch aria-label="Help tooltips" checked={prefs.showTooltips}
+        <SettingRow title={__("Help tooltips", "yaxii-product-workspace")}
+          description={__("Inline “?” explanations on fields and controls. Turn off for a cleaner interface.", "yaxii-product-workspace")}>
+          <Switch aria-label={__("Help tooltips", "yaxii-product-workspace")} checked={prefs.showTooltips}
             onCheckedChange={(value) => setPref("showTooltips", value)} />
         </SettingRow>
-        <SettingRow title="KPI trends" description="Show sparklines and deltas on the metric strip.">
+        <SettingRow title={__("KPI trends", "yaxii-product-workspace")} description={__("Show sparklines and deltas on the metric strip.", "yaxii-product-workspace")}>
           <Switch
-            aria-label="KPI trends"
+            aria-label={__("KPI trends", "yaxii-product-workspace")}
             checked={prefs.showKpiTrends}
             onCheckedChange={(value) => setPref("showKpiTrends", value)}
           />
         </SettingRow>
         <SettingRow
-          title="Sticky queue panel"
-          description="Keeps the queue in view while you scroll the form."
+          title={__("Sticky queue panel", "yaxii-product-workspace")}
+          description={__("Keeps the queue in view while you scroll the form.", "yaxii-product-workspace")}
           last
         >
           <Switch
-            aria-label="Sticky queue panel"
+            aria-label={__("Sticky queue panel", "yaxii-product-workspace")}
             checked={prefs.stickyQueue}
             onCheckedChange={(value) => setPref("stickyQueue", value)}
           />
@@ -63,23 +64,23 @@ export function WorkspaceSettings() {
       </SettingsPanel>
 
       <SettingsPanel
-        title="Focus mode"
-        description="Distraction-free product entry. Remembered between sessions."
+        title={__("Focus mode", "yaxii-product-workspace")}
+        description={__("Distraction-free product entry. Remembered between sessions.", "yaxii-product-workspace")}
       >
-        <SettingRow title="Start in focus mode" description="Hide navigation and metrics when the workspace opens.">
+        <SettingRow title={__("Start in focus mode", "yaxii-product-workspace")} description={__("Hide navigation and metrics when the workspace opens.", "yaxii-product-workspace")}>
           <Switch
-            aria-label="Start in focus mode"
+            aria-label={__("Start in focus mode", "yaxii-product-workspace")}
             checked={prefs.focusMode}
             onCheckedChange={(value) => setPref("focusMode", value)}
           />
         </SettingRow>
         <SettingRow
-          title="Keep the queue in focus mode"
-          description="Show recent products beside the form while focused."
+          title={__("Keep the queue in focus mode", "yaxii-product-workspace")}
+          description={__("Show recent products beside the form while focused.", "yaxii-product-workspace")}
           last
         >
           <Switch
-            aria-label="Keep the queue in focus mode"
+            aria-label={__("Keep the queue in focus mode", "yaxii-product-workspace")}
             checked={prefs.focusModeShowQueue}
             onCheckedChange={(value) => setPref("focusModeShowQueue", value)}
           />

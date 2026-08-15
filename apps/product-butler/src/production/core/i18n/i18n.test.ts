@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { installWordPressI18n } from "../../test/wordpressI18n";
 import { createFormatters } from "./formatters";
 import { supportedLanguage, toLanguageTag } from "./locale";
 import { availabilityCopy } from "./messages";
@@ -10,10 +11,17 @@ describe("locale infrastructure", () => {
     expect(supportedLanguage("ar_DZ")).toBe("ar");
   });
 
-  it("provides representative English, French, and Arabic content", () => {
+  it("uses the WordPress translation catalog instead of locale-owned copies", () => {
     expect(availabilityCopy("host-unavailable", "en_US").title).toBe("Workspace unavailable");
-    expect(availabilityCopy("host-unavailable", "fr_FR").title).toBe("Espace de travail indisponible");
-    expect(availabilityCopy("host-unavailable", "ar").title).toBe("مساحة العمل غير متاحة");
+    const restore = installWordPressI18n({
+      "Workspace unavailable": "مساحة العمل غير متاحة",
+      "The WordPress host configuration is unavailable.": "إعداد مضيف WordPress غير متاح.",
+    });
+    expect(availabilityCopy("host-unavailable", "ar")).toEqual({
+      message: "إعداد مضيف WordPress غير متاح.",
+      title: "مساحة العمل غير متاحة",
+    });
+    restore();
   });
 
   it("formats locale-aware numbers, dates, currency, and units", () => {

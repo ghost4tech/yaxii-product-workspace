@@ -25,6 +25,7 @@ use Yaxii\ProductWorkspace\Application\VariableProducts\VariationInputParser;
 use Yaxii\ProductWorkspace\Infrastructure\Persistence\SchemaManager;
 use Yaxii\ProductWorkspace\Infrastructure\Persistence\WpdbOperationStore;
 use Yaxii\ProductWorkspace\Infrastructure\Persistence\WordPressPreferenceRepository;
+use Yaxii\ProductWorkspace\Infrastructure\WordPress\UserLocaleContext;
 use Yaxii\ProductWorkspace\Infrastructure\WooCommerce\WooProductGateway;
 use Yaxii\ProductWorkspace\Infrastructure\WooCommerce\WooAttributeCatalog;
 use Yaxii\ProductWorkspace\Infrastructure\WooCommerce\WooProductMapper;
@@ -48,9 +49,10 @@ defined( 'ABSPATH' ) || exit;
  * Builds the small Phase 2 application graph and registers its hooks.
  */
 final class Plugin {
-	private AdminPage $admin_page;
-	private SchemaManager $schema_manager;
 
+	private AdminPage $admin_page;
+	private string $plugin_file;
+	private SchemaManager $schema_manager;
 	/** @var array<int, \WP_REST_Controller> */
 	private array $rest_controllers;
 
@@ -59,17 +61,20 @@ final class Plugin {
 	 */
 	private function __construct(
 		AdminPage $admin_page,
+		string $plugin_file,
 		SchemaManager $schema_manager,
 		array $rest_controllers
 	) {
 		$this->admin_page       = $admin_page;
+		$this->plugin_file      = $plugin_file;
 		$this->schema_manager   = $schema_manager;
 		$this->rest_controllers = $rest_controllers;
 	}
 
 	public static function create( string $plugin_file ): self {
 		$capabilities = new WordPressCapabilityPolicy();
-		$provider     = new BootstrapProvider( $capabilities );
+		$locale       = new UserLocaleContext();
+		$provider     = new BootstrapProvider( $capabilities, $locale );
 		$schema       = SchemaManager::create();
 		global $wpdb;
 		$operations          = new WpdbOperationStore( $wpdb, $schema->table_name() );
@@ -98,7 +103,8 @@ final class Plugin {
 		);
 
 		return new self(
-			new AdminPage( $plugin_file, $capabilities ),
+			new AdminPage( $plugin_file, $capabilities, $locale ),
+			$plugin_file,
 			$schema,
 			array(
 				new BootstrapController( $provider, $capabilities ),
@@ -117,10 +123,21 @@ final class Plugin {
 	}
 
 	public function register(): void {
+
 		$this->admin_page->register();
+		add_action( 'init', array( $this, 'load_textdomain' ) );
 		add_action( 'plugins_loaded', array( $this->schema_manager, 'maybe_upgrade' ), 20 );
 		foreach ( $this->rest_controllers as $controller ) {
 			add_action( 'rest_api_init', array( $controller, 'register_routes' ) );
 		}
+	}
+
+	public function load_textdomain(): void {
+
+		load_plugin_textdomain(
+			'yaxii-product-workspace',
+			false,
+			dirname( plugin_basename( $this->plugin_file ) ) . '/languages'
+		);
 	}
 }

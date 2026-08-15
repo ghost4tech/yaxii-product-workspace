@@ -1,4 +1,4 @@
-import { format, isToday, isYesterday } from "date-fns";
+import { isToday, isYesterday } from "date-fns";
 import { Inbox, Search } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { QueueRow } from "@/components/queue/QueueRow";
@@ -17,6 +17,8 @@ import { productOperationCopy } from "@/production/core/i18n/productMessages";
 import { useOperationQueue } from "@/production/features/operations/useOperationQueue";
 import { useWorkspacePreferences } from "@/production/features/preferences/useWorkspacePreferences";
 import type { Product } from "@/types/product";
+import { formattingLanguageTag } from "@/production/core/i18n/formatters";
+import { __, _n, sprintf } from "@/production/core/i18n/wordpress";
 
 interface ProductQueueProps {
   compact?: boolean;
@@ -26,8 +28,12 @@ interface ProductQueueProps {
 
 type StatusKey = "all" | Product["status"];
 
-function dayLabel(date: Date) {
-  return isToday(date) ? "Today" : isYesterday(date) ? "Yesterday" : format(date, "EEE, d MMM");
+function dayLabel(date: Date, locale: string) {
+  if (isToday(date)) return __("Today", "yaxii-product-workspace");
+  if (isYesterday(date)) return __("Yesterday", "yaxii-product-workspace");
+  return new Intl.DateTimeFormat(formattingLanguageTag(locale), {
+    day: "numeric", month: "short", weekday: "short",
+  }).format(date);
 }
 
 export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueProps) => {
@@ -59,11 +65,11 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
     if (!preferences.queue_group_by_day) return [{ key: "", items: shown }];
     const grouped = new Map<string, Product[]>();
     shown.forEach((product) => {
-      const key = dayLabel(product.createdAt);
+      const key = dayLabel(product.createdAt, bootstrap.locale);
       grouped.set(key, [...(grouped.get(key) ?? []), product]);
     });
     return Array.from(grouped, ([key, items]) => ({ key, items }));
-  }, [preferences.queue_group_by_day, shown]);
+  }, [bootstrap.locale, preferences.queue_group_by_day, shown]);
 
   const dismiss = (product: Product) => queue.dismiss(product.id);
   const requestDismiss = (product: Product) => {
@@ -71,7 +77,7 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
     else dismiss(product);
   };
   const tabs = [
-    { count: queue.counts.all, key: "all" as const, label: "All" },
+    { count: queue.counts.all, key: "all" as const, label: __("All", "yaxii-product-workspace") },
     ...(["synced", "pending", "error", "draft"] as const).map((key) => ({
       count: queue.counts[key], key, label: STATUS_META[key].label,
     })),
@@ -82,20 +88,22 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
       <div className="space-y-3 border-b border-border px-4 pb-3 pt-3.5">
         <div className="flex flex-col justify-between gap-2 sm:flex-row sm:items-center sm:gap-3">
           <div className="flex min-w-0 items-baseline gap-2">
-            <h2 className="text-[14px] font-semibold" id="product-queue-heading">Recent products</h2>
+            <h2 className="text-[14px] font-semibold" id="product-queue-heading">{__("Recent products", "yaxii-product-workspace")}</h2>
             {queue.isLoading ? <Skeleton className="h-3 w-16" aria-hidden="true" />
               : <span className="text-xs tabular-nums text-muted-foreground">
-                {debouncedSearch ? `${queue.total} matches` : `${queue.counts.all} operations`}
+                {debouncedSearch
+                  ? /* translators: %s: number of product matches. */ sprintf(_n("%s match", "%s matches", queue.total, "yaxii-product-workspace"), queue.total)
+                  : /* translators: %s: number of operations. */ sprintf(_n("%s operation", "%s operations", queue.counts.all, "yaxii-product-workspace"), queue.counts.all)}
               </span>}
           </div>
           <div className="relative w-full sm:w-auto">
             <Search className="pointer-events-none absolute start-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-muted-foreground" />
-            <Input placeholder="Name or SKU…" value={search} onChange={(event) => setSearch(event.target.value)}
+            <Input placeholder={__("Name or SKU…", "yaxii-product-workspace")} value={search} onChange={(event) => setSearch(event.target.value)}
               className={cn("workspace-search-input h-8 w-full bg-muted/40 ps-8 text-xs", compact ? "sm:w-40" : "sm:w-52")} />
           </div>
         </div>
         <div className="queue-filter-shell relative -mx-0.5">
-          <div {...filterScroll.props} aria-label="Operation status filters"
+          <div {...filterScroll.props} aria-label={__("Operation status filters", "yaxii-product-workspace")}
             className={cn(
               "queue-filter-scroll no-scrollbar flex touch-pan-x items-center gap-1 overflow-x-auto px-0.5 outline-none focus-visible:ring-2 focus-visible:ring-ring/30",
               filterScroll.dragging ? "cursor-grabbing select-none" : "cursor-grab",
@@ -123,10 +131,10 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
             <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-lg border border-border bg-muted/40">
               <Inbox className="h-6 w-6 text-muted-foreground/50" strokeWidth={1.5} />
             </div>
-            <h3 className="text-sm font-semibold">{queue.isError ? "Queue unavailable" : queue.counts.all === 0 ? "Queue is empty" : "No matching products"}</h3>
+            <h3 className="text-sm font-semibold">{queue.isError ? __("Queue unavailable", "yaxii-product-workspace") : queue.counts.all === 0 ? __("Queue is empty", "yaxii-product-workspace") : __("No matching products", "yaxii-product-workspace")}</h3>
             <p className="mt-1 max-w-[240px] text-xs leading-relaxed text-muted-foreground">
-              {queue.isError ? "Recent operations could not be loaded. Your WooCommerce products are unchanged."
-                : queue.counts.all === 0 ? copy.savedProductsAppearHere : "Adjust the search term or pick a different status."}
+              {queue.isError ? __("Recent operations could not be loaded. Your WooCommerce products are unchanged.", "yaxii-product-workspace")
+                : queue.counts.all === 0 ? copy.savedProductsAppearHere : __("Adjust the search term or pick a different status.", "yaxii-product-workspace")}
             </p>
           </div>
         ) : groups.map((group) => (
@@ -144,15 +152,18 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
 
       {queue.hasNextPage && <div className="flex items-center justify-center border-t border-border bg-muted/30 px-4 py-2.5 text-[11px] text-muted-foreground">
         <button onClick={() => void queue.fetchNextPage()} className="font-medium text-foreground hover:underline" type="button">
-          Load more
+          {__("Load more", "yaxii-product-workspace")}
         </button>
       </div>}
 
       <AlertDialog open={Boolean(pendingDismiss)} onOpenChange={(open) => !open && setPendingDismiss(null)}>
-        <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>Remove this queue entry?</AlertDialogTitle>
-          <AlertDialogDescription>“{pendingDismiss?.name}” will leave recent operations. Its WooCommerce product will not be trashed.</AlertDialogDescription>
-        </AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction onClick={() => { if (pendingDismiss) dismiss(pendingDismiss); setPendingDismiss(null); }}>Remove</AlertDialogAction>
+        <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>{__("Remove this queue entry?", "yaxii-product-workspace")}</AlertDialogTitle>
+          <AlertDialogDescription dir="auto">{
+            /* translators: %s: product name. */
+            sprintf(__("“%s” will leave recent operations. Its WooCommerce product will not be trashed.", "yaxii-product-workspace"), pendingDismiss?.name ?? "")
+          }</AlertDialogDescription>
+        </AlertDialogHeader><AlertDialogFooter><AlertDialogCancel>{__("Cancel", "yaxii-product-workspace")}</AlertDialogCancel>
+          <AlertDialogAction onClick={() => { if (pendingDismiss) dismiss(pendingDismiss); setPendingDismiss(null); }}>{__("Remove", "yaxii-product-workspace")}</AlertDialogAction>
         </AlertDialogFooter></AlertDialogContent>
       </AlertDialog>
     </div>

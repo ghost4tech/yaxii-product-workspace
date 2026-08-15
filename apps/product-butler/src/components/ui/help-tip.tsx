@@ -3,6 +3,7 @@ import { HelpCircle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { usePrefsStore } from "@/stores/prefsStore";
+import { __ } from "@/production/core/i18n/wordpress";
 
 interface HelpTipProps {
   children: ReactNode;
@@ -16,7 +17,7 @@ export function HelpTip({ children, className, force, side = "top" }: HelpTipPro
   if (!show && !force) return null;
   return <Tooltip delayDuration={120}>
     <TooltipTrigger asChild>
-      <button type="button" aria-label="More information"
+      <button type="button" aria-label={__("More information", "yaxii-product-workspace")}
         onClick={(event) => event.preventDefault()}
         className={cn(
           "inline-flex items-center justify-center text-muted-foreground/70 transition-colors hover:text-foreground",

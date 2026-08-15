@@ -15,11 +15,15 @@
     "lint": "eslint src/main.tsx src/App.tsx src/production src/components/AppShell.tsx src/components/CategorySelect.tsx src/components/CategoryTreeSelect.tsx src/components/CommandMenu.tsx src/components/ImageUpload.tsx src/components/PreferencesEffects.tsx src/components/ProductEntryForm.tsx src/components/ProductQueue.tsx src/components/RichTextEditor.tsx src/components/ShortcutsModal.tsx src/components/StatsBar.tsx src/components/VariationsEditor.tsx src/components/categories src/components/entry src/components/queue src/components/settings src/components/ui/help-tip.tsx src/components/variations src/hooks/use-toast.ts src/lib/entryActions.ts src/lib/utils.ts src/pages/Entry.tsx src/pages/Settings.tsx src/stores/prefsStore.ts src/stores/productStore.ts src/types/product.ts tools vite.config.ts vitest.config.ts",
     "check:lines": "node tools/check-production-lines.mjs",
     "check:boundary": "node tools/check-production-boundary.mjs",
+    "check:i18n": "node tools/i18n-source.mjs --check && node tools/check-localization-artifacts.mjs",
+    "i18n:source": "node tools/i18n-source.mjs",
+    "i18n:map": "node tools/i18n-map.mjs",
+    "i18n:finalize": "node tools/i18n-finalize.mjs",
     "preview": "vite preview",
     "test": "vitest run",
     "test:watch": "vitest",
     "audit:production": "npm audit --omit=dev",
-    "check": "npm run typecheck && npm run lint && npm run check:lines && npm test && npm run build && npm run check:boundary"
+    "check": "npm run typecheck && npm run lint && npm run check:lines && npm run check:i18n && npm test && npm run build && npm run check:boundary"
   },
   "dependencies": {
     "@fontsource/inter": "^5.2.8",

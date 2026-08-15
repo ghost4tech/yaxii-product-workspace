@@ -1,62 +1,53 @@
 # Execution State
 
-**Updated:** 2026-08-14
+**Updated:** 2026-08-15
 
-**Current phase:** Phase 4.5 pre-translation polish ready for owner acceptance
+**Current phase:** Phase 5A complete French and Arabic localization
 
 **Acceptance state:** IMPLEMENTATION AND QA PASSED - owner acceptance pending
 
 ## Canonical repository
 
 - Repository: `https://github.com/ghost4tech/yaxii-product-workspace.git`
-- Accepted Phase 4 starting `main`: `338d0fb1f0a2edf40aceb31ae57c712e1175b079`
-- Phase 4 branch: `phase/04-free-variable-products`
-- Accepted Phase 4 SHA: `97801792b112d47d5b3a99caccb8512d7ba370d3`
-- Checkpoint A: `27379b7748421cb00438265409328c15c3006952`
-- Checkpoint B: `a19805e64c9b3ff5bd621f64493287201b0772c9`
-- Checkpoint C: `97801792b112d47d5b3a99caccb8512d7ba370d3`
+- Owner-accepted Phase 4.5 source: `3e9426f7ea6086b6ab3fb91a93cbad68664bb318`
+- Phase 4.5 merge on `main`: `5a05843c0e9b55d972a86f63aeb65a1858358204`
+- Phase 5A branch: `phase/05a-complete-localization`
 - Package managers: Composer for PHP and npm for the frontend
-- Phase 4.5 branch: `phase/04-5-lovable-v2-ui-integration`
-- Phase 4.5 base `main`: `5f2207c876a353f190264929ecfebbdcc3fed829`
 
-The branch was created from the exact accepted clean remote main and pushed before implementation.
-The owner's local `AGENTS.md` and `CLAUDE.md` edits remain preserved and outside the Phase 4.5
-change set.
+Phase 5A was created and pushed from the exact merged `main`. The owner's dirty canonical checkout,
+including local `AGENTS.md`, `CLAUDE.md`, and prototype work, remains untouched.
 
-## Implemented Phase 4 state
+## Phase 5A state
 
-- The approved Lovable workspace creates and edits normal Free variable products with global and
-  custom attributes and concrete multi-attribute combinations.
-- Commercial values belong to concrete variations, never individual attribute options.
-- Parent fields compose the Phase 3 simple-product contract; variable create/update use one
-  browser request and supported WooCommerce CRUD.
-- Five-attribute, 20-option, and 50-combination Free limits are enforced before dangerous writes.
-- Real attribute/taxonomy/term, SKU, price, stock, attachment, product-type, ownership, uniqueness,
-  and optimistic-version validation runs server-side.
-- Durable idempotency, explicit partial results, exact combination failures, reconciliation, and
-  missing-only retry are integrated into the existing operation ledger and queue.
-- Phase 3 simple products remain supported. Advanced Pro variation tooling remains excluded.
+- English source plus complete Arabic `ar` and French `fr_FR` catalogs use WordPress-native gettext
+  with the final `yaxii-product-workspace` domain.
+- POT, PO, MO, JavaScript JSON, production-graph extraction, artifact checks, and reproducible
+  update commands are established.
+- The authenticated WordPress user locale controls translations, `lang`, and `dir`; no custom
+  language selector exists.
+- Arabic uses genuine RTL, logical layout, selective icon mirroring, mixed-direction isolation,
+  Arabic punctuation, and Latin digits.
+- French follows WordPress terminology, formal `vous`, infinitive actions, and French typography.
+- Production UI, PHP/REST messages, accessibility copy, error/success states, editor, media, queue,
+  KPI, variable products, Settings, command/help UI, and ecosystem content are localized.
+- Deterministic completeness checks permit only documented brands, technical content, and
+  user/catalog data to remain untranslated.
 
-## Phase 4.5 verification state
+## Verification state
 
-- `composer run check` passed lint for 87 maintained PHP files, PHPCS, PHPStan, and 32 unit tests
-  with 90 assertions.
-- The active LocalWP integration suite passed 36 tests with 442 assertions.
-- `npm run check` passed strict typing, lint, the 124-file line cap, 68 tests in 20 files, build,
-  and 24-asset boundary scan; `npm run audit:production` reported zero vulnerabilities.
-- Authenticated LocalWP browser QA passed the requested simple-product, rich-description, image,
-  edit, success, tooltip, and variable-product workflows with direct REST, WooCommerce, and
-  storefront inspection.
-- Visual QA passed 1440, 1280, 768, 430, and 375; light/dark; compact/comfortable; Focus Mode;
-  editor, queue, errors/dialog; and structural RTL, with zero measured horizontal overflow.
-- The pre-translation pass added page-only wp-admin shell ownership, footer removal, production
-  branding/current-store copy, accessible queue overflow, real seven-day KPI trends/sparklines,
-  and the Settings ecosystem section without automatic external requests.
-- All five mandatory guard reviews completed; actionable findings were fixed and affected gates
-  were rerun.
-- Disposable QA data and authentication material were removed; evidence remains in the local
-  temporary QA folder.
+- `npm run check` and `npm run audit:production` pass.
+- PHP lint/PHPCS/PHPStan, 32 unit tests with 90 assertions, and 38 LocalWP integration tests with
+  456 assertions pass.
+- Authenticated browser QA passes English regression plus French and Arabic at 1440, 1280, 768,
+  430, and 375; light/dark; compact/comfortable; Focus Mode; and full simple/variable workflows.
+- Runtime proof includes successful create/update requests, real global/custom attributes and
+  variations, media selection, REST/WooCommerce reads, locale/direction inspection, network,
+  console, overflow, and cleanup verification.
+- All five required guard reviews pass after fixes.
+- Detailed architecture, terminology, commands, evidence, and cleanup are recorded in
+  `docs/development/LOCALIZATION.md` and `docs/project/PHASE-5A-LOCALIZATION-CHECKPOINT.md`.
 
 ## Next action
 
-Await owner acceptance without merging. Translation and Phase 5 release hardening have not started.
+Await owner review on `phase/05a-complete-localization`. Do not merge and do not begin Phase 5
+release hardening, WordPress.org packaging, ZIP creation, publication, or deployment.

@@ -5,11 +5,11 @@ export type ThemeMode = 'light' | 'dark' | 'system';
 export type Density = 'comfortable' | 'compact';
 export type AccentName = 'graphite' | 'emerald' | 'blue' | 'violet';
 
-export const ACCENTS: Record<AccentName, { label: string; hsl: string; swatch: string }> = {
-  graphite: { label: 'Graphite', hsl: '224 71% 6%', swatch: 'hsl(224 71% 6%)' },
-  emerald: { label: 'Emerald', hsl: '158 64% 34%', swatch: 'hsl(158 64% 34%)' },
-  blue: { label: 'Blue', hsl: '217 91% 45%', swatch: 'hsl(217 91% 45%)' },
-  violet: { label: 'Violet', hsl: '262 72% 48%', swatch: 'hsl(262 72% 48%)' },
+export const ACCENTS: Record<AccentName, { hsl: string; swatch: string }> = {
+  graphite: { hsl: '224 71% 6%', swatch: 'hsl(224 71% 6%)' },
+  emerald: { hsl: '158 64% 34%', swatch: 'hsl(158 64% 34%)' },
+  blue: { hsl: '217 91% 45%', swatch: 'hsl(217 91% 45%)' },
+  violet: { hsl: '262 72% 48%', swatch: 'hsl(262 72% 48%)' },
 };
 
 export interface Preferences {

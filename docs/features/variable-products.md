@@ -1,6 +1,6 @@
 # Basic Variable Products
 
-**Status:** Phase 4 backend accepted; Phase 4.5 Lovable V2 presentation integrated and browser-tested; owner acceptance pending
+**Status:** Phase 4 backend accepted; V2 presentation and Phase 5A French/Arabic localization browser-tested
 
 ## Implemented workflow
 
@@ -86,3 +86,9 @@ exactly six combinations. Set all price, Auto SKU, per-row price/SKU/stock/image
 storefront selection, and the 56-combination UI limit state passed. The theme variation engine was
 temporarily enabled for storefront selection and restored to its original disabled value. Detailed
 evidence is recorded in `docs/project/PHASE-4-5-CLOSEOUT.md`.
+
+Phase 5A authenticated QA created a real Arabic variable product with a custom Arabic Size concept,
+the existing global Color attribute, four concrete combinations, and bulk price `24.50`. French QA
+then reopened the same product through Find Product and verified the translated global/custom
+attribute editor and four variation rows. The complete localization evidence and cleanup are in
+`docs/project/PHASE-5A-LOCALIZATION-CHECKPOINT.md`.

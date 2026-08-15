@@ -1,6 +1,6 @@
 # Workspace Shell
 
-**Status:** Approved Lovable presentation integrated and polished through Phase 4.5
+**Status:** Approved Lovable presentation integrated through Phase 4.5 and localized in Phase 5A
 
 ## Purpose and observable behavior
 
@@ -42,5 +42,7 @@ covered 1440px and 1280px desktop/laptop, 768px tablet, 430px and 375px mobile, 
 compact/comfortable, Focus Mode, queue and confirmation/error dialogs, and structural RTL. A dark
 mode heading contrast regression found during QA was fixed and rechecked.
 
-French and Arabic copy is not complete. Structural direction support is present, but translated
-content remains future localization work rather than a Phase 3 claim.
+Phase 5A completed WordPress-native French and Arabic catalogs across the production shell and
+verified the actual authenticated user locale, `lang`, and `dir`. Arabic RTL and French/Arabic
+layout resilience passed the same viewport, theme, density, Focus Mode, queue, dialog, editor, and
+Settings surfaces. Detailed localization evidence is recorded in the Phase 5A checkpoint.
