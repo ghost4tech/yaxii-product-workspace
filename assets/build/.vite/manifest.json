@@ -6,8 +6,8 @@
       "_rolldown-runtime-CbXtAM7H.js"
     ]
   },
-  "_react-vendor-jr2q-VVG.js": {
-    "file": "assets/react-vendor-jr2q-VVG.js",
+  "_react-vendor-HH2Bqy9M.js": {
+    "file": "assets/react-vendor-HH2Bqy9M.js",
     "name": "react-vendor",
     "imports": [
       "_rolldown-runtime-CbXtAM7H.js",
@@ -18,20 +18,20 @@
     "file": "assets/rolldown-runtime-CbXtAM7H.js",
     "name": "rolldown-runtime"
   },
-  "_ui-vendor-bfOXQzdY.js": {
-    "file": "assets/ui-vendor-bfOXQzdY.js",
+  "_ui-vendor-DJV7pxZu.js": {
+    "file": "assets/ui-vendor-DJV7pxZu.js",
     "name": "ui-vendor",
     "imports": [
       "_rolldown-runtime-CbXtAM7H.js",
       "_editor-vendor-D7Q2H7mx.js",
-      "_react-vendor-jr2q-VVG.js"
+      "_react-vendor-HH2Bqy9M.js"
     ]
   },
-  "_vendor-C87kvK4p.js": {
-    "file": "assets/vendor-C87kvK4p.js",
+  "_vendor-CkqjcqBd.js": {
+    "file": "assets/vendor-CkqjcqBd.js",
     "name": "vendor",
     "imports": [
-      "_react-vendor-jr2q-VVG.js"
+      "_react-vendor-HH2Bqy9M.js"
     ],
     "css": [
       "assets/vendor-D7NdHagc.css"
@@ -58,6 +58,14 @@
   "_vendor-D7NdHagc.css": {
     "file": "assets/vendor-D7NdHagc.css",
     "src": "_vendor-D7NdHagc.css"
+  },
+  "node_modules/@fontsource-variable/rubik/files/rubik-arabic-wght-normal.woff2": {
+    "file": "assets/rubik-arabic-wght-normal-CGnJ-sf6.woff2",
+    "src": "node_modules/@fontsource-variable/rubik/files/rubik-arabic-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/rubik/files/rubik-latin-wght-normal.woff2": {
+    "file": "assets/rubik-latin-wght-normal-CnQIisVs.woff2",
+    "src": "node_modules/@fontsource-variable/rubik/files/rubik-latin-wght-normal.woff2"
   },
   "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff": {
     "file": "assets/inter-latin-400-normal-CyCys3Eg.woff",
@@ -124,19 +132,23 @@
     "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2"
   },
   "src/main.tsx": {
-    "file": "assets/main-BPmGM3zU.js",
+    "file": "assets/main-CgDy4FSk.js",
     "name": "main",
     "src": "src/main.tsx",
     "isEntry": true,
     "imports": [
       "_rolldown-runtime-CbXtAM7H.js",
-      "_vendor-C87kvK4p.js",
+      "_vendor-CkqjcqBd.js",
       "_editor-vendor-D7Q2H7mx.js",
-      "_react-vendor-jr2q-VVG.js",
-      "_ui-vendor-bfOXQzdY.js"
+      "_react-vendor-HH2Bqy9M.js",
+      "_ui-vendor-DJV7pxZu.js"
     ],
     "css": [
-      "assets/main-CS__jORd.css"
+      "assets/main-DGEz1Ij8.css"
+    ],
+    "assets": [
+      "assets/rubik-arabic-wght-normal-CGnJ-sf6.woff2",
+      "assets/rubik-latin-wght-normal-CnQIisVs.woff2"
     ]
   }
 }

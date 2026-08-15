@@ -13,6 +13,7 @@ import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
 import type { CanonicalProduct } from "@/production/domain/products";
 import { usePrefsStore } from "@/stores/prefsStore";
 import type { Product } from "@/types/product";
+import { __, _x } from "@/production/core/i18n/wordpress";
 
 const Entry = () => {
   const [advancedOpen, setAdvancedOpen] = useState(false);
@@ -29,8 +30,8 @@ const Entry = () => {
     async (product: Product) => {
       if (!product.wooCommerceId) {
         toast({
-          title: "Product is not available",
-          description: "This operation does not have a WooCommerce product result to open.",
+          title: __("Product is not available", "yaxii-product-workspace"),
+          description: __("This operation does not have a WooCommerce product result to open.", "yaxii-product-workspace"),
           variant: "destructive",
         });
         return;
@@ -40,8 +41,8 @@ const Entry = () => {
         setQueueSheet(false);
       } catch (error) {
         toast({
-          title: "Product could not be opened",
-          description: error instanceof Error ? error.message : "WooCommerce did not return the product.",
+          title: __("Product could not be opened", "yaxii-product-workspace"),
+          description: error instanceof Error ? error.message : __("WooCommerce did not return the product.", "yaxii-product-workspace"),
           variant: "destructive",
         });
       }
@@ -64,7 +65,7 @@ const Entry = () => {
         queueCount={operationCounts.all}
       />
 
-      {!focus && <StatsBar />}
+      {!focus && prefs.showKpiCards && <StatsBar />}
 
       <div className="grid grid-cols-1 gap-5 lg:grid-cols-12">
         <section
@@ -75,8 +76,8 @@ const Entry = () => {
         >
           <div className="panel-head">
             <div className="flex min-w-0 items-center gap-2">
-              <h2 className="truncate text-[14px] font-semibold">{editingProduct ? "Edit product" : "Add new product"}</h2>
-              <span className="label-eyebrow">{editingProduct ? "Editing" : "Draft"}</span>
+              <h2 className="truncate text-[14px] font-semibold">{editingProduct ? __("Edit product", "yaxii-product-workspace") : __("Add new product", "yaxii-product-workspace")}</h2>
+              <span className="label-eyebrow">{editingProduct ? __("Editing", "yaxii-product-workspace") : _x("Draft", "Product status", "yaxii-product-workspace")}</span>
             </div>
           </div>
           <div className="panel-body relative">

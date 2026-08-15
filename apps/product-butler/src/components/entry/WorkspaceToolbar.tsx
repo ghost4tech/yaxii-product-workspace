@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
 import { productOperationCopy } from "@/production/core/i18n/productMessages";
 import { usePrefsStore } from "@/stores/prefsStore";
+import { __ } from "@/production/core/i18n/wordpress";
 
 interface Props {
   advancedOpen: boolean;
@@ -42,19 +43,19 @@ export const WorkspaceToolbar: React.FC<Props> = ({
     <div className="flex flex-wrap items-center gap-2">
       <div className="me-auto min-w-0">
         <h1 className="text-[19px] font-semibold leading-tight tracking-tight sm:text-[21px]">
-          Product entry
+          {__("Product entry", "yaxii-product-workspace")}
         </h1>
         <p className="mt-1 text-[12px] text-muted-foreground">{productCopy.currentStore}</p>
       </div>
 
       {canUndo && (
         <Button variant="ghost" size="sm" onClick={onUndo} className="h-8 text-[12px]">
-          <Undo2 className="me-1.5 h-3.5 w-3.5" /> Undo delete
+          <Undo2 className="me-1.5 h-3.5 w-3.5" /> {__("Undo delete", "yaxii-product-workspace")}
         </Button>
       )}
 
       <Button variant="outline" size="sm" onClick={onOpenProducts} className="h-8 text-[12px]">
-        <Search className="me-1.5 h-3.5 w-3.5" /> Find product
+        <Search className="me-1.5 h-3.5 w-3.5" /> {__("Find product", "yaxii-product-workspace")}
       </Button>
 
       <Button
@@ -68,7 +69,7 @@ export const WorkspaceToolbar: React.FC<Props> = ({
         ) : (
           <PanelRightOpen className="me-1.5 h-3.5 w-3.5" />
         )}
-        {advancedOpen ? "Hide extended" : "Extended"}
+        {advancedOpen ? __("Hide extended", "yaxii-product-workspace") : __("Extended", "yaxii-product-workspace")}
       </Button>
 
       <Button
@@ -77,7 +78,7 @@ export const WorkspaceToolbar: React.FC<Props> = ({
         onClick={onOpenQueue}
         className="h-8 text-[12px] lg:hidden"
       >
-        <Columns2 className="me-1.5 h-3.5 w-3.5" /> Queue
+        <Columns2 className="me-1.5 h-3.5 w-3.5" /> {__("Queue", "yaxii-product-workspace")}
         <span className="ms-1.5 tabular-nums opacity-60">{queueCount}</span>
       </Button>
 
@@ -86,14 +87,14 @@ export const WorkspaceToolbar: React.FC<Props> = ({
         size="sm"
         onClick={() => setPref("focusMode", !focus)}
         className="h-8 text-[12px]"
-        title="Focus mode — hide everything except product entry"
+        title={__("Focus mode — hide everything except product entry", "yaxii-product-workspace")}
       >
         {focus ? (
           <Minimize2 className="me-1.5 h-3.5 w-3.5" />
         ) : (
           <Focus className="me-1.5 h-3.5 w-3.5" />
         )}
-        {focus ? "Exit focus" : "Focus"}
+        {focus ? __("Exit focus", "yaxii-product-workspace") : __("Focus", "yaxii-product-workspace")}
       </Button>
     </div>
   );

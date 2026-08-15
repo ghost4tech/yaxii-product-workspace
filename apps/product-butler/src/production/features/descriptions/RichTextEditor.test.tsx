@@ -31,4 +31,14 @@ describe("Lovable rich text editor", () => {
     ));
     expect(screen.getByTestId("html")).not.toHaveTextContent(/blob:|data:image/i);
   });
+
+  it("inherits RTL for natural-language typing instead of defaulting an empty editor to LTR", () => {
+    render(<div dir="rtl"><Harness onUpload={() => Promise.reject(new Error("Not used"))} /></div>);
+
+    const editor = document.querySelector<HTMLElement>('[contenteditable="true"][aria-label="Full description"]');
+    expect(editor).not.toBeNull();
+    expect(editor).not.toHaveAttribute("dir", "auto");
+    expect(editor?.closest("[dir]"))?.toHaveAttribute("dir", "rtl");
+    expect(editor).toHaveClass("text-start");
+  });
 });

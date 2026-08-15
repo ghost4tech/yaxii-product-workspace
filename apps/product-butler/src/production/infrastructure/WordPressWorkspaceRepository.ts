@@ -30,6 +30,7 @@ import {
   mediaResourceSchema,
 } from "./restContracts";
 import { variablePayload } from "./restPayloads";
+import { __ } from "../core/i18n/wordpress";
 
 type JsonRecord = Record<string, unknown>;
 
@@ -39,15 +40,16 @@ function isRecord(value: unknown): value is JsonRecord {
 
 function unwrapData(value: unknown): unknown {
   if (!isRecord(value) || !("data" in value)) {
-    throw new WorkspaceApiError("ypw_invalid_response", "The server returned an invalid response.", 502);
+    throw new WorkspaceApiError("ypw_invalid_response", __("The server returned an invalid response.", "yaxii-product-workspace"), 502);
   }
   return value.data;
 }
 
 function parse<T>(value: unknown, schema: { safeParse: (input: unknown) => { success: boolean; data?: T } }, label: string): T {
+  void label;
   const parsed = schema.safeParse(unwrapData(value));
   if (!parsed.success || parsed.data === undefined) {
-    throw new WorkspaceApiError("ypw_invalid_response", `The server returned invalid ${label}.`, 502);
+    throw new WorkspaceApiError("ypw_invalid_response", __("The server returned invalid data.", "yaxii-product-workspace"), 502);
   }
   return parsed.data;
 }
@@ -65,7 +67,7 @@ function taxClasses(value: unknown): Array<{ name: string; slug: string }> {
 
 function parseBootstrap(value: unknown, host: WorkspaceHostConfig): WorkspaceBootstrap {
   const unwrapped = unwrapData(value);
-  if (!isRecord(unwrapped)) throw new WorkspaceApiError("ypw_invalid_response", "The server returned invalid bootstrap data.", 502);
+  if (!isRecord(unwrapped)) throw new WorkspaceApiError("ypw_invalid_response", __("The server returned invalid bootstrap data.", "yaxii-product-workspace"), 502);
   const capabilities = isRecord(unwrapped.capabilities) ? unwrapped.capabilities : {};
   const features = isRecord(unwrapped.features) ? unwrapped.features : {};
   const locale = isRecord(unwrapped.locale) ? unwrapped.locale : {};
@@ -205,7 +207,7 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
     const payload = await this.request(this.host.mediaRestUrl, { body, method: "POST" }, false, true);
     const parsed = mediaResourceSchema.safeParse(payload);
     if (!parsed.success) {
-      throw new WorkspaceApiError("ypw_invalid_response", "WordPress returned invalid media data.", 502);
+      throw new WorkspaceApiError("ypw_invalid_response", __("WordPress returned invalid media data.", "yaxii-product-workspace"), 502);
     }
     return parsed.data;
   }
@@ -213,7 +215,7 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
   public async getMedia(id: number) {
     const payload = await this.request(`${this.host.mediaRestUrl}/${id}`, {}, false, true);
     const parsed = mediaResourceSchema.safeParse(payload);
-    if (!parsed.success) throw new WorkspaceApiError("ypw_invalid_response", "WordPress returned invalid media data.", 502);
+    if (!parsed.success) throw new WorkspaceApiError("ypw_invalid_response", __("WordPress returned invalid media data.", "yaxii-product-workspace"), 502);
     return parsed.data;
   }
 
@@ -272,7 +274,7 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
       });
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") throw error;
-      throw new WorkspaceApiError("ypw_network_error", "The server response was not received.", 0, {}, outcomeUncertain);
+      throw new WorkspaceApiError("ypw_network_error", __("The server response was not received.", "yaxii-product-workspace"), 0, {}, outcomeUncertain);
     }
 
     const payload: unknown = await response.json().catch(() => null);
@@ -283,7 +285,7 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
       const fields = isRecord(data.fields) ? (data.fields as Record<string, string[]>) : {};
       throw new WorkspaceApiError(
         typeof error.code === "string" ? error.code : "ypw_request_failed",
-        typeof error.message === "string" ? error.message : "The server request failed.",
+        typeof error.message === "string" ? error.message : __("The server request failed.", "yaxii-product-workspace"),
         response.status,
         fields,
       );

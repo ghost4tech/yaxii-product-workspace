@@ -7,7 +7,8 @@ import { WorkspaceClient } from "../application/WorkspaceClient";
 import type { WorkspaceRepository } from "../application/WorkspaceRepository";
 import type { OperationPage } from "../domain/products";
 import type { WorkspaceSnapshot } from "../domain/workspace";
-import { workspaceRepository, workspaceSnapshot } from "../test/workspaceFixtures";
+import { canonicalProduct, operationResult, workspaceRepository, workspaceSnapshot } from "../test/workspaceFixtures";
+import { installWordPressI18n } from "../test/wordpressI18n";
 import { WorkspaceApp } from "./WorkspaceApp";
 
 const snapshot: WorkspaceSnapshot = workspaceSnapshot;
@@ -127,6 +128,26 @@ describe("WorkspaceApp", () => {
     expect(screen.getByDisplayValue("Canvas tote")).toBeVisible();
   });
 
+  it("lets the user hide the KPI cards from Workspace settings", async () => {
+    const user = userEvent.setup();
+    renderWorkspace();
+    expect(await screen.findByText("Recent operations")).toBeVisible();
+
+    await user.click(screen.getByRole("link", { name: "Settings" }));
+    await user.click(await screen.findByRole("tab", { name: "Workspace" }));
+    await user.click(screen.getByRole("switch", { name: "KPI cards" }));
+    await user.click(screen.getByRole("link", { name: "Entry" }));
+
+    expect(screen.queryByText("Recent operations")).not.toBeInTheDocument();
+  });
+
+  it("shows one unavailable marker per KPI instead of a duplicate trend marker", async () => {
+    renderWorkspace(snapshot, { getOperationSummary: () => Promise.reject(new Error("Unavailable")) });
+
+    await waitFor(() => expect(screen.getAllByText("unavailable")).toHaveLength(4));
+    expect(screen.getAllByText("—")).toHaveLength(4);
+  });
+
   it("opens the empty mobile queue in the plugin portal", async () => {
     const user = userEvent.setup();
     const { portals } = renderWorkspace();
@@ -150,6 +171,68 @@ describe("WorkspaceApp", () => {
       expect(scope).toHaveClass("dark");
       expect(scope).toHaveAttribute("data-density", "compact");
     });
+  });
+
+  it("keeps Settings and portal controls RTL without reversing switch state", async () => {
+    const user = userEvent.setup();
+    const { portals } = renderWorkspace({
+      ...snapshot,
+      bootstrap: { ...snapshot.bootstrap, direction: "rtl", locale: "ar" },
+    });
+    await screen.findByRole("heading", { name: "Product entry" });
+
+    await user.click(screen.getByRole("link", { name: "Settings" }));
+    const appearance = await screen.findByRole("tab", { name: "Appearance" });
+    expect(appearance.closest("[dir]"))?.toHaveAttribute("dir", "rtl");
+
+    const reduceMotion = screen.getByRole("switch", { name: "Reduce motion" });
+    expect(reduceMotion).toHaveAttribute("dir", "ltr");
+    expect(reduceMotion).not.toBeChecked();
+    await user.click(reduceMotion);
+    expect(reduceMotion).toBeChecked();
+
+    await user.click(screen.getByRole("tab", { name: "Workspace" }));
+    await user.click(screen.getByRole("combobox", { name: "Landing tab" }));
+    expect(portals).toHaveAttribute("dir", "rtl");
+    expect(screen.getByRole("listbox").closest("[dir]"))?.toHaveAttribute("dir", "rtl");
+  });
+
+  it("keeps natural product text at the RTL start while technical fields stay LTR", async () => {
+    const user = userEvent.setup();
+    const history = operationResult();
+    renderWorkspace({
+      ...snapshot,
+      bootstrap: { ...snapshot.bootstrap, direction: "rtl", locale: "ar" },
+    }, {
+      listOperations: () => Promise.resolve({
+        counts: { all: 1, draft: 0, error: 0, pending: 0, synced: 1 },
+        has_more: false, items: [history], page: 1, per_page: 25, total: 1,
+      }),
+      searchProducts: () => Promise.resolve({
+        has_more: false, items: [canonicalProduct], page: 1, per_page: 20, total: 1,
+      }),
+    });
+
+    const nameInput = await screen.findByLabelText(/Product name/);
+    expect(nameInput).not.toHaveAttribute("dir", "auto");
+    expect(nameInput.closest("[dir]"))?.toHaveAttribute("dir", "rtl");
+    expect(screen.getByLabelText("SKU")).toHaveAttribute("dir", "ltr");
+
+    const queue = within(screen.getByRole("region", { name: "Recent products" }));
+    const queueName = await queue.findByText("Canvas tote");
+    expect(queueName).toHaveClass("text-start");
+    expect(queueName).not.toHaveAttribute("dir", "auto");
+
+    await user.click(screen.getByRole("button", { name: "Extended" }));
+    const queuePrice = await screen.findByText("$19.99");
+    expect(queuePrice).toHaveAttribute("dir", "ltr");
+    expect(queuePrice.parentElement).toHaveClass("text-start");
+
+    await user.click(screen.getByRole("button", { name: "Find product" }));
+    const finder = await screen.findByRole("dialog", { name: "Find a product" });
+    const finderName = await within(finder).findByText("Canvas tote");
+    expect(finderName).toHaveClass("text-start");
+    expect(finderName).not.toHaveAttribute("dir", "auto");
   });
 
   it("keeps command dialogs in the plugin-owned portal", async () => {
@@ -176,6 +259,11 @@ describe("WorkspaceApp", () => {
   });
 
   it("applies RTL and representative Arabic unavailable content", async () => {
+    const restoreI18n = installWordPressI18n({
+      "Workspace unavailable": "مساحة العمل غير متاحة",
+      "WooCommerce must be installed and active before this workspace can be used.":
+        "يجب تثبيت WooCommerce وتنشيطه قبل استخدام مساحة العمل هذه.",
+    });
     const { scope } = renderWorkspace({
       ...snapshot,
       availability: { kind: "woocommerce-unavailable" },
@@ -190,5 +278,6 @@ describe("WorkspaceApp", () => {
     expect(await screen.findByRole("heading", { name: "مساحة العمل غير متاحة" })).toBeVisible();
     expect(scope).toHaveAttribute("dir", "rtl");
     expect(scope).toHaveAttribute("lang", "ar-DZ");
+    restoreI18n();
   });
 });

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { usePrefsStore } from '@/stores/prefsStore';
 import { cn } from '@/lib/utils';
 import { Explain } from '@/components/ui/help-tip';
+import { __, sprintf } from '@/production/core/i18n/wordpress';
 
 interface Props {
   disabled?: boolean;
@@ -24,14 +25,14 @@ interface Props {
 export const EntryActionBar: React.FC<Props> = ({
   disabled = false,
   disabledReason,
-  clearLabel = 'Clear',
+  clearLabel = __('Clear', "yaxii-product-workspace"),
   isSubmitting,
   dirty,
   productName,
   onClear,
   onSaveDraft,
   onTrash,
-  submitLabel = 'Save & next',
+  submitLabel = __('Save & next', "yaxii-product-workspace"),
   className,
 }) => {
   const showHints = usePrefsStore((s) => s.prefs.showKeyboardHints);
@@ -56,7 +57,11 @@ export const EntryActionBar: React.FC<Props> = ({
             className={cn('h-2 w-2 shrink-0', dirty ? 'fill-warning stroke-warning' : 'fill-muted-foreground/40 stroke-none')}
           />
           <span className="truncate">
-            {dirty ? `Unsaved draft${productName ? ` · ${productName}` : ''}` : 'No changes'}
+            {dirty
+              ? productName
+                ? /* translators: %s: product name. */ sprintf(__("Unsaved draft · %s", "yaxii-product-workspace"), productName)
+                : __("Unsaved draft", "yaxii-product-workspace")
+              : __("No changes", "yaxii-product-workspace")}
           </span>
         </span>
         {onSaveDraft && <div className="hidden lg:flex items-center gap-1.5 ms-auto">
@@ -67,8 +72,8 @@ export const EntryActionBar: React.FC<Props> = ({
             className="h-8 text-[12px] text-muted-foreground"
             onClick={onSaveDraft}
           >
-            Save draft
-            {showHints && <span className="kbd ms-1.5">Ctrl S</span>}
+            {__("Save draft", "yaxii-product-workspace")}
+            {showHints && <span className="kbd ms-1.5" dir="ltr">Ctrl S</span>}
           </Button>
         </div>}
       </div>
@@ -77,7 +82,7 @@ export const EntryActionBar: React.FC<Props> = ({
         {onTrash && (
           <Button type="button" variant="ghost" onClick={onTrash}
             className="ctl px-3 text-[13px] text-destructive hover:text-destructive">
-            <Trash2 className="me-1.5 h-3.5 w-3.5" /> Trash
+            <Trash2 className="me-1.5 h-3.5 w-3.5" /> {__("Trash", "yaxii-product-workspace")}
           </Button>
         )}
         <Button
@@ -85,11 +90,11 @@ export const EntryActionBar: React.FC<Props> = ({
           variant="ghost"
           onClick={onClear}
           className="ctl px-3 text-[13px] text-muted-foreground hover:text-foreground"
-          title="Clear the form (Esc)"
+          title={__("Clear the form (Esc)", "yaxii-product-workspace")}
         >
           <RotateCcw className="h-3.5 w-3.5 me-1.5" /> {clearLabel}
         </Button>
-        <Explain tip="Saves this product and clears the form for the next one. Shortcut: Ctrl + Enter." side="top">
+        <Explain tip={__("Saves this product and clears the form for the next one. Shortcut: Ctrl + Enter.", "yaxii-product-workspace")} side="top">
         <Button
           type="submit"
           disabled={disabled || isSubmitting}
@@ -101,13 +106,13 @@ export const EntryActionBar: React.FC<Props> = ({
           ) : (
             <Save className="h-4 w-4 me-2" />
           )}
-          {isSubmitting ? 'Saving…' : submitLabel}
+          {isSubmitting ? __('Saving…', "yaxii-product-workspace") : submitLabel}
           {showHints && !isSubmitting && (
-            <span className="kbd ms-2 bg-primary-foreground/15 text-primary-foreground/80 border-primary-foreground/25">
+            <span className="kbd ms-2 bg-primary-foreground/15 text-primary-foreground/80 border-primary-foreground/25" dir="ltr">
               Ctrl ⏎
             </span>
           )}
-          <ArrowRight className="h-3.5 w-3.5 ms-1.5 opacity-0 -translate-x-1 transition group-hover:opacity-70 group-hover:translate-x-0" />
+          <ArrowRight className="h-3.5 w-3.5 ms-1.5 opacity-0 -translate-x-1 transition group-hover:opacity-70 group-hover:translate-x-0 rtl:translate-x-1 rtl:-scale-x-100" />
         </Button>
         </Explain>
       </div>

@@ -1,6 +1,6 @@
 # Lovable V2 Product Entry Workflow
 
-**Status:** Phase 4.5 integrated and authenticated LocalWP browser-tested; owner acceptance pending
+**Status:** Phase 4.5 integrated; French and Arabic production localization passed in Phase 5A
 
 ## Presentation authority
 
@@ -66,4 +66,7 @@ cancel-safe editing, server-authoritative success UI, persisted tooltip preferen
 global Color by custom Size 2 x 3 variable workflow. Visual inspection covered 1440, 1280, 768,
 430, and 375 pixels; light/dark, compact/comfortable, Focus Mode, queue, dialog, category tree,
 TipTap, gallery, success states, and structural RTL. No measured viewport overflowed horizontally.
-Detailed evidence and cleanup results are recorded in the Phase 4.5 closeout.
+Phase 5A repeated the production workflows under the real French and Arabic WordPress user locales,
+including categories, TipTap, media, success/error states, global/custom variations, queue, and
+responsive layout. Detailed evidence and cleanup results are recorded in the Phase 4.5 closeout and
+the Phase 5A localization checkpoint.

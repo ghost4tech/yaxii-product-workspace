@@ -149,7 +149,11 @@ final class SimpleProductLifecycleTest extends TestCase {
 		$prefill = $this->data( $this->dispatch( 'GET', '/products/' . $product['id'] . '/duplicate' ) );
 
 		self::assertSame( $before, $this->product_count() );
-		self::assertStringEndsWith( ' (Copy)', $prefill['name'] );
+		self::assertSame(
+			/* translators: %s: source product name. */
+			sprintf( __( '%s (Copy)', 'yaxii-product-workspace' ), $product['name'] ),
+			$prefill['name']
+		);
 		self::assertSame( '', $prefill['slug'] );
 		self::assertSame( '', $prefill['sku'] );
 		self::assertSame( 'draft', $prefill['status'] );

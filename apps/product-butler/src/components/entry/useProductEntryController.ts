@@ -14,6 +14,7 @@ import type { ProductFormData, ProductImage } from "@/types/product";
 import type { VariableAttribute, VariationCombination } from "@/production/domain/variableProducts";
 import { productEntrySchema } from "./productEntrySchema";
 import { toProductEntryValues, type ProductEntryValues } from "./productEntryModel";
+import { __ } from "@/production/core/i18n/wordpress";
 
 interface Options {
   onCloseEdit?: () => void;
@@ -154,7 +155,7 @@ export function useProductEntryController(options: Options) {
 
   const uploadMedia = useCallback(async (file: File): Promise<ProductImage> => {
     if (!bootstrap.capabilities.uploadMedia) {
-      throw new Error("You are not allowed to upload media.");
+      throw new Error(__("You are not allowed to upload media.", "yaxii-product-workspace"));
     }
     const media = await client.uploadMedia(file);
     return { id: `wp-${media.id}`, preview: media.url, wpMediaId: media.id };
@@ -168,7 +169,7 @@ export function useProductEntryController(options: Options) {
   const submit = useCallback(async (values: ProductEntryValues) => {
     form.clearErrors();
     if (!canWrite) {
-      form.setError("root.server", { message: "This product operation is unavailable." });
+      form.setError("root.server", { message: __("This product operation is unavailable.", "yaxii-product-workspace") });
       return;
     }
     if (product) {
@@ -222,7 +223,7 @@ export function useProductEntryController(options: Options) {
       setConflictOpen(false);
     } catch (error) {
       form.setError("root.server", {
-        message: error instanceof Error ? error.message : "The latest product could not be loaded.",
+        message: error instanceof Error ? error.message : __("The latest product could not be loaded.", "yaxii-product-workspace"),
       });
     }
   }, [client, form, hydrate, onProductUpdated, product]);

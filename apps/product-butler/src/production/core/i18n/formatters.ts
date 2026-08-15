@@ -1,5 +1,12 @@
 import { toLanguageTag } from "./locale";
 
+export function formattingLanguageTag(locale: string): string {
+  const languageTag = toLanguageTag(locale);
+  return languageTag.startsWith("ar")
+    ? new Intl.Locale(languageTag, { numberingSystem: "latn" }).toString()
+    : languageTag;
+}
+
 export interface LocaleFormatters {
   currency: (value: number, currency: string) => string;
   date: (value: Date) => string;
@@ -8,7 +15,7 @@ export interface LocaleFormatters {
 }
 
 export function createFormatters(locale: string): LocaleFormatters {
-  const languageTag = toLanguageTag(locale);
+  const languageTag = formattingLanguageTag(locale);
 
   return {
     currency: (value, currency) =>

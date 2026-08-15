@@ -1,4 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { DirectionProvider } from "@radix-ui/react-direction";
 import { useEffect, useState } from "react";
 import workspaceLogo from "../../../../../assets/img/yaxii-product-workspace-logo.svg";
 import App from "@/App";
@@ -8,6 +9,7 @@ import { PortalProvider } from "../components/PortalProvider";
 import { UnavailableState } from "../components/UnavailableState";
 import { toLanguageTag } from "../core/i18n/locale";
 import { WorkspaceRuntimeProvider } from "./WorkspaceRuntime";
+import { __ } from "../core/i18n/wordpress";
 
 interface WorkspaceAppProps {
   client: WorkspaceClient;
@@ -16,7 +18,7 @@ interface WorkspaceAppProps {
 
 function WorkspaceLoading() {
   return (
-    <div className="workspace-shell flex min-h-screen items-center justify-center bg-background px-6" role="status" aria-label="Loading Yaxii Product Workspace">
+    <div className="workspace-shell flex min-h-screen items-center justify-center bg-background px-6" role="status" aria-label={__("Loading Yaxii Product Workspace", "yaxii-product-workspace")}>
       <div className="flex flex-col items-center text-center">
         <div className="relative">
           <img src={workspaceLogo} alt="" className="h-11 w-11" />
@@ -40,6 +42,9 @@ function WorkspaceBoundary({ client, scope }: WorkspaceAppProps) {
     }
     scope.setAttribute("dir", query.data.bootstrap.direction);
     scope.setAttribute("lang", toLanguageTag(query.data.bootstrap.locale));
+    const portalRoot = scope.querySelector<HTMLElement>("#yaxii-product-workspace-portals");
+    portalRoot?.setAttribute("dir", query.data.bootstrap.direction);
+    portalRoot?.setAttribute("lang", toLanguageTag(query.data.bootstrap.locale));
   }, [query.data, scope]);
 
   if (query.isPending) {
@@ -66,9 +71,11 @@ function WorkspaceBoundary({ client, scope }: WorkspaceAppProps) {
 
   return (
     <WorkspaceRuntimeProvider bootstrap={query.data.bootstrap} client={client} scope={scope}>
-      <PortalProvider container={portalRoot}>
-        <App />
-      </PortalProvider>
+      <DirectionProvider dir={query.data.bootstrap.direction}>
+        <PortalProvider container={portalRoot}>
+          <App />
+        </PortalProvider>
+      </DirectionProvider>
     </WorkspaceRuntimeProvider>
   );
 }

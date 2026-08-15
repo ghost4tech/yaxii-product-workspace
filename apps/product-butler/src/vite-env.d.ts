@@ -14,6 +14,12 @@ interface WordPressMediaFrame {
 
 interface Window {
   wp?: {
+    i18n?: {
+      __: (text: string, domain: string) => string;
+      _n: (single: string, plural: string, count: number, domain: string) => string;
+      _x: (text: string, context: string, domain: string) => string;
+      sprintf: (format: string, ...values: Array<string | number>) => string;
+    };
     media?: (options: {
       button?: { text: string };
       library: { type: "image" };

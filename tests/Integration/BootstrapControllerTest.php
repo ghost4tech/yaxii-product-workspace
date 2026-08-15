@@ -27,6 +27,7 @@ final class BootstrapControllerTest extends TestCase {
 	}
 
 	public function test_authorized_user_receives_bounded_bootstrap_data(): void {
+
 		$administrators = get_users(
 			array(
 				'role'   => 'administrator',
@@ -48,6 +49,36 @@ final class BootstrapControllerTest extends TestCase {
 		self::assertArrayNotHasKey( 'consumer_secret', $data['data'] );
 	}
 
+	public function test_bootstrap_uses_the_current_users_locale_and_direction(): void {
+
+			$administrators = get_users(
+				array(
+					'role'   => 'administrator',
+					'number' => 1,
+				)
+			);
+		self::assertNotEmpty( $administrators );
+			$user_id         = (int) $administrators[0]->ID;
+			$original_locale = get_user_meta( $user_id, 'locale', true );
+
+		try {
+			update_user_meta( $user_id, 'locale', 'fr_FR' );
+				wp_set_current_user( $user_id );
+				$response = rest_get_server()->dispatch(
+					new \WP_REST_Request( 'GET', '/yaxii-product-workspace/v1/bootstrap' )
+				);
+
+				self::assertSame( 200, $response->get_status() );
+			self::assertSame( 'fr_FR', $response->get_data()['data']['locale']['code'] );
+			self::assertSame( 'ltr', $response->get_data()['data']['locale']['direction'] );
+		} finally {
+			if ( '' === $original_locale ) {
+				delete_user_meta( $user_id, 'locale' );
+			} else {
+				update_user_meta( $user_id, 'locale', $original_locale );
+			}
+		}
+	}
 	public function test_unauthenticated_user_is_rejected(): void {
 		wp_set_current_user( 0 );
 		$response = rest_get_server()->dispatch(

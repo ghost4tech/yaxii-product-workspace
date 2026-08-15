@@ -7,6 +7,17 @@
   cursor: not-allowed;
 }
 
+#yaxii-product-workspace :where(input, textarea)::placeholder {
+  color: hsl(var(--muted-foreground) / 0.6) !important;
+  font-weight: 400 !important;
+  opacity: 1;
+}
+
+#yaxii-product-workspace [data-placeholder] {
+  color: hsl(var(--muted-foreground) / 0.6) !important;
+  font-weight: 400 !important;
+}
+
 #yaxii-product-workspace .queue-filter-fade {
   inset-block: 0;
   opacity: 0;

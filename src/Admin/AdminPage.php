@@ -8,6 +8,7 @@
 namespace Yaxii\ProductWorkspace\Admin;
 
 use Yaxii\ProductWorkspace\Application\Access\CapabilityPolicy;
+use Yaxii\ProductWorkspace\Infrastructure\WordPress\UserLocaleContext;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -23,10 +24,12 @@ final class AdminPage {
 	private string $hook_suffix = '';
 	private string $plugin_file;
 	private CapabilityPolicy $capabilities;
+	private UserLocaleContext $locale;
 
-	public function __construct( string $plugin_file, CapabilityPolicy $capabilities ) {
+	public function __construct( string $plugin_file, CapabilityPolicy $capabilities, UserLocaleContext $locale ) {
 		$this->plugin_file  = $plugin_file;
 		$this->capabilities = $capabilities;
+		$this->locale       = $locale;
 	}
 
 	public function register(): void {
@@ -96,11 +99,16 @@ final class AdminPage {
 		wp_enqueue_script(
 			self::SCRIPT_NAME,
 			$build_url . $script,
-			array(),
+			array( 'wp-i18n' ),
 			$this->asset_version( $build_path . $script ),
 			true
 		);
 
+		wp_set_script_translations(
+			self::SCRIPT_NAME,
+			'yaxii-product-workspace',
+			plugin_dir_path( $this->plugin_file ) . 'languages'
+		);
 		wp_add_inline_script(
 			self::SCRIPT_NAME,
 			'window.yaxiiProductWorkspaceConfig = ' . wp_json_encode( $this->host_data() ) . ';',
@@ -156,12 +164,14 @@ final class AdminPage {
 	 * @return array<string, mixed>
 	 */
 	private function host_data(): array {
+		$locale = $this->locale->current();
+
 		return array(
-			'direction'              => is_rtl() ? 'rtl' : 'ltr',
+			'direction'              => $locale['direction'],
 			'environment'            => 'wordpress',
 			'frontendAvailable'      => null !== $this->manifest_entry(),
 			'isWooCommerceAvailable' => $this->is_woocommerce_available(),
-			'locale'                 => determine_locale(),
+			'locale'                 => $locale['code'],
 			'nonce'                  => wp_create_nonce( 'wp_rest' ),
 			'pluginVersion'          => YAXII_PRODUCT_WORKSPACE_VERSION,
 			'mediaRestUrl'           => esc_url_raw( rest_url( 'wp/v2/media' ) ),

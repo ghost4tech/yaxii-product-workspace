@@ -5,6 +5,7 @@ import {
   DEFAULT_WORKSPACE_PREFERENCES,
   type WorkspacePreferences,
 } from "../../domain/products";
+import { __ } from "../../core/i18n/wordpress";
 
 const PREFERENCES_KEY = ["workspace-preferences"] as const;
 
@@ -30,7 +31,7 @@ export function useWorkspacePreferences() {
       void queryClient.invalidateQueries({ queryKey: PREFERENCES_KEY });
       toast({
         description: error.message,
-        title: "Preferences were not saved",
+        title: __("Preferences were not saved", "yaxii-product-workspace"),
         variant: "destructive",
       });
     },

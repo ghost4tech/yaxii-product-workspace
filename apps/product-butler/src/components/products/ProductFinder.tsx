@@ -9,6 +9,13 @@ import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
 import type { CanonicalProduct } from "@/production/domain/products";
 import { fieldsToDraft } from "@/production/features/products/productDrafts";
 import { useProductStore } from "@/stores/productStore";
+import { __, _x } from "@/production/core/i18n/wordpress";
+
+const productStatuses: Record<CanonicalProduct["status"], string> = {
+  draft: _x("Draft", "Product status", "yaxii-product-workspace"),
+  pending: _x("Pending review", "Product status", "yaxii-product-workspace"),
+  publish: _x("Published", "Product status", "yaxii-product-workspace"),
+};
 
 interface Props {
   onDraftPrepared?: () => void;
@@ -49,7 +56,7 @@ export function ProductFinder({ onDraftPrepared, onOpenChange, onOpenProduct, op
       })
       .catch((requestError: unknown) => {
         if (!(requestError instanceof DOMException && requestError.name === "AbortError")) {
-          setError(requestError instanceof Error ? requestError.message : "Products could not be loaded.");
+          setError(requestError instanceof Error ? requestError.message : __("Products could not be loaded.", "yaxii-product-workspace"));
         }
       })
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
@@ -62,7 +69,7 @@ export function ProductFinder({ onDraftPrepared, onOpenChange, onOpenProduct, op
       onOpenProduct(await client.getProduct(id));
       onOpenChange(false);
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : "Product could not be opened.");
+      setError(requestError instanceof Error ? requestError.message : __("Product could not be opened.", "yaxii-product-workspace"));
     } finally {
       setBusyId(undefined);
     }
@@ -76,7 +83,7 @@ export function ProductFinder({ onDraftPrepared, onOpenChange, onOpenProduct, op
       onDraftPrepared?.();
       onOpenChange(false);
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : "Draft could not be prepared.");
+      setError(requestError instanceof Error ? requestError.message : __("Draft could not be prepared.", "yaxii-product-workspace"));
     } finally {
       setBusyId(undefined);
     }
@@ -86,33 +93,33 @@ export function ProductFinder({ onDraftPrepared, onOpenChange, onOpenProduct, op
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[85vh] max-w-2xl overflow-hidden p-0">
         <DialogHeader className="border-b border-border px-5 pb-4 pt-5">
-          <DialogTitle>Find a product</DialogTitle>
-          <DialogDescription>Open an existing WooCommerce product or prepare a new simple-product draft.</DialogDescription>
+          <DialogTitle>{__("Find a product", "yaxii-product-workspace")}</DialogTitle>
+          <DialogDescription>{__("Open an existing WooCommerce product or prepare a new simple-product draft.", "yaxii-product-workspace")}</DialogDescription>
         </DialogHeader>
         <div className="space-y-3 overflow-hidden px-5 pb-5">
           <div className="relative">
             <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input autoFocus value={query} onChange={(event) => setQuery(event.target.value)}
-              className="workspace-search-input ps-9" placeholder="Search by product name or SKU…" />
+              className="workspace-search-input ps-9" placeholder={__("Search by product name or SKU…", "yaxii-product-workspace")} />
           </div>
           {error && <p role="alert" className="text-xs text-destructive">{error}</p>}
           <div className="max-h-[52vh] overflow-y-auto rounded-md border border-border">
             {products.map((product) => (
               <div key={product.id} className="flex items-center gap-3 border-b border-border p-3 last:border-0">
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium">{product.name}</p>
-                  <p className="truncate text-xs text-muted-foreground">#{product.id} · {product.sku || "No SKU"} · {product.status}</p>
+                  <p className="truncate text-start text-sm font-medium">{product.name}</p>
+                  <p className="truncate text-xs text-muted-foreground"><bdi dir="ltr">#{product.id} · {product.sku || __("No SKU", "yaxii-product-workspace")}</bdi> · {productStatuses[product.status]}</p>
                 </div>
                 {product.type === "simple" && <Button type="button" size="sm" variant="ghost" disabled={busyId === product.id}
-                  onClick={() => void duplicate(product)}><Copy className="me-1.5 h-3.5 w-3.5" />Duplicate</Button>}
+                  onClick={() => void duplicate(product)}><Copy className="me-1.5 h-3.5 w-3.5" />{__("Duplicate", "yaxii-product-workspace")}</Button>}
                 <Button type="button" size="sm" disabled={busyId === product.id}
-                  onClick={() => void openProduct(product.id)}>{busyId === product.id && <Loader2 className="me-1.5 h-3.5 w-3.5 animate-spin" />}Open</Button>
+                  onClick={() => void openProduct(product.id)}>{busyId === product.id && <Loader2 className="me-1.5 h-3.5 w-3.5 animate-spin" />}{__("Open", "yaxii-product-workspace")}</Button>
               </div>
             ))}
-            {!loading && products.length === 0 && <p className="p-8 text-center text-sm text-muted-foreground">No matching products.</p>}
-            {loading && <p className="flex items-center justify-center p-5 text-sm text-muted-foreground"><Loader2 className="me-2 h-4 w-4 animate-spin" />Loading products…</p>}
+            {!loading && products.length === 0 && <p className="p-8 text-center text-sm text-muted-foreground">{__("No matching products.", "yaxii-product-workspace")}</p>}
+            {loading && <p className="flex items-center justify-center p-5 text-sm text-muted-foreground"><Loader2 className="me-2 h-4 w-4 animate-spin" />{__("Loading products…", "yaxii-product-workspace")}</p>}
           </div>
-          {hasMore && <Button type="button" variant="outline" className="w-full" disabled={loading} onClick={() => setPage((value) => value + 1)}>Load more</Button>}
+          {hasMore && <Button type="button" variant="outline" className="w-full" disabled={loading} onClick={() => setPage((value) => value + 1)}>{__("Load more", "yaxii-product-workspace")}</Button>}
         </div>
       </DialogContent>
     </Dialog>

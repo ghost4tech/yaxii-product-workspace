@@ -12,6 +12,7 @@ import { VariationsEditor } from '@/components/VariationsEditor';
 import type { VariableAttribute, VariationCombination } from '@/production/domain/variableProducts';
 import type { UseFormReturn } from 'react-hook-form';
 import type { ProductEntryValues } from '@/components/entry/productEntryModel';
+import { __, _n, sprintf } from '@/production/core/i18n/wordpress';
 
 interface Props {
   form: UseFormReturn<ProductEntryValues>;
@@ -46,34 +47,34 @@ export const EssentialsFields: React.FC<Props> = ({
 }) => {
   const typeToggle = (
     <div className="flex items-center gap-1.5">
-      <HelpTip side="left"><strong>Simple</strong> — one price and stock value. <strong>Variable</strong> — attributes like Color or Size produce separate variations, each with its own price, SKU, stock and image.</HelpTip>
-    <div className="seg" role="group" aria-label="Product type">
+      <HelpTip side="left"><strong>{__("Simple", "yaxii-product-workspace")}</strong> {__("— one price and stock value.", "yaxii-product-workspace")} <strong>{__("Variable", "yaxii-product-workspace")}</strong> {__("— attributes such as color or size produce separate variations, each with its own price, SKU, stock, and image.", "yaxii-product-workspace")}</HelpTip>
+    <div className="seg" role="group" aria-label={__("Product type", "yaxii-product-workspace")}>
       <button type="button" data-active={!isVariable || undefined} className="seg-item"
-        aria-pressed={!isVariable} disabled={typeLocked} onClick={() => onVariableChange(false)}>Simple</button>
+        aria-pressed={!isVariable} disabled={typeLocked} onClick={() => onVariableChange(false)}>{__("Simple", "yaxii-product-workspace")}</button>
       <button type="button" data-active={isVariable || undefined} className="seg-item"
-        aria-pressed={isVariable} disabled={typeLocked} onClick={() => onVariableChange(true)}>Variable</button>
+        aria-pressed={isVariable} disabled={typeLocked} onClick={() => onVariableChange(true)}>{__("Variable", "yaxii-product-workspace")}</button>
     </div>
     </div>
   );
 
   return (
     <div className="stack-lg">
-      <FormSection title="Product" icon={Package} action={typeToggle}>
+      <FormSection title={__("Product", "yaxii-product-workspace")} icon={Package} action={typeToggle}>
         <div className="flex flex-col sm:flex-row gap-3">
           <FormField
             control={form.control}
             name="name"
             render={({ field }) => (
               <FormItem className="flex-1 min-w-0 space-y-0">
-                <label className="field-label" htmlFor="ypw-product-name">Product name *</label>
+                <label className="field-label" htmlFor="ypw-product-name">{__("Product name", "yaxii-product-workspace")} *</label>
                 <FormControl>
                   <Input
                     {...field}
                     id="ypw-product-name"
                     ref={nameRef}
-                    placeholder="e.g. Linen Crew Tee"
+                    placeholder={__("e.g. Linen Crew Tee", "yaxii-product-workspace")}
                     autoComplete="off"
-                    className="ctl ctl-input font-medium"
+                    className="ctl ctl-input text-start font-medium"
                   />
                 </FormControl>
                 <FormMessage className="text-[11px] mt-1" />
@@ -92,7 +93,7 @@ export const EssentialsFields: React.FC<Props> = ({
                     id="ypw-product-sku"
                     placeholder="SKU-1024"
                     autoComplete="off"
-                    className="ctl ctl-input font-mono"
+                    className="ctl ctl-input font-mono" dir="ltr"
                   />
                 </FormControl>
                 <FormMessage className="text-[11px] mt-1" />
@@ -106,8 +107,9 @@ export const EssentialsFields: React.FC<Props> = ({
           name="categoryId"
           render={({ field }) => (
             <FormItem className="space-y-0">
-              <label className="field-label flex items-center gap-1.5">Categories * · multiple allowed
-                <HelpTip side="right">Pick any level of the tree. Selecting a sub-category does not automatically add its parent in WooCommerce.</HelpTip>
+              <label className="field-label flex items-center gap-1.5">{__("Categories", "yaxii-product-workspace")} *
+                <span className="text-[11px] font-normal text-muted-foreground">· {__("multiple allowed", "yaxii-product-workspace")}</span>
+                <HelpTip side="right">{__("Pick any level of the tree. Selecting a subcategory does not automatically add its parent in WooCommerce.", "yaxii-product-workspace")}</HelpTip>
               </label>
               <FormControl>
                 <CategoryTreeSelect
@@ -129,7 +131,7 @@ export const EssentialsFields: React.FC<Props> = ({
       </FormSection>
 
       {!isVariable && <FormSection
-        title="Pricing & stock"
+        title={__("Pricing & stock", "yaxii-product-workspace")}
         icon={Tags}
       >
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -139,7 +141,7 @@ export const EssentialsFields: React.FC<Props> = ({
             render={({ field }) => (
               <FormItem className="space-y-0">
                 <label htmlFor="ypw-product-regular-price" className={cn('field-label', isVariable && 'text-muted-foreground')}>
-                  Price {!isVariable && '*'}
+                  {__("Price", "yaxii-product-workspace")} {!isVariable && '*'}
                 </label>
                 <FormControl>
                   <div className={cn('input-group', isVariable && 'opacity-60')}>
@@ -150,6 +152,7 @@ export const EssentialsFields: React.FC<Props> = ({
                       type="number"
                       step="0.01"
                       inputMode="decimal"
+                      dir="ltr"
                       placeholder={isVariable ? '—' : '0.00'}
                       disabled={isVariable}
                       className="font-mono"
@@ -166,7 +169,7 @@ export const EssentialsFields: React.FC<Props> = ({
             render={({ field }) => (
               <FormItem className="space-y-0">
                 <label htmlFor="ypw-product-sale-price" className={cn('field-label flex items-center gap-1.5', isVariable && 'text-muted-foreground')}>
-                  Sale price <HelpTip>Optional discounted price. Leave empty for no sale. Schedule a window under Extended options.</HelpTip>
+                  {__("Sale price", "yaxii-product-workspace")} <HelpTip>{__("Optional discounted price. Leave empty for no sale. Schedule a window under Extended options.", "yaxii-product-workspace")}</HelpTip>
                 </label>
                 <FormControl>
                   <div className={cn('input-group', isVariable && 'opacity-60')}>
@@ -177,6 +180,7 @@ export const EssentialsFields: React.FC<Props> = ({
                       type="number"
                       step="0.01"
                       inputMode="decimal"
+                      dir="ltr"
                       placeholder={isVariable ? '—' : '0.00'}
                       disabled={isVariable}
                       className="font-mono"
@@ -193,7 +197,7 @@ export const EssentialsFields: React.FC<Props> = ({
             render={({ field }) => (
               <FormItem className="col-span-2 sm:col-span-1 space-y-0">
                 <label htmlFor="ypw-product-stock" className={cn('field-label flex items-center gap-1.5', isVariable && 'text-muted-foreground')}>
-                  Stock <HelpTip>Units on hand. Entering a quantity enables WooCommerce stock management for this product.</HelpTip>
+                  {__("Stock", "yaxii-product-workspace")} <HelpTip>{__("Units on hand. Entering a quantity enables WooCommerce stock management for this product.", "yaxii-product-workspace")}</HelpTip>
                 </label>
                 <FormControl>
                   <div className={cn('input-group', isVariable && 'opacity-60')}>
@@ -208,11 +212,12 @@ export const EssentialsFields: React.FC<Props> = ({
                       id="ypw-product-stock"
                       type="number"
                       inputMode="numeric"
+                      dir="ltr"
                       placeholder={isVariable ? '—' : '0'}
                       disabled={isVariable}
                       className="font-mono"
                     />
-                    <span className="input-affix input-affix-end">units</span>
+                    <span className="input-affix input-affix-end">{__("units", "yaxii-product-workspace")}</span>
                   </div>
                 </FormControl>
                 <FormMessage className="text-[11px] mt-1" />
@@ -222,20 +227,22 @@ export const EssentialsFields: React.FC<Props> = ({
         </div>
       </FormSection>}
 
-      {isVariable && <FormSection title="Variations" icon={Layers}
-        hint="Price, SKU & stock live on each combination"
-        action={<HelpTip side="left">Attributes → combination preview → variations. Global attributes are reusable store taxonomies; custom attributes exist only on this product.</HelpTip>}>
+      {isVariable && <FormSection title={__("Variations", "yaxii-product-workspace")} icon={Layers}
+        hint={__("Price, SKU, and stock live on each combination", "yaxii-product-workspace")}
+        action={<HelpTip side="left">{__("Attributes → combination preview → variations. Global attributes are reusable store taxonomies; custom attributes exist only on this product.", "yaxii-product-workspace")}</HelpTip>}>
         <VariationsEditor attributes={attributes} combinations={combinations}
           onAttributesChange={onAttributesChange} onCombinationsChange={onCombinationsChange}
           onUploadImage={onUploadImage} baseSku={form.watch('sku')} currency={currency} />
       </FormSection>}
 
       <FormSection
-        title="Images"
+        title={__("Images", "yaxii-product-workspace")}
         icon={Images}
-        hint={images.length ? `${images.length} selected` : 'First image becomes the thumbnail'}
+        hint={images.length
+          ? /* translators: %s: number of selected images. */ sprintf(_n("%s image selected", "%s images selected", images.length, "yaxii-product-workspace"), images.length)
+          : __("First image becomes the thumbnail", "yaxii-product-workspace")}
       >
-        <FieldShell label="Product images">
+        <FieldShell label={__("Product images", "yaxii-product-workspace")}>
           <ImageUpload images={images} onChange={onImagesChange} onUpload={onUploadImage} />
         </FieldShell>
       </FormSection>

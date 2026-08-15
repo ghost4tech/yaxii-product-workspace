@@ -3,6 +3,7 @@ import { toast } from "@/hooks/use-toast";
 import { useWorkspaceRuntime } from "../../app/WorkspaceRuntime";
 import type { OperationPage } from "../../domain/products";
 import { operationFilters, operationToQueueProduct, type QueueStatus } from "./operationQueue";
+import { __ } from "../../core/i18n/wordpress";
 
 export function useOperationQueue(search: string, status: QueueStatus, perPage: number) {
   const { bootstrap, client } = useWorkspaceRuntime();
@@ -26,17 +27,17 @@ export function useOperationQueue(search: string, status: QueueStatus, perPage: 
   const invalidate = () => queryClient.invalidateQueries({ queryKey: ["operations"] });
   const dismiss = useMutation({
     mutationFn: (operationId: string) => client.dismissOperation(operationId),
-    onError: (error: Error) => toast({ description: error.message, title: "Queue item was not dismissed", variant: "destructive" }),
+    onError: (error: Error) => toast({ description: error.message, title: __("Queue item was not dismissed", "yaxii-product-workspace"), variant: "destructive" }),
     onSettled: invalidate,
   });
   const retry = useMutation({
     mutationFn: (operationId: string) => client.retryOperation(operationId),
-    onError: (error: Error) => toast({ description: error.message, title: "Retry was not started", variant: "destructive" }),
+    onError: (error: Error) => toast({ description: error.message, title: __("Retry was not started", "yaxii-product-workspace"), variant: "destructive" }),
     onSettled: invalidate,
   });
   const reconcile = useMutation({
     mutationFn: (operationId: string) => client.getOperation(operationId),
-    onError: (error: Error) => toast({ description: error.message, title: "Operation was not reconciled", variant: "destructive" }),
+    onError: (error: Error) => toast({ description: error.message, title: __("Operation was not reconciled", "yaxii-product-workspace"), variant: "destructive" }),
     onSettled: invalidate,
   });
   const pages = query.data?.pages ?? [];
