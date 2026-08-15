@@ -1,0 +1,2645 @@
+# Copyright (C) 2026 Yaxii Dev
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: Yaxii Product Workspace 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ypw-phase1-recovery\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-08-15T13:42:54+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: yaxii-product-workspace\n"
+
+#. Plugin Name of the plugin
+#: yaxii-product-workspace.php
+#: src/Admin/AdminPage.php:46
+#: src/Admin/AdminPage.php:152
+msgid "Yaxii Product Workspace"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: yaxii-product-workspace.php
+msgid "https://github.com/ghost4tech/yaxii-product-workspace"
+msgstr ""
+
+#. Description of the plugin
+#: yaxii-product-workspace.php
+msgid "A focused WooCommerce product-entry workspace for WordPress administrators."
+msgstr ""
+
+#. Author of the plugin
+#: yaxii-product-workspace.php
+msgid "Yaxii Dev"
+msgstr ""
+
+#. Author URI of the plugin
+#: yaxii-product-workspace.php
+msgid "https://yaxii.dev/"
+msgstr ""
+
+#: src/Admin/AdminPage.php:47
+msgid "Product Workspace"
+msgstr ""
+
+#: src/Admin/AdminPage.php:148
+msgid "You are not allowed to access this workspace."
+msgstr ""
+
+#: src/Admin/AdminPage.php:184
+msgid "The Product Workspace frontend is unavailable because its built assets are missing."
+msgstr ""
+
+#: src/Admin/AdminPage.php:188
+msgid "WooCommerce must be installed and active before the Product Workspace can be used."
+msgstr ""
+
+#: src/Admin/AdminPage.php:191
+msgid "Loading Yaxii Product Workspace..."
+msgstr ""
+
+#: src/Application/Preferences/PreferenceService.php:60
+msgid "The preference request contains unsupported fields."
+msgstr ""
+
+#: src/Application/Preferences/PreferenceService.php:65
+msgid "Review the workspace preferences."
+msgstr ""
+
+#: src/Application/Preferences/PreferenceService.php:102
+#: src/Application/Products/CreateProductRequestFactory.php:181
+#: src/Application/VariableProducts/VariationInputParser.php:130
+msgid "Expected true or false."
+msgstr ""
+
+#: src/Application/Preferences/PreferenceService.php:113
+msgid "Choose only supported repeat fields."
+msgstr ""
+
+#: src/Application/Preferences/PreferenceService.php:116
+msgid "Choose 10, 25, or 50 queue rows."
+msgstr ""
+
+#: src/Application/Preferences/PreferenceService.php:124
+#: src/Application/Products/ProductFieldParser.php:28
+msgid "Choose a supported value."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:77
+msgid "Every product field must be present; send an empty value to clear a field."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:79
+msgid "Reload the product before saving this update."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:129
+msgid "Product name is required."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:131
+msgid "Product name must be 200 characters or fewer."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:134
+msgid "SKU must be 100 characters or fewer."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:137
+msgid "Description is too large to save."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:140
+msgid "Short description is too large to save."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:151
+#: src/Application/VariableProducts/VariationInputParser.php:60
+msgid "Sale price cannot exceed the regular price."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:156
+msgid "Sale end date cannot be before the start date."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:165
+msgid "The request contains unsupported fields."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:176
+#: src/Application/VariableProducts/VariationInputParser.php:138
+msgid "Expected a text value."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:193
+msgid "Review the highlighted product fields."
+msgstr ""
+
+#: src/Application/Products/CreateProductService.php:58
+msgid "The product request could not be normalized."
+msgstr ""
+
+#: src/Application/Products/CreateProductService.php:81
+msgid "This idempotency key was already used with a different product payload."
+msgstr ""
+
+#: src/Application/Products/CreateProductService.php:111
+msgid "This operation is not marked safe for manual retry."
+msgstr ""
+
+#: src/Application/Products/CreateProductService.php:126
+msgid "This operation is already being reconciled or retried."
+msgstr ""
+
+#: src/Application/Products/CreateProductService.php:135
+msgid "WooCommerce is not available for product creation."
+msgstr ""
+
+#: src/Application/Products/CreateProductService.php:143
+msgid "You are not allowed to create products."
+msgstr ""
+
+#: src/Application/Products/CreateProductService.php:151
+#: src/Application/VariableProducts/VariableProductService.php:154
+msgid "You can create drafts but cannot publish products."
+msgstr ""
+
+#: src/Application/Products/CreateProductService.php:153
+msgid "Choose Draft or ask an administrator for publishing access."
+msgstr ""
+
+#: src/Application/Products/CreateProductService.php:160
+msgid "You are not allowed to assign product terms."
+msgstr ""
+
+#: src/Application/Products/CreateProductService.php:171
+msgid "You are not allowed to use one or more selected images."
+msgstr ""
+
+#: src/Application/Products/CreateProductService.php:209
+msgid "WooCommerce could not save the product."
+msgstr ""
+
+#: src/Application/Products/CreateProductService.php:226
+msgid "WooCommerce rejected one or more product references."
+msgstr ""
+
+#: src/Application/Products/OperationResult.php:54
+msgid "Some variations were not saved. Retry reconciliation before publishing."
+msgstr ""
+
+#: src/Application/Products/ProductFieldParser.php:39
+msgid "A non-negative decimal value is required."
+msgstr ""
+
+#: src/Application/Products/ProductFieldParser.php:44
+#: src/Application/VariableProducts/VariationInputParser.php:80
+msgid "Enter a valid non-negative decimal value."
+msgstr ""
+
+#: src/Application/Products/ProductFieldParser.php:58
+msgid "Enter a valid calendar date."
+msgstr ""
+
+#: src/Application/Products/ProductFieldParser.php:69
+#: src/Application/VariableProducts/VariationInputParser.php:93
+msgid "Stock quantity is required when stock management is enabled."
+msgstr ""
+
+#: src/Application/Products/ProductFieldParser.php:74
+#: src/Application/VariableProducts/VariationInputParser.php:90
+msgid "Stock quantity must be a non-negative whole number."
+msgstr ""
+
+#: src/Application/Products/ProductFieldParser.php:87
+msgid "Expected a positive numeric ID."
+msgstr ""
+
+#: src/Application/Products/ProductFieldParser.php:98
+msgid "Expected a list of numeric IDs."
+msgstr ""
+
+#: src/Application/Products/ProductFieldParser.php:103
+msgid "Every referenced ID must be a positive integer."
+msgstr ""
+
+#: src/Application/Products/ProductFieldParser.php:106
+msgid "Select at least one product category."
+msgstr ""
+
+#. translators: %d: maximum referenced items.
+#: src/Application/Products/ProductFieldParser.php:109
+#, php-format
+msgid "No more than %d items are allowed."
+msgstr ""
+
+#: src/Application/Products/ProductManagementService.php:66
+msgid "WooCommerce rejected one or more product fields."
+msgstr ""
+
+#: src/Application/Products/ProductManagementService.php:81
+msgid "You are not allowed to trash this product."
+msgstr ""
+
+#: src/Application/Products/ProductManagementService.php:89
+msgid "WooCommerce products are unavailable."
+msgstr ""
+
+#: src/Application/Products/ProductManagementService.php:92
+#: src/Rest/ApiError.php:29
+msgid "You are not allowed to manage products."
+msgstr ""
+
+#: src/Application/Products/ProductManagementService.php:110
+msgid "You are not allowed to edit this product."
+msgstr ""
+
+#: src/Application/Products/ProductManagementService.php:116
+#: src/Application/VariableProducts/VariableProductManagementService.php:68
+msgid "You cannot publish products."
+msgstr ""
+
+#: src/Application/Products/ProductManagementService.php:119
+msgid "You cannot assign product terms."
+msgstr ""
+
+#: src/Application/Products/ProductManagementService.php:126
+#: src/Application/VariableProducts/VariableProductManagementService.php:82
+msgid "You cannot use one or more selected images."
+msgstr ""
+
+#: src/Application/Products/ProductManagementService.php:139
+msgid "This product changed after it was opened. Reload it before saving."
+msgstr ""
+
+#: src/Application/Products/ProductManagementService.php:153
+msgid "The requested simple product was not found."
+msgstr ""
+
+#: src/Application/VariableProducts/CombinationGenerator.php:44
+msgid "Generate every projected variation combination before saving."
+msgstr ""
+
+#: src/Application/VariableProducts/CombinationGenerator.php:55
+#: src/Application/VariableProducts/VariationInputParser.php:32
+msgid "Each combination requires a unique client UUID."
+msgstr ""
+
+#: src/Application/VariableProducts/CombinationGenerator.php:58
+msgid "Duplicate variation combinations are not allowed."
+msgstr ""
+
+#: src/Application/VariableProducts/CombinationGenerator.php:74
+msgid "Each combination must be an object."
+msgstr ""
+
+#: src/Application/VariableProducts/CombinationGenerator.php:80
+msgid "The combination references an unknown attribute option."
+msgstr ""
+
+#: src/Application/VariableProducts/CombinationGenerator.php:143
+#: languages/source/yaxii-product-workspace.js:403
+msgid "Select one option from every variation attribute."
+msgstr ""
+
+#: src/Application/VariableProducts/CombinationGenerator.php:149
+msgid "The combination contains an invalid or duplicate attribute reference."
+msgstr ""
+
+#: src/Application/VariableProducts/CombinationGenerator.php:154
+msgid "The combination selection contains unsupported fields."
+msgstr ""
+
+#: src/Application/VariableProducts/CombinationGenerator.php:158
+msgid "The combination contains an unknown attribute option."
+msgstr ""
+
+#: src/Application/VariableProducts/CombinationGenerator.php:183
+#: src/Application/VariableProducts/VariationInputParser.php:157
+msgid "Review the variable-product combinations."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductManagementService.php:30
+msgid "You cannot edit this variable product."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductManagementService.php:34
+msgid "The requested variable product was not found."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductManagementService.php:44
+msgid "This variable product changed after it was opened. Reload it before saving."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductManagementService.php:49
+msgid "WooCommerce rejected variable-product fields."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductManagementService.php:62
+#: src/Application/VariableProducts/VariableProductService.php:148
+msgid "WooCommerce variable products are unavailable."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductManagementService.php:71
+#: src/Application/VariableProducts/VariableProductService.php:157
+msgid "You cannot assign product attributes or terms."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:27
+msgid "The variation plan contains unsupported fields."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:30
+msgid "Send attribute and combination lists."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:36
+msgid "At least one attribute must be used for variations."
+msgstr ""
+
+#. translators: 1: projected combinations, 2: Free limit.
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:43
+#, php-format
+msgid "%1$d combinations exceed the synchronous Free limit of %2$d."
+msgstr ""
+
+#. translators: %d: maximum attributes.
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:63
+#, php-format
+msgid "Add between one and %d attributes."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:71
+msgid "Each attribute must be an object."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:76
+msgid "Duplicate attributes are not allowed."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:79
+msgid "Each attribute requires a unique position."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:94
+msgid "The attribute contains unsupported fields."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:103
+msgid "Use a stable lowercase attribute key."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:106
+msgid "Choose a supported source and an attribute name up to 40 characters."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:109
+msgid "Attribute visibility, variation use, or position is invalid."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:134
+msgid "Global attributes use term IDs, not custom option text."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:140
+msgid "Global attributes require a real WooCommerce attribute ID and pa_* taxonomy."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:155
+msgid "Custom attributes cannot reference a global taxonomy or term IDs."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:159
+msgid "Select between one and 20 custom options."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:167
+msgid "Custom options must be unique non-empty values up to 100 characters."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:182
+msgid "Select between one and 20 attribute terms."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:186
+msgid "Attribute term IDs must be unique positive integers."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:193
+msgid "Review the variable-product attributes."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductRequestFactory.php:31
+msgid "Send one product, attribute list, and combination list."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductService.php:43
+msgid "The variable product could not be normalized."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductService.php:60
+msgid "This idempotency key was used with a different variable product."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductService.php:79
+msgid "This variable operation is not safe to retry."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductService.php:89
+msgid "This variable operation is already being reconciled."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductService.php:122
+msgid "WooCommerce could not save the variable product."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductService.php:131
+msgid "WooCommerce rejected variable-product references."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductService.php:151
+msgid "You cannot create variable products."
+msgstr ""
+
+#: src/Application/VariableProducts/VariableProductService.php:168
+msgid "You cannot use one or more selected variation images."
+msgstr ""
+
+#: src/Application/VariableProducts/VariationInputParser.php:52
+msgid "Expected a price or null."
+msgstr ""
+
+#: src/Application/VariableProducts/VariationInputParser.php:55
+msgid "Variation SKU must be 100 characters or fewer."
+msgstr ""
+
+#: src/Application/VariableProducts/VariationInputParser.php:102
+msgid "Choose a supported stock status."
+msgstr ""
+
+#: src/Application/VariableProducts/VariationInputParser.php:123
+msgid "The combination contains unsupported fields."
+msgstr ""
+
+#: src/Application/VariableProducts/VariationInputParser.php:146
+msgid "Expected a non-negative numeric ID."
+msgstr ""
+
+#: src/Infrastructure/WooCommerce/WooProductGateway.php:38
+msgid "This SKU is already used by another product."
+msgstr ""
+
+#. translators: %d: invalid term ID.
+#: src/Infrastructure/WooCommerce/WooProductGateway.php:155
+#, php-format
+msgid "Term ID %d is not valid for this product field."
+msgstr ""
+
+#. translators: %d: invalid image attachment ID.
+#: src/Infrastructure/WooCommerce/WooProductGateway.php:173
+#, php-format
+msgid "Media ID %d is not a valid image attachment."
+msgstr ""
+
+#: src/Infrastructure/WooCommerce/WooProductGateway.php:185
+msgid "Choose a configured WooCommerce tax class."
+msgstr ""
+
+#. translators: %s: source product name.
+#: src/Infrastructure/WooCommerce/WooProductMapper.php:80
+#, php-format
+msgid "%s (Copy)"
+msgstr ""
+
+#: src/Infrastructure/WooCommerce/WooVariableProductGateway.php:41
+msgid "The requested product is not a variable product."
+msgstr ""
+
+#: src/Infrastructure/WooCommerce/WooVariableProductGateway.php:190
+msgid "WooCommerce could not save this variation."
+msgstr ""
+
+#: src/Infrastructure/WooCommerce/WooVariableReferenceValidator.php:39
+msgid "Choose an existing WooCommerce global attribute."
+msgstr ""
+
+#: src/Infrastructure/WooCommerce/WooVariableReferenceValidator.php:44
+msgid "One or more selected terms do not belong to this attribute."
+msgstr ""
+
+#: src/Infrastructure/WooCommerce/WooVariableReferenceValidator.php:62
+msgid "Each variation SKU must be unique across WooCommerce."
+msgstr ""
+
+#: src/Infrastructure/WooCommerce/WooVariableReferenceValidator.php:67
+msgid "Choose a valid image attachment."
+msgstr ""
+
+#: src/Infrastructure/WooCommerce/WooVariableReferenceValidator.php:70
+msgid "The variation does not belong to this parent product."
+msgstr ""
+
+#: src/Rest/ApiError.php:21
+msgid "You must be signed in to use Product Workspace."
+msgstr ""
+
+#: src/Rest/ApiError.php:37
+msgid "The product operation could not be completed."
+msgstr ""
+
+#: src/Rest/OperationController.php:152
+msgid "Variable-product reconciliation is unavailable."
+msgstr ""
+
+#: src/Rest/OperationController.php:163
+msgid "Variable-product retry is unavailable."
+msgstr ""
+
+#: src/Rest/OperationController.php:214
+msgid "The requested product operation was not found."
+msgstr ""
+
+#: src/Rest/OperationController.php:219
+msgid "Wait for this operation to finish before removing it from the queue."
+msgstr ""
+
+#: src/Rest/PreferenceController.php:68
+msgid "Send a JSON preference object."
+msgstr ""
+
+#: src/Rest/ProductController.php:103
+#: src/Rest/VariableProductController.php:78
+msgid "A valid UUID Idempotency-Key header is required."
+msgstr ""
+
+#: src/Rest/ProductController.php:107
+msgid "Send a JSON object containing the product fields."
+msgstr ""
+
+#: src/Rest/ProductItemController.php:116
+msgid "Send an expected version and a complete product object."
+msgstr ""
+
+#: src/Rest/ProductTermController.php:91
+msgid "The requested WooCommerce product taxonomy is unavailable."
+msgstr ""
+
+#: src/Rest/ProductTermController.php:120
+msgid "Product terms could not be loaded."
+msgstr ""
+
+#: src/Rest/VariableProductController.php:105
+msgid "Send the expected product version."
+msgstr ""
+
+#: src/Rest/VariableProductController.php:119
+msgid "Send a JSON variable-product object."
+msgstr ""
+
+#: yaxii-product-workspace.php:42
+msgid "Yaxii Product Workspace cannot start because its Composer dependencies are missing."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:3
+msgid "— attributes such as color or size produce separate variations, each with its own price, SKU, stock, and image."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:4
+msgid "— one price and stock value."
+msgstr ""
+
+#. translators: translators: %s: taxonomy field label.
+#: languages/source/yaxii-product-workspace.js:6
+msgctxt "List separator"
+msgid ", "
+msgstr ""
+
+#. translators: translators: %s: product name.
+#: languages/source/yaxii-product-workspace.js:8
+#, js-format
+msgid "“%s” will leave recent operations. Its WooCommerce product will not be trashed."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:9
+msgid "“3 hours ago” instead of a fixed date."
+msgstr ""
+
+#. translators: translators: 1: projected combination count, 2: maximum combination count.
+#: languages/source/yaxii-product-workspace.js:11
+#, js-format
+msgid "%1$s combinations exceed the Free limit of %2$s."
+msgstr ""
+
+#. translators: translators: 1: enabled variation count, 2: total variation count.
+#: languages/source/yaxii-product-workspace.js:13
+#, js-format
+msgid "%1$s of %2$s enabled"
+msgstr ""
+
+#. translators: translators: 1: successful write count, 2: total final write count.
+#: languages/source/yaxii-product-workspace.js:15
+#, js-format
+msgid "%1$s of %2$s final writes"
+msgstr ""
+
+#. translators: translators: 1: current image count, 2: maximum image count.
+#: languages/source/yaxii-product-workspace.js:17
+#, js-format
+msgid "%1$s/%2$s · drag to reorder"
+msgstr ""
+
+#. translators: translators: 1: current attribute count, 2: maximum attribute count.
+#: languages/source/yaxii-product-workspace.js:19
+#, js-format
+msgid "%1$s/%2$s attribute"
+msgid_plural "%1$s/%2$s attributes"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: translators: %s: color name.
+#: languages/source/yaxii-product-workspace.js:21
+#, js-format
+msgid "%s accent"
+msgstr ""
+
+#. translators: translators: %s: number of selected categories.
+#: languages/source/yaxii-product-workspace.js:23
+#, js-format
+msgid "%s category selected"
+msgid_plural "%s categories selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: translators: %s: number of selected images.
+#: languages/source/yaxii-product-workspace.js:25
+#, js-format
+msgid "%s image selected"
+msgid_plural "%s images selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: translators: %s: editor label.
+#: languages/source/yaxii-product-workspace.js:27
+#, js-format
+msgid "%s image upload"
+msgstr ""
+
+#. translators: translators: %s: number of product matches.
+#: languages/source/yaxii-product-workspace.js:29
+#, js-format
+msgid "%s match"
+msgid_plural "%s matches"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: translators: %s: number of operations.
+#: languages/source/yaxii-product-workspace.js:31
+#, js-format
+msgid "%s operation"
+msgid_plural "%s operations"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: translators: %s: row count.
+#: languages/source/yaxii-product-workspace.js:33
+#, js-format
+msgid "%s row"
+msgid_plural "%s rows"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: translators: %s: number of selected categories.
+#: languages/source/yaxii-product-workspace.js:35
+#, js-format
+msgid "%s selected"
+msgid_plural "%s selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: translators: %s: number of variations missing a price.
+#: languages/source/yaxii-product-workspace.js:37
+#, js-format
+msgid "%s variation missing a price"
+msgid_plural "%s variations missing a price"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: translators: %s: variation count.
+#: languages/source/yaxii-product-workspace.js:39
+#, js-format
+msgid "%s variation"
+msgid_plural "%s variations"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: translators: %s: word count.
+#: languages/source/yaxii-product-workspace.js:41
+#, js-format
+msgid "%s word"
+msgid_plural "%s words"
+msgstr[0] ""
+msgstr[1] ""
+
+#: languages/source/yaxii-product-workspace.js:42
+msgid "+ Global attribute"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:43
+msgid "A newer product version exists"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:44
+msgid "A regular price is required for every enabled variation."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:45
+msgid "A variation image preview could not be loaded. Its attachment is unchanged."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:46
+msgid "Accent color"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:47
+msgid "Add a global or custom attribute to start. You can mix both: Global Color (Black, White) plus Custom Size (S, M, L) generates 6 variations."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:48
+msgid "Add another"
+msgstr ""
+
+#. translators: translators: %s: maximum attribute count.
+#: languages/source/yaxii-product-workspace.js:50
+#, js-format
+msgid "Add between one and %s attributes."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:51
+msgid "Add images"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:52
+msgid "Add more images"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:53
+msgid "Add new product"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:54
+msgid "Add one first, then duplicate it."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:55
+msgid "Add variation image"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:56
+msgid "Additional categories"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:57
+msgid "Adds date headers between queue rows."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:58
+msgid "Adjust the search term or pick a different status."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:59
+msgid "Align center"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:60
+msgid "Align left"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:61
+msgid "Align right"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:62
+msgid "all clear"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:63
+msgid "All"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:64
+msgid "Allow, but notify customer"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:65
+msgid "Allow"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:66
+msgid "An existing product cannot change type in this editor."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:67
+msgid "Appearance, workflow behavior, and WooCommerce defaults. Changes save instantly."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:68
+msgid "Appearance"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:69
+msgid "Applied to every new product and variation."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:70
+msgid "Applies this price to every enabled variation. You can still override individual ones."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:71
+msgid "Apply"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:72
+msgid "Ask before removing a queued product."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:73
+msgid "Attribute name (e.g. Size)"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:74
+msgid "Attribute visibility and variation use must be true or false."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:75
+msgid "Attributes → combination preview → variations. Global attributes are reusable store taxonomies; custom attributes exist only on this product."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:76
+msgid "Attributes"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:77
+msgid "Auto SKU"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:78
+msgid "Auto-focus product name"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:79
+msgid "Backorder"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:80
+msgid "Backorders"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:81
+msgid "Blue"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:82
+msgid "Bold"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:83
+msgid "Browser draft · current WooCommerce store"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:84
+msgid "Builds SKUs from the product SKU plus each option."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:85
+msgid "Bullet list"
+msgstr ""
+
+#. translators: translators: %s: product name.
+#: languages/source/yaxii-product-workspace.js:87
+msgid "Cancel"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:88
+msgid "Catalog visibility"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:89
+msgid "Categories could not be loaded."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:90
+msgid "Categories"
+msgstr ""
+
+#. translators: translators: %s: category ID.
+#: languages/source/yaxii-product-workspace.js:92
+#, js-format
+msgid "Category #%s"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:93
+msgid "Category is required"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:94
+msgid "Category"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:95
+msgid "Choose Draft or Publish in Settings."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:96
+msgid "Choose month"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:97
+msgid "Choose product images from the WordPress media library before saving."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:98
+msgid "Choose safe values to carry into the next product."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:99
+msgid "Choose Simple to save now."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:100
+msgid "Choose year"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:101
+msgid "Clear current draft"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:102
+msgid "Clear date"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:103
+msgid "Clear the form (Esc)"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:104
+msgid "Clear the sale dates to save now."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:105
+msgid "Clear"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:106
+msgid "Close"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:107
+msgid "Code block"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:108
+msgid "Collapse"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:109
+msgid "Combination IDs must be unique."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:110
+msgid "Combinations could not be generated."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:111
+msgid "Comfortable density"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:112
+msgid "Comfortable"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:113
+msgid "Compact density"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:114
+msgid "Compact fits noticeably more rows on screen."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:115
+msgid "Compact"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:116
+msgid "Complementary tools for modern WooCommerce teams."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:117
+msgid "Confirm before delete"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:118
+msgid "Create an attribute used only on this product — nothing is added to store taxonomies."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:119
+msgid "Create products faster."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:120
+msgid "Custom attribute — exists only on this product. No global taxonomy is created."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:121
+msgid "Custom attribute"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:122
+msgid "Custom options must be 100 characters or fewer."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:123
+msgid "Custom options must be text values."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:124
+msgid "Custom"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:125
+msgid "Dark"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:126
+msgid "Default availability for new items."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:127
+msgid "Default policy when tracked inventory reaches zero."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:128
+msgid "Density"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:129
+msgid "Description type"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:130
+msgid "Descriptions"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:131
+msgid "Disabled — skipped on save."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:132
+msgid "Distraction-free product entry. Remembered between sessions."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:133
+msgid "Divider"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:134
+msgid "Do not allow"
+msgstr ""
+
+#. translators: translators: %s: number of selected categories.
+#: languages/source/yaxii-product-workspace.js:136
+msgid "Done"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:137
+msgid "Draft cleared"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:138
+msgid "Draft could not be prepared."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:139
+msgid "Draft saved"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:140
+msgctxt "Operation status"
+msgid "Draft"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:141
+msgctxt "Product status"
+msgid "Draft"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:142
+msgid "Drag & drop product images"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:143
+msgid "Drop images to add"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:144
+msgid "Drop to upload"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:145
+msgid "Duplicate attribute position."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:146
+msgid "Duplicate attribute reference."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:147
+msgid "Duplicate attribute."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:148
+msgid "Duplicate combination."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:149
+msgid "Duplicate last product"
+msgstr ""
+
+#. translators: translators: %s: source product name.
+#: languages/source/yaxii-product-workspace.js:151
+msgid "Duplicate was not loaded"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:152
+msgid "Duplicate"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:153
+msgid "Duplicated"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:154
+msgid "e.g. Linen Crew Tee"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:155
+msgid "Edit product"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:156
+msgid "Edit"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:157
+msgid "Editing"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:158
+msgid "Emerald"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:159
+msgid "Enable variation"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:160
+msgid "Enabled — this variation will be created in WooCommerce."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:161
+msgid "Enabled variations require a valid price."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:162
+msgid "Ends"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:163
+msgid "Enter a non-negative number"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:164
+msgid "Enter a whole stock quantity"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:165
+msgid "Entry & queue"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:166
+msgid "Entry flow"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:167
+msgid "Entry workspace"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:168
+msgctxt "Command menu group"
+msgid "Entry"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:169
+msgctxt "Main navigation tab"
+msgid "Entry"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:170
+msgid "Every shortcut below is live in this workspace."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:171
+msgid "Exit focus"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:172
+msgid "Expand"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:173
+msgid "Explore all Yaxii products"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:174
+msgid "Explore the Yaxii ecosystem"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:175
+msgid "Extended options"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:176
+msgid "Extended"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:177
+msgid "failed, partial, or uncertain"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:178
+msgctxt "Operation status"
+msgid "Failed"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:179
+msgid "Find a product"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:180
+msgid "Find product"
+msgstr ""
+
+#. translators: translators: %s: number of selected images.
+#: languages/source/yaxii-product-workspace.js:182
+msgid "First image becomes the thumbnail"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:183
+msgid "Focus mode — hide everything except product entry"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:184
+msgid "Focus mode"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:185
+msgid "Focus"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:186
+msgid "Follow the system setting or select one."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:187
+msgid "Full description, materials, care instructions… Add images, lists, and links."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:188
+msgid "Full description"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:189
+msgid "Full"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:190
+msgid "Generate combinations"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:191
+msgid "Generate every projected combination before saving."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:192
+msgid "Global attribute — a real WooCommerce taxonomy and terms, reusable across products."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:193
+msgid "Global attributes could not be loaded."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:194
+msgid "Global options require positive term IDs."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:195
+msgid "Global"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:196
+msgid "Go to next month"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:197
+msgid "Go to previous month"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:198
+msgid "Go to"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:199
+msgid "Graphite"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:200
+msgid "Group by day"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:201
+msgid "Heading 2"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:202
+msgid "Heading 3"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:203
+msgid "Height"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:204
+msgid "Help tooltips"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:205
+msgid "Hidden"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:206
+msgid "Hide extended"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:207
+msgid "Hide inline hints in"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:208
+msgid "Hide navigation and metrics when the workspace opens."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:209
+msgid "How queued products are grouped and listed."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:210
+msgid "How the workspace looks on this device."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:211
+msgid "Image upload failed. Try again."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:212
+msgid "Images could not be uploaded."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:213
+msgid "Images"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:214
+msgid "In stock"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:215
+msgid "Inline “?” explanations on fields and controls. Turn off for a cleaner interface."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:216
+msgid "Inline keyboard hints"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:217
+msgid "Insert image"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:218
+msgid "Invalid attribute key."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:219
+msgid "Invalid attribute name."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:220
+msgid "Invalid attribute position."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:221
+msgid "Invalid global WooCommerce attribute reference."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:222
+msgid "Inventory"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:223
+msgid "Italic"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:224
+msgid "Keep the queue in focus mode"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:225
+msgid "Keep this draft"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:226
+msgid "Keeps the queue in view while you scroll the form."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:227
+msgid "Keyboard shortcuts"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:228
+msgid "KPI cards"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:229
+msgid "KPI trends"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:230
+msgid "Landing tab"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:231
+msgid "last 7 days"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:232
+msgid "Length"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:233
+msgid "Light"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:234
+msgid "Limit each order to one unit."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:235
+msgid "Link URL"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:236
+msgid "Link"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:237
+msgid "Load more categories"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:238
+msgid "Load more"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:239
+msgid "Loading categories…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:240
+msgid "Loading products…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:241
+msgid "Loading recent products"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:242
+msgid "Loading Yaxii Product Workspace"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:243
+msgid "loading"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:244
+msgid "Long description"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:245
+msgid "Longer lists load more rows before paging."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:246
+msgid "Main"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:247
+msgid "Manage stock"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:248
+msgid "Managed stock requires a non-negative whole number."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:249
+msgid "Minimizes animations and transitions across the app."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:250
+msgid "More information"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:251
+msgid "More variation fields"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:252
+msgid "Move to trash"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:253
+msgid "multiple allowed"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:254
+msgid "Name or SKU…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:255
+msgid "Navigation and on-screen guidance."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:256
+msgid "Navigation"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:257
+msgid "Needs attention"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:258
+msgid "Newer product changes found"
+msgstr ""
+
+#. translators: translators: %s: taxonomy field label.
+#: languages/source/yaxii-product-workspace.js:260
+#, js-format
+msgid "No %s found."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:261
+msgid "No category found."
+msgstr ""
+
+#. translators: translators: %s: product name.
+#: languages/source/yaxii-product-workspace.js:263
+msgid "No changes"
+msgstr ""
+
+#. translators: translators: 1: successful write count, 2: total final write count.
+#: languages/source/yaxii-product-workspace.js:265
+msgid "no final writes"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:266
+msgid "No matching products."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:267
+msgid "No matching products"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:268
+msgid "No products yet"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:269
+msgid "No results."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:270
+msgid "No SKU"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:271
+msgid "None"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:272
+msgid "Not scheduled"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:273
+msgid "Nothing to save"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:274
+msgid "Numbered list"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:275
+msgid "On backorder"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:276
+msgid "One or two lines shown near the price…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:277
+msgid "Open an existing WooCommerce product or prepare a new simple-product draft."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:278
+msgid "Open command menu"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:279
+msgid "Open"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:280
+msgid "Operation status filters"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:281
+msgid "Operation was not reconciled"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:282
+msgid "Optimized for fast, repetitive data entry."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:283
+msgid "Optional discounted price. Leave empty for no sale. Schedule a window under Extended options."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:284
+msgid "Optional"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:285
+msgid "Options must be unique and non-empty."
+msgstr ""
+
+#. translators: translators: %s: maximum image count.
+#: languages/source/yaxii-product-workspace.js:287
+#, js-format
+msgid "or click to browse · up to %s image · first image becomes the thumbnail"
+msgid_plural "or click to browse · up to %s images · first image becomes the thumbnail"
+msgstr[0] ""
+msgstr[1] ""
+
+#: languages/source/yaxii-product-workspace.js:288
+msgid "Out of stock"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:289
+msgid "Out"
+msgstr ""
+
+#. translators: translators: %s: maximum combination count.
+#: languages/source/yaxii-product-workspace.js:291
+#, js-format
+msgid "Over the %s-combination limit. Remove options to continue."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:292
+msgctxt "Product status"
+msgid "Pending review"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:293
+msgctxt "Operation status"
+msgid "Pending"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:294
+msgid "Pick any level of the tree. Selecting a subcategory does not automatically add its parent in WooCommerce."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:295
+msgid "Pick attributes, preview how many combinations they produce, then set the price, SKU, stock, and image on each concrete variation."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:296
+msgid "Pick the store terms used on this product."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:297
+msgid "Preferences were not saved"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:298
+msgid "Preferences"
+msgstr ""
+
+#. translators: translators: %s: source product name.
+#: languages/source/yaxii-product-workspace.js:300
+#, js-format
+msgid "Prefilled from “%s”. No product was created."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:301
+msgid "Preview"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:302
+msgid "Price, SKU, and stock live on each combination"
+msgstr ""
+
+#. translators: translators: %s: variation count.
+#: languages/source/yaxii-product-workspace.js:304
+msgid "Price, SKU, stock, and image belong to each concrete WooCommerce combination."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:305
+msgid "Price"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:306
+msgid "Pricing & stock"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:307
+msgid "Product actions"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:308
+msgid "Product could not be opened."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:309
+msgid "Product could not be opened"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:310
+msgid "Product creation is unavailable"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:311
+msgid "Product defaults"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:312
+msgid "Product entry"
+msgstr ""
+
+#. translators: translators: %s: image position.
+#: languages/source/yaxii-product-workspace.js:314
+#, js-format
+msgid "Product image %s"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:315
+msgid "Product images"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:316
+msgid "Product is not available"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:317
+msgid "Product moved to trash"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:318
+msgid "Product name is required"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:319
+msgid "Product name"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:320
+msgid "Product needs recovery"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:321
+msgid "Product saved"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:322
+msgid "Product status"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:323
+msgid "Product type"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:324
+msgid "Product updated"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:325
+msgid "Product was not saved"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:326
+msgid "Product was not trashed"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:327
+msgid "Product was not updated"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:328
+msgid "Product"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:329
+msgid "Products could not be loaded."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:330
+msgid "Publish state used for new products."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:331
+msgctxt "Operation status"
+msgid "Published"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:332
+msgctxt "Product status"
+msgid "Published"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:333
+msgid "Published"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:334
+msgid "Publishing"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:335
+msgid "Qty"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:336
+msgid "Queue display"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:337
+msgid "Queue is empty"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:338
+msgid "Queue item was not dismissed"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:339
+msgid "Queue unavailable"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:340
+msgid "Queue"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:341
+msgid "Quote"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:342
+msgid "Recent operations could not be loaded. Your WooCommerce products are unchanged."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:343
+msgid "Recent operations"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:344
+msgid "Recent products"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:345
+msgid "Recent"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:346
+msgid "Reconcile"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:347
+msgid "Redo"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:348
+msgid "Reduce motion"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:349
+msgid "Regenerate combinations"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:350
+msgid "Regular price"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:351
+msgid "Relative timestamps"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:352
+msgid "Reload latest"
+msgstr ""
+
+#. translators: translators: %s: category name or ID.
+#: languages/source/yaxii-product-workspace.js:354
+#, js-format
+msgid "Remove %s"
+msgstr ""
+
+#. translators: translators: %s: selected option count.
+#: languages/source/yaxii-product-workspace.js:356
+msgid "Remove attribute"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:357
+msgid "Remove from queue"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:358
+msgid "Remove image"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:359
+msgid "Remove this queue entry?"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:360
+msgid "Remove variation image"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:361
+msgid "Remove"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:362
+msgid "Repeat after Save & Next"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:363
+msgid "Replace variation image"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:364
+msgid "Reset changes"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:365
+msgid "Reset to defaults"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:366
+msgid "Restores preferences and product defaults. Your products stay untouched."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:367
+msgid "Retry safely"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:368
+msgid "Retry the partial operation from the queue."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:369
+msgid "Retry was not started"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:370
+msgid "Reuse an attribute that already exists in your WooCommerce store, with its real terms."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:371
+msgid "Review the current product operation queue."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:372
+msgid "Review the product fields and try again."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:373
+msgid "Rich text · drag images in"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:374
+msgid "Rich text and images supported"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:375
+msgid "Rows per page"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:376
+msgid "Sale price must be valid and cannot exceed the regular price."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:377
+msgid "Sale price"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:378
+msgid "Sale schedule"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:379
+msgid "Save & next"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:380
+msgid "Save draft"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:381
+msgid "Save outcome pending"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:382
+msgid "Save outcome unknown"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:383
+msgid "Saved products and operations appear here."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:384
+msgid "Saved to current store"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:385
+msgid "Saves this product and clears the form for the next one. Shortcut: Ctrl + Enter."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:386
+msgid "Saving…"
+msgstr ""
+
+#. translators: translators: %s: taxonomy field label.
+#: languages/source/yaxii-product-workspace.js:388
+#, js-format
+msgid "Search %s…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:389
+msgid "Search actions, pages and preferences…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:390
+msgid "Search available workspace actions and preferences."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:391
+msgid "Search by product name or SKU…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:392
+msgid "Search categories…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:393
+msgid "Search only"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:394
+msgid "Search or jump to…"
+msgstr ""
+
+#. translators: translators: %s: taxonomy field label.
+#: languages/source/yaxii-product-workspace.js:396
+msgid "Searching…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:397
+msgid "Secure product identity could not be generated. Product creation was not attempted."
+msgstr ""
+
+#. translators: translators: %s: taxonomy field label.
+#: languages/source/yaxii-product-workspace.js:399
+#, js-format
+msgid "Select %s…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:400
+msgid "Select a valid category."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:401
+msgid "Select between one and 20 options."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:402
+msgid "Select categories…"
+msgstr ""
+
+#. translators: translators: %s: maximum option count per attribute.
+#: languages/source/yaxii-product-workspace.js:405
+#, js-format
+msgid "Separate options with commas. Up to %s option per attribute."
+msgid_plural "Separate options with commas. Up to %s options per attribute."
+msgstr[0] ""
+msgstr[1] ""
+
+#: languages/source/yaxii-product-workspace.js:406
+msgid "Set all"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:407
+msgid "Settings & preferences"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:408
+msgid "Settings → Workspace"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:409
+msgctxt "Main navigation tab"
+msgid "Settings"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:410
+msgid "Settings"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:411
+msgid "Shipping class"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:412
+msgid "Shipping only"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:413
+msgid "Shipping"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:414
+msgid "Shop & search"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:415
+msgid "Shop only"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:416
+msgid "Short description"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:417
+msgid "Short"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:418
+msgid "Shortcuts pause while you type in a field, except save and submit."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:419
+msgid "Show key badges on buttons and footers."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:420
+msgid "Show recent products beside the form while focused."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:421
+msgid "Show sparklines and deltas on the metric strip."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:422
+msgid "Show the metric strip above the product workspace."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:423
+msgid "Show this panel"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:424
+msgid "Simple product"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:425
+msgid "Simple"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:426
+msgid "Slug"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:427
+msgid "Sold individually"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:428
+msgid "Some variation changes were not saved."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:429
+msgid "Some variations were not saved."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:430
+msgid "Standard"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:431
+msgid "Start filling the form first."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:432
+msgid "Start in focus mode"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:433
+msgid "Starts"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:434
+msgid "Status"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:435
+msgid "Sticky queue panel"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:436
+msgid "Stock management"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:437
+msgid "Stock must be a non-negative whole number."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:438
+msgid "Stock status"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:439
+msgid "Stock"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:440
+msgid "Strikethrough"
+msgstr ""
+
+#. translators: translators: 1: successful write count, 2: total final write count.
+#: languages/source/yaxii-product-workspace.js:442
+msgid "Success rate"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:443
+msgid "successful publishes"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:444
+msgid "Switch to dark theme"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:445
+msgid "Switch to light theme"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:446
+msgid "System"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:447
+msgid "Tags"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:448
+msgid "Tax & organization"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:449
+msgid "Tax class"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:450
+msgid "Tax status"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:451
+msgid "Tax treatment for new products."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:452
+msgid "Taxable"
+msgstr ""
+
+#. translators: translators: %s: attribute name.
+#: languages/source/yaxii-product-workspace.js:454
+#, js-format
+msgid "Terms for %s could not be loaded."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:455
+msgid "The cursor moves to the name field when the workspace loads."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:456
+msgid "The form was kept. Submit again to reconcile without creating a duplicate."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:457
+msgid "The image could not be uploaded."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:458
+msgid "The latest product could not be loaded."
+msgstr ""
+
+#. translators: translators: %s: maximum combination count.
+#: languages/source/yaxii-product-workspace.js:460
+#, js-format
+msgid "The plan exceeds %s combinations."
+msgstr ""
+
+#. translators: translators: %s: source product name.
+#: languages/source/yaxii-product-workspace.js:462
+msgid "The product could not be loaded."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:463
+msgid "The Product Workspace assets are unavailable. Rebuild the plugin frontend."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:464
+msgid "The server request failed."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:465
+msgid "The server response was not received."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:466
+msgid "The server returned an invalid response."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:467
+msgid "The server returned invalid bootstrap data."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:468
+msgid "The server returned invalid data."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:469
+msgid "The variable-product plan is invalid."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:470
+msgid "The WordPress host configuration is unavailable."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:471
+msgid "Theme & density"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:472
+msgid "Theme"
+msgstr ""
+
+#. translators: translators: %s: product name.
+#: languages/source/yaxii-product-workspace.js:474
+#, js-format
+msgid "This moves “%s” to WooCommerce trash. It is different from removing an entry from recent operations."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:475
+msgid "This operation does not have a WooCommerce product result to open."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:476
+msgid "This product operation is unavailable."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:477
+msgid "Today"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:478
+msgid "Track inventory levels by default."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:479
+msgid "Trash this WooCommerce product?"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:480
+msgid "Trash"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:481
+msgid "Type options — S, M, L then Enter"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:482
+msgid "unavailable"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:483
+msgid "Underline"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:484
+msgid "Undo delete"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:485
+msgid "Undo last delete"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:486
+msgid "Undo"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:487
+msgid "Units on hand. Entering a quantity enables WooCommerce stock management for this product."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:488
+msgid "units"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:489
+msgid "Unknown attribute option."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:490
+msgid "Unknown attribute or option reference."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:491
+msgid "Unknown"
+msgstr ""
+
+#. translators: translators: %s: product name.
+#: languages/source/yaxii-product-workspace.js:493
+#, js-format
+msgid "Unsaved draft · %s"
+msgstr ""
+
+#. translators: translators: %s: product name.
+#: languages/source/yaxii-product-workspace.js:495
+msgid "Unsaved draft"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:496
+msgid "Untitled product"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:497
+msgid "Update product"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:498
+msgid "Uploaded images were kept."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:499
+msgid "Uploading image to WordPress…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:500
+msgid "Uploading to WordPress…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:501
+msgid "Uploading variation image"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:502
+msgid "Use at least one attribute for variations."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:503
+msgid "Used for primary buttons and active states."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:504
+msgid "Validate and save current draft"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:505
+msgid "variable"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:506
+msgid "Variable"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:507
+msgid "Variation image reference is invalid."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:508
+msgid "Variation image. Shown when a shopper picks this exact combination."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:509
+msgid "Variation SKUs must be unique."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:510
+msgid "Variations"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:511
+msgid "View queue"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:512
+msgid "Violet"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:513
+msgid "Weight"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:514
+msgid "Where products appear in the storefront."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:515
+msgid "Where the app opens by default."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:516
+msgid "Width"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:517
+msgid "WooCommerce defaults"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:518
+msgid "WooCommerce did not return the product."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:519
+msgid "WooCommerce must be installed and active before this workspace can be used."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:520
+msgid "WooCommerce tax class for new products."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:521
+msgid "WordPress returned invalid media data."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:522
+msgid "Workspace behavior"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:523
+msgid "Workspace command menu"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:524
+msgid "Workspace unavailable"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:525
+msgctxt "Keyboard shortcut group"
+msgid "Workspace"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:526
+msgid "Workspace"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:527
+msgid "Write here…"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:528
+msgid "Yesterday"
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:529
+msgid "You are not allowed to upload media."
+msgstr ""
+
+#: languages/source/yaxii-product-workspace.js:530
+msgid "Your edit was not saved because this product changed after you opened it. Reload the latest values before editing again."
+msgstr ""

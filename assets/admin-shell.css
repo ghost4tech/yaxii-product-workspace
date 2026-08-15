@@ -1,0 +1,75 @@
+body.yaxii-product-workspace-admin #wpcontent {
+  padding-left: 0;
+}
+
+body.yaxii-product-workspace-admin #wpbody-content {
+  min-height: calc(100vh - 32px);
+  padding-bottom: 0;
+}
+
+body.yaxii-product-workspace-admin .wrap.yaxii-product-workspace-page {
+  margin: 0;
+}
+
+body.yaxii-product-workspace-admin #yaxii-product-workspace,
+body.yaxii-product-workspace-admin #yaxii-product-workspace .workspace-shell {
+  min-height: calc(100vh - 32px);
+}
+
+body.yaxii-product-workspace-admin #wpfooter {
+  display: none;
+}
+
+body.yaxii-product-workspace-admin #yaxii-product-workspace :where(
+  a[href],
+  button,
+  input:not([type="hidden"]),
+  select,
+  textarea,
+  [contenteditable="true"],
+  [role="button"],
+  [role="tab"],
+  [tabindex]:not([tabindex="-1"])
+):focus {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+body.yaxii-product-workspace-admin #yaxii-product-workspace :where(
+  a[href],
+  button,
+  input:not([type="hidden"]),
+  select,
+  textarea,
+  [contenteditable="true"],
+  [role="button"],
+  [role="tab"],
+  [tabindex]:not([tabindex="-1"])
+):focus-visible {
+  box-shadow: 0 0 0 2px hsl(var(--ring) / 0.32) !important;
+  outline: 2px solid transparent !important;
+  outline-offset: 2px !important;
+}
+
+body.yaxii-product-workspace-admin #yaxii-product-workspace .workspace-search-input:focus,
+body.yaxii-product-workspace-admin #yaxii-product-workspace .workspace-search-input:focus-visible {
+  border-color: hsl(var(--input)) !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: hsl(var(--muted) / 0.55);
+}
+
+body.yaxii-product-workspace-admin #yaxii-product-workspace .rte-content:focus,
+body.yaxii-product-workspace-admin #yaxii-product-workspace .rte-content:focus-visible {
+  box-shadow: none !important;
+  outline: none !important;
+  background-color: hsl(var(--muted) / 0.22) !important;
+}
+
+@media (max-width: 782px) {
+  body.yaxii-product-workspace-admin #wpbody-content,
+  body.yaxii-product-workspace-admin #yaxii-product-workspace,
+  body.yaxii-product-workspace-admin #yaxii-product-workspace .workspace-shell {
+    min-height: calc(100vh - 46px);
+  }
+}

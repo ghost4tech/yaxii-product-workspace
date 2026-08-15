@@ -1,0 +1,135 @@
+{
+  "_editor-vendor-CmxfUeEk.js": {
+    "file": "assets/editor-vendor-CmxfUeEk.js",
+    "name": "editor-vendor"
+  },
+  "_ui-vendor-iQhsuZTe.js": {
+    "file": "assets/ui-vendor-iQhsuZTe.js",
+    "name": "ui-vendor",
+    "imports": [
+      "_editor-vendor-CmxfUeEk.js"
+    ]
+  },
+  "_vendor-D7NdHagc.css": {
+    "file": "assets/vendor-D7NdHagc.css",
+    "src": "_vendor-D7NdHagc.css"
+  },
+  "_vendor-DrgeLRIn.js": {
+    "file": "assets/vendor-DrgeLRIn.js",
+    "name": "vendor",
+    "imports": [
+      "_editor-vendor-CmxfUeEk.js"
+    ],
+    "css": [
+      "assets/vendor-D7NdHagc.css"
+    ],
+    "assets": [
+      "assets/inter-latin-400-normal-C38fXH4l.woff2",
+      "assets/inter-latin-400-normal-CyCys3Eg.woff",
+      "assets/inter-latin-500-normal-Cerq10X2.woff2",
+      "assets/inter-latin-500-normal-BL9OpVg8.woff",
+      "assets/inter-latin-600-normal-LgqL8muc.woff2",
+      "assets/inter-latin-600-normal-CiBQ2DWP.woff",
+      "assets/inter-latin-700-normal-Yt3aPRUw.woff2",
+      "assets/inter-latin-700-normal-BLAVimhd.woff",
+      "assets/inter-latin-800-normal-BYj_oED-.woff2",
+      "assets/inter-latin-800-normal-D1mf63XC.woff",
+      "assets/jetbrains-mono-latin-400-normal-V6pRDFza.woff2",
+      "assets/jetbrains-mono-latin-400-normal-6-qcROiO.woff",
+      "assets/jetbrains-mono-latin-500-normal-BWZEU5yA.woff2",
+      "assets/jetbrains-mono-latin-500-normal-CJOVTJB7.woff",
+      "assets/jetbrains-mono-latin-600-normal-C8RAYTDA.woff2",
+      "assets/jetbrains-mono-latin-600-normal-BfsvjouI.woff"
+    ]
+  },
+  "node_modules/@fontsource-variable/rubik/files/rubik-arabic-wght-normal.woff2": {
+    "file": "assets/rubik-arabic-wght-normal-CGnJ-sf6.woff2",
+    "src": "node_modules/@fontsource-variable/rubik/files/rubik-arabic-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/rubik/files/rubik-latin-wght-normal.woff2": {
+    "file": "assets/rubik-latin-wght-normal-CnQIisVs.woff2",
+    "src": "node_modules/@fontsource-variable/rubik/files/rubik-latin-wght-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff": {
+    "file": "assets/inter-latin-400-normal-CyCys3Eg.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2": {
+    "file": "assets/inter-latin-400-normal-C38fXH4l.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-500-normal.woff": {
+    "file": "assets/inter-latin-500-normal-BL9OpVg8.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-500-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2": {
+    "file": "assets/inter-latin-500-normal-Cerq10X2.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-600-normal.woff": {
+    "file": "assets/inter-latin-600-normal-CiBQ2DWP.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-600-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2": {
+    "file": "assets/inter-latin-600-normal-LgqL8muc.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-600-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-700-normal.woff": {
+    "file": "assets/inter-latin-700-normal-BLAVimhd.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-700-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2": {
+    "file": "assets/inter-latin-700-normal-Yt3aPRUw.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-700-normal.woff2"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-800-normal.woff": {
+    "file": "assets/inter-latin-800-normal-D1mf63XC.woff",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-800-normal.woff"
+  },
+  "node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2": {
+    "file": "assets/inter-latin-800-normal-BYj_oED-.woff2",
+    "src": "node_modules/@fontsource/inter/files/inter-latin-800-normal.woff2"
+  },
+  "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff": {
+    "file": "assets/jetbrains-mono-latin-400-normal-6-qcROiO.woff",
+    "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff"
+  },
+  "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2": {
+    "file": "assets/jetbrains-mono-latin-400-normal-V6pRDFza.woff2",
+    "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2"
+  },
+  "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff": {
+    "file": "assets/jetbrains-mono-latin-500-normal-CJOVTJB7.woff",
+    "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff"
+  },
+  "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2": {
+    "file": "assets/jetbrains-mono-latin-500-normal-BWZEU5yA.woff2",
+    "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2"
+  },
+  "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff": {
+    "file": "assets/jetbrains-mono-latin-600-normal-BfsvjouI.woff",
+    "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff"
+  },
+  "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2": {
+    "file": "assets/jetbrains-mono-latin-600-normal-C8RAYTDA.woff2",
+    "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2"
+  },
+  "src/main.tsx": {
+    "file": "assets/main-DXpno9Nr.js",
+    "name": "main",
+    "src": "src/main.tsx",
+    "isEntry": true,
+    "imports": [
+      "_editor-vendor-CmxfUeEk.js",
+      "_vendor-DrgeLRIn.js",
+      "_ui-vendor-iQhsuZTe.js"
+    ],
+    "css": [
+      "assets/main-DGEz1Ij8.css"
+    ],
+    "assets": [
+      "assets/rubik-arabic-wght-normal-CGnJ-sf6.woff2",
+      "assets/rubik-latin-wght-normal-CnQIisVs.woff2"
+    ]
+  }
+}
