@@ -68,7 +68,7 @@ export function CategoryTreeSelect({ value, onChange }: Props) {
               "truncate text-[13px]",
               depth === 0 ? "font-medium" : "text-foreground/85",
               isSelected && "font-semibold",
-            )} dir="auto">{category.name}</span>
+            )}>{category.name}</span>
             <span className="ms-auto shrink-0 text-[10px] tabular-nums text-muted-foreground">{category.count}</span>
           </label>
         </div>

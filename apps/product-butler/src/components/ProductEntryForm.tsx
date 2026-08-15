@@ -89,7 +89,7 @@ export function ProductEntryForm({
       <form onSubmit={(event) => void form.handleSubmit(controller.submit)(event)}>
         {controller.editing && <div className="mb-4 flex h-9 items-center gap-2 rounded-md border border-info/25 bg-info/[0.07] px-3 text-[12px]">
           <Pencil className="h-3.5 w-3.5 shrink-0 text-info" />
-          <span className="truncate" dir="auto">{__("Editing", "yaxii-product-workspace")} <span className="font-semibold">{product?.name}</span></span>
+          <span className="truncate text-start">{__("Editing", "yaxii-product-workspace")} <span className="font-semibold">{product?.name}</span></span>
           <button type="button" onClick={controller.cancelEdit}
             className="ms-auto inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">
             <X className="h-3 w-3" /> {__("Cancel", "yaxii-product-workspace")}
@@ -154,7 +154,7 @@ export function ProductEntryForm({
 
       <AlertDialog open={controller.trashOpen} onOpenChange={controller.setTrashOpen}>
         <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>{__("Trash this WooCommerce product?", "yaxii-product-workspace")}</AlertDialogTitle>
-          <AlertDialogDescription dir="auto">{
+          <AlertDialogDescription>{
             /* translators: %s: product name. */
             sprintf(__("This moves “%s” to WooCommerce trash. It is different from removing an entry from recent operations.", "yaxii-product-workspace"), product?.name ?? "")
           }</AlertDialogDescription>

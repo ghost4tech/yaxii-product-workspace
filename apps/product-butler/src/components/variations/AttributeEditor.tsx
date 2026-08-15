@@ -55,11 +55,11 @@ export function AttributeEditor({ attribute, onChange, onRemove, terms }: Props)
           global ? "border-info/25 bg-info/10 text-info" : "border-border bg-muted text-muted-foreground",
         )}>{global ? <Globe className="h-3 w-3" /> : <Tag className="h-3 w-3" />}{global ? __("Global", "yaxii-product-workspace") : __("Custom", "yaxii-product-workspace")}</span>
       </Explain>
-      {global ? <span className="truncate text-[13px] font-medium" dir="auto">{attribute.name}
+      {global ? <span className="truncate text-start text-[13px] font-medium">{attribute.name}
         <bdi className="ms-1.5 font-mono text-[11px] text-muted-foreground" dir="ltr">{attribute.taxonomy}</bdi>
       </span> : <input value={attribute.name} onChange={(event) => onChange({ ...attribute, name: event.target.value })}
-        placeholder={__("Attribute name (e.g. Size)", "yaxii-product-workspace")} dir="auto"
-        className="h-7 min-w-0 flex-1 bg-transparent text-[13px] font-medium outline-none placeholder:font-normal placeholder:text-muted-foreground/60" />}
+        placeholder={__("Attribute name (e.g. Size)", "yaxii-product-workspace")}
+        className="h-7 min-w-0 flex-1 bg-transparent text-start text-[13px] font-medium outline-none placeholder:font-normal placeholder:text-muted-foreground/60" />}
       <span className="ms-auto shrink-0 text-[11px] tabular-nums text-muted-foreground">{
         /* translators: %s: selected option count. */
         sprintf(_n("%s selected", "%s selected", optionCount, "yaxii-product-workspace"), optionCount)
@@ -96,8 +96,8 @@ export function AttributeEditor({ attribute, onChange, onRemove, terms }: Props)
                 event.preventDefault();
                 addCustomOptions();
               }
-            }} placeholder={__("Type options — S, M, L then Enter", "yaxii-product-workspace")} dir="auto"
-            className="h-[var(--ctl-h)] min-w-0 flex-1 rounded-md border border-input bg-background px-2.5 text-[12px] outline-none focus:border-foreground/40 disabled:opacity-50" />
+            }} placeholder={__("Type options — S, M, L then Enter", "yaxii-product-workspace")}
+            className="h-[var(--ctl-h)] min-w-0 flex-1 rounded-md border border-input bg-background px-2.5 text-start text-[12px] outline-none focus:border-foreground/40 disabled:opacity-50" />
           <HelpTip side="left">{
             /* translators: %s: maximum option count per attribute. */
             sprintf(_n("Separate options with commas. Up to %s option per attribute.", "Separate options with commas. Up to %s options per attribute.", VARIABLE_PRODUCT_LIMITS.optionsPerAttribute, "yaxii-product-workspace"), VARIABLE_PRODUCT_LIMITS.optionsPerAttribute)

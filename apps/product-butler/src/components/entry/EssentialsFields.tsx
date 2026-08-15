@@ -73,9 +73,8 @@ export const EssentialsFields: React.FC<Props> = ({
                     id="ypw-product-name"
                     ref={nameRef}
                     placeholder={__("e.g. Linen Crew Tee", "yaxii-product-workspace")}
-                    dir="auto"
                     autoComplete="off"
-                    className="ctl ctl-input font-medium"
+                    className="ctl ctl-input text-start font-medium"
                   />
                 </FormControl>
                 <FormMessage className="text-[11px] mt-1" />

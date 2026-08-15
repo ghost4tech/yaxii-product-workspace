@@ -158,7 +158,7 @@ export const ProductQueue = ({ compact = false, onEdit, onRetry }: ProductQueueP
 
       <AlertDialog open={Boolean(pendingDismiss)} onOpenChange={(open) => !open && setPendingDismiss(null)}>
         <AlertDialogContent><AlertDialogHeader><AlertDialogTitle>{__("Remove this queue entry?", "yaxii-product-workspace")}</AlertDialogTitle>
-          <AlertDialogDescription dir="auto">{
+          <AlertDialogDescription>{
             /* translators: %s: product name. */
             sprintf(__("“%s” will leave recent operations. Its WooCommerce product will not be trashed.", "yaxii-product-workspace"), pendingDismiss?.name ?? "")
           }</AlertDialogDescription>

@@ -7,6 +7,30 @@
 
 ## Acceptance correction - 2026-08-15
 
+### Arabic font and natural-text follow-up
+
+The owner follow-up requested Rubik throughout the Arabic workspace and corrected natural-text
+alignment in RTL. The production bundle now self-hosts the Rubik variable font's Arabic and Latin
+subsets and applies it to every descendant of the plugin-owned RTL root. This includes portals,
+dropdowns, dialogs, tooltips, editor controls, badges, keyboard hints, and technical values; no
+external font request is required. The RTL-only scope leaves English and French typography
+unchanged.
+
+Natural-language inputs and content now inherit RTL and align to logical start, including an empty
+product-name field, TipTap content, custom attribute names/options, Find Product result names, and
+queue product names. Technical values remain deliberately LTR through their existing explicit
+direction boundary, including SKU, prices, quantities, IDs, taxonomy identifiers, and shortcuts.
+Regression coverage asserts this natural/technical split in the entry form, rich-text editor,
+Find Product dialog, and queue.
+
+Authenticated LocalWP QA loaded the actual Arabic and Latin Rubik WOFF2 files over HTTP. A computed
+font audit of every visible/text/form descendant in the plugin root found zero non-Rubik elements.
+The Find Product dialog, queue action dropdown, and an open HelpTip portal all computed as RTL,
+logical-start aligned, and Rubik. Product names in Find Product and the queue aligned at the right
+edge, while queue SKU, entry SKU, and price controls remained LTR. The Arabic root had no measured
+horizontal overflow. After changing the same temporary user's actual locale to `en_US`, the root
+returned to LTR/Inter and made no Rubik font request, confirming the RTL-only boundary.
+
 ### Why the owner saw English
 
 The post-closeout cleanup had restored the original plugin directory as the active LocalWP plugin.
@@ -42,16 +66,21 @@ owner acceptance.
   expansion, Save and Next motion, dialog/popover text, and the unavailable-WooCommerce alert use
   logical direction rules.
 - SKU, prices, quantities, product IDs, queue prices, KPI values, taxonomy identifiers, and keyboard
-  shortcuts are isolated with `dir="ltr"`/`bdi` as appropriate. User/catalog labels retain
-  `dir="auto"`. Arabic formatting continues to emit Latin digits.
+  shortcuts are isolated with `dir="ltr"`/`bdi` as appropriate. Natural-language fields inherit
+  the application direction and align to logical start. Arabic formatting continues to emit Latin
+  digits.
 
 ### Corrected runtime evidence
 
-The final correction build uses `main-Ce-a8jPu.js` and `main-KhsdlFmS.css`. HTTP responses were
-byte-identical to the worktree files (SHA-256
-`44437290E004DBC2094C5B9363291CCD8F69BACD6462FDA64F71D1C0D622D8E4` and
-`10FDF7819764A34BBC342204BC7545F5B7A16BB2618DDD9BF18897B49AA85378`). The active plugin version
-remains `0.2.0-alpha.1`.
+The final follow-up build uses `main-B226r-zL.js` and `main-CFevhaS2.css`. Its self-hosted font
+assets are `rubik-arabic-wght-normal-CGnJ-sf6.woff2` and
+`rubik-latin-wght-normal-CnQIisVs.woff2`. HTTP responses were byte-identical to the worktree files;
+their SHA-256 values are respectively
+`5013F30508CFABF203D5ECEFE4610A13FDCDDC61AC81902724A0545826B29088`,
+`B1862D5DF81246E7C3C38C49E15BE909C09B8BDA9CB1B35E3559525C22B6A375`,
+`F5052E4870BF211FC22DF5B85E791A292A77B9BAEF8CEF1DC5A8E62A783EA1E0`, and
+`691CD1D9B4C0CDF31A1DCF04259C86F92C85E69F6622ABAB7964D81E36890691`.
+The active plugin version remains `0.2.0-alpha.1`.
 
 Authenticated Arabic checks confirmed `lang="ar"`, `dir="rtl"`, bootstrap locale `ar`/`rtl`, an
 Arabic WordPress user locale, the PHP MO translation `Product Workspace` ->
@@ -150,8 +179,8 @@ Product Workspace behavior still passed.
 ## Verification
 
 - Frontend authoritative check: 119 production modules, 482 JavaScript messages, 616 POT entries,
-  129 maintained production files within the line limit, 78 tests in 22 files, production build,
-  and 24-asset boundary scan.
+  129 maintained production files within the line limit, 80 tests in 22 files, production build,
+  and 26-asset boundary scan.
 - Translation artifacts: two complete catalogs, French two-form plurals, Arabic six-form plurals,
   placeholder parity, MO files, hash JSON, stable handle JSON, and source-map validation passed.
 - PHP: PHPCS, PHPStan, 32 unit tests with 90 assertions, and 38 LocalWP integration tests with 456
@@ -174,8 +203,10 @@ Temporary products 1595, 1596, variations 1597–1600, and product 1601 were for
 exact-ID verification. The temporary administrator was deleted.
 
 Correction fixtures 1708-1711 and temporary administrators 69 and 70 were deleted after exact-ID
-verification. Existing media and catalog data were not deleted. The Phase 5A junction deliberately
-remains active so the owner tests the accepted branch rather than the older owner-edited checkout.
+verification. The Rubik/direction follow-up used simple product 1715 and temporary administrator
+71; both were deleted after exact-ID verification. Existing media and catalog data were not
+deleted. The Phase 5A junction deliberately remains active so the owner tests the accepted branch
+rather than the older owner-edited checkout.
 
 No Pro previews, new product features, telemetry, release ZIP, packaging, publication, deployment,
 or final release hardening were added. Stop here for owner review.

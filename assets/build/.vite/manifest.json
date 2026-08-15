@@ -59,6 +59,14 @@
     "file": "assets/vendor-D7NdHagc.css",
     "src": "_vendor-D7NdHagc.css"
   },
+  "node_modules/@fontsource-variable/rubik/files/rubik-arabic-wght-normal.woff2": {
+    "file": "assets/rubik-arabic-wght-normal-CGnJ-sf6.woff2",
+    "src": "node_modules/@fontsource-variable/rubik/files/rubik-arabic-wght-normal.woff2"
+  },
+  "node_modules/@fontsource-variable/rubik/files/rubik-latin-wght-normal.woff2": {
+    "file": "assets/rubik-latin-wght-normal-CnQIisVs.woff2",
+    "src": "node_modules/@fontsource-variable/rubik/files/rubik-latin-wght-normal.woff2"
+  },
   "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff": {
     "file": "assets/inter-latin-400-normal-CyCys3Eg.woff",
     "src": "node_modules/@fontsource/inter/files/inter-latin-400-normal.woff"
@@ -124,7 +132,7 @@
     "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2"
   },
   "src/main.tsx": {
-    "file": "assets/main-Ce-a8jPu.js",
+    "file": "assets/main-B226r-zL.js",
     "name": "main",
     "src": "src/main.tsx",
     "isEntry": true,
@@ -136,7 +144,11 @@
       "_ui-vendor-DJV7pxZu.js"
     ],
     "css": [
-      "assets/main-KhsdlFmS.css"
+      "assets/main-CFevhaS2.css"
+    ],
+    "assets": [
+      "assets/rubik-arabic-wght-normal-CGnJ-sf6.woff2",
+      "assets/rubik-latin-wght-normal-CnQIisVs.woff2"
     ]
   }
 }

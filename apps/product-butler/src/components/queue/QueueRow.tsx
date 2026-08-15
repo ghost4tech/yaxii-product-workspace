@@ -62,7 +62,7 @@ export function QueueRow({
       </div>
 
       <div className="min-w-0 flex-1">
-        <p className="truncate text-[13px] font-medium leading-tight" dir="auto">{product.name}</p>
+        <p className="truncate text-start text-[13px] font-medium leading-tight">{product.name}</p>
         <div className="mt-0.5 flex items-center gap-1.5 text-[11px] text-muted-foreground">
           {product.sku && <bdi className="truncate font-mono" dir="ltr">{product.sku}</bdi>}
           {product.sku && <span className="opacity-40">·</span>}

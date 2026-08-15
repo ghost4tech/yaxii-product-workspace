@@ -107,7 +107,7 @@ export function ProductFinder({ onDraftPrepared, onOpenChange, onOpenProduct, op
             {products.map((product) => (
               <div key={product.id} className="flex items-center gap-3 border-b border-border p-3 last:border-0">
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium" dir="auto">{product.name}</p>
+                  <p className="truncate text-start text-sm font-medium">{product.name}</p>
                   <p className="truncate text-xs text-muted-foreground"><bdi dir="ltr">#{product.id} · {product.sku || __("No SKU", "yaxii-product-workspace")}</bdi> · {productStatuses[product.status]}</p>
                 </div>
                 {product.type === "simple" && <Button type="button" size="sm" variant="ghost" disabled={busyId === product.id}

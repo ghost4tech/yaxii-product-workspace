@@ -84,7 +84,7 @@ export function RichTextEditor({ ariaLabel, className, minHeight = 140, onChange
   const [uploading, setUploading] = useState(false);
   const editor = useEditor({
     content: value || "",
-    editorProps: { attributes: { "aria-label": ariaLabel, class: "rte-content focus:outline-none", dir: "auto", style: `min-height:${minHeight}px` } },
+    editorProps: { attributes: { "aria-label": ariaLabel, class: "rte-content text-start focus:outline-none", style: `min-height:${minHeight}px` } },
     extensions: [
       StarterKit.configure({
         heading: { levels: [2, 3, 4] },

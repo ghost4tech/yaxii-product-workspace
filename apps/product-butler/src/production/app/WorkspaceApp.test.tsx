@@ -7,7 +7,7 @@ import { WorkspaceClient } from "../application/WorkspaceClient";
 import type { WorkspaceRepository } from "../application/WorkspaceRepository";
 import type { OperationPage } from "../domain/products";
 import type { WorkspaceSnapshot } from "../domain/workspace";
-import { workspaceRepository, workspaceSnapshot } from "../test/workspaceFixtures";
+import { canonicalProduct, operationResult, workspaceRepository, workspaceSnapshot } from "../test/workspaceFixtures";
 import { installWordPressI18n } from "../test/wordpressI18n";
 import { WorkspaceApp } from "./WorkspaceApp";
 
@@ -175,6 +175,39 @@ describe("WorkspaceApp", () => {
     await user.click(screen.getByRole("combobox", { name: "Landing tab" }));
     expect(portals).toHaveAttribute("dir", "rtl");
     expect(screen.getByRole("listbox").closest("[dir]"))?.toHaveAttribute("dir", "rtl");
+  });
+
+  it("keeps natural product text at the RTL start while technical fields stay LTR", async () => {
+    const user = userEvent.setup();
+    const history = operationResult();
+    renderWorkspace({
+      ...snapshot,
+      bootstrap: { ...snapshot.bootstrap, direction: "rtl", locale: "ar" },
+    }, {
+      listOperations: () => Promise.resolve({
+        counts: { all: 1, draft: 0, error: 0, pending: 0, synced: 1 },
+        has_more: false, items: [history], page: 1, per_page: 25, total: 1,
+      }),
+      searchProducts: () => Promise.resolve({
+        has_more: false, items: [canonicalProduct], page: 1, per_page: 20, total: 1,
+      }),
+    });
+
+    const nameInput = await screen.findByLabelText(/Product name/);
+    expect(nameInput).not.toHaveAttribute("dir", "auto");
+    expect(nameInput.closest("[dir]"))?.toHaveAttribute("dir", "rtl");
+    expect(screen.getByLabelText("SKU")).toHaveAttribute("dir", "ltr");
+
+    const queue = within(screen.getByRole("region", { name: "Recent products" }));
+    const queueName = await queue.findByText("Canvas tote");
+    expect(queueName).toHaveClass("text-start");
+    expect(queueName).not.toHaveAttribute("dir", "auto");
+
+    await user.click(screen.getByRole("button", { name: "Find product" }));
+    const finder = await screen.findByRole("dialog", { name: "Find a product" });
+    const finderName = await within(finder).findByText("Canvas tote");
+    expect(finderName).toHaveClass("text-start");
+    expect(finderName).not.toHaveAttribute("dir", "auto");
   });
 
   it("keeps command dialogs in the plugin-owned portal", async () => {
