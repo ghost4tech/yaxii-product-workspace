@@ -14,10 +14,10 @@ class TestPointerEvent extends MouseEvent {
   }
 }
 
-function Harness() {
+function Harness({ direction = "ltr" }: { direction?: "ltr" | "rtl" }) {
   const scroll = useHorizontalDragScroll();
   const [active, setActive] = useState(false);
-  return <div {...scroll.props} data-testid="scroller">
+  return <div {...scroll.props} data-testid="scroller" dir={direction}>
     <button type="button" onClick={() => setActive(true)}>{active ? "Active" : "Filter"}</button>
     <button type="button">Second</button>
   </div>;
@@ -53,6 +53,18 @@ describe("useHorizontalDragScroll", () => {
     expect(capture).toHaveBeenCalledWith(2);
     expect(scroller.scrollLeft).toBe(20);
     expect(view.getByRole("button", { name: "Filter" })).toBeInTheDocument();
+  });
+
+  it("keeps RTL dragging under the pointer instead of reversing it", () => {
+    vi.stubGlobal("PointerEvent", TestPointerEvent);
+    const view = render(<Harness direction="rtl" />);
+    const scroller = view.getByTestId("scroller");
+
+    fireEvent.pointerDown(scroller, { button: 0, clientX: 100, pointerId: 3, pointerType: "mouse" });
+    fireEvent.pointerMove(scroller, { clientX: 120, pointerId: 3, pointerType: "mouse" });
+    fireEvent.pointerUp(scroller, { clientX: 120, pointerId: 3, pointerType: "mouse" });
+
+    expect(scroller.scrollLeft).toBe(-20);
   });
 
   it("reports logical start and end overflow in LTR and RTL", () => {

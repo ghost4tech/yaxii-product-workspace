@@ -43,10 +43,18 @@ export function WorkspaceSettings() {
           <Switch aria-label={__("Help tooltips", "yaxii-product-workspace")} checked={prefs.showTooltips}
             onCheckedChange={(value) => setPref("showTooltips", value)} />
         </SettingRow>
+        <SettingRow title={__("KPI cards", "yaxii-product-workspace")} description={__("Show the metric strip above the product workspace.", "yaxii-product-workspace")}>
+          <Switch
+            aria-label={__("KPI cards", "yaxii-product-workspace")}
+            checked={prefs.showKpiCards}
+            onCheckedChange={(value) => setPref("showKpiCards", value)}
+          />
+        </SettingRow>
         <SettingRow title={__("KPI trends", "yaxii-product-workspace")} description={__("Show sparklines and deltas on the metric strip.", "yaxii-product-workspace")}>
           <Switch
             aria-label={__("KPI trends", "yaxii-product-workspace")}
             checked={prefs.showKpiTrends}
+            disabled={!prefs.showKpiCards}
             onCheckedChange={(value) => setPref("showKpiTrends", value)}
           />
         </SettingRow>

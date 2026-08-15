@@ -22,6 +22,7 @@ export interface Preferences {
 
   /* Workspace */
   defaultTab: '/' | '/settings';
+  showKpiCards: boolean;
   showKpiTrends: boolean;
   showKeyboardHints: boolean;
   showTooltips: boolean;
@@ -41,6 +42,7 @@ export const defaultPreferences: Preferences = {
   monoNumbers: true,
 
   defaultTab: '/',
+  showKpiCards: true,
   showKpiTrends: true,
   showKeyboardHints: true,
   showTooltips: true,

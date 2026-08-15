@@ -39,9 +39,7 @@ function trendTone(trend: PulseTrend): string {
   return improved ? "text-success" : "text-destructive";
 }
 
-function Delta({ trend }: { trend: PulseTrend | null }) {
-  if (!trend) return <span className="inline-flex items-center text-[11px] text-muted-foreground"
-    aria-label={__("Not enough previous-period data", "yaxii-product-workspace")}><Minus className="h-3 w-3" />—</span>;
+function Delta({ trend }: { trend: PulseTrend }) {
   const Icon = trend.amount > 0 ? ArrowUpRight : trend.amount < 0 ? ArrowDownRight : Minus;
   const unit = trend.unit === "percentage-points" ? " pp" : "";
   const sign = trend.amount > 0 ? "+" : trend.amount < 0 ? "−" : "";
@@ -69,7 +67,7 @@ export function StatsBar() {
         <div key={metric.label} className="min-w-0 px-4 py-3.5">
           <div className="flex items-center justify-between gap-2">
             <p className="label-eyebrow truncate">{metric.label}</p>
-            {showTrends && <Delta trend={metric.trend} />}
+            {showTrends && metric.trend && <Delta trend={metric.trend} />}
           </div>
           <div className="mt-1.5 flex items-end justify-between gap-2">
             <div className="min-w-0">

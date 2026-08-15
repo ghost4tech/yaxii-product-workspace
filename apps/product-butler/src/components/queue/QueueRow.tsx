@@ -85,7 +85,7 @@ export function QueueRow({
       </div>
 
       {!compact && (
-        <div className="w-24 shrink-0 text-end">
+        <div className="w-24 shrink-0 text-start">
           <bdi className="text-[13px] font-medium tabular-nums" dir="ltr">
             {product.regularPrice ? `${product.currencySymbol ?? ""}${product.regularPrice}` : "—"}
           </bdi>

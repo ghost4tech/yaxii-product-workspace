@@ -31,6 +31,32 @@ edge, while queue SKU, entry SKU, and price controls remained LTR. The Arabic ro
 horizontal overflow. After changing the same temporary user's actual locale to `en_US`, the root
 returned to LTR/Inter and made no Rubik font request, confirming the RTL-only boundary.
 
+### RTL interaction, typography, and KPI follow-up
+
+The queue-filter drag code had applied an extra RTL multiplier even though Chromium exposes this
+scroller with a negative `scrollLeft` model. Removing that manual inversion restored direct
+pointer tracking. At 375px, an authenticated trusted drag moved the Arabic filter strip from
+`scrollLeft` 0 to -86; the logical start/end fades changed sides with the scroll position and the
+strip remained overflow-free.
+
+React DayPicker 8.10.1 already exchanges its left/right navigation icons when `dir="rtl"`. The
+local icon classes mirrored them a second time, so the visible Arabic previous/next arrows were
+reversed. The duplicate transform was removed. In Arabic, the previous-month control is now on the
+right with a right-pointing chevron and the next-month control is on the left with a left-pointing
+chevron; navigating to the previous month was verified. The English control positions and
+chevrons remain conventional LTR.
+
+Extended queue prices now align to logical start in RTL while their `<bdi dir="ltr">` boundary
+preserves the currency and Latin-digit order. All input and textarea placeholders, including
+contenteditable placeholders, now share the same lighter muted color and normal weight. The
+category multiple-selection hint now matches the existing first-image helper at 11px, normal
+weight, and the same muted color.
+
+Unavailable KPI values now render one em dash per card instead of a value dash plus a second trend
+dash. Workspace Settings now includes a persisted KPI cards switch; disabling it hides the entire
+metric strip and disables the subordinate KPI trends switch. Arabic labels were added through the
+WordPress gettext catalogs, and normal reload confirmed that the preference persists.
+
 ### Why the owner saw English
 
 The post-closeout cleanup had restored the original plugin directory as the active LocalWP plugin.
@@ -72,12 +98,12 @@ owner acceptance.
 
 ### Corrected runtime evidence
 
-The final follow-up build uses `main-B226r-zL.js` and `main-CFevhaS2.css`. Its self-hosted font
+The final follow-up build uses `main-CgDy4FSk.js` and `main-DGEz1Ij8.css`. Its self-hosted font
 assets are `rubik-arabic-wght-normal-CGnJ-sf6.woff2` and
 `rubik-latin-wght-normal-CnQIisVs.woff2`. HTTP responses were byte-identical to the worktree files;
 their SHA-256 values are respectively
-`5013F30508CFABF203D5ECEFE4610A13FDCDDC61AC81902724A0545826B29088`,
-`B1862D5DF81246E7C3C38C49E15BE909C09B8BDA9CB1B35E3559525C22B6A375`,
+`1FBE2DB037AA9860849B9B9E657BF567D603ACF11D5427B0D1548AE50957DEFE`,
+`2F3EEEEC980360320CF05CEAF931C263F4D0FFFBBF0E179484973223EF031C1B`,
 `F5052E4870BF211FC22DF5B85E791A292A77B9BAEF8CEF1DC5A8E62A783EA1E0`, and
 `691CD1D9B4C0CDF31A1DCF04259C86F92C85E69F6622ABAB7964D81E36890691`.
 The active plugin version remains `0.2.0-alpha.1`.
@@ -86,7 +112,7 @@ Authenticated Arabic checks confirmed `lang="ar"`, `dir="rtl"`, bootstrap locale
 Arabic WordPress user locale, the PHP MO translation `Product Workspace` ->
 `مساحة عمل المنتجات`, and an inline Jed catalog attached to
 `yaxii-product-workspace-app-js-translations`. Its current script handle loads
-`main-Ce-a8jPu.js`, and contextual JavaScript gettext resolves `Entry` to `الإدخال`.
+`main-CgDy4FSk.js`, and contextual JavaScript gettext resolves `Entry` to `الإدخال`.
 
 The Arabic interaction sweep covered Header/navigation, Entry, Extended, Focus Mode, Find Product,
 hierarchical categories and selected chips, TipTap, product and variation media frames, simple
@@ -178,8 +204,8 @@ Product Workspace behavior still passed.
 
 ## Verification
 
-- Frontend authoritative check: 119 production modules, 482 JavaScript messages, 616 POT entries,
-  129 maintained production files within the line limit, 80 tests in 22 files, production build,
+- Frontend authoritative check: 119 production modules, 483 JavaScript messages, 617 POT entries,
+  130 maintained production files within the line limit, 84 tests in 23 files, production build,
   and 26-asset boundary scan.
 - Translation artifacts: two complete catalogs, French two-form plurals, Arabic six-form plurals,
   placeholder parity, MO files, hash JSON, stable handle JSON, and source-map validation passed.
@@ -204,9 +230,10 @@ exact-ID verification. The temporary administrator was deleted.
 
 Correction fixtures 1708-1711 and temporary administrators 69 and 70 were deleted after exact-ID
 verification. The Rubik/direction follow-up used simple product 1715 and temporary administrator
-71; both were deleted after exact-ID verification. Existing media and catalog data were not
-deleted. The Phase 5A junction deliberately remains active so the owner tests the accepted branch
-rather than the older owner-edited checkout.
+71; both were deleted after exact-ID verification. The final RTL interaction pass used simple
+product 1717 and temporary administrator 72; both were deleted after exact-ID verification.
+Existing media and catalog data were not deleted. The Phase 5A junction deliberately remains
+active so the owner tests the accepted branch rather than the older owner-edited checkout.
 
 No Pro previews, new product features, telemetry, release ZIP, packaging, publication, deployment,
 or final release hardening were added. Stop here for owner review.

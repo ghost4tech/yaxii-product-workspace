@@ -99,8 +99,7 @@ export function useHorizontalDragScroll() {
       event.currentTarget.setPointerCapture(event.pointerId);
       setDragging(true);
     }
-    const direction = isRtl(event.currentTarget) ? -1 : 1;
-    event.currentTarget.scrollLeft = active.startScroll - distance * direction;
+    event.currentTarget.scrollLeft = active.startScroll - distance;
     event.preventDefault();
     measure();
   };

@@ -107,7 +107,8 @@ export const EssentialsFields: React.FC<Props> = ({
           name="categoryId"
           render={({ field }) => (
             <FormItem className="space-y-0">
-              <label className="field-label flex items-center gap-1.5">{__("Categories", "yaxii-product-workspace")} * · {__("multiple allowed", "yaxii-product-workspace")}
+              <label className="field-label flex items-center gap-1.5">{__("Categories", "yaxii-product-workspace")} *
+                <span className="text-[11px] font-normal text-muted-foreground">· {__("multiple allowed", "yaxii-product-workspace")}</span>
                 <HelpTip side="right">{__("Pick any level of the tree. Selecting a subcategory does not automatically add its parent in WooCommerce.", "yaxii-product-workspace")}</HelpTip>
               </label>
               <FormControl>

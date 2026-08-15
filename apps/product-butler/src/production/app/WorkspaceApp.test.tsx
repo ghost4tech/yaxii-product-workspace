@@ -128,6 +128,26 @@ describe("WorkspaceApp", () => {
     expect(screen.getByDisplayValue("Canvas tote")).toBeVisible();
   });
 
+  it("lets the user hide the KPI cards from Workspace settings", async () => {
+    const user = userEvent.setup();
+    renderWorkspace();
+    expect(await screen.findByText("Recent operations")).toBeVisible();
+
+    await user.click(screen.getByRole("link", { name: "Settings" }));
+    await user.click(await screen.findByRole("tab", { name: "Workspace" }));
+    await user.click(screen.getByRole("switch", { name: "KPI cards" }));
+    await user.click(screen.getByRole("link", { name: "Entry" }));
+
+    expect(screen.queryByText("Recent operations")).not.toBeInTheDocument();
+  });
+
+  it("shows one unavailable marker per KPI instead of a duplicate trend marker", async () => {
+    renderWorkspace(snapshot, { getOperationSummary: () => Promise.reject(new Error("Unavailable")) });
+
+    await waitFor(() => expect(screen.getAllByText("unavailable")).toHaveLength(4));
+    expect(screen.getAllByText("—")).toHaveLength(4);
+  });
+
   it("opens the empty mobile queue in the plugin portal", async () => {
     const user = userEvent.setup();
     const { portals } = renderWorkspace();
@@ -202,6 +222,11 @@ describe("WorkspaceApp", () => {
     const queueName = await queue.findByText("Canvas tote");
     expect(queueName).toHaveClass("text-start");
     expect(queueName).not.toHaveAttribute("dir", "auto");
+
+    await user.click(screen.getByRole("button", { name: "Extended" }));
+    const queuePrice = await screen.findByText("$19.99");
+    expect(queuePrice).toHaveAttribute("dir", "ltr");
+    expect(queuePrice.parentElement).toHaveClass("text-start");
 
     await user.click(screen.getByRole("button", { name: "Find product" }));
     const finder = await screen.findByRole("dialog", { name: "Find a product" });

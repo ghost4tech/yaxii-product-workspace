@@ -1,7 +1,7 @@
 {
     "translation-revision-date": "2026-08-15T00:10:50+00:00",
     "generator": "WP-CLI\/2.12.0",
-    "source": "assets\/build\/assets\/main-B226r-zL.js",
+    "source": "assets\/build\/assets\/main-CgDy4FSk.js",
     "domain": "messages",
     "locale_data": {
         "messages": {
@@ -746,9 +746,6 @@
             "None": [
                 "Aucun"
             ],
-            "Not enough previous-period data": [
-                "Pas assez de donn\u00e9es sur la p\u00e9riode pr\u00e9c\u00e9dente"
-            ],
             "Not scheduled": [
                 "Non planifi\u00e9"
             ],
@@ -1467,6 +1464,12 @@
             ],
             "Your edit was not saved because this product changed after you opened it. Reload the latest values before editing again.": [
                 "Votre modification n\u2019a pas \u00e9t\u00e9 enregistr\u00e9e, car ce produit a \u00e9t\u00e9 modifi\u00e9 apr\u00e8s son ouverture. Rechargez les derni\u00e8res valeurs avant de les modifier \u00e0 nouveau."
+            ],
+            "KPI cards": [
+                "Cartes d\u2019indicateurs KPI"
+            ],
+            "Show the metric strip above the product workspace.": [
+                "Afficher la barre d\u2019indicateurs au-dessus de l\u2019espace de travail des produits."
             ]
         }
     }

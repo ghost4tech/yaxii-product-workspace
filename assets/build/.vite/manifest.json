@@ -132,7 +132,7 @@
     "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2"
   },
   "src/main.tsx": {
-    "file": "assets/main-B226r-zL.js",
+    "file": "assets/main-CgDy4FSk.js",
     "name": "main",
     "src": "src/main.tsx",
     "isEntry": true,
@@ -144,7 +144,7 @@
       "_ui-vendor-DJV7pxZu.js"
     ],
     "css": [
-      "assets/main-CFevhaS2.css"
+      "assets/main-DGEz1Ij8.css"
     ],
     "assets": [
       "assets/rubik-arabic-wght-normal-CGnJ-sf6.woff2",
