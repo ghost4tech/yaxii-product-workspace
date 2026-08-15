@@ -86,11 +86,11 @@ export function QueueRow({
 
       {!compact && (
         <div className="w-24 shrink-0 text-end">
-          <span className="text-[13px] font-medium tabular-nums">
+          <bdi className="text-[13px] font-medium tabular-nums" dir="ltr">
             {product.regularPrice ? `${product.currencySymbol ?? ""}${product.regularPrice}` : "—"}
-          </span>
+          </bdi>
           {product.salePrice && (
-            <span className="block text-[11px] tabular-nums text-success">{product.currencySymbol ?? ""}{product.salePrice}</span>
+            <bdi className="block text-[11px] tabular-nums text-success" dir="ltr">{product.currencySymbol ?? ""}{product.salePrice}</bdi>
           )}
         </div>
       )}

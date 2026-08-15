@@ -58,7 +58,7 @@ export function CategoryTreeSelect({ value, onChange }: Props) {
               className="grid h-5 w-5 shrink-0 place-items-center rounded text-muted-foreground hover:text-foreground"
               aria-label={isCollapsed ? __("Expand", "yaxii-product-workspace") : __("Collapse", "yaxii-product-workspace")}>
               {branch?.loading ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : (
-                <ChevronRight className={cn("h-3.5 w-3.5 transition-transform rtl:-scale-x-100", !isCollapsed && "rotate-90")} />
+                <ChevronRight className={cn("h-3.5 w-3.5 transition-transform rtl:-scale-x-100", !isCollapsed && "rotate-90 rtl:-rotate-90")} />
               )}
             </button>
           ) : <span className="h-5 w-5 shrink-0" />}

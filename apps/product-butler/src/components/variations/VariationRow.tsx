@@ -73,12 +73,12 @@ export function VariationRow({ combination, currency, image, index, labels, onCh
       </span>)}</div>
       <div className="input-group w-[7.5rem] shrink-0" data-invalid={priceMissing || undefined}>
         <span className="input-affix">{currency}</span>
-        <input type="number" step="0.01" inputMode="decimal" placeholder={__("Price", "yaxii-product-workspace")} className="font-mono"
+        <input type="number" step="0.01" inputMode="decimal" placeholder={__("Price", "yaxii-product-workspace")} className="font-mono" dir="ltr"
           value={combination.regularPrice} onChange={(event) => onChange({ regularPrice: event.target.value })} />
       </div>
       <input placeholder="SKU" dir="ltr" value={combination.sku} onChange={(event) => onChange({ sku: event.target.value })}
         className="h-[var(--ctl-h)] w-[7.5rem] shrink-0 rounded-md border border-input bg-background px-2.5 font-mono text-[12px] outline-none focus:border-foreground/40" />
-      <input type="number" inputMode="numeric" placeholder={__("Qty", "yaxii-product-workspace")} value={combination.stockQuantity ?? ""}
+      <input type="number" inputMode="numeric" placeholder={__("Qty", "yaxii-product-workspace")} value={combination.stockQuantity ?? ""} dir="ltr"
         onChange={(event) => onChange({
           manageStock: event.target.value !== "",
           stockQuantity: event.target.value === "" ? null : Number(event.target.value),
@@ -96,7 +96,7 @@ export function VariationRow({ combination, currency, image, index, labels, onCh
     {open && <div className="flex flex-wrap items-end gap-3 pb-3 ps-[4.25rem] pe-3">
       <div><label className="field-label">{__("Sale price", "yaxii-product-workspace")}</label><div className="input-group w-[7.5rem]">
         <span className="input-affix">{currency}</span>
-        <input type="number" step="0.01" placeholder="0.00" className="font-mono"
+        <input type="number" step="0.01" placeholder="0.00" className="font-mono" dir="ltr"
           value={combination.salePrice ?? ""} onChange={(event) => onChange({ salePrice: event.target.value || null })} />
       </div></div>
       <div><label className="field-label">{__("Stock status", "yaxii-product-workspace")}</label><div className="seg">

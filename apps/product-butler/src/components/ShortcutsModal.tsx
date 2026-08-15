@@ -68,7 +68,7 @@ export function ShortcutsModal() {
                   {group.items.map((item) => (
                     <li key={item.label} className="flex items-center justify-between gap-3">
                       <span className="text-[13px] leading-snug text-foreground/90">{item.label}</span>
-                      <span className="flex shrink-0 gap-1">
+                      <span className="flex shrink-0 gap-1" dir="ltr">
                         {item.keys.map((key) => (
                           <kbd key={key} className="kbd">{key}</kbd>
                         ))}

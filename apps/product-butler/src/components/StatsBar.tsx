@@ -45,7 +45,7 @@ function Delta({ trend }: { trend: PulseTrend | null }) {
   const Icon = trend.amount > 0 ? ArrowUpRight : trend.amount < 0 ? ArrowDownRight : Minus;
   const unit = trend.unit === "percentage-points" ? " pp" : "";
   const sign = trend.amount > 0 ? "+" : trend.amount < 0 ? "−" : "";
-  return <span className={cn("inline-flex items-center gap-0.5 text-[11px] font-medium tabular-nums", trendTone(trend))}>
+  return <span dir="ltr" className={cn("inline-flex items-center gap-0.5 text-[11px] font-medium tabular-nums", trendTone(trend))}>
     <Icon className="h-3 w-3" />{sign}{Math.abs(trend.amount)}{unit}
   </span>;
 }
@@ -73,7 +73,7 @@ export function StatsBar() {
           </div>
           <div className="mt-1.5 flex items-end justify-between gap-2">
             <div className="min-w-0">
-              <span className="num-kpi text-[26px] leading-none">{metric.value}</span>
+              <bdi className="num-kpi text-[26px] leading-none" dir="ltr">{metric.value}</bdi>
               <span className="ms-1.5 truncate text-[11px] text-muted-foreground">{metric.hint}</span>
             </div>
             {showTrends && <Sparkline points={metric.spark} />}

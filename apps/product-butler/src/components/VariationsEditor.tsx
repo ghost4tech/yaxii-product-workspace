@@ -210,7 +210,7 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
         }</span>}
         <div className="ms-auto flex items-center gap-2">
           <div className="input-group w-[8.5rem]"><span className="input-affix">{currency}</span>
-            <input type="number" step="0.01" placeholder={__("Set all", "yaxii-product-workspace")} className="font-mono" value={bulkPrice}
+            <input type="number" step="0.01" placeholder={__("Set all", "yaxii-product-workspace")} className="font-mono" dir="ltr" value={bulkPrice}
               onChange={(event) => setBulkPrice(event.target.value)} /></div>
           <Explain tip={__("Applies this price to every enabled variation. You can still override individual ones.", "yaxii-product-workspace")}>
             <Button type="button" size="sm" variant="outline" disabled={!bulkPrice}

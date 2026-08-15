@@ -81,7 +81,7 @@ export function EntryQueueSettings() {
             value={String(preferences.queue_rows_per_page)}
             onValueChange={(value) => update("queue_rows_per_page", Number(value) as 10 | 25 | 50)}
           >
-            <SelectTrigger className="h-9 w-full text-xs sm:w-[110px]">
+            <SelectTrigger aria-label={__("Rows per page", "yaxii-product-workspace")} className="h-9 w-full text-xs sm:w-[110px]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

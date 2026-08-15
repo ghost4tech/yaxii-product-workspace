@@ -18,8 +18,8 @@
     "file": "assets/rolldown-runtime-CbXtAM7H.js",
     "name": "rolldown-runtime"
   },
-  "_ui-vendor-DeMejne0.js": {
-    "file": "assets/ui-vendor-DeMejne0.js",
+  "_ui-vendor-DJV7pxZu.js": {
+    "file": "assets/ui-vendor-DJV7pxZu.js",
     "name": "ui-vendor",
     "imports": [
       "_rolldown-runtime-CbXtAM7H.js",
@@ -124,7 +124,7 @@
     "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2"
   },
   "src/main.tsx": {
-    "file": "assets/main-Dpu63S3l.js",
+    "file": "assets/main-Ce-a8jPu.js",
     "name": "main",
     "src": "src/main.tsx",
     "isEntry": true,
@@ -133,10 +133,10 @@
       "_vendor-CkqjcqBd.js",
       "_editor-vendor-D7Q2H7mx.js",
       "_react-vendor-HH2Bqy9M.js",
-      "_ui-vendor-DeMejne0.js"
+      "_ui-vendor-DJV7pxZu.js"
     ],
     "css": [
-      "assets/main-CSZjEGo-.css"
+      "assets/main-KhsdlFmS.css"
     ]
   }
 }

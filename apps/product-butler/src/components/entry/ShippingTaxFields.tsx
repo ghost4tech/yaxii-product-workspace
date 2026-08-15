@@ -24,7 +24,7 @@ export function ShippingTaxFields({ form }: { form: UseFormReturn<ProductEntryVa
           {(["weight", "length", "width", "height"] as const).map((name) => (
             <FormField key={name} control={form.control} name={name} render={({ field }) => (
               <FormItem className="space-y-0"><label className="field-label" htmlFor={`ypw-${name}`}>{dimensionLabels[name]}</label>
-                <FormControl><div className="input-group"><input {...field} id={`ypw-${name}`} inputMode="decimal" className="font-mono" />
+                <FormControl><div className="input-group"><input {...field} id={`ypw-${name}`} inputMode="decimal" className="font-mono" dir="ltr" />
                   <span className="input-affix input-affix-end">{name === "weight" ? bootstrap.woocommerce.weightUnit : bootstrap.woocommerce.dimensionUnit}</span></div></FormControl><FormMessage />
               </FormItem>
             )} />
@@ -50,7 +50,7 @@ export function ShippingTaxFields({ form }: { form: UseFormReturn<ProductEntryVa
           <FormField control={form.control} name="taxClass" render={({ field }) => (
             <FormItem className="space-y-0"><label className="field-label">{__("Tax class", "yaxii-product-workspace")}</label>
               <Select value={field.value || "standard"} onValueChange={(value) => field.onChange(value === "standard" ? "" : value)}><FormControl><SelectTrigger aria-label={__("Tax class", "yaxii-product-workspace")} className="ctl"><SelectValue /></SelectTrigger></FormControl>
-                <SelectContent><SelectItem value="standard">{__("Standard", "yaxii-product-workspace")}</SelectItem>{bootstrap.woocommerce.taxClasses.filter((item) => item.slug).map((item) => <SelectItem key={item.slug} value={item.slug}>{item.name}</SelectItem>)}</SelectContent>
+                <SelectContent><SelectItem value="standard">{__("Standard", "yaxii-product-workspace")}</SelectItem>{bootstrap.woocommerce.taxClasses.filter((item) => item.slug).map((item) => <SelectItem key={item.slug} value={item.slug}><bdi dir="auto">{item.name}</bdi></SelectItem>)}</SelectContent>
               </Select><FormMessage />
             </FormItem>
           )} />

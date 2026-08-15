@@ -73,7 +73,7 @@ export const EntryActionBar: React.FC<Props> = ({
             onClick={onSaveDraft}
           >
             {__("Save draft", "yaxii-product-workspace")}
-            {showHints && <span className="kbd ms-1.5">Ctrl S</span>}
+            {showHints && <span className="kbd ms-1.5" dir="ltr">Ctrl S</span>}
           </Button>
         </div>}
       </div>
@@ -108,11 +108,11 @@ export const EntryActionBar: React.FC<Props> = ({
           )}
           {isSubmitting ? __('Saving…', "yaxii-product-workspace") : submitLabel}
           {showHints && !isSubmitting && (
-            <span className="kbd ms-2 bg-primary-foreground/15 text-primary-foreground/80 border-primary-foreground/25">
+            <span className="kbd ms-2 bg-primary-foreground/15 text-primary-foreground/80 border-primary-foreground/25" dir="ltr">
               Ctrl ⏎
             </span>
           )}
-          <ArrowRight className="h-3.5 w-3.5 ms-1.5 opacity-0 -translate-x-1 transition group-hover:opacity-70 group-hover:translate-x-0 rtl:-scale-x-100" />
+          <ArrowRight className="h-3.5 w-3.5 ms-1.5 opacity-0 -translate-x-1 transition group-hover:opacity-70 group-hover:translate-x-0 rtl:translate-x-1 rtl:-scale-x-100" />
         </Button>
         </Explain>
       </div>

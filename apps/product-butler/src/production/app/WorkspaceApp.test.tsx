@@ -153,6 +153,30 @@ describe("WorkspaceApp", () => {
     });
   });
 
+  it("keeps Settings and portal controls RTL without reversing switch state", async () => {
+    const user = userEvent.setup();
+    const { portals } = renderWorkspace({
+      ...snapshot,
+      bootstrap: { ...snapshot.bootstrap, direction: "rtl", locale: "ar" },
+    });
+    await screen.findByRole("heading", { name: "Product entry" });
+
+    await user.click(screen.getByRole("link", { name: "Settings" }));
+    const appearance = await screen.findByRole("tab", { name: "Appearance" });
+    expect(appearance.closest("[dir]"))?.toHaveAttribute("dir", "rtl");
+
+    const reduceMotion = screen.getByRole("switch", { name: "Reduce motion" });
+    expect(reduceMotion).toHaveAttribute("dir", "ltr");
+    expect(reduceMotion).not.toBeChecked();
+    await user.click(reduceMotion);
+    expect(reduceMotion).toBeChecked();
+
+    await user.click(screen.getByRole("tab", { name: "Workspace" }));
+    await user.click(screen.getByRole("combobox", { name: "Landing tab" }));
+    expect(portals).toHaveAttribute("dir", "rtl");
+    expect(screen.getByRole("listbox").closest("[dir]"))?.toHaveAttribute("dir", "rtl");
+  });
+
   it("keeps command dialogs in the plugin-owned portal", async () => {
     const user = userEvent.setup();
     const { portals, scope } = renderWorkspace();

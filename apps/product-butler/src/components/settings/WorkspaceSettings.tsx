@@ -22,7 +22,7 @@ export function WorkspaceSettings() {
             value={prefs.defaultTab}
             onValueChange={(value) => setPref("defaultTab", value as Preferences["defaultTab"])}
           >
-            <SelectTrigger className="h-9 w-full text-xs sm:w-[170px]">
+            <SelectTrigger aria-label={__("Landing tab", "yaxii-product-workspace")} className="h-9 w-full text-xs sm:w-[170px]">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

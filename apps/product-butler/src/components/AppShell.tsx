@@ -39,7 +39,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             >
               <Search className="h-3.5 w-3.5" />
               <span>{__("Search or jump to…", "yaxii-product-workspace")}</span>
-              {showHints && <kbd className="kbd ms-6">Ctrl K</kbd>}
+              {showHints && <kbd className="kbd ms-6" dir="ltr">Ctrl K</kbd>}
             </button>
             <button
               aria-label={__("Keyboard shortcuts", "yaxii-product-workspace")}
