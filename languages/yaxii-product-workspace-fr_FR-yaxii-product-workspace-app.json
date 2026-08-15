@@ -1,0 +1,1476 @@
+{
+    "translation-revision-date": "2026-08-15T00:10:50+00:00",
+    "generator": "WP-CLI\/2.12.0",
+    "source": "assets\/build\/assets\/main-DXpno9Nr.js",
+    "domain": "messages",
+    "locale_data": {
+        "messages": {
+            "": {
+                "domain": "messages",
+                "lang": "fr_FR",
+                "plural-forms": "nplurals=2; plural=(n > 1);"
+            },
+            "Select one option from every variation attribute.": [
+                "S\u00e9lectionnez une option dans chaque attribut de variation."
+            ],
+            "\u2014 attributes such as color or size produce separate variations, each with its own price, SKU, stock, and image.": [
+                "\u2014 les attributs tels que la couleur ou la taille produisent des variations distinctes, chacune avec son propre prix, SKU, stock et image."
+            ],
+            "\u2014 one price and stock value.": [
+                "\u2014 un prix et une valeur de stock."
+            ],
+            "List separator\u0004, ": [
+                ","
+            ],
+            "\u201c%s\u201d will leave recent operations. Its WooCommerce product will not be trashed.": [
+                "\u00ab\u00a0%s\u00a0\u00bb sera retir\u00e9 des op\u00e9rations r\u00e9centes. Le produit WooCommerce associ\u00e9 ne sera pas mis \u00e0 la corbeille."
+            ],
+            "\u201c3 hours ago\u201d instead of a fixed date.": [
+                "\u00ab Il y a 3 heures \u00bb au lieu d\u2019une date fixe."
+            ],
+            "%1$s combinations exceed the Free limit of %2$s.": [
+                "%1$s combinaisons d\u00e9passent la limite de\u00a0%2$s de la version gratuite."
+            ],
+            "%1$s of %2$s enabled": [
+                "%1$s sur\u00a0%2$s activ\u00e9es"
+            ],
+            "%1$s of %2$s final writes": [
+                "%1$s sur\u00a0%2$s \u00e9critures finales"
+            ],
+            "%1$s\/%2$s \u00b7 drag to reorder": [
+                "%1$s\/%2$s \u00b7 faire glisser pour r\u00e9organiser"
+            ],
+            "%1$s\/%2$s attribute": [
+                "%1$s\/%2$s attribut",
+                "%1$s\/%2$s attributs"
+            ],
+            "%s accent": [
+                "accent\u00a0%s"
+            ],
+            "%s category selected": [
+                "%s cat\u00e9gorie s\u00e9lectionn\u00e9e",
+                "%s cat\u00e9gories s\u00e9lectionn\u00e9es"
+            ],
+            "%s image selected": [
+                "%s image s\u00e9lectionn\u00e9e",
+                "%s images s\u00e9lectionn\u00e9es"
+            ],
+            "%s image upload": [
+                "T\u00e9l\u00e9chargement d\u2019images\u00a0%s"
+            ],
+            "%s match": [
+                "%s correspondance",
+                "%s correspondances"
+            ],
+            "%s operation": [
+                "%s op\u00e9ration",
+                "%s op\u00e9rations"
+            ],
+            "%s row": [
+                "%s ligne",
+                "%s lignes"
+            ],
+            "%s selected": [
+                "%s s\u00e9lectionn\u00e9",
+                "%s s\u00e9lectionn\u00e9s"
+            ],
+            "%s variation missing a price": [
+                "%s variation sans prix",
+                "%s variations sans prix"
+            ],
+            "%s variation": [
+                "%s variation",
+                "%s variations"
+            ],
+            "%s word": [
+                "%s mot",
+                "%s mots"
+            ],
+            "+ Global attribute": [
+                "+ Attribut global"
+            ],
+            "A newer product version exists": [
+                "Une version plus r\u00e9cente du produit existe"
+            ],
+            "A regular price is required for every enabled variation.": [
+                "Un prix r\u00e9gulier est requis pour chaque variante activ\u00e9e."
+            ],
+            "A variation image preview could not be loaded. Its attachment is unchanged.": [
+                "Un aper\u00e7u de l\u2019image de variation n\u2019a pas pu \u00eatre charg\u00e9. Son attachement est inchang\u00e9."
+            ],
+            "Accent color": [
+                "Couleur d\u2019accentuation"
+            ],
+            "Add a global or custom attribute to start. You can mix both: Global Color (Black, White) plus Custom Size (S, M, L) generates 6 variations.": [
+                "Ajoutez un attribut global ou personnalis\u00e9 pour commencer. Vous pouvez m\u00e9langer les deux\u00a0: la couleur globale (noir, blanc) et la taille personnalis\u00e9e (S, M, L) g\u00e9n\u00e8rent 6\u00a0variations."
+            ],
+            "Add another": [
+                "Ajoutez-en un autre"
+            ],
+            "Add between one and %s attributes.": [
+                "Ajoutez entre un et\u00a0%s attributs."
+            ],
+            "Add images": [
+                "Ajouter des images"
+            ],
+            "Add more images": [
+                "Ajouter plus d\u2019images"
+            ],
+            "Add new product": [
+                "Ajouter un produit"
+            ],
+            "Add one first, then duplicate it.": [
+                "Ajoutez-en un d\u2019abord, puis dupliquez-le."
+            ],
+            "Add variation image": [
+                "Ajouter une image de variante"
+            ],
+            "Additional categories": [
+                "Cat\u00e9gories suppl\u00e9mentaires"
+            ],
+            "Adds date headers between queue rows.": [
+                "Ajoute des en-t\u00eates de date entre les lignes de file d\u2019attente."
+            ],
+            "Adjust the search term or pick a different status.": [
+                "Ajustez le terme de recherche ou choisissez un statut diff\u00e9rent."
+            ],
+            "Align center": [
+                "Centrer"
+            ],
+            "Align left": [
+                "Aligner \u00e0 gauche"
+            ],
+            "Align right": [
+                "Aligner \u00e0 droite"
+            ],
+            "all clear": [
+                "tout est clair"
+            ],
+            "All": [
+                "Tout"
+            ],
+            "Allow, but notify customer": [
+                "Autoriser, mais avec notification client"
+            ],
+            "Allow": [
+                "Autoriser"
+            ],
+            "An existing product cannot change type in this editor.": [
+                "Un produit existant ne peut pas changer de type dans cet \u00e9diteur."
+            ],
+            "Appearance, workflow behavior, and WooCommerce defaults. Changes save instantly.": [
+                "Apparence, comportement du flux de travail et valeurs par d\u00e9faut de WooCommerce. Les modifications sont enregistr\u00e9es instantan\u00e9ment."
+            ],
+            "Appearance": [
+                "Apparence"
+            ],
+            "Applied to every new product and variation.": [
+                "Appliqu\u00e9 \u00e0 chaque nouveau produit et variation."
+            ],
+            "Applies this price to every enabled variation. You can still override individual ones.": [
+                "Applique ce prix \u00e0 chaque variante activ\u00e9e. Vous pouvez toujours remplacer ceux individuels."
+            ],
+            "Apply": [
+                "Appliquer"
+            ],
+            "Ask before removing a queued product.": [
+                "Demandez avant de supprimer un produit en file d\u2019attente."
+            ],
+            "Attribute name (e.g. Size)": [
+                "Nom de l\u2019attribut (par exemple, taille)"
+            ],
+            "Attribute visibility and variation use must be true or false.": [
+                "La visibilit\u00e9 des attributs et l\u2019utilisation des variations doivent \u00eatre vraies ou fausses."
+            ],
+            "Attributes \u2192 combination preview \u2192 variations. Global attributes are reusable store taxonomies; custom attributes exist only on this product.": [
+                "Attributs \u2192 aper\u00e7u de la combinaison \u2192 variations. Les attributs globaux sont des taxonomies de magasin r\u00e9utilisables\u00a0; les attributs personnalis\u00e9s n\u2019existent que sur ce produit."
+            ],
+            "Attributes": [
+                "Attributs"
+            ],
+            "Auto SKU": [
+                "SKU automatique"
+            ],
+            "Auto-focus product name": [
+                "Placer automatiquement le curseur sur le nom du produit"
+            ],
+            "Backorder": [
+                "Commande en souffrance"
+            ],
+            "Backorders": [
+                "Commandes en souffrance"
+            ],
+            "Blue": [
+                "Bleu"
+            ],
+            "Bold": [
+                "Gras"
+            ],
+            "Browser draft \u00b7 current WooCommerce store": [
+                "Brouillon du navigateur \u00b7 Boutique WooCommerce actuelle"
+            ],
+            "Builds SKUs from the product SKU plus each option.": [
+                "G\u00e9n\u00e8re les SKU \u00e0 partir du SKU du produit et de chaque option."
+            ],
+            "Bullet list": [
+                "Liste \u00e0 puces"
+            ],
+            "Cancel": [
+                "Annuler"
+            ],
+            "Catalog visibility": [
+                "Visibilit\u00e9 du catalogue"
+            ],
+            "Categories could not be loaded.": [
+                "Les cat\u00e9gories n\u2019ont pas pu \u00eatre charg\u00e9es."
+            ],
+            "Categories": [
+                "Cat\u00e9gories"
+            ],
+            "Category #%s": [
+                "Cat\u00e9gorie #%s"
+            ],
+            "Category is required": [
+                "La cat\u00e9gorie est obligatoire"
+            ],
+            "Category": [
+                "Cat\u00e9gorie"
+            ],
+            "Choose Draft or Publish in Settings.": [
+                "Choisissez Brouillon ou Publier dans R\u00e9glages."
+            ],
+            "Choose month": [
+                "Choisir le mois"
+            ],
+            "Choose product images from the WordPress media library before saving.": [
+                "Choisissez des images de produits dans la biblioth\u00e8que multim\u00e9dia WordPress avant de les enregistrer."
+            ],
+            "Choose safe values to carry into the next product.": [
+                "Choisissez des valeurs s\u00fbres \u00e0 int\u00e9grer dans le prochain produit."
+            ],
+            "Choose Simple to save now.": [
+                "Choisissez Simple pour enregistrer maintenant."
+            ],
+            "Choose year": [
+                "Choisir l\u2019ann\u00e9e"
+            ],
+            "Clear current draft": [
+                "Effacer le brouillon actuel"
+            ],
+            "Clear date": [
+                "Effacer la date"
+            ],
+            "Clear the form (Esc)": [
+                "Effacer le formulaire (Esc)"
+            ],
+            "Clear the sale dates to save now.": [
+                "Effacez les dates de vente pour enregistrer maintenant."
+            ],
+            "Clear": [
+                "Effacer"
+            ],
+            "Close": [
+                "Fermer"
+            ],
+            "Code block": [
+                "Bloc de code"
+            ],
+            "Collapse": [
+                "Replier"
+            ],
+            "Combination IDs must be unique.": [
+                "Les identifiants de combinaison doivent \u00eatre uniques."
+            ],
+            "Combinations could not be generated.": [
+                "Les combinaisons n\u2019ont pas pu \u00eatre g\u00e9n\u00e9r\u00e9es."
+            ],
+            "Comfortable density": [
+                "Densit\u00e9 confortable"
+            ],
+            "Comfortable": [
+                "Confortable"
+            ],
+            "Compact density": [
+                "Densit\u00e9 compacte"
+            ],
+            "Compact fits noticeably more rows on screen.": [
+                "La densit\u00e9 compacte affiche nettement plus de lignes \u00e0 l\u2019\u00e9cran."
+            ],
+            "Compact": [
+                "Compacte"
+            ],
+            "Complementary tools for modern WooCommerce teams.": [
+                "Des outils compl\u00e9mentaires pour les \u00e9quipes WooCommerce modernes."
+            ],
+            "Confirm before delete": [
+                "Confirmer avant de supprimer"
+            ],
+            "Create an attribute used only on this product \u2014 nothing is added to store taxonomies.": [
+                "Cr\u00e9ez un attribut utilis\u00e9 uniquement sur ce produit\u00a0: rien n\u2019est ajout\u00e9 aux taxonomies du magasin."
+            ],
+            "Create products faster.": [
+                "Cr\u00e9ez des produits plus rapidement."
+            ],
+            "Custom attribute \u2014 exists only on this product. No global taxonomy is created.": [
+                "Attribut personnalis\u00e9\u00a0: existe uniquement sur ce produit. Aucune taxonomie globale n\u2019est cr\u00e9\u00e9e."
+            ],
+            "Custom attribute": [
+                "Attribut personnalis\u00e9"
+            ],
+            "Custom options must be 100 characters or fewer.": [
+                "Les options personnalis\u00e9es doivent comporter 100\u00a0caract\u00e8res ou moins."
+            ],
+            "Custom options must be text values.": [
+                "Les options personnalis\u00e9es doivent \u00eatre des valeurs de texte."
+            ],
+            "Custom": [
+                "Personnalis\u00e9"
+            ],
+            "Dark": [
+                "Sombre"
+            ],
+            "Default availability for new items.": [
+                "Disponibilit\u00e9 par d\u00e9faut pour les nouveaux articles."
+            ],
+            "Default policy when tracked inventory reaches zero.": [
+                "Politique par d\u00e9faut lorsque l\u2019inventaire suivi atteint z\u00e9ro."
+            ],
+            "Density": [
+                "Densit\u00e9"
+            ],
+            "Description type": [
+                "Type de description"
+            ],
+            "Descriptions": [
+                "Descriptions"
+            ],
+            "Disabled \u2014 skipped on save.": [
+                "D\u00e9sactiv\u00e9e \u2014 ignor\u00e9e lors de l\u2019enregistrement."
+            ],
+            "Distraction-free product entry. Remembered between sessions.": [
+                "Saisie de produits sans distraction, m\u00e9moris\u00e9e entre les sessions."
+            ],
+            "Divider": [
+                "Diviseur"
+            ],
+            "Do not allow": [
+                "Ne pas autoriser"
+            ],
+            "Done": [
+                "Termin\u00e9"
+            ],
+            "Draft cleared": [
+                "Brouillon effac\u00e9"
+            ],
+            "Draft could not be prepared.": [
+                "Le brouillon n\u2019a pas pu \u00eatre pr\u00e9par\u00e9."
+            ],
+            "Draft saved": [
+                "Brouillon enregistr\u00e9"
+            ],
+            "Operation status\u0004Draft": [
+                "Brouillon"
+            ],
+            "Product status\u0004Draft": [
+                "Brouillon"
+            ],
+            "Drag & drop product images": [
+                "Glisser-d\u00e9poser des images de produits"
+            ],
+            "Drop images to add": [
+                "D\u00e9posez des images \u00e0 ajouter"
+            ],
+            "Drop to upload": [
+                "D\u00e9poser pour t\u00e9l\u00e9verser"
+            ],
+            "Duplicate attribute position.": [
+                "Position de l\u2019attribut en double."
+            ],
+            "Duplicate attribute reference.": [
+                "R\u00e9f\u00e9rence d\u2019attribut en double."
+            ],
+            "Duplicate attribute.": [
+                "Attribut en double."
+            ],
+            "Duplicate combination.": [
+                "Combinaison en double."
+            ],
+            "Duplicate last product": [
+                "Dupliquer le dernier produit"
+            ],
+            "Duplicate was not loaded": [
+                "Le duplicata n\u2019a pas \u00e9t\u00e9 charg\u00e9"
+            ],
+            "Duplicate": [
+                "Dupliquer"
+            ],
+            "Duplicated": [
+                "Dupliqu\u00e9"
+            ],
+            "e.g. Linen Crew Tee": [
+                "par ex. T-shirt ras du cou en lin"
+            ],
+            "Edit product": [
+                "Modifier le produit"
+            ],
+            "Edit": [
+                "Modifier"
+            ],
+            "Editing": [
+                "\u00c9dition"
+            ],
+            "Emerald": [
+                "\u00c9meraude"
+            ],
+            "Enable variation": [
+                "Activer la variation"
+            ],
+            "Enabled \u2014 this variation will be created in WooCommerce.": [
+                "Activ\u00e9 \u2014 cette variation sera cr\u00e9\u00e9e dans WooCommerce."
+            ],
+            "Enabled variations require a valid price.": [
+                "Les variantes activ\u00e9es n\u00e9cessitent un prix valide."
+            ],
+            "Ends": [
+                "Se termine"
+            ],
+            "Enter a non-negative number": [
+                "Entrez un nombre non n\u00e9gatif"
+            ],
+            "Enter a whole stock quantity": [
+                "Saisir une quantit\u00e9 totale de stock"
+            ],
+            "Entry & queue": [
+                "Entr\u00e9e et file d\u2019attente"
+            ],
+            "Entry flow": [
+                "Flux d\u2019entr\u00e9e"
+            ],
+            "Entry workspace": [
+                "Espace de saisie"
+            ],
+            "Command menu group\u0004Entry": [
+                "Saisie"
+            ],
+            "Main navigation tab\u0004Entry": [
+                "Saisie"
+            ],
+            "Every shortcut below is live in this workspace.": [
+                "Chaque raccourci ci-dessous est actif dans cet espace de travail."
+            ],
+            "Exit focus": [
+                "Quitter le mode concentration"
+            ],
+            "Expand": [
+                "D\u00e9plier"
+            ],
+            "Explore all Yaxii products": [
+                "D\u00e9couvrez tous les produits Yaxii"
+            ],
+            "Explore the Yaxii ecosystem": [
+                "Explorez l\u2019\u00e9cosyst\u00e8me Yaxii"
+            ],
+            "Extended options": [
+                "Options \u00e9tendues"
+            ],
+            "Extended": [
+                "\u00c9tendu"
+            ],
+            "failed, partial, or uncertain": [
+                "\u00e9chou\u00e9, partiel ou incertain"
+            ],
+            "Operation status\u0004Failed": [
+                "\u00c9chec"
+            ],
+            "Find a product": [
+                "Trouver un produit"
+            ],
+            "Find product": [
+                "Rechercher un produit"
+            ],
+            "First image becomes the thumbnail": [
+                "La premi\u00e8re image devient la vignette"
+            ],
+            "Focus mode \u2014 hide everything except product entry": [
+                "Mode concentration \u2014 tout masquer sauf la saisie de produits"
+            ],
+            "Focus mode": [
+                "Mode concentration"
+            ],
+            "Focus": [
+                "Mode concentration"
+            ],
+            "Follow the system setting or select one.": [
+                "Suivez les r\u00e9glages du syst\u00e8me ou s\u00e9lectionnez-en un."
+            ],
+            "Full description, materials, care instructions\u2026 Add images, lists, and links.": [
+                "Description compl\u00e8te, mat\u00e9riel, instructions d\u2019entretien\u2026 Ajoutez des images, des listes et des liens."
+            ],
+            "Full description": [
+                "Description compl\u00e8te"
+            ],
+            "Full": [
+                "Complet"
+            ],
+            "Generate combinations": [
+                "G\u00e9n\u00e9rer des combinaisons"
+            ],
+            "Generate every projected combination before saving.": [
+                "G\u00e9n\u00e9rez toutes les combinaisons pr\u00e9vues avant d\u2019enregistrer."
+            ],
+            "Global attribute \u2014 a real WooCommerce taxonomy and terms, reusable across products.": [
+                "Attribut global\u00a0: une v\u00e9ritable taxonomie et des termes WooCommerce, r\u00e9utilisables dans tous les produits."
+            ],
+            "Global attributes could not be loaded.": [
+                "Les attributs globaux n\u2019ont pas pu \u00eatre charg\u00e9s."
+            ],
+            "Global options require positive term IDs.": [
+                "Les options globales n\u00e9cessitent des identifiants de terme positifs."
+            ],
+            "Global": [
+                "Global"
+            ],
+            "Go to next month": [
+                "Aller au mois prochain"
+            ],
+            "Go to previous month": [
+                "Aller au mois pr\u00e9c\u00e9dent"
+            ],
+            "Go to": [
+                "Aller \u00e0"
+            ],
+            "Graphite": [
+                "Graphite"
+            ],
+            "Group by day": [
+                "Regrouper par jour"
+            ],
+            "Heading 2": [
+                "Titre 2"
+            ],
+            "Heading 3": [
+                "Titre 3"
+            ],
+            "Height": [
+                "Hauteur"
+            ],
+            "Help tooltips": [
+                "Info-bulles d\u2019aide"
+            ],
+            "Hidden": [
+                "Masqu\u00e9"
+            ],
+            "Hide extended": [
+                "Masquer les options \u00e9tendues"
+            ],
+            "Hide inline hints in": [
+                "Masquer les indications dans"
+            ],
+            "Hide navigation and metrics when the workspace opens.": [
+                "Masquez la navigation et les m\u00e9triques lorsque l\u2019espace de travail s\u2019ouvre."
+            ],
+            "How queued products are grouped and listed.": [
+                "Comment les produits en file d\u2019attente sont regroup\u00e9s et r\u00e9pertori\u00e9s."
+            ],
+            "How the workspace looks on this device.": [
+                "\u00c0 quoi ressemble l\u2019espace de travail sur cet appareil."
+            ],
+            "Image upload failed. Try again.": [
+                "Le t\u00e9l\u00e9versement de l\u2019image a \u00e9chou\u00e9. R\u00e9essayez."
+            ],
+            "Images could not be uploaded.": [
+                "Les images n\u2019ont pas pu \u00eatre t\u00e9l\u00e9vers\u00e9es."
+            ],
+            "Images": [
+                "Images"
+            ],
+            "In stock": [
+                "En stock"
+            ],
+            "Inline \u201c?\u201d explanations on fields and controls. Turn off for a cleaner interface.": [
+                "Explications \u00ab\u00a0?\u00a0\u00bb int\u00e9gr\u00e9es aux champs et commandes. D\u00e9sactivez-les pour all\u00e9ger l\u2019interface."
+            ],
+            "Inline keyboard hints": [
+                "Indications de raccourcis int\u00e9gr\u00e9es"
+            ],
+            "Insert image": [
+                "Ins\u00e9rer une image"
+            ],
+            "Invalid attribute key.": [
+                "Cl\u00e9 d\u2019attribut non valide."
+            ],
+            "Invalid attribute name.": [
+                "Nom d\u2019attribut invalide."
+            ],
+            "Invalid attribute position.": [
+                "Position d\u2019attribut invalide."
+            ],
+            "Invalid global WooCommerce attribute reference.": [
+                "R\u00e9f\u00e9rence d\u2019attribut global WooCommerce non valide."
+            ],
+            "Inventory": [
+                "Stock"
+            ],
+            "Italic": [
+                "Italique"
+            ],
+            "Keep the queue in focus mode": [
+                "Conserver la file d\u2019attente en mode Concentration"
+            ],
+            "Keep this draft": [
+                "Conservez ce brouillon"
+            ],
+            "Keeps the queue in view while you scroll the form.": [
+                "Garde la file d\u2019attente visible pendant que vous faites d\u00e9filer le formulaire."
+            ],
+            "Keyboard shortcuts": [
+                "Raccourcis clavier"
+            ],
+            "KPI trends": [
+                "Tendances des KPI"
+            ],
+            "Landing tab": [
+                "Onglet d\u2019arriv\u00e9e"
+            ],
+            "last 7 days": [
+                "les 7 derniers jours"
+            ],
+            "Length": [
+                "Longueur"
+            ],
+            "Light": [
+                "Clair"
+            ],
+            "Limit each order to one unit.": [
+                "Limitez chaque commande \u00e0 une unit\u00e9."
+            ],
+            "Link URL": [
+                "URL du lien"
+            ],
+            "Link": [
+                "Lien"
+            ],
+            "Load more categories": [
+                "Charger davantage de cat\u00e9gories"
+            ],
+            "Load more": [
+                "Charger davantage"
+            ],
+            "Loading categories\u2026": [
+                "Chargement des cat\u00e9gories\u2026"
+            ],
+            "Loading products\u2026": [
+                "Chargement des produits"
+            ],
+            "Loading recent products": [
+                "Chargement des produits r\u00e9cents"
+            ],
+            "Loading Yaxii Product Workspace": [
+                "Chargement de Yaxii Product Workspace"
+            ],
+            "loading": [
+                "chargement"
+            ],
+            "Long description": [
+                "Description longue"
+            ],
+            "Longer lists load more rows before paging.": [
+                "Les listes plus longues chargent plus de lignes avant la pagination."
+            ],
+            "Main": [
+                "Principal"
+            ],
+            "Manage stock": [
+                "G\u00e9rer le stock"
+            ],
+            "Managed stock requires a non-negative whole number.": [
+                "Le stock g\u00e9r\u00e9 n\u00e9cessite un nombre entier non n\u00e9gatif."
+            ],
+            "Minimizes animations and transitions across the app.": [
+                "Minimise les animations et les transitions dans l\u2019application."
+            ],
+            "More information": [
+                "Plus d\u2019informations"
+            ],
+            "More variation fields": [
+                "Plus de champs de variantes"
+            ],
+            "Move to trash": [
+                "D\u00e9placer dans la corbeille"
+            ],
+            "multiple allowed": [
+                "plusieurs autoris\u00e9s"
+            ],
+            "Name or SKU\u2026": [
+                "Nom ou SKU\u2026"
+            ],
+            "Navigation and on-screen guidance.": [
+                "Navigation et guidage \u00e0 l\u2019\u00e9cran."
+            ],
+            "Navigation": [
+                "Navigation"
+            ],
+            "Needs attention": [
+                "N\u00e9cessite votre attention"
+            ],
+            "Newer product changes found": [
+                "Modifications de produits plus r\u00e9centes trouv\u00e9es"
+            ],
+            "No %s found.": [
+                "Aucun r\u00e9sultat pour \u00ab\u00a0%s\u00a0\u00bb."
+            ],
+            "No category found.": [
+                "Aucune cat\u00e9gorie trouv\u00e9e."
+            ],
+            "No changes": [
+                "Aucun changement"
+            ],
+            "no final writes": [
+                "pas d\u2019\u00e9criture finale"
+            ],
+            "No matching products.": [
+                "Aucun produit correspondant."
+            ],
+            "No matching products": [
+                "Aucun produit correspondant"
+            ],
+            "No products yet": [
+                "Aucun produit pour le moment"
+            ],
+            "No results.": [
+                "Aucun r\u00e9sultat."
+            ],
+            "No SKU": [
+                "Aucun SKU"
+            ],
+            "None": [
+                "Aucun"
+            ],
+            "Not scheduled": [
+                "Non planifi\u00e9"
+            ],
+            "Nothing to save": [
+                "Rien \u00e0 enregistrer"
+            ],
+            "Numbered list": [
+                "Liste ordonn\u00e9e"
+            ],
+            "On backorder": [
+                "En r\u00e9approvisionnement"
+            ],
+            "One or two lines shown near the price\u2026": [
+                "Une ou deux lignes affich\u00e9es \u00e0 c\u00f4t\u00e9 du prix\u2026"
+            ],
+            "Open an existing WooCommerce product or prepare a new simple-product draft.": [
+                "Ouvrez un produit WooCommerce existant ou pr\u00e9parez un nouveau brouillon de produit simple."
+            ],
+            "Open command menu": [
+                "Ouvrir le menu des commandes"
+            ],
+            "Open": [
+                "Ouvrir"
+            ],
+            "Operation status filters": [
+                "Filtres d\u2019\u00e9tat des op\u00e9rations"
+            ],
+            "Operation was not reconciled": [
+                "L\u2019op\u00e9ration n\u2019a pas \u00e9t\u00e9 v\u00e9rifi\u00e9e"
+            ],
+            "Optimized for fast, repetitive data entry.": [
+                "Optimis\u00e9 pour une saisie de donn\u00e9es rapide et r\u00e9p\u00e9titive."
+            ],
+            "Optional discounted price. Leave empty for no sale. Schedule a window under Extended options.": [
+                "Prix r\u00e9duit en option. Laisser vide pour aucune vente. Planifiez une fen\u00eatre sous Options \u00e9tendues."
+            ],
+            "Optional": [
+                "Facultatif"
+            ],
+            "Options must be unique and non-empty.": [
+                "Les options doivent \u00eatre uniques et non vides."
+            ],
+            "or click to browse \u00b7 up to %s image \u00b7 first image becomes the thumbnail": [
+                "ou cliquez pour parcourir \u00b7 jusqu\u2019\u00e0\u00a0%s image \u00b7 la premi\u00e8re image devient la vignette",
+                "ou cliquez pour parcourir \u00b7 jusqu\u2019\u00e0\u00a0%s images \u00b7 la premi\u00e8re image devient la vignette"
+            ],
+            "Out of stock": [
+                "Rupture de stock"
+            ],
+            "Out": [
+                "\u00c9puis\u00e9"
+            ],
+            "Over the %s-combination limit. Remove options to continue.": [
+                "Au-dessus de la limite de combinaison\u00a0%s. Supprimez les options pour continuer."
+            ],
+            "Product status\u0004Pending review": [
+                "En attente de relecture"
+            ],
+            "Operation status\u0004Pending": [
+                "En attente"
+            ],
+            "Pick any level of the tree. Selecting a subcategory does not automatically add its parent in WooCommerce.": [
+                "Choisissez n\u2019importe quel niveau de l\u2019arbre. La s\u00e9lection d\u2019une sous-cat\u00e9gorie n\u2019ajoute pas automatiquement son parent dans WooCommerce."
+            ],
+            "Pick attributes, preview how many combinations they produce, then set the price, SKU, stock, and image on each concrete variation.": [
+                "Choisissez les attributs, pr\u00e9visualisez le nombre de combinaisons qu\u2019ils produisent, puis d\u00e9finissez le prix, le SKU, le stock et l\u2019image sur chaque variation concr\u00e8te."
+            ],
+            "Pick the store terms used on this product.": [
+                "Choisissez les termes du magasin utilis\u00e9s sur ce produit."
+            ],
+            "Preferences were not saved": [
+                "Les pr\u00e9f\u00e9rences n\u2019ont pas \u00e9t\u00e9 enregistr\u00e9es"
+            ],
+            "Preferences": [
+                "Pr\u00e9f\u00e9rences"
+            ],
+            "Prefilled from \u201c%s\u201d. No product was created.": [
+                "Pr\u00e9rempli \u00e0 partir de \u00ab\u00a0%s\u00a0\u00bb. Aucun produit n\u2019a \u00e9t\u00e9 cr\u00e9\u00e9."
+            ],
+            "Preview": [
+                "Aper\u00e7u"
+            ],
+            "Price, SKU, and stock live on each combination": [
+                "Le prix, le SKU et le stock sont d\u00e9finis pour chaque combinaison"
+            ],
+            "Price, SKU, stock, and image belong to each concrete WooCommerce combination.": [
+                "Le prix, le SKU, le stock et l\u2019image appartiennent \u00e0 chaque combinaison concr\u00e8te WooCommerce."
+            ],
+            "Price": [
+                "Prix"
+            ],
+            "Pricing & stock": [
+                "Prix et stock"
+            ],
+            "Product actions": [
+                "Actions sur le produit"
+            ],
+            "Product could not be opened.": [
+                "Le produit n\u2019a pas pu \u00eatre ouvert."
+            ],
+            "Product could not be opened": [
+                "Le produit n\u2019a pas pu \u00eatre ouvert"
+            ],
+            "Product creation is unavailable": [
+                "La cr\u00e9ation de produits n\u2019est pas disponible"
+            ],
+            "Product defaults": [
+                "Valeurs par d\u00e9faut des produits"
+            ],
+            "Product entry": [
+                "Saisie de produits"
+            ],
+            "Product image %s": [
+                "Image du produit\u00a0%s"
+            ],
+            "Product images": [
+                "Images de produits"
+            ],
+            "Product is not available": [
+                "Le produit n\u2019est pas disponible"
+            ],
+            "Product moved to trash": [
+                "Produit d\u00e9plac\u00e9 vers la corbeille"
+            ],
+            "Product name is required": [
+                "Le nom du produit est obligatoire"
+            ],
+            "Product name": [
+                "Nom du produit"
+            ],
+            "Product needs recovery": [
+                "Le produit doit \u00eatre r\u00e9cup\u00e9r\u00e9"
+            ],
+            "Product saved": [
+                "Produit enregistr\u00e9"
+            ],
+            "Product status": [
+                "Statut du produit"
+            ],
+            "Product type": [
+                "Type de produit"
+            ],
+            "Product updated": [
+                "Produit mis \u00e0 jour"
+            ],
+            "Product was not saved": [
+                "Le produit n\u2019a pas \u00e9t\u00e9 enregistr\u00e9"
+            ],
+            "Product was not trashed": [
+                "Le produit n\u2019a pas \u00e9t\u00e9 mis \u00e0 la corbeille"
+            ],
+            "Product was not updated": [
+                "Le produit n\u2019a pas \u00e9t\u00e9 mis \u00e0 jour"
+            ],
+            "Product": [
+                "Produit"
+            ],
+            "Products could not be loaded.": [
+                "Les produits n\u2019ont pas pu \u00eatre charg\u00e9s."
+            ],
+            "Publish state used for new products.": [
+                "\u00c9tat de publication utilis\u00e9 pour les nouveaux produits."
+            ],
+            "Operation status\u0004Published": [
+                "Publi\u00e9"
+            ],
+            "Product status\u0004Published": [
+                "Publi\u00e9"
+            ],
+            "Published": [
+                "Publi\u00e9"
+            ],
+            "Publishing": [
+                "Publication"
+            ],
+            "Qty": [
+                "Qt\u00e9"
+            ],
+            "Queue display": [
+                "Affichage de la file d\u2019attente"
+            ],
+            "Queue is empty": [
+                "La file d\u2019attente est vide"
+            ],
+            "Queue item was not dismissed": [
+                "L\u2019\u00e9l\u00e9ment de la file d\u2019attente n\u2019a pas \u00e9t\u00e9 ignor\u00e9"
+            ],
+            "Queue unavailable": [
+                "File d\u2019attente indisponible"
+            ],
+            "Queue": [
+                "File d\u2019attente"
+            ],
+            "Quote": [
+                "Citation"
+            ],
+            "Recent operations could not be loaded. Your WooCommerce products are unchanged.": [
+                "Les op\u00e9rations r\u00e9centes n\u2019ont pas pu \u00eatre charg\u00e9es. Vos produits WooCommerce sont inchang\u00e9s."
+            ],
+            "Recent operations": [
+                "Op\u00e9rations r\u00e9centes"
+            ],
+            "Recent products": [
+                "Produits r\u00e9cents"
+            ],
+            "Recent": [
+                "R\u00e9cent"
+            ],
+            "Reconcile": [
+                "V\u00e9rifier"
+            ],
+            "Redo": [
+                "R\u00e9tablir"
+            ],
+            "Reduce motion": [
+                "R\u00e9duire les mouvements"
+            ],
+            "Regenerate combinations": [
+                "R\u00e9g\u00e9n\u00e9rer les combinaisons"
+            ],
+            "Regular price": [
+                "Prix normal"
+            ],
+            "Relative timestamps": [
+                "Horodatages relatifs"
+            ],
+            "Reload latest": [
+                "Recharger la derni\u00e8re version"
+            ],
+            "Remove %s": [
+                "Retirer\u00a0%s"
+            ],
+            "Remove attribute": [
+                "Supprimer l\u2019attribut"
+            ],
+            "Remove from queue": [
+                "Supprimer de la file d\u2019attente"
+            ],
+            "Remove image": [
+                "Retirer l\u2019image"
+            ],
+            "Remove this queue entry?": [
+                "Supprimer cette entr\u00e9e de file d\u2019attente\u00a0?"
+            ],
+            "Remove variation image": [
+                "Supprimer l\u2019image de la variante"
+            ],
+            "Remove": [
+                "Supprimer"
+            ],
+            "Repeat after Save & Next": [
+                "R\u00e9p\u00e9ter apr\u00e8s Enregistrer et continuer"
+            ],
+            "Replace variation image": [
+                "Remplacer l\u2019image de la variante"
+            ],
+            "Reset changes": [
+                "R\u00e9initialiser les modifications"
+            ],
+            "Reset to defaults": [
+                "R\u00e9initialiser les options par d\u00e9faut"
+            ],
+            "Restores preferences and product defaults. Your products stay untouched.": [
+                "Restaure les pr\u00e9f\u00e9rences et les valeurs par d\u00e9faut du produit. Vos produits restent intacts."
+            ],
+            "Retry safely": [
+                "R\u00e9essayer en toute s\u00e9curit\u00e9"
+            ],
+            "Retry the partial operation from the queue.": [
+                "R\u00e9essayez l\u2019op\u00e9ration partielle \u00e0 partir de la file d\u2019attente."
+            ],
+            "Retry was not started": [
+                "La nouvelle tentative n\u2019a pas commenc\u00e9"
+            ],
+            "Reuse an attribute that already exists in your WooCommerce store, with its real terms.": [
+                "R\u00e9utilisez un attribut qui existe d\u00e9j\u00e0 dans votre boutique WooCommerce, avec ses termes r\u00e9els."
+            ],
+            "Review the current product operation queue.": [
+                "Examinez la file d\u2019attente actuelle des op\u00e9rations du produit."
+            ],
+            "Review the product fields and try again.": [
+                "V\u00e9rifiez les champs du produit et r\u00e9essayez."
+            ],
+            "Rich text \u00b7 drag images in": [
+                "Texte enrichi \u00b7 faites glisser des images"
+            ],
+            "Rich text and images supported": [
+                "Texte enrichi et images pris en charge"
+            ],
+            "Rows per page": [
+                "Lignes par page"
+            ],
+            "Sale price must be valid and cannot exceed the regular price.": [
+                "Le prix de vente doit \u00eatre valide et ne peut exc\u00e9der le prix r\u00e9gulier."
+            ],
+            "Sale price": [
+                "Prix promo"
+            ],
+            "Sale schedule": [
+                "Calendrier des ventes"
+            ],
+            "Save & next": [
+                "Enregistrer et continuer"
+            ],
+            "Save draft": [
+                "Enregistrer le brouillon"
+            ],
+            "Save outcome pending": [
+                "R\u00e9sultat de l\u2019enregistrement en attente"
+            ],
+            "Save outcome unknown": [
+                "R\u00e9sultat de l\u2019enregistrement inconnu"
+            ],
+            "Saved products and operations appear here.": [
+                "Les produits et op\u00e9rations enregistr\u00e9s apparaissent ici."
+            ],
+            "Saved to current store": [
+                "Enregistr\u00e9 dans le magasin actuel"
+            ],
+            "Saves this product and clears the form for the next one. Shortcut: Ctrl + Enter.": [
+                "Enregistre ce produit et efface le formulaire pour le suivant. Raccourci\u00a0: Ctrl + Entr\u00e9e."
+            ],
+            "Saving\u2026": [
+                "Enregistrement en cours\u2026"
+            ],
+            "Search %s\u2026": [
+                "Rechercher\u00a0%s\u2026"
+            ],
+            "Search actions, pages and preferences\u2026": [
+                "Rechercher des actions, des pages et des pr\u00e9f\u00e9rences\u2026"
+            ],
+            "Search available workspace actions and preferences.": [
+                "Recherchez les actions et pr\u00e9f\u00e9rences disponibles dans l\u2019espace de travail."
+            ],
+            "Search by product name or SKU\u2026": [
+                "Rechercher par nom de produit ou SKU\u2026"
+            ],
+            "Search categories\u2026": [
+                "Rechercher des cat\u00e9gories\u2026"
+            ],
+            "Search only": [
+                "Recherche uniquement"
+            ],
+            "Search or jump to\u2026": [
+                "Recherchez ou acc\u00e9dez \u00e0\u2026"
+            ],
+            "Searching\u2026": [
+                "Recherche\u2026"
+            ],
+            "Secure product identity could not be generated. Product creation was not attempted.": [
+                "L\u2019identit\u00e9 s\u00e9curis\u00e9e du produit n\u2019a pas pu \u00eatre g\u00e9n\u00e9r\u00e9e. La cr\u00e9ation de produits n\u2019a pas \u00e9t\u00e9 tent\u00e9e."
+            ],
+            "Select %s\u2026": [
+                "S\u00e9lectionnez\u00a0%s\u2026"
+            ],
+            "Select a valid category.": [
+                "S\u00e9lectionnez une cat\u00e9gorie valide."
+            ],
+            "Select between one and 20 options.": [
+                "S\u00e9lectionnez entre une et 20 options."
+            ],
+            "Select categories\u2026": [
+                "S\u00e9lectionnez les cat\u00e9gories\u2026"
+            ],
+            "Separate options with commas. Up to %s option per attribute.": [
+                "S\u00e9parez les options par des virgules. Jusqu\u2019\u00e0\u00a0%s option par attribut.",
+                "S\u00e9parez les options par des virgules. Jusqu\u2019\u00e0\u00a0%s options par attribut."
+            ],
+            "Set all": [
+                "Tout d\u00e9finir"
+            ],
+            "Settings & preferences": [
+                "R\u00e9glages et pr\u00e9f\u00e9rences"
+            ],
+            "Settings \u2192 Workspace": [
+                "R\u00e9glages \u2192 Espace de travail"
+            ],
+            "Main navigation tab\u0004Settings": [
+                "R\u00e9glages"
+            ],
+            "Settings": [
+                "R\u00e9glages"
+            ],
+            "Shipping class": [
+                "Classe d\u2019exp\u00e9dition"
+            ],
+            "Shipping only": [
+                "Exp\u00e9dition seulement"
+            ],
+            "Shipping": [
+                "Exp\u00e9dition"
+            ],
+            "Shop & search": [
+                "Boutique et recherche"
+            ],
+            "Shop only": [
+                "Boutique uniquement"
+            ],
+            "Short description": [
+                "Description courte"
+            ],
+            "Short": [
+                "Court"
+            ],
+            "Shortcuts pause while you type in a field, except save and submit.": [
+                "Les raccourcis sont suspendus pendant la saisie dans un champ, sauf ceux permettant d\u2019enregistrer et de valider."
+            ],
+            "Show key badges on buttons and footers.": [
+                "Afficher les touches des raccourcis sur les boutons et les pieds de page."
+            ],
+            "Show recent products beside the form while focused.": [
+                "Affichez les produits r\u00e9cents \u00e0 c\u00f4t\u00e9 du formulaire tout en \u00e9tant concentr\u00e9."
+            ],
+            "Show sparklines and deltas on the metric strip.": [
+                "Afficher les graphiques sparkline et les \u00e9carts dans la barre des indicateurs."
+            ],
+            "Show this panel": [
+                "Afficher ce panneau"
+            ],
+            "Simple product": [
+                "Produit simple"
+            ],
+            "Simple": [
+                "Simple"
+            ],
+            "Slug": [
+                "Slug"
+            ],
+            "Sold individually": [
+                "Vendre individuellement"
+            ],
+            "Some variation changes were not saved.": [
+                "Certaines modifications de variantes n\u2019ont pas \u00e9t\u00e9 enregistr\u00e9es."
+            ],
+            "Some variations were not saved.": [
+                "Certaines variantes n\u2019ont pas \u00e9t\u00e9 enregistr\u00e9es."
+            ],
+            "Standard": [
+                "Standard"
+            ],
+            "Start filling the form first.": [
+                "Commencez par remplir le formulaire."
+            ],
+            "Start in focus mode": [
+                "D\u00e9marrer en mode concentration"
+            ],
+            "Starts": [
+                "Commence"
+            ],
+            "Status": [
+                "\u00c9tat"
+            ],
+            "Sticky queue panel": [
+                "Panneau de file d\u2019attente fixe"
+            ],
+            "Stock management": [
+                "Gestion des stocks"
+            ],
+            "Stock must be a non-negative whole number.": [
+                "Le stock doit \u00eatre un nombre entier non n\u00e9gatif."
+            ],
+            "Stock status": [
+                "\u00c9tat du stock"
+            ],
+            "Stock": [
+                "Stock"
+            ],
+            "Strikethrough": [
+                "Barrer"
+            ],
+            "Success rate": [
+                "Taux de r\u00e9ussite"
+            ],
+            "successful publishes": [
+                "publications r\u00e9ussies"
+            ],
+            "Switch to dark theme": [
+                "Passer au th\u00e8me sombre"
+            ],
+            "Switch to light theme": [
+                "Passer au th\u00e8me clair"
+            ],
+            "System": [
+                "Syst\u00e8me"
+            ],
+            "Tags": [
+                "\u00c9tiquettes"
+            ],
+            "Tax & organization": [
+                "TVA et organisation"
+            ],
+            "Tax class": [
+                "Classe de TVA"
+            ],
+            "Tax status": [
+                "\u00c9tat de la TVA"
+            ],
+            "Tax treatment for new products.": [
+                "Traitement fiscal des nouveaux produits."
+            ],
+            "Taxable": [
+                "Taxable"
+            ],
+            "Terms for %s could not be loaded.": [
+                "Les termes pour\u00a0%s n\u2019ont pas pu \u00eatre charg\u00e9s."
+            ],
+            "The cursor moves to the name field when the workspace loads.": [
+                "Le curseur se d\u00e9place vers le champ de nom lors du chargement de l\u2019espace de travail."
+            ],
+            "The form was kept. Submit again to reconcile without creating a duplicate.": [
+                "Le formulaire a \u00e9t\u00e9 conserv\u00e9. Validez-le de nouveau pour v\u00e9rifier l\u2019op\u00e9ration sans cr\u00e9er de doublon."
+            ],
+            "The image could not be uploaded.": [
+                "L\u2019image n\u2019a pas pu \u00eatre t\u00e9l\u00e9charg\u00e9e."
+            ],
+            "The latest product could not be loaded.": [
+                "Le dernier produit n\u2019a pas pu \u00eatre charg\u00e9."
+            ],
+            "The plan exceeds %s combinations.": [
+                "Le plan d\u00e9passe les combinaisons\u00a0%s."
+            ],
+            "The product could not be loaded.": [
+                "Le produit n\u2019a pas pu \u00eatre charg\u00e9."
+            ],
+            "The Product Workspace assets are unavailable. Rebuild the plugin frontend.": [
+                "Les ressources de l\u2019espace de travail des produits sont indisponibles. Recompilez l\u2019interface de l\u2019extension."
+            ],
+            "The server request failed.": [
+                "La requ\u00eate du serveur a \u00e9chou\u00e9."
+            ],
+            "The server response was not received.": [
+                "La r\u00e9ponse du serveur n\u2019a pas \u00e9t\u00e9 re\u00e7ue."
+            ],
+            "The server returned an invalid response.": [
+                "Le serveur a renvoy\u00e9 une r\u00e9ponse invalide."
+            ],
+            "The server returned invalid bootstrap data.": [
+                "Le serveur a renvoy\u00e9 des donn\u00e9es d\u2019amor\u00e7age non valides."
+            ],
+            "The server returned invalid data.": [
+                "Le serveur a renvoy\u00e9 des donn\u00e9es invalides."
+            ],
+            "The variable-product plan is invalid.": [
+                "Le plan \u00e0 produits variables n\u2019est pas valide."
+            ],
+            "The WordPress host configuration is unavailable.": [
+                "La configuration de l\u2019h\u00f4te WordPress n\u2019est pas disponible."
+            ],
+            "Theme & density": [
+                "Th\u00e8me et densit\u00e9"
+            ],
+            "Theme": [
+                "Th\u00e8me"
+            ],
+            "This moves \u201c%s\u201d to WooCommerce trash. It is different from removing an entry from recent operations.": [
+                "Cela d\u00e9place \u00ab\u00a0%s\u00a0\u00bb vers la corbeille WooCommerce. Cela diff\u00e8re de la suppression d\u2019une entr\u00e9e des op\u00e9rations r\u00e9centes."
+            ],
+            "This operation does not have a WooCommerce product result to open.": [
+                "Cette op\u00e9ration n\u2019a pas de r\u00e9sultat de produit WooCommerce \u00e0 ouvrir."
+            ],
+            "This product operation is unavailable.": [
+                "Cette op\u00e9ration de produit n\u2019est pas disponible."
+            ],
+            "Today": [
+                "Aujourd\u2019hui"
+            ],
+            "Track inventory levels by default.": [
+                "Suivez les niveaux de stock par d\u00e9faut."
+            ],
+            "Trash this WooCommerce product?": [
+                "Mettre ce produit WooCommerce \u00e0 la corbeille\u00a0?"
+            ],
+            "Trash": [
+                "Corbeille"
+            ],
+            "Type options \u2014 S, M, L then Enter": [
+                "Tapez les options - S, M, L puis Entr\u00e9e"
+            ],
+            "unavailable": [
+                "indisponible"
+            ],
+            "Underline": [
+                "Souligner"
+            ],
+            "Undo delete": [
+                "Annuler la suppression"
+            ],
+            "Undo last delete": [
+                "Annuler la derni\u00e8re suppression"
+            ],
+            "Undo": [
+                "Annuler"
+            ],
+            "Units on hand. Entering a quantity enables WooCommerce stock management for this product.": [
+                "Unit\u00e9s disponibles. La saisie d\u2019une quantit\u00e9 permet la gestion du stock WooCommerce pour ce produit."
+            ],
+            "units": [
+                "unit\u00e9s"
+            ],
+            "Unknown attribute option.": [
+                "Option d\u2019attribut inconnue."
+            ],
+            "Unknown attribute or option reference.": [
+                "R\u00e9f\u00e9rence d\u2019attribut ou d\u2019option inconnue."
+            ],
+            "Unknown": [
+                "Inconnu"
+            ],
+            "Unsaved draft \u00b7 %s": [
+                "Brouillon non enregistr\u00e9 \u00b7\u00a0%s"
+            ],
+            "Unsaved draft": [
+                "Brouillon non enregistr\u00e9"
+            ],
+            "Untitled product": [
+                "Produit sans titre"
+            ],
+            "Update product": [
+                "Mettre \u00e0 jour le produit"
+            ],
+            "Uploaded images were kept.": [
+                "Les images t\u00e9l\u00e9charg\u00e9es ont \u00e9t\u00e9 conserv\u00e9es."
+            ],
+            "Uploading image to WordPress\u2026": [
+                "T\u00e9l\u00e9chargement de l\u2019image sur WordPress\u2026"
+            ],
+            "Uploading to WordPress\u2026": [
+                "T\u00e9l\u00e9chargement vers WordPress\u2026"
+            ],
+            "Uploading variation image": [
+                "T\u00e9l\u00e9chargement d\u2019une image de variante"
+            ],
+            "Use at least one attribute for variations.": [
+                "Utilisez au moins un attribut pour les variantes."
+            ],
+            "Used for primary buttons and active states.": [
+                "Utilis\u00e9 pour les boutons principaux et les \u00e9tats actifs."
+            ],
+            "Validate and save current draft": [
+                "Valider et enregistrer le brouillon actuel"
+            ],
+            "variable": [
+                "variables"
+            ],
+            "Variable": [
+                "Variable"
+            ],
+            "Variation image reference is invalid.": [
+                "La r\u00e9f\u00e9rence de l\u2019image de variante n\u2019est pas valide."
+            ],
+            "Variation image. Shown when a shopper picks this exact combination.": [
+                "Image de la variation. Elle s\u2019affiche lorsqu\u2019un client choisit cette combinaison pr\u00e9cise."
+            ],
+            "Variation SKUs must be unique.": [
+                "Les SKU des variations doivent \u00eatre uniques."
+            ],
+            "Variations": [
+                "Variations"
+            ],
+            "View queue": [
+                "Afficher la file d\u2019attente"
+            ],
+            "Violet": [
+                "Violet"
+            ],
+            "Weight": [
+                "Poids"
+            ],
+            "Where products appear in the storefront.": [
+                "Emplacements des produits dans la boutique."
+            ],
+            "Where the app opens by default.": [
+                "O\u00f9 l\u2019application s\u2019ouvre par d\u00e9faut."
+            ],
+            "Width": [
+                "Largeur"
+            ],
+            "WooCommerce defaults": [
+                "R\u00e9glages par d\u00e9faut de WooCommerce"
+            ],
+            "WooCommerce did not return the product.": [
+                "WooCommerce n\u2019a pas retourn\u00e9 le produit."
+            ],
+            "WooCommerce must be installed and active before this workspace can be used.": [
+                "WooCommerce doit \u00eatre install\u00e9 et actif avant que cet espace de travail puisse \u00eatre utilis\u00e9."
+            ],
+            "WooCommerce tax class for new products.": [
+                "Classe fiscale WooCommerce pour les nouveaux produits."
+            ],
+            "WordPress returned invalid media data.": [
+                "WordPress a renvoy\u00e9 des donn\u00e9es multim\u00e9dias non valides."
+            ],
+            "Workspace behavior": [
+                "Comportement de l\u2019espace de travail"
+            ],
+            "Workspace command menu": [
+                "Menu de commandes de l\u2019espace de travail"
+            ],
+            "Workspace unavailable": [
+                "Espace de travail indisponible"
+            ],
+            "Keyboard shortcut group\u0004Workspace": [
+                "Espace de travail"
+            ],
+            "Workspace": [
+                "Espace de travail"
+            ],
+            "Write here\u2026": [
+                "\u00c9crivez ici\u2026"
+            ],
+            "Yesterday": [
+                "Hier"
+            ],
+            "You are not allowed to upload media.": [
+                "Vous n\u2019avez pas l\u2019autorisation de t\u00e9l\u00e9verser des m\u00e9dias."
+            ],
+            "Your edit was not saved because this product changed after you opened it. Reload the latest values before editing again.": [
+                "Votre modification n\u2019a pas \u00e9t\u00e9 enregistr\u00e9e, car ce produit a \u00e9t\u00e9 modifi\u00e9 apr\u00e8s son ouverture. Rechargez les derni\u00e8res valeurs avant de les modifier \u00e0 nouveau."
+            ],
+            "KPI cards": [
+                "Cartes d\u2019indicateurs KPI"
+            ],
+            "Show the metric strip above the product workspace.": [
+                "Afficher la barre d\u2019indicateurs au-dessus de l\u2019espace de travail des produits."
+            ]
+        }
+    }
+}

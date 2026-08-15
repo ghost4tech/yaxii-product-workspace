@@ -1,0 +1,7 @@
+/vendor/
+/.phpunit.result.cache
+/.phpunit.cache/
+/.phpcs-cache
+/.phpstan-cache/
+/dist/
+/assets/build/

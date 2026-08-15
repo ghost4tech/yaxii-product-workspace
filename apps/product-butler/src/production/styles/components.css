@@ -1,0 +1,87 @@
+#yaxii-product-workspace #yaxii-product-workspace-portals {
+  color: hsl(var(--foreground));
+  font-family: inherit;
+}
+
+#yaxii-product-workspace button:disabled {
+  cursor: not-allowed;
+}
+
+#yaxii-product-workspace :where(input, textarea)::placeholder {
+  color: hsl(var(--muted-foreground) / 0.6) !important;
+  font-weight: 400 !important;
+  opacity: 1;
+}
+
+#yaxii-product-workspace [data-placeholder] {
+  color: hsl(var(--muted-foreground) / 0.6) !important;
+  font-weight: 400 !important;
+}
+
+#yaxii-product-workspace .queue-filter-fade {
+  inset-block: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 150ms ease;
+  width: 16px;
+  z-index: 1;
+}
+
+#yaxii-product-workspace .queue-filter-fade[data-visible="true"] {
+  opacity: 1;
+}
+
+#yaxii-product-workspace .queue-filter-fade-start {
+  background: linear-gradient(to right, hsl(var(--card) / 0.98), transparent);
+  inset-inline-start: 0;
+}
+
+#yaxii-product-workspace .queue-filter-fade-end {
+  background: linear-gradient(to left, hsl(var(--card) / 0.98), transparent);
+  inset-inline-end: 0;
+}
+
+#yaxii-product-workspace :dir(rtl) > .queue-filter-fade-start {
+  background: linear-gradient(to left, hsl(var(--card) / 0.98), transparent);
+}
+
+#yaxii-product-workspace :dir(rtl) > .queue-filter-fade-end {
+  background: linear-gradient(to right, hsl(var(--card) / 0.98), transparent);
+}
+
+#yaxii-product-workspace .yaxii-ecosystem {
+  background: linear-gradient(135deg, hsl(var(--brand) / 0.09), hsl(var(--info) / 0.045) 55%, hsl(var(--card)));
+}
+
+#yaxii-product-workspace .variation-image-remove {
+  opacity: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #yaxii-product-workspace .variation-image-remove {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 150ms ease;
+  }
+
+  #yaxii-product-workspace .group:hover > .variation-image-remove,
+  #yaxii-product-workspace .variation-image-remove:focus-visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+#yaxii-product-workspace .rte-content.ProseMirror {
+  border: 0;
+  box-shadow: none;
+  color: inherit;
+  margin: 0;
+  max-width: none;
+}
+
+@media (max-width: 782px) {
+  #yaxii-product-workspace {
+    min-height: calc(100vh - 46px);
+  }
+}
