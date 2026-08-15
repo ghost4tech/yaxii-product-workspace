@@ -1,5 +1,5 @@
 === Yaxii Product Workspace ===
-Contributors: ghost4tech
+Contributors: yaxii
 Tags: woocommerce, products, inventory, product management, admin
 Requires at least: 7.0
 Tested up to: 7.0
