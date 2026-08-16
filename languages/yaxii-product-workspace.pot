@@ -3,13 +3,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Yaxii Product Workspace 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ypw-phase1-recovery\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/internal\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-15T13:42:54+00:00\n"
+"POT-Creation-Date: 2026-08-16T17:45:22+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: yaxii-product-workspace\n"
@@ -360,10 +360,10 @@ msgstr ""
 msgid "At least one attribute must be used for variations."
 msgstr ""
 
-#. translators: 1: projected combinations, 2: Free limit.
+#. translators: 1: projected combinations, 2: maximum supported combinations.
 #: src/Application/VariableProducts/VariableProductPlanFactory.php:43
 #, php-format
-msgid "%1$d combinations exceed the synchronous Free limit of %2$d."
+msgid "%1$d combinations exceed the maximum of %2$d supported in a single save."
 msgstr ""
 
 #. translators: %d: maximum attributes.
@@ -630,7 +630,7 @@ msgstr ""
 #. translators: translators: 1: projected combination count, 2: maximum combination count.
 #: languages/source/yaxii-product-workspace.js:11
 #, js-format
-msgid "%1$s combinations exceed the Free limit of %2$s."
+msgid "%1$s combinations exceed the maximum of %2$s supported in a single save."
 msgstr ""
 
 #. translators: translators: 1: enabled variation count, 2: total variation count.

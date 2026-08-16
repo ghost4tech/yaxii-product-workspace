@@ -26,7 +26,7 @@ Free features include:
 
 The plugin uses same-site WordPress REST endpoints and WooCommerce APIs. It does not store WooCommerce API credentials in the browser and does not contact an external service.
 
-Development source and build tools are maintained publicly at https://github.com/ghost4tech/yaxii-product-workspace/tree/dev (the `dev` branch; `main` holds the clean release-facing tree). A clean clone of `dev` can reproduce the distributed assets without Lovable or any private service; see `docs/development/TOOLING.md` in that branch.
+Development source and build tools are maintained publicly on the `dev` branch at https://github.com/ghost4tech/yaxii-product-workspace/tree/dev. A clean clone of that branch can reproduce the distributed assets without Lovable, Claude, Codex, or any private service; see `docs/development/TOOLING.md` on that branch for exact build steps.
 
 == Installation ==
 

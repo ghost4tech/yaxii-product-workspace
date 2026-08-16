@@ -16,7 +16,8 @@ function yaxii_product_workspace_delete_site_data(): void {
 	global $wpdb;
 
 	$table_name = $wpdb->prefix . 'ypw_operations';
-	$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table_name ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange -- Uninstall owns this plugin table.
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.SchemaChange, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Dropping this plugin's own custom table on uninstall has no core API and no cacheable result.
+	$wpdb->query( $wpdb->prepare( 'DROP TABLE IF EXISTS %i', $table_name ) );
 	delete_option( 'ypw_operation_schema_version' );
 }
 
