@@ -16,12 +16,12 @@ import type { Product } from "@/types/product";
 import { __, _x } from "@/production/core/i18n/wordpress";
 
 const Entry = () => {
-  const [advancedOpen, setAdvancedOpen] = useState(false);
+  const prefs = usePrefsStore((state) => state.prefs);
+  const [advancedOpen, setAdvancedOpen] = useState(prefs.defaultWorkspaceMode === 'extended');
   const [queueSheet, setQueueSheet] = useState(false);
   const [finderOpen, setFinderOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState<CanonicalProduct | null>(null);
   const [success, setSuccess] = useState<SaveSuccessInfo | null>(null);
-  const prefs = usePrefsStore((state) => state.prefs);
   const operationCounts = useOperationSummary();
   const { toast } = useToast();
   const { client } = useWorkspaceRuntime();

@@ -1,7 +1,7 @@
 {
     "translation-revision-date": "2026-08-15T00:10:50+00:00",
     "generator": "WP-CLI\/2.12.0",
-    "source": "assets\/build\/assets\/main-CgDy4FSk.js",
+    "source": "assets\/build\/assets\/main-BUkPCVj3.js",
     "domain": "messages",
     "locale_data": {
         "messages": {
@@ -62,10 +62,6 @@
                 "%s correspondance",
                 "%s correspondances"
             ],
-            "%s operation": [
-                "%s op\u00e9ration",
-                "%s op\u00e9rations"
-            ],
             "%s row": [
                 "%s ligne",
                 "%s lignes"
@@ -124,9 +120,6 @@
             ],
             "Add variation image": [
                 "Ajouter une image de variante"
-            ],
-            "Additional categories": [
-                "Cat\u00e9gories suppl\u00e9mentaires"
             ],
             "Adds date headers between queue rows.": [
                 "Ajoute des en-t\u00eates de date entre les lignes de file d\u2019attente."
@@ -779,12 +772,6 @@
             "Optimized for fast, repetitive data entry.": [
                 "Optimis\u00e9 pour une saisie de donn\u00e9es rapide et r\u00e9p\u00e9titive."
             ],
-            "Optional discounted price. Leave empty for no sale. Schedule a window under Extended options.": [
-                "Prix r\u00e9duit en option. Laisser vide pour aucune vente. Planifiez une fen\u00eatre sous Options \u00e9tendues."
-            ],
-            "Optional": [
-                "Facultatif"
-            ],
             "Options must be unique and non-empty.": [
                 "Les options doivent \u00eatre uniques et non vides."
             ],
@@ -836,9 +823,6 @@
             ],
             "Price": [
                 "Prix"
-            ],
-            "Pricing & stock": [
-                "Prix et stock"
             ],
             "Product actions": [
                 "Actions sur le produit"
@@ -1044,9 +1028,6 @@
             "Sale price": [
                 "Prix promo"
             ],
-            "Sale schedule": [
-                "Calendrier des ventes"
-            ],
             "Save & next": [
                 "Enregistrer et continuer"
             ],
@@ -1210,9 +1191,6 @@
             "Stock status": [
                 "\u00c9tat du stock"
             ],
-            "Stock": [
-                "Stock"
-            ],
             "Strikethrough": [
                 "Barrer"
             ],
@@ -1338,9 +1316,6 @@
             ],
             "Undo": [
                 "Annuler"
-            ],
-            "Units on hand. Entering a quantity enables WooCommerce stock management for this product.": [
-                "Unit\u00e9s disponibles. La saisie d\u2019une quantit\u00e9 permet la gestion du stock WooCommerce pour ce produit."
             ],
             "units": [
                 "unit\u00e9s"
@@ -1470,6 +1445,51 @@
             ],
             "Show the metric strip above the product workspace.": [
                 "Afficher la barre d\u2019indicateurs au-dessus de l\u2019espace de travail des produits."
+            ],
+            "Advanced inventory options": [
+                "Options d\u2019inventaire avanc\u00e9es"
+            ],
+            "auto-from-name": [
+                "auto-\u00e0-partir-du-nom"
+            ],
+            "Default workspace mode": [
+                "Mode d\u2019espace de travail par d\u00e9faut"
+            ],
+            "Hide secondary sections you don't use. They stay available in WooCommerce.": [
+                "Masquez les sections secondaires que vous n\u2019utilisez pas. Elles restent disponibles dans WooCommerce."
+            ],
+            "How the entry form opens and which secondary sections show.": [
+                "Comment le formulaire de saisie s\u2019ouvre et quelles sections secondaires s\u2019affichent."
+            ],
+            "More inventory options": [
+                "Plus d\u2019options d\u2019inventaire"
+            ],
+            "Optional sections": [
+                "Sections optionnelles"
+            ],
+            "Pricing": [
+                "Tarification"
+            ],
+            "Quantity": [
+                "Quantit\u00e9"
+            ],
+            "Schedule sale": [
+                "Planifier une promotion"
+            ],
+            "Shipping & dimensions": [
+                "Livraison et dimensions"
+            ],
+            "SKU field": [
+                "Champ UGS"
+            ],
+            "Standard shows essentials only; Extended opens with every section visible.": [
+                "Standard affiche uniquement l\u2019essentiel\u00a0; \u00c9tendu ouvre toutes les sections."
+            ],
+            "Tax details": [
+                "D\u00e9tails de la taxe"
+            ],
+            "WooCommerce generates this automatically from the product name unless you set it here.": [
+                "WooCommerce le g\u00e9n\u00e8re automatiquement \u00e0 partir du nom du produit, sauf si vous le d\u00e9finissez ici."
             ]
         }
     }

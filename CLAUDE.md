@@ -50,3 +50,58 @@ Report concisely:
 - current Git branch and commit SHA when applicable.
 
 Never claim a test, runtime flow, integration, or review passed unless it was actually executed.
+
+## Lovable UI Preservation — Hard Product Rule
+
+The approved Lovable application is the **authoritative production UI/UX**, not a design reference.
+
+Engineering agents must preserve the observable Lovable experience when implementing WordPress, WooCommerce, backend, security, performance, testing, or architectural work.
+
+### MUST preserve
+
+- visual design and design system;
+- layouts and workspace composition;
+- component presentation;
+- typography, spacing, surfaces, and hierarchy;
+- forms and controls;
+- Focus Mode;
+- queue experience;
+- responsive/mobile behavior;
+- dark/light modes;
+- density/preferences behavior;
+- dialogs, navigation, interactions, and meaningful motion.
+
+### Agents MAY change
+
+Only implementation details required for production quality, including:
+
+- state/data architecture;
+- API/repository adapters;
+- WordPress integration;
+- security and authorization;
+- TypeScript/PHP architecture;
+- component/file decomposition;
+- CSS scoping;
+- accessibility fixes;
+- performance;
+- localization/RTL infrastructure;
+- backend-connected behavior.
+
+Internal refactors must preserve the approved observable UI unless the owner explicitly requests a UI change.
+
+### Agents MUST NOT
+
+- recreate the Lovable interface from memory or screenshots;
+- build a new interface merely inspired by Lovable;
+- replace custom Lovable experiences with generic ShadCN/admin forms;
+- simplify or redesign UI to make backend implementation easier;
+- delete deferred Lovable screens/features without owner approval;
+- change layout, styling, interaction, or mobile behavior as incidental refactoring.
+
+For Free/Pro separation, unapproved functionality should normally be **hidden from the production edition while its source is preserved**, not redesigned or deleted.
+
+When a task could materially change the UI, compare against the approved Lovable source before implementation.
+
+If architectural requirements genuinely make an observable UI change necessary, stop treating it as an implementation detail: document the conflict and obtain explicit owner approval before changing the product experience.
+
+**Principle:** Lovable owns presentation and experience. Engineering owns correctness and infrastructure underneath it.

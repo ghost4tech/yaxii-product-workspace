@@ -1,5 +1,7 @@
 # AGENTS.md — Yaxii Product Workspace Engineering Contract
+
 ## Mission
+
 Build **Yaxii Product Workspace** as a premium-quality WooCommerce product-entry workspace.
 
 The current product target is the **Free MVP**: a fast, safe, polished way for merchants and agencies to create and manage WooCommerce products. The Free codebase must be clean enough for a future Pro edition to extend it without rewriting or contaminating the core.
@@ -7,6 +9,7 @@ The current product target is the **Free MVP**: a fast, safe, polished way for m
 The product should feel premium because the workflow is excellent, not because the repository contains unnecessary systems.
 
 ## Scope rules
+
 - Work on the Free MVP unless a task explicitly says otherwise.
 - Do not implement future Pro or Agency features speculatively.
 - Existing Lovable prototype files/screens must not be deleted without explicit owner approval.
@@ -15,7 +18,9 @@ The product should feel premium because the workflow is excellent, not because t
 - Preserve good existing UX unless the requested task requires changing it.
 
 ## Required task routine
+
 Before editing:
+
 1. Inspect `git status`, current branch, relevant source, tests, and docs.
 2. Understand the existing behavior before changing architecture.
 3. Read/use applicable installed WordPress Agent Skills.
@@ -23,6 +28,7 @@ Before editing:
 5. Avoid unrelated cleanup or later-phase work.
 
 After editing:
+
 1. Review the actual diff.
 2. Run relevant automated and runtime checks.
 3. Run the applicable Guard Skills.
@@ -32,13 +38,16 @@ After editing:
 7. Report results and unresolved risks.
 
 ## Architecture
+
 ### WordPress / PHP
+
 Use a modular monolith with clear boundaries.
 
 Preferred flow:
 `REST controller -> application service -> WordPress/WooCommerce adapter/API`
 
 Rules:
+
 - PSR-4 autoloading.
 - Constructor dependency injection.
 - Keep HTTP parsing/response shaping out of business logic.
@@ -273,7 +282,20 @@ After baseline:
 
 Do not invent canonical commands that the repository does not yet define.
 
-During the foundation/setup task, discover and establish the real install, lint, typecheck, test, build, PHP quality, and packaging commands. Once stable, document those commands here so future agents do not need to rediscover them.
+Run frontend commands from `apps/product-butler`:
+
+- `npm ci` — canonical clean install;
+- `npm run typecheck` — strict TypeScript;
+- `npm run lint` — maintained frontend and tooling lint;
+- `npm run check:lines` — maintained production 300-line limit;
+- `npm test` — Vitest suite;
+- `npm run build` — production assets and manifest under `assets/build`;
+- `npm run check:boundary` — scan built assets for forbidden prototype boundaries;
+- `npm run check` — authoritative frontend gate;
+- `npm run audit:production` — production dependency audit.
+
+For the Phase 1 PHP surface, run `php -l yaxii-product-workspace.php` and `php -l includes/AdminPage.php`.
+There is no Composer/PHPUnit or packaging command yet; do not invent one.
 
 ## Definition of done
 
@@ -292,3 +314,82 @@ Before completion:
 Priority order:
 
 **correct -> secure -> tested -> maintainable -> performant -> extensible**
+
+## Lovable UI Preservation — Hard Product Rule
+
+The approved Lovable application is the **authoritative production UI/UX**, not a design reference.
+
+Engineering agents must preserve the observable Lovable experience when implementing WordPress, WooCommerce, backend, security, performance, testing, or architectural work.
+
+### MUST preserve
+
+- visual design and design system;
+- layouts and workspace composition;
+- component presentation;
+- typography, spacing, surfaces, and hierarchy;
+- forms and controls;
+- Focus Mode;
+- queue experience;
+- responsive/mobile behavior;
+- dark/light modes;
+- density/preferences behavior;
+- dialogs, navigation, interactions, and meaningful motion.
+
+### Agents MAY change
+
+Only implementation details required for production quality, including:
+
+- state/data architecture;
+- API/repository adapters;
+- WordPress integration;
+- security and authorization;
+- TypeScript/PHP architecture;
+- component/file decomposition;
+- CSS scoping;
+- accessibility fixes;
+- performance;
+- localization/RTL infrastructure;
+- backend-connected behavior.
+
+Internal refactors must preserve the approved observable UI unless the owner explicitly requests a UI change.
+
+### Agents MUST NOT
+
+- recreate the Lovable interface from memory or screenshots;
+- build a new interface merely inspired by Lovable;
+- replace custom Lovable experiences with generic ShadCN/admin forms;
+- simplify or redesign UI to make backend implementation easier;
+- delete deferred Lovable screens/features without owner approval;
+- change layout, styling, interaction, or mobile behavior as incidental refactoring.
+
+For Free/Pro separation, unapproved functionality should normally be **hidden from the production edition while its source is preserved**, not redesigned or deleted.
+
+When a task could materially change the UI, compare against the approved Lovable source before implementation.
+
+If architectural requirements genuinely make an observable UI change necessary, stop treating it as an implementation detail: document the conflict and obtain explicit owner approval before changing the product experience.
+
+**Principle:** Lovable owns presentation and experience. Engineering owns correctness and infrastructure underneath it.
+
+## Yaxii UI / Design Authority
+
+Installed UI/design skills are advisory tools, not product-design authority.
+
+For an existing Yaxii product, the current owner-approved production UI and documented Yaxii design system take precedence over recommendations from `frontend-design`, `ui-ux-pro-max`, or any other design skill.
+
+Agents must not use a design skill to:
+
+- regenerate the product's visual direction;
+- replace approved typography, colors, spacing, components, or layout;
+- introduce a new aesthetic style during implementation/refactoring;
+- convert custom Yaxii UI into generic framework components.
+
+Use `ui-ux-pro-max` primarily for targeted UX, accessibility, responsive, forms, interaction, feedback, and consistency reviews.
+
+Use `frontend-design` only when:
+
+- creating a new product/page without an established visual direction;
+- the owner explicitly requests a redesign or new visual concept.
+
+When polishing an existing UI, skills should identify problems and recommend improvements within the existing Yaxii design language.
+
+Owner-approved UI always wins.

@@ -1,6 +1,7 @@
 # Lovable V2 Product Entry Workflow
 
-**Status:** Phase 4.5 integrated; French and Arabic production localization passed in Phase 5A
+**Status:** Phase 4.5 integrated; French and Arabic production localization passed in Phase 5A;
+1.1.0 UX polish reorganized Pricing/Inventory/Categories and added Product Entry preferences
 
 ## Presentation authority
 
@@ -20,6 +21,30 @@ recent choices remain a local UX preference.
 
 The REST route requires an authenticated user with product-creation capability. WooCommerce and
 WordPress remain authoritative for hierarchy, assignment validation, and saved product categories.
+
+The Essentials category selector is the single category workflow: it owns both the primary and
+additional `product_cat` term IDs together. A separate flat "Additional categories" picker that
+previously duplicated this in Extended → Tax & organization has been removed.
+
+## Pricing, inventory, and identity (1.1.0)
+
+Slug sits beside Product Name (visually secondary; WooCommerce still generates it automatically
+when left blank). Pricing contains Regular price, Sale price, and a compact "Schedule sale"
+disclosure — collapsed by default, opened automatically when an existing product already has a
+scheduled sale window. Inventory consolidates SKU, Quantity, Manage stock, and Stock status into
+one Standard-view section, with Backorders and Sold individually behind a "More inventory options"
+disclosure. All fields kept their existing form model keys, validation, and hydration mapping —
+only their presentation location changed.
+
+## Product Entry preferences (1.1.0)
+
+Settings → Workspace adds a "Product entry" panel: a default workspace mode (Standard/Extended)
+that seeds the Entry screen's initial state, and an optional-sections toggle group (SKU field, Tax
+details, Shipping & dimensions, Advanced inventory options) that hides those secondary sections from
+the entry form for merchants who don't use them. These are browser-local UI preferences, not
+entitlement checks — hidden sections stay fully available in WooCommerce and reappear the moment the
+preference is re-enabled. The toolbar's Extended toggle is now reachable on mobile widths as well as
+desktop.
 
 ## Descriptions and media
 
