@@ -347,12 +347,6 @@ msgstr "أرسل قائمتي السمات والتركيبات."
 msgid "At least one attribute must be used for variations."
 msgstr "يجب استخدام سمة واحدة على الأقل للتنويعات."
 
-#. translators: 1: projected combinations, 2: Free limit.
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:43
-#, php-format
-msgid "%1$d combinations exceed the synchronous Free limit of %2$d."
-msgstr "يتجاوز عدد التركيبات (%1$d) الحد المتزامن للإصدار المجاني البالغ %2$d."
-
 #. translators: %d: maximum attributes.
 #: src/Application/VariableProducts/VariableProductPlanFactory.php:63
 #, php-format
@@ -613,12 +607,6 @@ msgstr "ستتم إزالة «%s» من العمليات الأخيرة، ولن
 #: languages/source/yaxii-product-workspace.js:9
 msgid "“3 hours ago” instead of a fixed date."
 msgstr "«منذ 3 ساعات» بدلاً من تاريخ ثابت."
-
-#. translators: translators: 1: projected combination count, 2: maximum combination count.
-#: languages/source/yaxii-product-workspace.js:11
-#, js-format
-msgid "%1$s combinations exceed the Free limit of %2$s."
-msgstr "يتجاوز عدد التركيبات (%1$s) الحد المجاني البالغ %2$s."
 
 #. translators: translators: 1: enabled variation count, 2: total variation count.
 #: languages/source/yaxii-product-workspace.js:13
@@ -2691,3 +2679,15 @@ msgstr "الوصف كبير جدًا ولا يمكن حفظه."
 #: src/Application/Products/CreateProductRequestFactory.php:140
 msgid "Short description is too large to save."
 msgstr "الوصف القصير كبير جدًا ولا يمكن حفظه."
+
+#. translators: 1: projected combinations, 2: maximum supported combinations.
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:43
+#, php-format
+msgid "%1$d combinations exceed the maximum of %2$d supported in a single save."
+msgstr "يتجاوز عدد التركيبات %1$d الحد الأقصى المسموح به وهو %2$d في عملية حفظ واحدة."
+
+#. translators: translators: 1: projected combination count, 2: maximum combination count.
+#: languages/source/yaxii-product-workspace.js:11
+#, js-format
+msgid "%1$s combinations exceed the maximum of %2$s supported in a single save."
+msgstr "يتجاوز عدد التركيبات %1$s الحد الأقصى المسموح به وهو %2$s في عملية حفظ واحدة."

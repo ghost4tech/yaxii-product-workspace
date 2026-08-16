@@ -13,8 +13,11 @@ language packs.
   English only as the source-language fallback.
 - The production script declares `wp-i18n` as a dependency and calls
   `wp_set_script_translations()` with the plugin `languages` directory.
-- `Plugin::load_textdomain()` loads bundled PHP catalogs. WordPress language-pack lookup remains
-  available because the standard domain, locale, MO, and Jed JSON naming rules are retained.
+- PHP translations load through WordPress core's automatic language-pack lookup for plugins hosted
+  on WordPress.org (available since WordPress 4.6 for a plugin whose `Text Domain` matches its
+  slug). The plugin does not call `load_plugin_textdomain()`; the standard domain, locale, MO, and
+  Jed JSON naming rules are retained so a language pack resolves the same way a bundled catalog
+  would.
 - The admin host and REST bootstrap both use the current user's WordPress locale. Direction is
   resolved in a temporary WordPress locale context, so a French user on an Arabic site receives
   `fr-FR/ltr`, while an Arabic user receives `ar/rtl`.
@@ -33,6 +36,19 @@ Do not add a plugin language selector. WordPress user/admin locale is the author
 - `languages/source/yaxii-product-workspace.js`: generated extraction-only JavaScript. It is never
   enqueued.
 - `languages/source-map.json`: maps the extraction source to the current Vite entry asset.
+
+## WordPress.org package scope
+
+The `.pot` template ships in the WordPress.org release ZIP (`release-manifest.json`:
+`languages/*.pot`) as the source-string reference. The compiled locale catalogs
+(`*.po`, `*.mo`, and the locale-specific Jed `*.json` files) are intentionally excluded from that
+ZIP: WordPress.org distributes plugin translations through translate.wordpress.org language packs,
+and bundling a plugin's own compiled catalogs alongside that distribution channel is redundant and
+discouraged by the Plugin Review Team. The completed Arabic and French catalogs remain committed in
+this repository's `languages/` directory so they can be imported into the translate.wordpress.org
+project once the plugin is approved; `wp_set_script_translations()` and the gettext/Jed naming
+convention already match what a WordPress.org language pack expects, so no runtime code changes are
+needed when that import happens.
 
 ## Reproducible update workflow
 

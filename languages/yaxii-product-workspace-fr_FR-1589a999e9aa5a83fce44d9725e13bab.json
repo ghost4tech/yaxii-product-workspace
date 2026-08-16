@@ -1,7 +1,7 @@
 {
     "translation-revision-date": "2026-08-15T00:10:50+00:00",
     "generator": "WP-CLI\/2.12.0",
-    "source": "assets\/build\/assets\/main-DXpno9Nr.js",
+    "source": "assets\/build\/assets\/main-DuGTDa0H.js",
     "domain": "messages",
     "locale_data": {
         "messages": {
@@ -27,9 +27,6 @@
             ],
             "\u201c3 hours ago\u201d instead of a fixed date.": [
                 "\u00ab Il y a 3 heures \u00bb au lieu d\u2019une date fixe."
-            ],
-            "%1$s combinations exceed the Free limit of %2$s.": [
-                "%1$s combinaisons d\u00e9passent la limite de\u00a0%2$s de la version gratuite."
             ],
             "%1$s of %2$s enabled": [
                 "%1$s sur\u00a0%2$s activ\u00e9es"
@@ -1470,6 +1467,9 @@
             ],
             "Show the metric strip above the product workspace.": [
                 "Afficher la barre d\u2019indicateurs au-dessus de l\u2019espace de travail des produits."
+            ],
+            "%1$s combinations exceed the maximum of %2$s supported in a single save.": [
+                "%1$s combinaisons d\u00e9passent le maximum autoris\u00e9 de %2$s pour un seul enregistrement."
             ]
         }
     }

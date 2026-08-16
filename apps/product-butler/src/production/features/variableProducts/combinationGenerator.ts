@@ -34,7 +34,7 @@ export function generateVariationCombinations(
   if (projected === 0) fail("attributes", __("Use at least one attribute for variations.", "yaxii-product-workspace"));
   if (projected > VARIABLE_PRODUCT_LIMITS.combinations) {
     /* translators: 1: projected combination count, 2: maximum combination count. */
-    fail("combinations", sprintf(__("%1$s combinations exceed the Free limit of %2$s.", "yaxii-product-workspace"), projected, VARIABLE_PRODUCT_LIMITS.combinations));
+    fail("combinations", sprintf(__("%1$s combinations exceed the maximum of %2$s supported in a single save.", "yaxii-product-workspace"), projected, VARIABLE_PRODUCT_LIMITS.combinations));
   }
 
   const prior = new Map(existing.map((combination) => [combinationFingerprint(combination.selections), combination]));

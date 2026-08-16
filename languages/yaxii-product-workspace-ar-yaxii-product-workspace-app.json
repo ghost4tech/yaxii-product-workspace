@@ -1,7 +1,7 @@
 {
     "translation-revision-date": "2026-08-15T00:10:50+00:00",
     "generator": "WP-CLI\/2.12.0",
-    "source": "assets\/build\/assets\/main-DXpno9Nr.js",
+    "source": "assets\/build\/assets\/main-DuGTDa0H.js",
     "domain": "messages",
     "locale_data": {
         "messages": {
@@ -27,9 +27,6 @@
             ],
             "\u201c3 hours ago\u201d instead of a fixed date.": [
                 "\u00ab\u0645\u0646\u0630 3 \u0633\u0627\u0639\u0627\u062a\u00bb \u0628\u062f\u0644\u0627\u064b \u0645\u0646 \u062a\u0627\u0631\u064a\u062e \u062b\u0627\u0628\u062a."
-            ],
-            "%1$s combinations exceed the Free limit of %2$s.": [
-                "\u064a\u062a\u062c\u0627\u0648\u0632 \u0639\u062f\u062f \u0627\u0644\u062a\u0631\u0643\u064a\u0628\u0627\u062a (%1$s) \u0627\u0644\u062d\u062f \u0627\u0644\u0645\u062c\u0627\u0646\u064a \u0627\u0644\u0628\u0627\u0644\u063a %2$s."
             ],
             "%1$s of %2$s enabled": [
                 "\u062a\u0645 \u062a\u0645\u0643\u064a\u0646 %1$s \u0645\u0646 %2$s"
@@ -1518,6 +1515,9 @@
             ],
             "Show the metric strip above the product workspace.": [
                 "\u0625\u0638\u0647\u0627\u0631 \u0634\u0631\u064a\u0637 \u0627\u0644\u0645\u0624\u0634\u0631\u0627\u062a \u0623\u0639\u0644\u0649 \u0645\u0633\u0627\u062d\u0629 \u0639\u0645\u0644 \u0627\u0644\u0645\u0646\u062a\u062c\u0627\u062a."
+            ],
+            "%1$s combinations exceed the maximum of %2$s supported in a single save.": [
+                "\u064a\u062a\u062c\u0627\u0648\u0632 \u0639\u062f\u062f \u0627\u0644\u062a\u0631\u0643\u064a\u0628\u0627\u062a %1$s \u0627\u0644\u062d\u062f \u0627\u0644\u0623\u0642\u0635\u0649 \u0627\u0644\u0645\u0633\u0645\u0648\u062d \u0628\u0647 \u0648\u0647\u0648 %2$s \u0641\u064a \u0639\u0645\u0644\u064a\u0629 \u062d\u0641\u0638 \u0648\u0627\u062d\u062f\u0629."
             ]
         }
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * Free variable-product limits.
+ * Variable-product synchronous save limits.
  *
  * @package YaxiiProductWorkspace
  */
@@ -8,7 +8,7 @@
 namespace Yaxii\ProductWorkspace\Application\VariableProducts;
 
 /**
- * Keeps the synchronous Free boundary explicit and shared by validators.
+ * Keeps the synchronous per-save safety boundary explicit and shared by validators.
  */
 final class VariableProductLimits {
 	public const MAX_ATTRIBUTES   = 5;

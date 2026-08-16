@@ -39,8 +39,8 @@ final class VariableProductPlanFactory {
 			$this->invalid(
 				'combinations',
 				sprintf(
-					/* translators: 1: projected combinations, 2: Free limit. */
-					__( '%1$d combinations exceed the synchronous Free limit of %2$d.', 'yaxii-product-workspace' ),
+					/* translators: 1: projected combinations, 2: maximum supported combinations. */
+					__( '%1$d combinations exceed the maximum of %2$d supported in a single save.', 'yaxii-product-workspace' ),
 					$projected,
 					VariableProductLimits::MAX_COMBINATIONS
 				)

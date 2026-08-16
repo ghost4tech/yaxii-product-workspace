@@ -57,6 +57,19 @@ try {
         Copy-Item -LiteralPath $source -Destination $target
     }
 
+    # assets/build is gitignored (generated Vite output), so it never appears in `git ls-files`
+    # even though the manifest lists it. Stage it straight from disk instead when the manifest
+    # requests it, using whatever the preceding build step (or -UseCommittedAssets) produced.
+    if (@($manifest.include) -contains 'assets/build/*') {
+        $builtAssetsSource = Join-Path $repositoryRoot 'assets\build'
+        if (-not (Test-Path -LiteralPath $builtAssetsSource)) {
+            throw 'release-manifest.json requires assets/build/* but no built assets exist on disk.'
+        }
+        $pluginAssetsDir = Join-Path $pluginRoot 'assets'
+        New-Item -ItemType Directory -Force -Path $pluginAssetsDir | Out-Null
+        Copy-Item -LiteralPath $builtAssetsSource -Destination $pluginAssetsDir -Recurse -Force
+    }
+
     composer dump-autoload --working-dir=$pluginRoot --no-dev --classmap-authoritative --no-interaction --no-scripts
     if ($LASTEXITCODE -ne 0) { throw 'Production Composer autoloader generation failed.' }
 

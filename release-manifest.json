@@ -1,0 +1,21 @@
+{
+  "plugin_slug": "yaxii-product-workspace",
+  "version": "1.0.0",
+  "include": [
+    "LICENSE",
+    "THIRD-PARTY-LICENSES.json",
+    "third-party-notices.txt",
+    "composer.json",
+    "readme.txt",
+    "uninstall.php",
+    "yaxii-product-workspace.php",
+    "src/*",
+    "assets/admin-shell.css",
+    "assets/build/*",
+    "languages/*.pot"
+  ],
+  "generated": [
+    "vendor/autoload.php",
+    "vendor/composer/*"
+  ]
+}
