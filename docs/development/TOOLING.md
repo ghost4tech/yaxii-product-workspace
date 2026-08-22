@@ -20,6 +20,8 @@ Run from `apps/product-butler`:
 - `npm run check:lines` - maintained production 300-line limit.
 - `npm test` - Vitest component, contract, mapping, and persistence tests.
 - `npm run build` - production assets and manifest under `assets/build`.
+- `npm run check:i18n-build` - verifies the minified entry retains WordPress-extractable gettext
+  calls and the release translation boundary remains compliant.
 - `npm run check:boundary` - scans built assets for forbidden production boundaries and unscoped
   CSS.
 - `npm run check` - authoritative frontend gate, excluding install and dependency audit.
@@ -65,11 +67,12 @@ From a clean committed checkout, run:
 powershell -ExecutionPolicy Bypass -File tools/build-release.ps1
 ```
 
-The script performs a clean frontend build, checks localization output, regenerates the
-third-party license inventory, stages only the allowlist in `release-manifest.json`, creates a
-production Composer autoloader, and writes a deterministic ZIP plus SHA-256 evidence under
-`dist/`. Generated `assets/build` files are ignored as development output and copied explicitly
-into the package so a release cannot silently omit the compiled application.
+The script performs a clean frontend build, checks source and built localization output,
+regenerates the third-party license inventory, stages only the allowlist in
+`release-manifest.json`, validates that the staged package has one POT and no PO, MO, or locale
+JSON catalogs, creates a production Composer autoloader, and writes a deterministic ZIP plus
+SHA-256 evidence under `dist/`. Generated `assets/build` files are ignored as development output
+and copied explicitly into the package so a release cannot silently omit the compiled application.
 
 ## Phase 3 verification
 

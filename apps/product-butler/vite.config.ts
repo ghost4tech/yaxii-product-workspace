@@ -24,6 +24,11 @@ export default defineConfig({
     rollupOptions: {
       input: path.resolve(projectRoot, "src/main.tsx"),
       output: {
+        minify: {
+          compress: false,
+          mangle: { reserved: ["__", "_x", "_n"] },
+          codegen: true,
+        },
         manualChunks(id) {
           if (!id.includes("node_modules")) return undefined;
           if (id.includes("@tiptap") || id.includes("prosemirror")) return "editor-vendor";

@@ -12,9 +12,15 @@ translate.wordpress.org.
   `apps/product-butler/src/production/core/i18n/wordpress.ts`. They delegate to `wp.i18n` and retain
   English only as the source-language fallback.
 - The production script declares `wp-i18n` as a dependency and calls
-  `wp_set_script_translations()` with the plugin `languages` directory.
-- PHP translations use WordPress core's automatic language-pack lookup for a WordPress.org plugin
-  whose text domain matches its slug. The plugin does not call `load_plugin_textdomain()`.
+  `wp_set_script_translations()` without a custom path. WordPress therefore discovers the plugin's
+  PHP and JavaScript catalogs in the standard `wp-content/languages/plugins` language-pack path.
+- The Vite minifier preserves the wrapper names `__`, `_x`, and `_n` in the actual entry asset.
+  This lets WordPress.org extract the React originals from the same hashed script path that runs in
+  the browser and generate the correctly path-hashed JSON catalog. Identifier mangling and compact
+  code generation remain enabled, while expression compression is disabled because it can fold
+  separately extractable translated branches into a non-literal gettext argument.
+- The text domain matches the WordPress.org slug. The plugin does not call
+  `load_plugin_textdomain()` and has no plugin-owned language selector.
 - The admin host and REST bootstrap both use the current user's WordPress locale. Direction is
   resolved in a temporary WordPress locale context, so a French user on an Arabic site receives
   `fr-FR/ltr`, while an Arabic user receives `ar/rtl`.
@@ -27,9 +33,7 @@ Do not add a plugin language selector. WordPress user/admin locale is the author
 - `languages/yaxii-product-workspace-ar.po` and `.mo`: Arabic catalog.
 - `languages/yaxii-product-workspace-fr_FR.po` and `.mo`: French catalog.
 - `languages/yaxii-product-workspace-<locale>-<md5>.json`: WordPress-compatible JavaScript catalog
-  for the current built entry path.
-- `languages/yaxii-product-workspace-<locale>-yaxii-product-workspace-app.json`: stable handle alias
-  used by WordPress when translations are loaded from the bundled custom path.
+  for local development and runtime acceptance against the current built entry path.
 - `languages/source/yaxii-product-workspace.js`: generated extraction-only JavaScript. It is never
   enqueued.
 - `languages/source-map.json`: maps the extraction source to the current Vite entry asset.
@@ -38,9 +42,11 @@ Do not add a plugin language selector. WordPress user/admin locale is the author
 
 The release manifest ships only `languages/*.pot`. Maintained PO/MO files and locale-specific JSON
 catalogs stay in the private development repository and are excluded from the WordPress.org ZIP.
-WordPress.org language packs provide installed PHP and JavaScript catalogs after the translations
-are contributed and approved on translate.wordpress.org. Until a pack exists for a user locale,
-WordPress and the React application must fall back cleanly to English.
+WordPress.org language packs provide installed PHP and path-hashed JavaScript catalogs after the
+translations are contributed, approved, and meet the language-pack threshold on
+translate.wordpress.org. The development catalogs are import-ready sources; their presence in the
+private repository does not mean WordPress.org distributes them. Until a pack exists for a user
+locale, WordPress and the React application fall back cleanly to English.
 
 ## Reproducible update workflow
 
@@ -56,14 +62,22 @@ npm --prefix apps/product-butler run i18n:map
 wp i18n make-json languages languages --domain=yaxii-product-workspace --no-purge --pretty-print --use-map=languages/source-map.json
 npm --prefix apps/product-butler run i18n:finalize
 npm --prefix apps/product-butler run check:i18n
+npm --prefix apps/product-butler run check:i18n-build
 ```
 
 WP-CLI does not extract TypeScript/TSX directly. `i18n:source` walks the production import graph
 from `src/main.tsx`, rejects common raw user-facing strings, and generates ordinary `wp.i18n`
 calls for WP-CLI extraction. `check:i18n` fails if that generated source is stale or if catalogs,
 placeholders, plural forms, MO files, or current JavaScript JSON artifacts are incomplete.
-`i18n:finalize` removes obsolete generated hash catalogs for the two bundled locales before it
-creates the stable script-handle aliases.
+`i18n:finalize` removes obsolete generated hash catalogs and obsolete custom-path handle aliases.
+`check:i18n-build` verifies that the minified runtime entry still exposes WordPress-extractable
+gettext calls, exactly matches all 490 generated React messages, and that the release manifest
+cannot include PO, MO, or locale JSON files.
+
+The current Vite manifest contains statically imported vendor/editor chunks and no dynamically
+imported application chunks. All translated application calls remain in the entry catalog, which
+WordPress injects before the module executes. The built-message equality gate fails if a future
+split moves translated calls out of that loading contract without an explicit localization design.
 
 ## Adding strings
 

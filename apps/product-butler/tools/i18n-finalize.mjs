@@ -1,11 +1,10 @@
-import { copyFile, readFile, readdir, unlink } from "node:fs/promises";
+import { readFile, readdir, unlink } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "../../..");
 const languages = path.join(root, "languages");
 const domain = "yaxii-product-workspace";
-const handle = "yaxii-product-workspace-app";
 const sourceMap = JSON.parse(await readFile(path.join(languages, "source-map.json"), "utf8"));
 const builtPath = sourceMap[`languages/source/${domain}.js`];
 
@@ -24,9 +23,9 @@ async function removeStaleHashCatalogs(locale) {
 
 for (const locale of ["ar", "fr_FR"]) {
   await removeStaleHashCatalogs(locale);
-  await copyFile(
-    path.join(languages, `${domain}-${locale}-${hash}.json`),
-    path.join(languages, `${domain}-${locale}-${handle}.json`),
-  );
+  await unlink(path.join(languages, `${domain}-${locale}-yaxii-product-workspace-app.json`))
+    .catch((error) => {
+      if (error.code !== "ENOENT") throw error;
+    });
 }
-process.stdout.write(`Created stable ${handle} JavaScript catalogs from ${builtPath}.\n`);
+process.stdout.write(`Retained only path-hashed JavaScript catalogs for ${builtPath}.\n`);
