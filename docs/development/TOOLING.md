@@ -1,13 +1,14 @@
 # Development Tooling
 
-**Updated:** 2026-08-13
+**Updated:** 2026-08-22
 
 ## Package authority
 
 npm is the canonical frontend package manager. Its lockfile is
 `apps/product-butler/package-lock.json`; the preserved Phase 0 `bun.lockb` is source provenance, not
 a supported Bun workflow. Composer owns PHP development tools through the root `composer.lock`.
-The frontend declares Node `^20.19.0 || >=22.12.0` and npm `>=10`.
+The frontend declares Node `^20.19.0 || >=22.12.0` and npm `>=10`. PHP development and the release
+runtime require PHP 8.1 or newer; Composer resolves against PHP 8.1.29.
 
 ## Frontend commands
 
@@ -55,6 +56,20 @@ $ypwPhp = Join-Path $env:APPDATA 'Local\lightning-services\php-8.3.23+0\bin\win6
 
 LocalWP currently emits an optional `php_imagick.dll` startup warning. The verified test and media
 paths remain operational; treat it as a failure only when the tested behavior requires Imagick.
+
+## Deterministic release package
+
+From a clean committed checkout, run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/build-release.ps1
+```
+
+The script performs a clean frontend build, checks localization output, regenerates the
+third-party license inventory, stages only the allowlist in `release-manifest.json`, creates a
+production Composer autoloader, and writes a deterministic ZIP plus SHA-256 evidence under
+`dist/`. Generated `assets/build` files are ignored as development output and copied explicitly
+into the package so a release cannot silently omit the compiled application.
 
 ## Phase 3 verification
 

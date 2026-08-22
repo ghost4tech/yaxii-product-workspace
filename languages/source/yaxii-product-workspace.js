@@ -8,7 +8,7 @@ wp.i18n._x(", ", "List separator", "yaxii-product-workspace");
 wp.i18n.__("“%s” will leave recent operations. Its WooCommerce product will not be trashed.", "yaxii-product-workspace");
 wp.i18n.__("“3 hours ago” instead of a fixed date.", "yaxii-product-workspace");
 /* translators: translators: 1: projected combination count, 2: maximum combination count. */
-wp.i18n.__("%1$s combinations exceed the Free limit of %2$s.", "yaxii-product-workspace");
+wp.i18n.__("%1$s combinations exceed the maximum of %2$s supported in a single save.", "yaxii-product-workspace");
 /* translators: translators: 1: enabled variation count, 2: total variation count. */
 wp.i18n.__("%1$s of %2$s enabled", "yaxii-product-workspace");
 /* translators: translators: 1: successful write count, 2: total final write count. */

@@ -22,7 +22,7 @@ attachment ID.
 Cartesian product in attribute-position order. Two colors and three sizes project and generate six
 rows. Regeneration retains the client identity and commercial values of unchanged selection sets.
 
-The synchronous Free boundary is defined by `VariableProductLimits` in PHP and
+The synchronous per-save safety boundary is defined by `VariableProductLimits` in PHP and
 `VARIABLE_PRODUCT_LIMITS` in TypeScript:
 
 - at most 5 attributes;

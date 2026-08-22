@@ -30,7 +30,7 @@ final class WooVariationWriter {
 		$variation->set_stock_status( (string) $fields['stock_status'] );
 		$variation->set_image_id( (int) $fields['image_id'] );
 		$variation->update_meta_data( WooVariableProductMapper::COMBINATION_META, $combination->client_id() );
-		do_action( 'ypw_before_variation_save', $variation, $combination->client_id(), $parent_id );
+		do_action( 'yaxii_product_workspace_before_variation_save', $variation, $combination->client_id(), $parent_id );
 		$variation_id = $variation->save();
 		if ( 0 >= $variation_id ) {
 			throw new RuntimeException( 'WooCommerce did not return a variation ID.' );

@@ -124,9 +124,9 @@ final class VariableProductLifecycleTest extends TestCase {
 				throw new \RuntimeException( 'Controlled integration failure.' );
 			}
 		};
-		add_action( 'ypw_before_variation_save', $failure, 10, 2 );
+		add_action( 'yaxii_product_workspace_before_variation_save', $failure, 10, 2 );
 		$partial = $this->data( $this->dispatch( 'POST', '/variable-products', $payload, wp_generate_uuid4() ) );
-		remove_action( 'ypw_before_variation_save', $failure, 10 );
+		remove_action( 'yaxii_product_workspace_before_variation_save', $failure, 10 );
 		$this->track( $partial );
 		self::assertSame( 'partial', $partial['state'] );
 		self::assertCount( 1, array_filter( $partial['combination_results'], static fn ( array $item ): bool => 'failed' === $item['state'] ) );

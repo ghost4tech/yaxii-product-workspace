@@ -13,6 +13,8 @@ defined( 'ABSPATH' ) || exit;
  * Converts an untrusted REST body into a complete allowlisted product command.
  */
 final class CreateProductRequestFactory {
+	private const MAX_DESCRIPTION_LENGTH       = 100000;
+	private const MAX_SHORT_DESCRIPTION_LENGTH = 10000;
 	// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- ApiException values are serialized by the REST error boundary.
 	private const ALLOWED_FIELDS = array(
 		'name',
@@ -85,16 +87,18 @@ final class CreateProductRequestFactory {
 	 * @return array<string, mixed>
 	 */
 	private function normalized_fields( array $payload, ValidationErrors $errors ): array {
-		$name = sanitize_text_field( $this->fields->text( $payload, 'name' ) );
-		$sku  = sanitize_text_field( $this->fields->text( $payload, 'sku' ) );
-		$this->validate_text_lengths( $name, $sku, $errors );
+		$name              = sanitize_text_field( $this->fields->text( $payload, 'name' ) );
+		$sku               = sanitize_text_field( $this->fields->text( $payload, 'sku' ) );
+		$description       = $this->fields->text( $payload, 'description' );
+		$short_description = $this->fields->text( $payload, 'short_description' );
+		$this->validate_text_lengths( $name, $sku, $description, $short_description, $errors );
 
 		$manage_stock = true === ( $payload['manage_stock'] ?? false );
 		return array(
 			'name'               => $name,
 			'slug'               => sanitize_title( $this->fields->text( $payload, 'slug' ) ),
-			'description'        => wp_kses_post( $this->fields->text( $payload, 'description' ) ),
-			'short_description'  => wp_kses_post( $this->fields->text( $payload, 'short_description' ) ),
+			'description'        => wp_kses_post( $description ),
+			'short_description'  => wp_kses_post( $short_description ),
 			'status'             => $this->fields->enum( $payload, 'status', array( 'draft', 'publish', 'pending' ), 'draft', $errors ),
 			'catalog_visibility' => $this->fields->enum( $payload, 'catalog_visibility', array( 'visible', 'catalog', 'search', 'hidden' ), 'visible', $errors ),
 			'regular_price'      => (string) $this->fields->decimal( $payload, 'regular_price', true, $errors ),
@@ -120,7 +124,7 @@ final class CreateProductRequestFactory {
 		);
 	}
 
-	private function validate_text_lengths( string $name, string $sku, ValidationErrors $errors ): void {
+	private function validate_text_lengths( string $name, string $sku, string $description, string $short_description, ValidationErrors $errors ): void {
 		if ( '' === $name ) {
 			$errors->add( 'name', __( 'Product name is required.', 'yaxii-product-workspace' ) );
 		} elseif ( 200 < mb_strlen( $name ) ) {
@@ -128,6 +132,12 @@ final class CreateProductRequestFactory {
 		}
 		if ( 100 < mb_strlen( $sku ) ) {
 			$errors->add( 'sku', __( 'SKU must be 100 characters or fewer.', 'yaxii-product-workspace' ) );
+		}
+		if ( self::MAX_DESCRIPTION_LENGTH < mb_strlen( $description ) ) {
+			$errors->add( 'description', __( 'Description is too large to save.', 'yaxii-product-workspace' ) );
+		}
+		if ( self::MAX_SHORT_DESCRIPTION_LENGTH < mb_strlen( $short_description ) ) {
+			$errors->add( 'short_description', __( 'Short description is too large to save.', 'yaxii-product-workspace' ) );
 		}
 	}
 

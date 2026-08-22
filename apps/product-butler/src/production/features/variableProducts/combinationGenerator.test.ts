@@ -55,7 +55,7 @@ describe("variable combination generation", () => {
     expect(generateVariationCombinations(withMaterial, [], () => crypto.randomUUID())).toHaveLength(6);
   });
 
-  it("rejects plans beyond the synchronous Free limit before rows", () => {
+  it("rejects plans beyond the synchronous save limit before rows", () => {
 		const tooLarge: VariableAttribute[] = ["color", "size", "material", "style"].map((name, position) => ({
       key: `custom:${name}`, name, options: ["1", "2", "3", "4"], position,
       source: "custom" as const, variation: true, visible: true,

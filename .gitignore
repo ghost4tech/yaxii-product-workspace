@@ -3,3 +3,5 @@
 /.phpunit.cache/
 /.phpcs-cache
 /.phpstan-cache/
+/dist/
+/assets/build/

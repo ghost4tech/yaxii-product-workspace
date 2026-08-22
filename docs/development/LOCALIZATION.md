@@ -1,9 +1,9 @@
 # Localization
 
 Yaxii Product Workspace uses WordPress gettext with the text domain
-`yaxii-product-workspace`. English is the source language. Bundled production catalogs currently
-cover Arabic (`ar`) and French for France (`fr_FR`) while remaining compatible with WordPress.org
-language packs.
+`yaxii-product-workspace`. English is the source language. Arabic (`ar`) and French for France
+(`fr_FR`) catalogs are maintained as development translation sources for contribution to
+translate.wordpress.org.
 
 ## Runtime architecture
 
@@ -13,8 +13,8 @@ language packs.
   English only as the source-language fallback.
 - The production script declares `wp-i18n` as a dependency and calls
   `wp_set_script_translations()` with the plugin `languages` directory.
-- `Plugin::load_textdomain()` loads bundled PHP catalogs. WordPress language-pack lookup remains
-  available because the standard domain, locale, MO, and Jed JSON naming rules are retained.
+- PHP translations use WordPress core's automatic language-pack lookup for a WordPress.org plugin
+  whose text domain matches its slug. The plugin does not call `load_plugin_textdomain()`.
 - The admin host and REST bootstrap both use the current user's WordPress locale. Direction is
   resolved in a temporary WordPress locale context, so a French user on an Arabic site receives
   `fr-FR/ltr`, while an Arabic user receives `ar/rtl`.
@@ -34,13 +34,21 @@ Do not add a plugin language selector. WordPress user/admin locale is the author
   enqueued.
 - `languages/source-map.json`: maps the extraction source to the current Vite entry asset.
 
+## WordPress.org package scope
+
+The release manifest ships only `languages/*.pot`. Maintained PO/MO files and locale-specific JSON
+catalogs stay in the private development repository and are excluded from the WordPress.org ZIP.
+WordPress.org language packs provide installed PHP and JavaScript catalogs after the translations
+are contributed and approved on translate.wordpress.org. Until a pack exists for a user locale,
+WordPress and the React application must fall back cleanly to English.
+
 ## Reproducible update workflow
 
 Run these commands from the plugin root. WP-CLI must provide `wp i18n`.
 
 ```powershell
 npm --prefix apps/product-butler run i18n:source
-wp i18n make-pot . languages/yaxii-product-workspace.pot --domain=yaxii-product-workspace --exclude=vendor,node_modules,assets/build,apps/product-butler-v2,apps/product-butler/src,tests,docs
+wp i18n make-pot . languages/yaxii-product-workspace.pot --domain=yaxii-product-workspace --exclude=vendor,node_modules,assets/build,apps/product-butler/src,tests,docs
 wp i18n update-po languages/yaxii-product-workspace.pot languages
 wp i18n make-mo languages
 npm --prefix apps/product-butler run build

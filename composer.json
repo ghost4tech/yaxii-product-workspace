@@ -4,7 +4,7 @@
   "type": "wordpress-plugin",
   "license": "GPL-2.0-or-later",
   "require": {
-    "php": ">=7.4"
+    "php": ">=8.1"
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
@@ -30,9 +30,10 @@
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
     },
+    "autoloader-suffix": "YaxiiProductWorkspace110",
     "optimize-autoloader": true,
     "platform": {
-      "php": "7.4.33"
+      "php": "8.1.29"
     },
     "sort-packages": true
   },

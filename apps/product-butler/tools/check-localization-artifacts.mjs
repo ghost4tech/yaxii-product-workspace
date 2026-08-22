@@ -79,7 +79,7 @@ for (const [locale, pluralCount] of Object.entries(locales)) {
       if (!samePlaceholders(placeholderSource, value)) {
         failures.push(`${locale}: placeholder mismatch for ${source.msgid} [${index}]`);
       }
-      if (value === placeholderSource && !identicalAllowed.has(value)
+      if (value === placeholderSource && !identicalAllowed.has(value) && !/^https?:\/\//u.test(value)
         && !/^(?:[\d\s%+./_*#()-]|SKU|UUID|JSON|Ctrl|Esc|Enter)+$/u.test(value)) {
         failures.push(`${locale}: untranslated English for ${source.msgid} [${index}]`);
       }

@@ -1,0 +1,16 @@
+THIRD-PARTY NOTICES
+
+Yaxii Product Workspace is licensed under GPL-2.0-or-later. Its compiled
+frontend contains open-source packages under GPL-compatible MIT, ISC,
+BSD-3-Clause, 0BSD, Apache-2.0, and combined MIT/ISC licenses.
+
+The bundled Inter, JetBrains Mono, and Rubik font files are licensed under the
+SIL Open Font License 1.1. Font packaging metadata is provided by Fontsource
+under the MIT license.
+
+The exact production dependency names, versions, and SPDX license identifiers
+are recorded in THIRD-PARTY-LICENSES.json. The complete human-readable
+dependency lockfile, source, build configuration, and upstream package
+metadata are available at:
+
+https://github.com/ghost4tech/yaxii-product-workspace

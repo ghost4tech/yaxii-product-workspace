@@ -21,7 +21,6 @@ msgstr ""
 msgid "Yaxii Product Workspace"
 msgstr "Yaxii Product Workspace"
 
-#. Plugin URI of the plugin
 #. Author URI of the plugin
 #: yaxii-product-workspace.php
 msgid "https://yaxii.dev/"
@@ -66,7 +65,7 @@ msgid "Review the workspace preferences."
 msgstr "راجع تفضيلات مساحة العمل."
 
 #: src/Application/Preferences/PreferenceService.php:102
-#: src/Application/Products/CreateProductRequestFactory.php:171
+#: src/Application/Products/CreateProductRequestFactory.php:181
 #: src/Application/VariableProducts/VariationInputParser.php:130
 msgid "Expected true or false."
 msgstr "يلزم إدخال قيمة صحيحة أو خاطئة."
@@ -84,45 +83,45 @@ msgstr "اختر 10 أو 25 أو 50 صفًا من صفوف الانتظار."
 msgid "Choose a supported value."
 msgstr "اختر قيمة مدعومة."
 
-#: src/Application/Products/CreateProductRequestFactory.php:75
+#: src/Application/Products/CreateProductRequestFactory.php:77
 msgid "Every product field must be present; send an empty value to clear a field."
 msgstr "يجب إرسال جميع حقول المنتج؛ أرسل قيمة فارغة لمسح أي حقل."
 
-#: src/Application/Products/CreateProductRequestFactory.php:77
+#: src/Application/Products/CreateProductRequestFactory.php:79
 msgid "Reload the product before saving this update."
 msgstr "أعد تحميل المنتج قبل حفظ هذا التحديث."
 
-#: src/Application/Products/CreateProductRequestFactory.php:125
+#: src/Application/Products/CreateProductRequestFactory.php:129
 msgid "Product name is required."
 msgstr "اسم المنتج مطلوب."
 
-#: src/Application/Products/CreateProductRequestFactory.php:127
+#: src/Application/Products/CreateProductRequestFactory.php:131
 msgid "Product name must be 200 characters or fewer."
 msgstr "يجب ألا يتجاوز اسم المنتج 200 حرف."
 
-#: src/Application/Products/CreateProductRequestFactory.php:130
+#: src/Application/Products/CreateProductRequestFactory.php:134
 msgid "SKU must be 100 characters or fewer."
 msgstr "يجب ألا يتجاوز رمز SKU ‏100 حرف."
 
-#: src/Application/Products/CreateProductRequestFactory.php:141
+#: src/Application/Products/CreateProductRequestFactory.php:151
 #: src/Application/VariableProducts/VariationInputParser.php:60
 msgid "Sale price cannot exceed the regular price."
 msgstr "لا يمكن أن يتجاوز سعر التخفيض السعر الاعتيادي."
 
-#: src/Application/Products/CreateProductRequestFactory.php:146
+#: src/Application/Products/CreateProductRequestFactory.php:156
 msgid "Sale end date cannot be before the start date."
 msgstr "لا يمكن أن يكون تاريخ انتهاء البيع قبل تاريخ البدء."
 
-#: src/Application/Products/CreateProductRequestFactory.php:155
+#: src/Application/Products/CreateProductRequestFactory.php:165
 msgid "The request contains unsupported fields."
 msgstr "يحتوي الطلب على حقول غير مدعومة."
 
-#: src/Application/Products/CreateProductRequestFactory.php:166
+#: src/Application/Products/CreateProductRequestFactory.php:176
 #: src/Application/VariableProducts/VariationInputParser.php:138
 msgid "Expected a text value."
 msgstr "يلزم إدخال قيمة نصية."
 
-#: src/Application/Products/CreateProductRequestFactory.php:183
+#: src/Application/Products/CreateProductRequestFactory.php:193
 msgid "Review the highlighted product fields."
 msgstr "راجع حقول المنتج المميزة."
 
@@ -347,12 +346,6 @@ msgstr "أرسل قائمتي السمات والتركيبات."
 #: src/Application/VariableProducts/VariableProductPlanFactory.php:36
 msgid "At least one attribute must be used for variations."
 msgstr "يجب استخدام سمة واحدة على الأقل للتنويعات."
-
-#. translators: 1: projected combinations, 2: Free limit.
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:43
-#, php-format
-msgid "%1$d combinations exceed the synchronous Free limit of %2$d."
-msgstr "يتجاوز عدد التركيبات (%1$d) الحد المتزامن للإصدار المجاني البالغ %2$d."
 
 #. translators: %d: maximum attributes.
 #: src/Application/VariableProducts/VariableProductPlanFactory.php:63
@@ -587,7 +580,7 @@ msgstr "أرسل إصدار المنتج المتوقع."
 msgid "Send a JSON variable-product object."
 msgstr "أرسل كائن منتج متغير JSON."
 
-#: yaxii-product-workspace.php:41
+#: yaxii-product-workspace.php:42
 msgid "Yaxii Product Workspace cannot start because its Composer dependencies are missing."
 msgstr "لا يمكن بدء تشغيل Yaxii Product Workspace لأن تبعيات Composer الخاصة به مفقودة."
 
@@ -614,12 +607,6 @@ msgstr "ستتم إزالة «%s» من العمليات الأخيرة، ولن
 #: languages/source/yaxii-product-workspace.js:9
 msgid "“3 hours ago” instead of a fixed date."
 msgstr "«منذ 3 ساعات» بدلاً من تاريخ ثابت."
-
-#. translators: translators: 1: projected combination count, 2: maximum combination count.
-#: languages/source/yaxii-product-workspace.js:11
-#, js-format
-msgid "%1$s combinations exceed the Free limit of %2$s."
-msgstr "يتجاوز عدد التركيبات (%1$s) الحد المجاني البالغ %2$s."
 
 #. translators: translators: 1: enabled variation count, 2: total variation count.
 #: languages/source/yaxii-product-workspace.js:13
@@ -2699,3 +2686,28 @@ msgstr "تفاصيل الضريبة"
 #: languages/source/yaxii-product-workspace.js:524
 msgid "WooCommerce generates this automatically from the product name unless you set it here."
 msgstr "تنشئ ووكومرس هذا تلقائيًا من اسم المنتج ما لم تحدده هنا."
+
+#. Plugin URI of the plugin
+#: yaxii-product-workspace.php
+msgid "https://github.com/ghost4tech/yaxii-product-workspace"
+msgstr "https://github.com/ghost4tech/yaxii-product-workspace"
+
+#: src/Application/Products/CreateProductRequestFactory.php:137
+msgid "Description is too large to save."
+msgstr "الوصف كبير جدًا ولا يمكن حفظه."
+
+#: src/Application/Products/CreateProductRequestFactory.php:140
+msgid "Short description is too large to save."
+msgstr "الوصف القصير كبير جدًا ولا يمكن حفظه."
+
+#. translators: 1: projected combinations, 2: maximum supported combinations.
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:43
+#, php-format
+msgid "%1$d combinations exceed the maximum of %2$d supported in a single save."
+msgstr "يتجاوز عدد التركيبات %1$d الحد الأقصى المسموح به وهو %2$d في عملية حفظ واحدة."
+
+#. translators: translators: 1: projected combination count, 2: maximum combination count.
+#: languages/source/yaxii-product-workspace.js:11
+#, js-format
+msgid "%1$s combinations exceed the maximum of %2$s supported in a single save."
+msgstr "يتجاوز عدد التركيبات %1$s الحد الأقصى المسموح به وهو %2$s في عملية حفظ واحدة."

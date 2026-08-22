@@ -21,7 +21,6 @@ msgstr ""
 msgid "Yaxii Product Workspace"
 msgstr "Yaxii Product Workspace"
 
-#. Plugin URI of the plugin
 #. Author URI of the plugin
 #: yaxii-product-workspace.php
 msgid "https://yaxii.dev/"
@@ -66,7 +65,7 @@ msgid "Review the workspace preferences."
 msgstr "Vérifiez les préférences de l’espace de travail."
 
 #: src/Application/Preferences/PreferenceService.php:102
-#: src/Application/Products/CreateProductRequestFactory.php:171
+#: src/Application/Products/CreateProductRequestFactory.php:181
 #: src/Application/VariableProducts/VariationInputParser.php:130
 msgid "Expected true or false."
 msgstr "Une valeur vraie ou fausse est attendue."
@@ -84,45 +83,45 @@ msgstr "Choisissez 10, 25 ou 50 lignes de file d’attente."
 msgid "Choose a supported value."
 msgstr "Choisissez une valeur prise en charge."
 
-#: src/Application/Products/CreateProductRequestFactory.php:75
+#: src/Application/Products/CreateProductRequestFactory.php:77
 msgid "Every product field must be present; send an empty value to clear a field."
 msgstr "Tous les champs du produit doivent être présents ; envoyez une valeur vide pour effacer un champ."
 
-#: src/Application/Products/CreateProductRequestFactory.php:77
+#: src/Application/Products/CreateProductRequestFactory.php:79
 msgid "Reload the product before saving this update."
 msgstr "Rechargez le produit avant d’enregistrer cette mise à jour."
 
-#: src/Application/Products/CreateProductRequestFactory.php:125
+#: src/Application/Products/CreateProductRequestFactory.php:129
 msgid "Product name is required."
 msgstr "Le nom du produit est obligatoire."
 
-#: src/Application/Products/CreateProductRequestFactory.php:127
+#: src/Application/Products/CreateProductRequestFactory.php:131
 msgid "Product name must be 200 characters or fewer."
 msgstr "Le nom du produit doit comporter 200 caractères maximum."
 
-#: src/Application/Products/CreateProductRequestFactory.php:130
+#: src/Application/Products/CreateProductRequestFactory.php:134
 msgid "SKU must be 100 characters or fewer."
 msgstr "Le SKU doit comporter 100 caractères maximum."
 
-#: src/Application/Products/CreateProductRequestFactory.php:141
+#: src/Application/Products/CreateProductRequestFactory.php:151
 #: src/Application/VariableProducts/VariationInputParser.php:60
 msgid "Sale price cannot exceed the regular price."
 msgstr "Le prix promo ne peut pas dépasser le prix normal."
 
-#: src/Application/Products/CreateProductRequestFactory.php:146
+#: src/Application/Products/CreateProductRequestFactory.php:156
 msgid "Sale end date cannot be before the start date."
 msgstr "La date de fin de vente ne peut pas être antérieure à la date de début."
 
-#: src/Application/Products/CreateProductRequestFactory.php:155
+#: src/Application/Products/CreateProductRequestFactory.php:165
 msgid "The request contains unsupported fields."
 msgstr "La demande contient des champs non pris en charge."
 
-#: src/Application/Products/CreateProductRequestFactory.php:166
+#: src/Application/Products/CreateProductRequestFactory.php:176
 #: src/Application/VariableProducts/VariationInputParser.php:138
 msgid "Expected a text value."
 msgstr "Une valeur textuelle est attendue."
 
-#: src/Application/Products/CreateProductRequestFactory.php:183
+#: src/Application/Products/CreateProductRequestFactory.php:193
 msgid "Review the highlighted product fields."
 msgstr "Passez en revue les champs de produits en surbrillance."
 
@@ -347,12 +346,6 @@ msgstr "Envoyez des listes d’attributs et de combinaisons."
 #: src/Application/VariableProducts/VariableProductPlanFactory.php:36
 msgid "At least one attribute must be used for variations."
 msgstr "Au moins un attribut doit être utilisé pour les variantes."
-
-#. translators: 1: projected combinations, 2: Free limit.
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:43
-#, php-format
-msgid "%1$d combinations exceed the synchronous Free limit of %2$d."
-msgstr "%1$d combinaisons dépassent la limite synchrone de %2$d de la version gratuite."
 
 #. translators: %d: maximum attributes.
 #: src/Application/VariableProducts/VariableProductPlanFactory.php:63
@@ -587,7 +580,7 @@ msgstr "Envoyez la version attendue du produit."
 msgid "Send a JSON variable-product object."
 msgstr "Envoyez un objet de produit variable JSON."
 
-#: yaxii-product-workspace.php:41
+#: yaxii-product-workspace.php:42
 msgid "Yaxii Product Workspace cannot start because its Composer dependencies are missing."
 msgstr "Yaxii Product Workspace ne peut pas démarrer car ses dépendances Composer sont manquantes."
 
@@ -614,12 +607,6 @@ msgstr "« %s » sera retiré des opérations récentes. Le produit WooCommerc
 #: languages/source/yaxii-product-workspace.js:9
 msgid "“3 hours ago” instead of a fixed date."
 msgstr "« Il y a 3 heures » au lieu d’une date fixe."
-
-#. translators: translators: 1: projected combination count, 2: maximum combination count.
-#: languages/source/yaxii-product-workspace.js:11
-#, js-format
-msgid "%1$s combinations exceed the Free limit of %2$s."
-msgstr "%1$s combinaisons dépassent la limite de %2$s de la version gratuite."
 
 #. translators: translators: 1: enabled variation count, 2: total variation count.
 #: languages/source/yaxii-product-workspace.js:13
@@ -2655,3 +2642,28 @@ msgstr "Détails de la taxe"
 #: languages/source/yaxii-product-workspace.js:524
 msgid "WooCommerce generates this automatically from the product name unless you set it here."
 msgstr "WooCommerce le génère automatiquement à partir du nom du produit, sauf si vous le définissez ici."
+
+#. Plugin URI of the plugin
+#: yaxii-product-workspace.php
+msgid "https://github.com/ghost4tech/yaxii-product-workspace"
+msgstr "https://github.com/ghost4tech/yaxii-product-workspace"
+
+#: src/Application/Products/CreateProductRequestFactory.php:137
+msgid "Description is too large to save."
+msgstr "La description est trop volumineuse pour être enregistrée."
+
+#: src/Application/Products/CreateProductRequestFactory.php:140
+msgid "Short description is too large to save."
+msgstr "La description courte est trop volumineuse pour être enregistrée."
+
+#. translators: 1: projected combinations, 2: maximum supported combinations.
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:43
+#, php-format
+msgid "%1$d combinations exceed the maximum of %2$d supported in a single save."
+msgstr "%1$d combinaisons dépassent le maximum autorisé de %2$d pour un seul enregistrement."
+
+#. translators: translators: 1: projected combination count, 2: maximum combination count.
+#: languages/source/yaxii-product-workspace.js:11
+#, js-format
+msgid "%1$s combinations exceed the maximum of %2$s supported in a single save."
+msgstr "%1$s combinaisons dépassent le maximum autorisé de %2$s pour un seul enregistrement."
