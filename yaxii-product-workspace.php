@@ -3,7 +3,7 @@
 Plugin Name: Yaxii Product Workspace
 Plugin URI: https://github.com/ghost4tech/yaxii-product-workspace
 Description: A focused WooCommerce product-entry workspace for WordPress administrators.
-Version: 1.1.0
+Version: 1.1.1
 Requires at least: 7.0
 Requires PHP: 8.1
 Requires Plugins: woocommerce
@@ -23,7 +23,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'YAXII_PRODUCT_WORKSPACE_VERSION', '1.1.0' );
+define( 'YAXII_PRODUCT_WORKSPACE_VERSION', '1.1.1' );
 define( 'YAXII_PRODUCT_WORKSPACE_FILE', __FILE__ );
 
 $yaxii_product_workspace_autoloader = __DIR__ . '/vendor/autoload.php';

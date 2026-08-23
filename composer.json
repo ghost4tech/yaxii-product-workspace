@@ -30,7 +30,7 @@
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
     },
-    "autoloader-suffix": "YaxiiProductWorkspace110",
+    "autoloader-suffix": "YaxiiProductWorkspace111",
     "optimize-autoloader": true,
     "platform": {
       "php": "8.1.29"
