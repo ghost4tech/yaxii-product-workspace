@@ -30,6 +30,7 @@ import {
   mediaResourceSchema,
 } from "./restContracts";
 import { variablePayload } from "./restPayloads";
+import { buildRestUrl } from "./restUrl";
 import { __ } from "../core/i18n/wordpress";
 
 type JsonRecord = Record<string, unknown>;
@@ -204,7 +205,7 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
     const body = new FormData();
     body.append("file", file, file.name);
     body.append("title", file.name.replace(/\.[^.]+$/, ""));
-    const payload = await this.request(this.host.mediaRestUrl, { body, method: "POST" }, false, true);
+    const payload = await this.request("", { body, method: "POST" }, false, this.host.mediaRestUrl);
     const parsed = mediaResourceSchema.safeParse(payload);
     if (!parsed.success) {
       throw new WorkspaceApiError("ypw_invalid_response", __("WordPress returned invalid media data.", "yaxii-product-workspace"), 502);
@@ -213,7 +214,7 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
   }
 
   public async getMedia(id: number) {
-    const payload = await this.request(`${this.host.mediaRestUrl}/${id}`, {}, false, true);
+    const payload = await this.request(String(id), {}, false, this.host.mediaRestUrl);
     const parsed = mediaResourceSchema.safeParse(payload);
     if (!parsed.success) throw new WorkspaceApiError("ypw_invalid_response", __("WordPress returned invalid media data.", "yaxii-product-workspace"), 502);
     return parsed.data;
@@ -264,10 +265,10 @@ export class WordPressWorkspaceRepository implements WorkspaceRepository {
     return { body: JSON.stringify(body), headers: { "Content-Type": "application/json", ...headers }, method };
   }
 
-  private async request(path: string, init: RequestInit = {}, outcomeUncertain = false, absolute = false): Promise<unknown> {
+  private async request(path: string, init: RequestInit = {}, outcomeUncertain = false, baseUrl = this.host.restUrl): Promise<unknown> {
     let response: Response;
     try {
-      response = await fetch(absolute ? path : `${this.host.restUrl}${path}`, {
+      response = await fetch(buildRestUrl(baseUrl, path), {
         ...init,
         credentials: "same-origin",
         headers: { Accept: "application/json", "X-WP-Nonce": this.host.nonce, ...init.headers },

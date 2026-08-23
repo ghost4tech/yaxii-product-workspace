@@ -22,6 +22,8 @@ catalog. The PHP application boundary performs WordPress/WooCommerce authorizati
   presentation without putting WooCommerce rules into JSX.
 - `WordPressWorkspaceRepository` supplies the REST nonce, maps stable contracts, and passes an
   `AbortSignal` to superseded searches.
+- Its shared REST URL builder preserves WordPress's `rest_route` query parameter under Plain
+  permalinks while adding route paths, filters, pagination, and repeated parameters separately.
 - WordPress user meta owns approved workflow defaults.
 - `sessionStorage` owns one bounded, versioned, expiring product draft.
 
