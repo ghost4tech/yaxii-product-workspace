@@ -102,4 +102,48 @@ describe("variable combination generation", () => {
       index === 1 ? { ...combination, sku: "SKU-0" } : combination
     )))).toThrow(VariablePlanError);
   });
+
+  it("identifies the incomplete attribute before generation", () => {
+    const invalid = attributes();
+    invalid[1] = { ...invalid[1]!, name: "" } as VariableAttribute;
+
+    try {
+      generateVariationCombinations(invalid);
+      expect.fail("Expected an invalid attribute name.");
+    } catch (error) {
+      expect(error).toBeInstanceOf(VariablePlanError);
+      expect((error as VariablePlanError).fields).toEqual({
+        "attributes.1.name": "Attribute 2 needs a name.",
+      });
+    }
+  });
+
+  it("supports two global attributes and sequential regeneration", () => {
+    const first = [attributes()[0]!];
+    const initial = generateVariationCombinations(first, [], () => crypto.randomUUID());
+    const global = [
+      ...first,
+      {
+        attributeId: 8, key: "global:8", name: "Size", optionIds: [201, 202, 203], position: 1,
+        source: "global" as const, taxonomy: "pa_size" as const, variation: true, visible: true,
+      },
+    ];
+
+    expect(initial).toHaveLength(2);
+    expect(generateVariationCombinations(global, initial, () => crypto.randomUUID())).toHaveLength(6);
+  });
+
+  it("supports non-Latin custom names and rejects normalized duplicates", () => {
+    const arabic: VariableAttribute[] = [
+      { key: "custom:color", name: "اللون", options: ["أسود", "أبيض"], position: 0, source: "custom", variation: true, visible: true },
+      { key: "custom:size", name: "المقاس", options: ["صغير", "متوسط", "كبير"], position: 1, source: "custom", variation: true, visible: true },
+    ];
+    expect(generateVariationCombinations(arabic, [], () => crypto.randomUUID())).toHaveLength(6);
+
+    const duplicate: VariableAttribute[] = [
+      { key: "custom:size", name: "Size", options: ["S"], position: 0, source: "custom", variation: true, visible: true },
+      { key: "custom:size-wide", name: "Ｓｉｚｅ", options: ["M"], position: 1, source: "custom", variation: true, visible: true },
+    ];
+    expect(() => generateVariationCombinations(duplicate)).toThrow(VariablePlanError);
+  });
 });

@@ -30,6 +30,8 @@ try {
         if ($LASTEXITCODE -ne 0) { throw 'npm ci failed.' }
         npm --prefix apps/product-butler run build
         if ($LASTEXITCODE -ne 0) { throw 'Frontend build failed.' }
+        npm --prefix apps/product-butler run check:i18n-build
+        if ($LASTEXITCODE -ne 0) { throw 'Built JavaScript translation contract failed.' }
         npm --prefix apps/product-butler run check:i18n
         if ($LASTEXITCODE -ne 0) { throw 'Localization gate failed.' }
         node tools/generate-third-party-licenses.mjs
@@ -57,9 +59,7 @@ try {
         Copy-Item -LiteralPath $source -Destination $target
     }
 
-    # assets/build is gitignored (generated Vite output), so it never appears in `git ls-files`
-    # even though the manifest lists it. Stage it straight from disk instead when the manifest
-    # requests it, using whatever the preceding build step (or -UseCommittedAssets) produced.
+    # assets/build is gitignored generated Vite output, so stage it directly from disk.
     if (@($manifest.include) -contains 'assets/build/*') {
         $builtAssetsSource = Join-Path $repositoryRoot 'assets\build'
         if (-not (Test-Path -LiteralPath $builtAssetsSource)) {
@@ -69,6 +69,9 @@ try {
         New-Item -ItemType Directory -Force -Path $pluginAssetsDir | Out-Null
         Copy-Item -LiteralPath $builtAssetsSource -Destination $pluginAssetsDir -Recurse -Force
     }
+
+    node apps/product-butler/tools/check-translation-build.mjs --release-root $pluginRoot
+    if ($LASTEXITCODE -ne 0) { throw 'Release localization contract failed.' }
 
     composer dump-autoload --working-dir=$pluginRoot --no-dev --classmap-authoritative --no-interaction --no-scripts
     if ($LASTEXITCODE -ne 0) { throw 'Production Composer autoloader generation failed.' }

@@ -62,7 +62,7 @@ export const WorkspaceToolbar: React.FC<Props> = ({
         variant="outline"
         size="sm"
         onClick={onAdvancedToggle}
-        className="hidden h-8 text-[12px] sm:inline-flex"
+        className="h-8 text-[12px]"
       >
         {advancedOpen ? (
           <PanelRightClose className="me-1.5 h-3.5 w-3.5" />

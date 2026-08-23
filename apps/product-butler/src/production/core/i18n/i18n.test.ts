@@ -3,6 +3,7 @@ import { installWordPressI18n } from "../../test/wordpressI18n";
 import { createFormatters } from "./formatters";
 import { supportedLanguage, toLanguageTag } from "./locale";
 import { availabilityCopy } from "./messages";
+import { __, _n, _x, sprintf } from "./wordpress";
 
 describe("locale infrastructure", () => {
   it("normalizes WordPress locale identifiers", () => {
@@ -22,6 +23,19 @@ describe("locale infrastructure", () => {
       title: "مساحة العمل غير متاحة",
     });
     restore();
+  });
+
+  it("falls back cleanly to English when WordPress has no catalog", () => {
+    const previous = window.wp;
+    window.wp = undefined;
+    try {
+      expect(__("Settings")).toBe("Settings");
+      expect(_x("Draft", "product status")).toBe("Draft");
+      expect(_n("%s product", "%s products", 2)).toBe("%s products");
+      expect(sprintf("Product %s", 42)).toBe("Product 42");
+    } finally {
+      window.wp = previous;
+    }
   });
 
   it("formats locale-aware numbers, dates, currency, and units", () => {

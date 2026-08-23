@@ -2,42 +2,40 @@
 /* This file is an extraction source only and is not enqueued. */
 wp.i18n.__("— attributes such as color or size produce separate variations, each with its own price, SKU, stock, and image.", "yaxii-product-workspace");
 wp.i18n.__("— one price and stock value.", "yaxii-product-workspace");
-/* translators: translators: %s: taxonomy field label. */
+/* translators: %s: taxonomy field label. */
 wp.i18n._x(", ", "List separator", "yaxii-product-workspace");
-/* translators: translators: %s: product name. */
+/* translators: %s: product name. */
 wp.i18n.__("“%s” will leave recent operations. Its WooCommerce product will not be trashed.", "yaxii-product-workspace");
 wp.i18n.__("“3 hours ago” instead of a fixed date.", "yaxii-product-workspace");
-/* translators: translators: 1: projected combination count, 2: maximum combination count. */
+/* translators: 1: projected combination count, 2: maximum combination count. */
 wp.i18n.__("%1$s combinations exceed the maximum of %2$s supported in a single save.", "yaxii-product-workspace");
-/* translators: translators: 1: enabled variation count, 2: total variation count. */
+/* translators: 1: enabled variation count, 2: total variation count. */
 wp.i18n.__("%1$s of %2$s enabled", "yaxii-product-workspace");
-/* translators: translators: 1: successful write count, 2: total final write count. */
+/* translators: 1: successful write count, 2: total final write count. */
 wp.i18n.__("%1$s of %2$s final writes", "yaxii-product-workspace");
-/* translators: translators: 1: current image count, 2: maximum image count. */
+/* translators: 1: current image count, 2: maximum image count. */
 wp.i18n.__("%1$s/%2$s · drag to reorder", "yaxii-product-workspace");
-/* translators: translators: 1: current attribute count, 2: maximum attribute count. */
+/* translators: 1: current attribute count, 2: maximum attribute count. */
 wp.i18n._n("%1$s/%2$s attribute", "%1$s/%2$s attributes", "2", "yaxii-product-workspace");
-/* translators: translators: %s: color name. */
+/* translators: %s: color name. */
 wp.i18n.__("%s accent", "yaxii-product-workspace");
-/* translators: translators: %s: number of selected categories. */
+/* translators: %s: number of selected categories. */
 wp.i18n._n("%s category selected", "%s categories selected", "2", "yaxii-product-workspace");
-/* translators: translators: %s: number of selected images. */
+/* translators: %s: number of selected images. */
 wp.i18n._n("%s image selected", "%s images selected", "2", "yaxii-product-workspace");
-/* translators: translators: %s: editor label. */
+/* translators: %s: editor label. */
 wp.i18n.__("%s image upload", "yaxii-product-workspace");
-/* translators: translators: %s: number of product matches. */
+/* translators: %s: number of product matches. */
 wp.i18n._n("%s match", "%s matches", "2", "yaxii-product-workspace");
-/* translators: translators: %s: number of operations. */
-wp.i18n._n("%s operation", "%s operations", "2", "yaxii-product-workspace");
-/* translators: translators: %s: row count. */
+/* translators: %s: row count. */
 wp.i18n._n("%s row", "%s rows", "2", "yaxii-product-workspace");
-/* translators: translators: %s: number of selected categories. */
+/* translators: %s: number of selected categories. */
 wp.i18n._n("%s selected", "%s selected", "2", "yaxii-product-workspace");
-/* translators: translators: %s: number of variations missing a price. */
+/* translators: %s: number of variations missing a price. */
 wp.i18n._n("%s variation missing a price", "%s variations missing a price", "2", "yaxii-product-workspace");
-/* translators: translators: %s: variation count. */
+/* translators: %s: variation count. */
 wp.i18n._n("%s variation", "%s variations", "2", "yaxii-product-workspace");
-/* translators: translators: %s: word count. */
+/* translators: %s: word count. */
 wp.i18n._n("%s word", "%s words", "2", "yaxii-product-workspace");
 wp.i18n.__("+ Global attribute", "yaxii-product-workspace");
 wp.i18n.__("A newer product version exists", "yaxii-product-workspace");
@@ -46,16 +44,16 @@ wp.i18n.__("A variation image preview could not be loaded. Its attachment is unc
 wp.i18n.__("Accent color", "yaxii-product-workspace");
 wp.i18n.__("Add a global or custom attribute to start. You can mix both: Global Color (Black, White) plus Custom Size (S, M, L) generates 6 variations.", "yaxii-product-workspace");
 wp.i18n.__("Add another", "yaxii-product-workspace");
-/* translators: translators: %s: maximum attribute count. */
+/* translators: %s: maximum attribute count. */
 wp.i18n.__("Add between one and %s attributes.", "yaxii-product-workspace");
 wp.i18n.__("Add images", "yaxii-product-workspace");
 wp.i18n.__("Add more images", "yaxii-product-workspace");
 wp.i18n.__("Add new product", "yaxii-product-workspace");
 wp.i18n.__("Add one first, then duplicate it.", "yaxii-product-workspace");
 wp.i18n.__("Add variation image", "yaxii-product-workspace");
-wp.i18n.__("Additional categories", "yaxii-product-workspace");
 wp.i18n.__("Adds date headers between queue rows.", "yaxii-product-workspace");
 wp.i18n.__("Adjust the search term or pick a different status.", "yaxii-product-workspace");
+wp.i18n.__("Advanced inventory options", "yaxii-product-workspace");
 wp.i18n.__("Align center", "yaxii-product-workspace");
 wp.i18n.__("Align left", "yaxii-product-workspace");
 wp.i18n.__("Align right", "yaxii-product-workspace");
@@ -70,12 +68,21 @@ wp.i18n.__("Applied to every new product and variation.", "yaxii-product-workspa
 wp.i18n.__("Applies this price to every enabled variation. You can still override individual ones.", "yaxii-product-workspace");
 wp.i18n.__("Apply", "yaxii-product-workspace");
 wp.i18n.__("Ask before removing a queued product.", "yaxii-product-workspace");
+/* translators: 1: one-based attribute number, 2: attribute name. */
+wp.i18n.__("Attribute %1$d name “%2$s” duplicates an earlier attribute after normalization.", "yaxii-product-workspace");
+/* translators: 1: one-based attribute number, 2: attribute name, 3: character count. */
+wp.i18n.__("Attribute %1$d name “%2$s” is %3$d characters; the maximum is 40.", "yaxii-product-workspace");
+/* translators: %d: one-based attribute number. */
+wp.i18n.__("Attribute %d needs a name.", "yaxii-product-workspace");
+/* translators: %d: one-based attribute number. */
+wp.i18n.__("Attribute %d needs at least one option.", "yaxii-product-workspace");
 wp.i18n.__("Attribute name (e.g. Size)", "yaxii-product-workspace");
 wp.i18n.__("Attribute visibility and variation use must be true or false.", "yaxii-product-workspace");
 wp.i18n.__("Attributes → combination preview → variations. Global attributes are reusable store taxonomies; custom attributes exist only on this product.", "yaxii-product-workspace");
 wp.i18n.__("Attributes", "yaxii-product-workspace");
 wp.i18n.__("Auto SKU", "yaxii-product-workspace");
 wp.i18n.__("Auto-focus product name", "yaxii-product-workspace");
+wp.i18n.__("auto-from-name", "yaxii-product-workspace");
 wp.i18n.__("Backorder", "yaxii-product-workspace");
 wp.i18n.__("Backorders", "yaxii-product-workspace");
 wp.i18n.__("Blue", "yaxii-product-workspace");
@@ -83,12 +90,12 @@ wp.i18n.__("Bold", "yaxii-product-workspace");
 wp.i18n.__("Browser draft · current WooCommerce store", "yaxii-product-workspace");
 wp.i18n.__("Builds SKUs from the product SKU plus each option.", "yaxii-product-workspace");
 wp.i18n.__("Bullet list", "yaxii-product-workspace");
-/* translators: translators: %s: product name. */
+/* translators: %s: product name. */
 wp.i18n.__("Cancel", "yaxii-product-workspace");
 wp.i18n.__("Catalog visibility", "yaxii-product-workspace");
 wp.i18n.__("Categories could not be loaded.", "yaxii-product-workspace");
 wp.i18n.__("Categories", "yaxii-product-workspace");
-/* translators: translators: %s: category ID. */
+/* translators: %s: category ID. */
 wp.i18n.__("Category #%s", "yaxii-product-workspace");
 wp.i18n.__("Category is required", "yaxii-product-workspace");
 wp.i18n.__("Category", "yaxii-product-workspace");
@@ -125,6 +132,7 @@ wp.i18n.__("Custom", "yaxii-product-workspace");
 wp.i18n.__("Dark", "yaxii-product-workspace");
 wp.i18n.__("Default availability for new items.", "yaxii-product-workspace");
 wp.i18n.__("Default policy when tracked inventory reaches zero.", "yaxii-product-workspace");
+wp.i18n.__("Default workspace mode", "yaxii-product-workspace");
 wp.i18n.__("Density", "yaxii-product-workspace");
 wp.i18n.__("Description type", "yaxii-product-workspace");
 wp.i18n.__("Descriptions", "yaxii-product-workspace");
@@ -132,7 +140,7 @@ wp.i18n.__("Disabled — skipped on save.", "yaxii-product-workspace");
 wp.i18n.__("Distraction-free product entry. Remembered between sessions.", "yaxii-product-workspace");
 wp.i18n.__("Divider", "yaxii-product-workspace");
 wp.i18n.__("Do not allow", "yaxii-product-workspace");
-/* translators: translators: %s: number of selected categories. */
+/* translators: %s: number of selected categories. */
 wp.i18n.__("Done", "yaxii-product-workspace");
 wp.i18n.__("Draft cleared", "yaxii-product-workspace");
 wp.i18n.__("Draft could not be prepared.", "yaxii-product-workspace");
@@ -142,12 +150,12 @@ wp.i18n._x("Draft", "Product status", "yaxii-product-workspace");
 wp.i18n.__("Drag & drop product images", "yaxii-product-workspace");
 wp.i18n.__("Drop images to add", "yaxii-product-workspace");
 wp.i18n.__("Drop to upload", "yaxii-product-workspace");
+/* translators: 1: one-based attribute number, 2: attribute name. */
 wp.i18n.__("Duplicate attribute position.", "yaxii-product-workspace");
 wp.i18n.__("Duplicate attribute reference.", "yaxii-product-workspace");
-wp.i18n.__("Duplicate attribute.", "yaxii-product-workspace");
 wp.i18n.__("Duplicate combination.", "yaxii-product-workspace");
 wp.i18n.__("Duplicate last product", "yaxii-product-workspace");
-/* translators: translators: %s: source product name. */
+/* translators: %s: source product name. */
 wp.i18n.__("Duplicate was not loaded", "yaxii-product-workspace");
 wp.i18n.__("Duplicate", "yaxii-product-workspace");
 wp.i18n.__("Duplicated", "yaxii-product-workspace");
@@ -178,7 +186,7 @@ wp.i18n.__("failed, partial, or uncertain", "yaxii-product-workspace");
 wp.i18n._x("Failed", "Operation status", "yaxii-product-workspace");
 wp.i18n.__("Find a product", "yaxii-product-workspace");
 wp.i18n.__("Find product", "yaxii-product-workspace");
-/* translators: translators: %s: number of selected images. */
+/* translators: %s: number of selected images. */
 wp.i18n.__("First image becomes the thumbnail", "yaxii-product-workspace");
 wp.i18n.__("Focus mode — hide everything except product entry", "yaxii-product-workspace");
 wp.i18n.__("Focus mode", "yaxii-product-workspace");
@@ -206,7 +214,9 @@ wp.i18n.__("Hidden", "yaxii-product-workspace");
 wp.i18n.__("Hide extended", "yaxii-product-workspace");
 wp.i18n.__("Hide inline hints in", "yaxii-product-workspace");
 wp.i18n.__("Hide navigation and metrics when the workspace opens.", "yaxii-product-workspace");
+wp.i18n.__("Hide secondary sections you don't use. They stay available in WooCommerce.", "yaxii-product-workspace");
 wp.i18n.__("How queued products are grouped and listed.", "yaxii-product-workspace");
+wp.i18n.__("How the entry form opens and which secondary sections show.", "yaxii-product-workspace");
 wp.i18n.__("How the workspace looks on this device.", "yaxii-product-workspace");
 wp.i18n.__("Image upload failed. Try again.", "yaxii-product-workspace");
 wp.i18n.__("Images could not be uploaded.", "yaxii-product-workspace");
@@ -216,7 +226,6 @@ wp.i18n.__("Inline “?” explanations on fields and controls. Turn off for a c
 wp.i18n.__("Inline keyboard hints", "yaxii-product-workspace");
 wp.i18n.__("Insert image", "yaxii-product-workspace");
 wp.i18n.__("Invalid attribute key.", "yaxii-product-workspace");
-wp.i18n.__("Invalid attribute name.", "yaxii-product-workspace");
 wp.i18n.__("Invalid attribute position.", "yaxii-product-workspace");
 wp.i18n.__("Invalid global WooCommerce attribute reference.", "yaxii-product-workspace");
 wp.i18n.__("Inventory", "yaxii-product-workspace");
@@ -248,6 +257,7 @@ wp.i18n.__("Manage stock", "yaxii-product-workspace");
 wp.i18n.__("Managed stock requires a non-negative whole number.", "yaxii-product-workspace");
 wp.i18n.__("Minimizes animations and transitions across the app.", "yaxii-product-workspace");
 wp.i18n.__("More information", "yaxii-product-workspace");
+wp.i18n.__("More inventory options", "yaxii-product-workspace");
 wp.i18n.__("More variation fields", "yaxii-product-workspace");
 wp.i18n.__("Move to trash", "yaxii-product-workspace");
 wp.i18n.__("multiple allowed", "yaxii-product-workspace");
@@ -256,12 +266,12 @@ wp.i18n.__("Navigation and on-screen guidance.", "yaxii-product-workspace");
 wp.i18n.__("Navigation", "yaxii-product-workspace");
 wp.i18n.__("Needs attention", "yaxii-product-workspace");
 wp.i18n.__("Newer product changes found", "yaxii-product-workspace");
-/* translators: translators: %s: taxonomy field label. */
+/* translators: %s: taxonomy field label. */
 wp.i18n.__("No %s found.", "yaxii-product-workspace");
 wp.i18n.__("No category found.", "yaxii-product-workspace");
-/* translators: translators: %s: product name. */
+/* translators: %s: product name. */
 wp.i18n.__("No changes", "yaxii-product-workspace");
-/* translators: translators: 1: successful write count, 2: total final write count. */
+/* translators: 1: successful write count, 2: total final write count. */
 wp.i18n.__("no final writes", "yaxii-product-workspace");
 wp.i18n.__("No matching products.", "yaxii-product-workspace");
 wp.i18n.__("No matching products", "yaxii-product-workspace");
@@ -280,14 +290,13 @@ wp.i18n.__("Open", "yaxii-product-workspace");
 wp.i18n.__("Operation status filters", "yaxii-product-workspace");
 wp.i18n.__("Operation was not reconciled", "yaxii-product-workspace");
 wp.i18n.__("Optimized for fast, repetitive data entry.", "yaxii-product-workspace");
-wp.i18n.__("Optional discounted price. Leave empty for no sale. Schedule a window under Extended options.", "yaxii-product-workspace");
-wp.i18n.__("Optional", "yaxii-product-workspace");
+wp.i18n.__("Optional sections", "yaxii-product-workspace");
 wp.i18n.__("Options must be unique and non-empty.", "yaxii-product-workspace");
-/* translators: translators: %s: maximum image count. */
+/* translators: %s: maximum image count. */
 wp.i18n._n("or click to browse · up to %s image · first image becomes the thumbnail", "or click to browse · up to %s images · first image becomes the thumbnail", "2", "yaxii-product-workspace");
 wp.i18n.__("Out of stock", "yaxii-product-workspace");
 wp.i18n.__("Out", "yaxii-product-workspace");
-/* translators: translators: %s: maximum combination count. */
+/* translators: %s: maximum combination count. */
 wp.i18n.__("Over the %s-combination limit. Remove options to continue.", "yaxii-product-workspace");
 wp.i18n._x("Pending review", "Product status", "yaxii-product-workspace");
 wp.i18n._x("Pending", "Operation status", "yaxii-product-workspace");
@@ -296,21 +305,21 @@ wp.i18n.__("Pick attributes, preview how many combinations they produce, then se
 wp.i18n.__("Pick the store terms used on this product.", "yaxii-product-workspace");
 wp.i18n.__("Preferences were not saved", "yaxii-product-workspace");
 wp.i18n.__("Preferences", "yaxii-product-workspace");
-/* translators: translators: %s: source product name. */
+/* translators: %s: source product name. */
 wp.i18n.__("Prefilled from “%s”. No product was created.", "yaxii-product-workspace");
 wp.i18n.__("Preview", "yaxii-product-workspace");
 wp.i18n.__("Price, SKU, and stock live on each combination", "yaxii-product-workspace");
-/* translators: translators: %s: variation count. */
+/* translators: %s: variation count. */
 wp.i18n.__("Price, SKU, stock, and image belong to each concrete WooCommerce combination.", "yaxii-product-workspace");
 wp.i18n.__("Price", "yaxii-product-workspace");
-wp.i18n.__("Pricing & stock", "yaxii-product-workspace");
+wp.i18n.__("Pricing", "yaxii-product-workspace");
 wp.i18n.__("Product actions", "yaxii-product-workspace");
 wp.i18n.__("Product could not be opened.", "yaxii-product-workspace");
 wp.i18n.__("Product could not be opened", "yaxii-product-workspace");
 wp.i18n.__("Product creation is unavailable", "yaxii-product-workspace");
 wp.i18n.__("Product defaults", "yaxii-product-workspace");
 wp.i18n.__("Product entry", "yaxii-product-workspace");
-/* translators: translators: %s: image position. */
+/* translators: %s: image position. */
 wp.i18n.__("Product image %s", "yaxii-product-workspace");
 wp.i18n.__("Product images", "yaxii-product-workspace");
 wp.i18n.__("Product is not available", "yaxii-product-workspace");
@@ -333,6 +342,7 @@ wp.i18n._x("Published", "Product status", "yaxii-product-workspace");
 wp.i18n.__("Published", "yaxii-product-workspace");
 wp.i18n.__("Publishing", "yaxii-product-workspace");
 wp.i18n.__("Qty", "yaxii-product-workspace");
+wp.i18n.__("Quantity", "yaxii-product-workspace");
 wp.i18n.__("Queue display", "yaxii-product-workspace");
 wp.i18n.__("Queue is empty", "yaxii-product-workspace");
 wp.i18n.__("Queue item was not dismissed", "yaxii-product-workspace");
@@ -350,9 +360,9 @@ wp.i18n.__("Regenerate combinations", "yaxii-product-workspace");
 wp.i18n.__("Regular price", "yaxii-product-workspace");
 wp.i18n.__("Relative timestamps", "yaxii-product-workspace");
 wp.i18n.__("Reload latest", "yaxii-product-workspace");
-/* translators: translators: %s: category name or ID. */
+/* translators: %s: category name or ID. */
 wp.i18n.__("Remove %s", "yaxii-product-workspace");
-/* translators: translators: %s: selected option count. */
+/* translators: %s: selected option count. */
 wp.i18n.__("Remove attribute", "yaxii-product-workspace");
 wp.i18n.__("Remove from queue", "yaxii-product-workspace");
 wp.i18n.__("Remove image", "yaxii-product-workspace");
@@ -375,7 +385,6 @@ wp.i18n.__("Rich text and images supported", "yaxii-product-workspace");
 wp.i18n.__("Rows per page", "yaxii-product-workspace");
 wp.i18n.__("Sale price must be valid and cannot exceed the regular price.", "yaxii-product-workspace");
 wp.i18n.__("Sale price", "yaxii-product-workspace");
-wp.i18n.__("Sale schedule", "yaxii-product-workspace");
 wp.i18n.__("Save & next", "yaxii-product-workspace");
 wp.i18n.__("Save draft", "yaxii-product-workspace");
 wp.i18n.__("Save outcome pending", "yaxii-product-workspace");
@@ -384,7 +393,8 @@ wp.i18n.__("Saved products and operations appear here.", "yaxii-product-workspac
 wp.i18n.__("Saved to current store", "yaxii-product-workspace");
 wp.i18n.__("Saves this product and clears the form for the next one. Shortcut: Ctrl + Enter.", "yaxii-product-workspace");
 wp.i18n.__("Saving…", "yaxii-product-workspace");
-/* translators: translators: %s: taxonomy field label. */
+wp.i18n.__("Schedule sale", "yaxii-product-workspace");
+/* translators: %s: taxonomy field label. */
 wp.i18n.__("Search %s…", "yaxii-product-workspace");
 wp.i18n.__("Search actions, pages and preferences…", "yaxii-product-workspace");
 wp.i18n.__("Search available workspace actions and preferences.", "yaxii-product-workspace");
@@ -392,22 +402,23 @@ wp.i18n.__("Search by product name or SKU…", "yaxii-product-workspace");
 wp.i18n.__("Search categories…", "yaxii-product-workspace");
 wp.i18n.__("Search only", "yaxii-product-workspace");
 wp.i18n.__("Search or jump to…", "yaxii-product-workspace");
-/* translators: translators: %s: taxonomy field label. */
+/* translators: %s: taxonomy field label. */
 wp.i18n.__("Searching…", "yaxii-product-workspace");
 wp.i18n.__("Secure product identity could not be generated. Product creation was not attempted.", "yaxii-product-workspace");
-/* translators: translators: %s: taxonomy field label. */
+/* translators: %s: taxonomy field label. */
 wp.i18n.__("Select %s…", "yaxii-product-workspace");
 wp.i18n.__("Select a valid category.", "yaxii-product-workspace");
 wp.i18n.__("Select between one and 20 options.", "yaxii-product-workspace");
 wp.i18n.__("Select categories…", "yaxii-product-workspace");
 wp.i18n.__("Select one option from every variation attribute.", "yaxii-product-workspace");
-/* translators: translators: %s: maximum option count per attribute. */
+/* translators: %s: maximum option count per attribute. */
 wp.i18n._n("Separate options with commas. Up to %s option per attribute.", "Separate options with commas. Up to %s options per attribute.", "2", "yaxii-product-workspace");
 wp.i18n.__("Set all", "yaxii-product-workspace");
 wp.i18n.__("Settings & preferences", "yaxii-product-workspace");
 wp.i18n.__("Settings → Workspace", "yaxii-product-workspace");
 wp.i18n._x("Settings", "Main navigation tab", "yaxii-product-workspace");
 wp.i18n.__("Settings", "yaxii-product-workspace");
+wp.i18n.__("Shipping & dimensions", "yaxii-product-workspace");
 wp.i18n.__("Shipping class", "yaxii-product-workspace");
 wp.i18n.__("Shipping only", "yaxii-product-workspace");
 wp.i18n.__("Shipping", "yaxii-product-workspace");
@@ -423,10 +434,12 @@ wp.i18n.__("Show the metric strip above the product workspace.", "yaxii-product-
 wp.i18n.__("Show this panel", "yaxii-product-workspace");
 wp.i18n.__("Simple product", "yaxii-product-workspace");
 wp.i18n.__("Simple", "yaxii-product-workspace");
+wp.i18n.__("SKU field", "yaxii-product-workspace");
 wp.i18n.__("Slug", "yaxii-product-workspace");
 wp.i18n.__("Sold individually", "yaxii-product-workspace");
 wp.i18n.__("Some variation changes were not saved.", "yaxii-product-workspace");
 wp.i18n.__("Some variations were not saved.", "yaxii-product-workspace");
+wp.i18n.__("Standard shows essentials only; Extended opens with every section visible.", "yaxii-product-workspace");
 wp.i18n.__("Standard", "yaxii-product-workspace");
 wp.i18n.__("Start filling the form first.", "yaxii-product-workspace");
 wp.i18n.__("Start in focus mode", "yaxii-product-workspace");
@@ -436,9 +449,8 @@ wp.i18n.__("Sticky queue panel", "yaxii-product-workspace");
 wp.i18n.__("Stock management", "yaxii-product-workspace");
 wp.i18n.__("Stock must be a non-negative whole number.", "yaxii-product-workspace");
 wp.i18n.__("Stock status", "yaxii-product-workspace");
-wp.i18n.__("Stock", "yaxii-product-workspace");
 wp.i18n.__("Strikethrough", "yaxii-product-workspace");
-/* translators: translators: 1: successful write count, 2: total final write count. */
+/* translators: 1: successful write count, 2: total final write count. */
 wp.i18n.__("Success rate", "yaxii-product-workspace");
 wp.i18n.__("successful publishes", "yaxii-product-workspace");
 wp.i18n.__("Switch to dark theme", "yaxii-product-workspace");
@@ -447,18 +459,19 @@ wp.i18n.__("System", "yaxii-product-workspace");
 wp.i18n.__("Tags", "yaxii-product-workspace");
 wp.i18n.__("Tax & organization", "yaxii-product-workspace");
 wp.i18n.__("Tax class", "yaxii-product-workspace");
+wp.i18n.__("Tax details", "yaxii-product-workspace");
 wp.i18n.__("Tax status", "yaxii-product-workspace");
 wp.i18n.__("Tax treatment for new products.", "yaxii-product-workspace");
 wp.i18n.__("Taxable", "yaxii-product-workspace");
-/* translators: translators: %s: attribute name. */
+/* translators: %s: attribute name. */
 wp.i18n.__("Terms for %s could not be loaded.", "yaxii-product-workspace");
 wp.i18n.__("The cursor moves to the name field when the workspace loads.", "yaxii-product-workspace");
 wp.i18n.__("The form was kept. Submit again to reconcile without creating a duplicate.", "yaxii-product-workspace");
 wp.i18n.__("The image could not be uploaded.", "yaxii-product-workspace");
 wp.i18n.__("The latest product could not be loaded.", "yaxii-product-workspace");
-/* translators: translators: %s: maximum combination count. */
+/* translators: %s: maximum combination count. */
 wp.i18n.__("The plan exceeds %s combinations.", "yaxii-product-workspace");
-/* translators: translators: %s: source product name. */
+/* translators: %s: source product name. */
 wp.i18n.__("The product could not be loaded.", "yaxii-product-workspace");
 wp.i18n.__("The Product Workspace assets are unavailable. Rebuild the plugin frontend.", "yaxii-product-workspace");
 wp.i18n.__("The server request failed.", "yaxii-product-workspace");
@@ -470,7 +483,7 @@ wp.i18n.__("The variable-product plan is invalid.", "yaxii-product-workspace");
 wp.i18n.__("The WordPress host configuration is unavailable.", "yaxii-product-workspace");
 wp.i18n.__("Theme & density", "yaxii-product-workspace");
 wp.i18n.__("Theme", "yaxii-product-workspace");
-/* translators: translators: %s: product name. */
+/* translators: %s: product name. */
 wp.i18n.__("This moves “%s” to WooCommerce trash. It is different from removing an entry from recent operations.", "yaxii-product-workspace");
 wp.i18n.__("This operation does not have a WooCommerce product result to open.", "yaxii-product-workspace");
 wp.i18n.__("This product operation is unavailable.", "yaxii-product-workspace");
@@ -484,14 +497,13 @@ wp.i18n.__("Underline", "yaxii-product-workspace");
 wp.i18n.__("Undo delete", "yaxii-product-workspace");
 wp.i18n.__("Undo last delete", "yaxii-product-workspace");
 wp.i18n.__("Undo", "yaxii-product-workspace");
-wp.i18n.__("Units on hand. Entering a quantity enables WooCommerce stock management for this product.", "yaxii-product-workspace");
 wp.i18n.__("units", "yaxii-product-workspace");
 wp.i18n.__("Unknown attribute option.", "yaxii-product-workspace");
 wp.i18n.__("Unknown attribute or option reference.", "yaxii-product-workspace");
 wp.i18n.__("Unknown", "yaxii-product-workspace");
-/* translators: translators: %s: product name. */
+/* translators: %s: product name. */
 wp.i18n.__("Unsaved draft · %s", "yaxii-product-workspace");
-/* translators: translators: %s: product name. */
+/* translators: %s: product name. */
 wp.i18n.__("Unsaved draft", "yaxii-product-workspace");
 wp.i18n.__("Untitled product", "yaxii-product-workspace");
 wp.i18n.__("Update product", "yaxii-product-workspace");
@@ -516,6 +528,7 @@ wp.i18n.__("Where the app opens by default.", "yaxii-product-workspace");
 wp.i18n.__("Width", "yaxii-product-workspace");
 wp.i18n.__("WooCommerce defaults", "yaxii-product-workspace");
 wp.i18n.__("WooCommerce did not return the product.", "yaxii-product-workspace");
+wp.i18n.__("WooCommerce generates this automatically from the product name unless you set it here.", "yaxii-product-workspace");
 wp.i18n.__("WooCommerce must be installed and active before this workspace can be used.", "yaxii-product-workspace");
 wp.i18n.__("WooCommerce tax class for new products.", "yaxii-product-workspace");
 wp.i18n.__("WordPress returned invalid media data.", "yaxii-product-workspace");

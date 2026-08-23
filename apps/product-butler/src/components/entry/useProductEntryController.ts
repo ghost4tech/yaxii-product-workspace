@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { saveDraft } from "@/lib/entryActions";
 import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
@@ -54,6 +54,9 @@ export function useProductEntryController(options: Options) {
   const [images, setImages] = useState<ProductImage[]>(draftFormData.images);
   const [saleStart, setSaleStart] = useState<Date | undefined>(draftFormData.saleScheduleStart);
   const [saleEnd, setSaleEnd] = useState<Date | undefined>(draftFormData.saleScheduleEnd);
+  const [scheduleOpen, setScheduleOpen] = useState(
+    Boolean(draftFormData.saleScheduleStart || draftFormData.saleScheduleEnd),
+  );
   const [isVariable, setIsVariable] = useState(Boolean(draftFormData.isVariable));
   const [variableAttributes, setVariableAttributes] = useState<VariableAttribute[]>(draftFormData.variableAttributes);
   const [variationCombinations, setVariationCombinations] = useState<VariationCombination[]>(draftFormData.variationCombinations);
@@ -78,6 +81,7 @@ export function useProductEntryController(options: Options) {
     setImages(draft.images);
     setSaleStart(draft.saleScheduleStart);
     setSaleEnd(draft.saleScheduleEnd);
+    setScheduleOpen(Boolean(draft.saleScheduleStart || draft.saleScheduleEnd));
     setIsVariable(Boolean(draft.isVariable));
     setVariableAttributes(draft.variableAttributes);
     setVariationCombinations(draft.variationCombinations);
@@ -95,6 +99,7 @@ export function useProductEntryController(options: Options) {
       setImages(draft.images);
       setSaleStart(draft.saleScheduleStart);
       setSaleEnd(draft.saleScheduleEnd);
+      setScheduleOpen(Boolean(draft.saleScheduleStart || draft.saleScheduleEnd));
       setIsVariable(Boolean(draft.isVariable));
       setVariableAttributes(draft.variableAttributes);
       setVariationCombinations(draft.variationCombinations);
@@ -122,6 +127,7 @@ export function useProductEntryController(options: Options) {
     setImages(draft.images);
     setSaleStart(draft.saleScheduleStart);
     setSaleEnd(draft.saleScheduleEnd);
+    setScheduleOpen(Boolean(draft.saleScheduleStart || draft.saleScheduleEnd));
     setIsVariable(Boolean(draft.isVariable));
     setVariableAttributes(draft.variableAttributes);
     setVariationCombinations(draft.variationCombinations);
@@ -192,6 +198,7 @@ export function useProductEntryController(options: Options) {
     setImages(draft.images);
     setSaleStart(draft.saleScheduleStart);
     setSaleEnd(draft.saleScheduleEnd);
+    setScheduleOpen(Boolean(draft.saleScheduleStart || draft.saleScheduleEnd));
     setIsVariable(Boolean(draft.isVariable));
     setVariableAttributes(draft.variableAttributes);
     setVariationCombinations(draft.variationCombinations);
@@ -206,6 +213,7 @@ export function useProductEntryController(options: Options) {
     setImages(draft.images);
     setSaleStart(draft.saleScheduleStart);
     setSaleEnd(draft.saleScheduleEnd);
+    setScheduleOpen(Boolean(draft.saleScheduleStart || draft.saleScheduleEnd));
     setIsVariable(Boolean(draft.isVariable));
     setVariableAttributes(draft.variableAttributes);
     setVariationCombinations(draft.variationCombinations);
@@ -238,11 +246,11 @@ export function useProductEntryController(options: Options) {
     setIsVariable(value);
     setVariableDirty(true);
   }, []);
-  const changeVariableAttributes = useCallback((value: VariableAttribute[]) => {
+  const changeVariableAttributes = useCallback((value: SetStateAction<VariableAttribute[]>) => {
     setVariableAttributes(value);
     setVariableDirty(true);
   }, []);
-  const changeVariationCombinations = useCallback((value: VariationCombination[]) => {
+  const changeVariationCombinations = useCallback((value: SetStateAction<VariationCombination[]>) => {
     setVariationCombinations(value);
     setVariableDirty(true);
   }, []);
@@ -251,9 +259,9 @@ export function useProductEntryController(options: Options) {
 
   return {
     bootstrap, cancelEdit, canWrite, conflictOpen, create, editing, form, images, manage, nameInputRef,
-    isVariable, reloadLatest, reset, saleEnd, saleStart, saveDraft, setConflictOpen, setImages,
+    isVariable, reloadLatest, reset, saleEnd, saleStart, saveDraft, scheduleOpen, setConflictOpen, setImages,
     setIsVariable: changeVariableType, setVariableAttributes: changeVariableAttributes,
     setVariationCombinations: changeVariationCombinations, variableAttributes, variableDirty, variationCombinations,
-    setSaleEnd, setSaleStart, setTrashOpen, submit, trash, trashOpen, uploadMedia,
+    setSaleEnd, setSaleStart, setScheduleOpen, setTrashOpen, submit, trash, trashOpen, uploadMedia,
   };
 }

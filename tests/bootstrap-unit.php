@@ -37,7 +37,7 @@ if ( ! function_exists( 'sanitize_text_field' ) ) {
 
 if ( ! function_exists( 'sanitize_title' ) ) {
 	function sanitize_title( string $value ): string {
-		return trim( strtolower( (string) preg_replace( '/[^a-z0-9]+/i', '-', $value ) ), '-' );
+		return trim( strtolower( (string) preg_replace( '/[^a-z0-9_]+/i', '-', $value ) ), '-' );
 	}
 }
 

@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Yaxii Product Workspace 0.2.0-alpha.1\n"
+"Project-Id-Version: Yaxii Product Workspace 1.1.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -8,7 +8,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: 2026-08-15T00:10:50+00:00\n"
-"PO-Revision-Date: 2026-08-15T00:10:50+00:00\n"
+"PO-Revision-Date: 2026-08-23T12:07:44+00:00\n"
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
 "X-Generator: Yaxii Product Workspace localization workflow\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #: yaxii-product-workspace.php
 #: src/Admin/AdminPage.php:46
-#: src/Admin/AdminPage.php:152
+#: src/Admin/AdminPage.php:151
 msgid "Yaxii Product Workspace"
 msgstr "Yaxii Product Workspace"
 
@@ -40,19 +40,19 @@ msgstr "Yaxii Dev"
 msgid "Product Workspace"
 msgstr "مساحة عمل المنتجات"
 
-#: src/Admin/AdminPage.php:148
+#: src/Admin/AdminPage.php:147
 msgid "You are not allowed to access this workspace."
 msgstr "لا تملك صلاحية الوصول إلى مساحة العمل هذه."
 
-#: src/Admin/AdminPage.php:184
+#: src/Admin/AdminPage.php:183
 msgid "The Product Workspace frontend is unavailable because its built assets are missing."
 msgstr "واجهة مساحة عمل المنتجات غير متاحة، لأن ملفاتها المبنية مفقودة."
 
-#: src/Admin/AdminPage.php:188
+#: src/Admin/AdminPage.php:187
 msgid "WooCommerce must be installed and active before the Product Workspace can be used."
 msgstr "يجب تثبيت WooCommerce وتنشيطه قبل استخدام مساحة عمل المنتج."
 
-#: src/Admin/AdminPage.php:191
+#: src/Admin/AdminPage.php:190
 msgid "Loading Yaxii Product Workspace..."
 msgstr "جارٍ تحميل Yaxii Product Workspace…"
 
@@ -288,7 +288,7 @@ msgid "The combination references an unknown attribute option."
 msgstr "تشير التركيبة إلى خيار سمة غير معروف."
 
 #: src/Application/VariableProducts/CombinationGenerator.php:143
-#: languages/source/yaxii-product-workspace.js:403
+#: languages/source/yaxii-product-workspace.js:413
 msgid "Select one option from every variation attribute."
 msgstr "حدد خيارًا واحدًا من كل سمة تنويع."
 
@@ -353,63 +353,55 @@ msgstr "يجب استخدام سمة واحدة على الأقل للتنويع
 msgid "Add between one and %d attributes."
 msgstr "أضف من سمة واحدة إلى %d سمات."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:71
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:72
 msgid "Each attribute must be an object."
 msgstr "يجب أن تكون كل سمة كائنًا."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:76
-msgid "Duplicate attributes are not allowed."
-msgstr "لا يُسمح بالسمات المكررة."
-
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:79
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:101
 msgid "Each attribute requires a unique position."
 msgstr "تتطلب كل سمة موقعًا فريدًا."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:94
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:117
 msgid "The attribute contains unsupported fields."
 msgstr "تحتوي السمة على حقول غير مدعومة."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:103
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:126
 msgid "Use a stable lowercase attribute key."
 msgstr "استخدم مفتاح سمة ثابتًا بأحرف لاتينية صغيرة."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:106
-msgid "Choose a supported source and an attribute name up to 40 characters."
-msgstr "اختر مصدرًا مدعومًا واسم سمة لا يتجاوز 40 حرفًا."
-
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:109
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:150
 msgid "Attribute visibility, variation use, or position is invalid."
 msgstr "ظهور السمة أو استخدامها في التنويعات أو موضعها غير صالح."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:134
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:175
 msgid "Global attributes use term IDs, not custom option text."
 msgstr "تستخدم السمات العامة معرّفات العناصر، وليس نصوص الخيارات المخصصة."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:140
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:181
 msgid "Global attributes require a real WooCommerce attribute ID and pa_* taxonomy."
 msgstr "تتطلب السمات العامة معرّف سمة WooCommerce حقيقيًا وتصنيف pa_*."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:155
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:196
 msgid "Custom attributes cannot reference a global taxonomy or term IDs."
 msgstr "لا يمكن للسمات المخصصة الإشارة إلى تصنيف عام أو معرّفات عناصر."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:159
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:200
 msgid "Select between one and 20 custom options."
 msgstr "اختر من بين خيار واحد إلى 20 خيارًا مخصصًا."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:167
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:208
 msgid "Custom options must be unique non-empty values up to 100 characters."
 msgstr "يجب أن تكون الخيارات المخصصة فريدة وغير فارغة، وألا يتجاوز كل منها 100 حرف."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:182
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:223
 msgid "Select between one and 20 attribute terms."
 msgstr "حدد من عنصر واحد إلى 20 عنصرًا للسمة."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:186
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:227
 msgid "Attribute term IDs must be unique positive integers."
 msgstr "يجب أن تكون معرّفات عناصر السمة أعدادًا صحيحة موجبة وفريدة."
 
-#: src/Application/VariableProducts/VariableProductPlanFactory.php:193
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:234
 msgid "Review the variable-product attributes."
 msgstr "راجع سمات المنتج المتغير."
 
@@ -592,13 +584,13 @@ msgstr "— تنشئ السمات، مثل اللون أو المقاس، تنو
 msgid "— one price and stock value."
 msgstr "— سعر واحد وقيمة مخزون واحدة."
 
-#. translators: translators: %s: taxonomy field label.
+#. translators: %s: taxonomy field label.
 #: languages/source/yaxii-product-workspace.js:6
 msgctxt "List separator"
 msgid ", "
 msgstr "، "
 
-#. translators: translators: %s: product name.
+#. translators: %s: product name.
 #: languages/source/yaxii-product-workspace.js:8
 #, js-format
 msgid "“%s” will leave recent operations. Its WooCommerce product will not be trashed."
@@ -608,25 +600,25 @@ msgstr "ستتم إزالة «%s» من العمليات الأخيرة، ولن
 msgid "“3 hours ago” instead of a fixed date."
 msgstr "«منذ 3 ساعات» بدلاً من تاريخ ثابت."
 
-#. translators: translators: 1: enabled variation count, 2: total variation count.
+#. translators: 1: enabled variation count, 2: total variation count.
 #: languages/source/yaxii-product-workspace.js:13
 #, js-format
 msgid "%1$s of %2$s enabled"
 msgstr "تم تمكين %1$s من %2$s"
 
-#. translators: translators: 1: successful write count, 2: total final write count.
+#. translators: 1: successful write count, 2: total final write count.
 #: languages/source/yaxii-product-workspace.js:15
 #, js-format
 msgid "%1$s of %2$s final writes"
 msgstr "%1$s من %2$s عمليات كتابة نهائية"
 
-#. translators: translators: 1: current image count, 2: maximum image count.
+#. translators: 1: current image count, 2: maximum image count.
 #: languages/source/yaxii-product-workspace.js:17
 #, js-format
 msgid "%1$s/%2$s · drag to reorder"
 msgstr "%1$s/%2$s · اسحب لإعادة الترتيب"
 
-#. translators: translators: 1: current attribute count, 2: maximum attribute count.
+#. translators: 1: current attribute count, 2: maximum attribute count.
 #: languages/source/yaxii-product-workspace.js:19
 #, js-format
 msgid "%1$s/%2$s attribute"
@@ -638,13 +630,13 @@ msgstr[3] "%1$s/%2$s سمات"
 msgstr[4] "%1$s/%2$s سمةً"
 msgstr[5] "%1$s/%2$s سمة"
 
-#. translators: translators: %s: color name.
+#. translators: %s: color name.
 #: languages/source/yaxii-product-workspace.js:21
 #, js-format
 msgid "%s accent"
 msgstr "اللون المميز %s"
 
-#. translators: translators: %s: number of selected categories.
+#. translators: %s: number of selected categories.
 #: languages/source/yaxii-product-workspace.js:23
 #, js-format
 msgid "%s category selected"
@@ -656,7 +648,7 @@ msgstr[3] "تم تحديد %s تصنيفات"
 msgstr[4] "تم تحديد %s تصنيفًا"
 msgstr[5] "تم تحديد %s تصنيف"
 
-#. translators: translators: %s: number of selected images.
+#. translators: %s: number of selected images.
 #: languages/source/yaxii-product-workspace.js:25
 #, js-format
 msgid "%s image selected"
@@ -668,13 +660,13 @@ msgstr[3] "تم تحديد %s صور"
 msgstr[4] "تم تحديد %s صورةً"
 msgstr[5] "تم تحديد %s صورة"
 
-#. translators: translators: %s: editor label.
+#. translators: %s: editor label.
 #: languages/source/yaxii-product-workspace.js:27
 #, js-format
 msgid "%s image upload"
 msgstr "رفع الصورة %s"
 
-#. translators: translators: %s: number of product matches.
+#. translators: %s: number of product matches.
 #: languages/source/yaxii-product-workspace.js:29
 #, js-format
 msgid "%s match"
@@ -686,20 +678,8 @@ msgstr[3] "%s نتائج مطابقة"
 msgstr[4] "%s نتيجةً مطابقة"
 msgstr[5] "%s نتيجة مطابقة"
 
-#. translators: translators: %s: number of operations.
+#. translators: %s: row count.
 #: languages/source/yaxii-product-workspace.js:31
-#, js-format
-msgid "%s operation"
-msgid_plural "%s operations"
-msgstr[0] "لا توجد عمليات (%s)"
-msgstr[1] "عملية واحدة (%s)"
-msgstr[2] "عمليتان (%s)"
-msgstr[3] "%s عمليات"
-msgstr[4] "%s عمليةً"
-msgstr[5] "%s عملية"
-
-#. translators: translators: %s: row count.
-#: languages/source/yaxii-product-workspace.js:33
 #, js-format
 msgid "%s row"
 msgid_plural "%s rows"
@@ -710,8 +690,8 @@ msgstr[3] "%s صفوف"
 msgstr[4] "%s صفًا"
 msgstr[5] "%s صف"
 
-#. translators: translators: %s: number of selected categories.
-#: languages/source/yaxii-product-workspace.js:35
+#. translators: %s: number of selected categories.
+#: languages/source/yaxii-product-workspace.js:33
 #, js-format
 msgid "%s selected"
 msgid_plural "%s selected"
@@ -722,8 +702,8 @@ msgstr[3] "تم تحديد %s عناصر"
 msgstr[4] "تم تحديد %s عنصرًا"
 msgstr[5] "تم تحديد %s عنصر"
 
-#. translators: translators: %s: number of variations missing a price.
-#: languages/source/yaxii-product-workspace.js:37
+#. translators: %s: number of variations missing a price.
+#: languages/source/yaxii-product-workspace.js:35
 #, js-format
 msgid "%s variation missing a price"
 msgid_plural "%s variations missing a price"
@@ -734,8 +714,8 @@ msgstr[3] "%s تنويعات بلا سعر"
 msgstr[4] "%s تنويعًا بلا سعر"
 msgstr[5] "%s تنويع بلا سعر"
 
-#. translators: translators: %s: variation count.
-#: languages/source/yaxii-product-workspace.js:39
+#. translators: %s: variation count.
+#: languages/source/yaxii-product-workspace.js:37
 #, js-format
 msgid "%s variation"
 msgid_plural "%s variations"
@@ -746,8 +726,8 @@ msgstr[3] "%s تنويعات"
 msgstr[4] "%s تنويعًا"
 msgstr[5] "%s تنويع"
 
-#. translators: translators: %s: word count.
-#: languages/source/yaxii-product-workspace.js:41
+#. translators: %s: word count.
+#: languages/source/yaxii-product-workspace.js:39
 #, js-format
 msgid "%s word"
 msgid_plural "%s words"
@@ -758,961 +738,942 @@ msgstr[3] "%s كلمات"
 msgstr[4] "%s كلمةً"
 msgstr[5] "%s كلمة"
 
-#: languages/source/yaxii-product-workspace.js:42
+#: languages/source/yaxii-product-workspace.js:40
 msgid "+ Global attribute"
 msgstr "+ سمة عامة"
 
-#: languages/source/yaxii-product-workspace.js:43
+#: languages/source/yaxii-product-workspace.js:41
 msgid "A newer product version exists"
 msgstr "يوجد إصدار منتج أحدث"
 
-#: languages/source/yaxii-product-workspace.js:44
+#: languages/source/yaxii-product-workspace.js:42
 msgid "A regular price is required for every enabled variation."
 msgstr "يلزم إدخال سعر اعتيادي لكل تنويع مُمكّن."
 
-#: languages/source/yaxii-product-workspace.js:45
+#: languages/source/yaxii-product-workspace.js:43
 msgid "A variation image preview could not be loaded. Its attachment is unchanged."
 msgstr "تعذر تحميل معاينة صورة التنويع. لم يتغير المرفق."
 
-#: languages/source/yaxii-product-workspace.js:46
+#: languages/source/yaxii-product-workspace.js:44
 msgid "Accent color"
 msgstr "لون مميز"
 
-#: languages/source/yaxii-product-workspace.js:47
+#: languages/source/yaxii-product-workspace.js:45
 msgid "Add a global or custom attribute to start. You can mix both: Global Color (Black, White) plus Custom Size (S, M, L) generates 6 variations."
 msgstr "أضف سمة عامة أو مخصصة للبدء. يمكنك الجمع بينهما: اللون العام (أسود، أبيض) مع المقاس المخصص (S، M، L) ينشئ 6 تنويعات."
 
-#: languages/source/yaxii-product-workspace.js:48
+#: languages/source/yaxii-product-workspace.js:46
 msgid "Add another"
 msgstr "إضافة أخرى"
 
-#. translators: translators: %s: maximum attribute count.
-#: languages/source/yaxii-product-workspace.js:50
+#. translators: %s: maximum attribute count.
+#: languages/source/yaxii-product-workspace.js:48
 #, js-format
 msgid "Add between one and %s attributes."
 msgstr "أضف من سمة واحدة إلى %s سمات."
 
-#: languages/source/yaxii-product-workspace.js:51
+#: languages/source/yaxii-product-workspace.js:49
 msgid "Add images"
 msgstr "إضافة صورٍ"
 
-#: languages/source/yaxii-product-workspace.js:52
+#: languages/source/yaxii-product-workspace.js:50
 msgid "Add more images"
 msgstr "إضافة المزيد من الصور"
 
-#: languages/source/yaxii-product-workspace.js:53
+#: languages/source/yaxii-product-workspace.js:51
 msgid "Add new product"
 msgstr "إضافة منتج جديد"
 
-#: languages/source/yaxii-product-workspace.js:54
+#: languages/source/yaxii-product-workspace.js:52
 msgid "Add one first, then duplicate it."
 msgstr "أضف سمة أولاً، ثم كررها."
 
-#: languages/source/yaxii-product-workspace.js:55
+#: languages/source/yaxii-product-workspace.js:53
 msgid "Add variation image"
 msgstr "إضافة صورة للتنويع"
 
-#: languages/source/yaxii-product-workspace.js:56
-msgid "Additional categories"
-msgstr "تصنيفات إضافية"
-
-#: languages/source/yaxii-product-workspace.js:57
+#: languages/source/yaxii-product-workspace.js:54
 msgid "Adds date headers between queue rows."
 msgstr "يضيف رؤوس التاريخ بين صفوف قائمة الانتظار."
 
-#: languages/source/yaxii-product-workspace.js:58
+#: languages/source/yaxii-product-workspace.js:55
 msgid "Adjust the search term or pick a different status."
 msgstr "اضبط مصطلح البحث أو اختر حالة مختلفة."
 
-#: languages/source/yaxii-product-workspace.js:59
+#: languages/source/yaxii-product-workspace.js:57
 msgid "Align center"
 msgstr "محاذاة للوسط"
 
-#: languages/source/yaxii-product-workspace.js:60
+#: languages/source/yaxii-product-workspace.js:58
 msgid "Align left"
 msgstr "محاذاة لليسار"
 
-#: languages/source/yaxii-product-workspace.js:61
+#: languages/source/yaxii-product-workspace.js:59
 msgid "Align right"
 msgstr "محاذاة لليمين"
 
-#: languages/source/yaxii-product-workspace.js:62
+#: languages/source/yaxii-product-workspace.js:60
 msgid "all clear"
 msgstr "كل شيء واضح"
 
-#: languages/source/yaxii-product-workspace.js:63
+#: languages/source/yaxii-product-workspace.js:61
 msgid "All"
 msgstr "الكل"
 
-#: languages/source/yaxii-product-workspace.js:64
+#: languages/source/yaxii-product-workspace.js:62
 msgid "Allow, but notify customer"
 msgstr "السماح، ولكن نبِّه الزبون"
 
-#: languages/source/yaxii-product-workspace.js:65
+#: languages/source/yaxii-product-workspace.js:63
 msgid "Allow"
 msgstr "السماح"
 
-#: languages/source/yaxii-product-workspace.js:66
+#: languages/source/yaxii-product-workspace.js:64
 msgid "An existing product cannot change type in this editor."
 msgstr "لا يمكن لمنتج موجود تغيير النوع في هذا المحرر."
 
-#: languages/source/yaxii-product-workspace.js:67
+#: languages/source/yaxii-product-workspace.js:65
 msgid "Appearance, workflow behavior, and WooCommerce defaults. Changes save instantly."
 msgstr "المظهر وسلوك سير العمل والإعدادات الافتراضية WooCommerce. يتم حفظ التغييرات على الفور."
 
-#: languages/source/yaxii-product-workspace.js:68
+#: languages/source/yaxii-product-workspace.js:66
 msgid "Appearance"
 msgstr "المظهر"
 
-#: languages/source/yaxii-product-workspace.js:69
+#: languages/source/yaxii-product-workspace.js:67
 msgid "Applied to every new product and variation."
 msgstr "يتم تطبيقه على كل منتج جديد وتنوع."
 
-#: languages/source/yaxii-product-workspace.js:70
+#: languages/source/yaxii-product-workspace.js:68
 msgid "Applies this price to every enabled variation. You can still override individual ones."
 msgstr "يتم تطبيق هذا السعر على كل صيغة ممكّنة. لا يزال بإمكانك تجاوز تلك الفردية."
 
-#: languages/source/yaxii-product-workspace.js:71
+#: languages/source/yaxii-product-workspace.js:69
 msgid "Apply"
 msgstr "تطبيق"
 
-#: languages/source/yaxii-product-workspace.js:72
+#: languages/source/yaxii-product-workspace.js:70
 msgid "Ask before removing a queued product."
 msgstr "اسأل قبل إزالة منتج في قائمة الانتظار."
 
-#: languages/source/yaxii-product-workspace.js:73
+#: languages/source/yaxii-product-workspace.js:79
 msgid "Attribute name (e.g. Size)"
 msgstr "اسم السمة (على سبيل المثال الحجم)"
 
-#: languages/source/yaxii-product-workspace.js:74
+#: languages/source/yaxii-product-workspace.js:80
 msgid "Attribute visibility and variation use must be true or false."
 msgstr "يجب أن تكون قيمتا ظهور السمة واستخدامها في التنويعات صحيحتين أو خاطئتين."
 
-#: languages/source/yaxii-product-workspace.js:75
+#: languages/source/yaxii-product-workspace.js:81
 msgid "Attributes → combination preview → variations. Global attributes are reusable store taxonomies; custom attributes exist only on this product."
 msgstr "السمات ← معاينة التركيبات ← التنويعات. السمات العامة تصنيفات متجر قابلة لإعادة الاستخدام، أما السمات المخصصة فتخص هذا المنتج فقط."
 
-#: languages/source/yaxii-product-workspace.js:76
+#: languages/source/yaxii-product-workspace.js:82
 msgid "Attributes"
 msgstr "السمات"
 
-#: languages/source/yaxii-product-workspace.js:77
+#: languages/source/yaxii-product-workspace.js:83
 msgid "Auto SKU"
 msgstr "رمز SKU تلقائي"
 
-#: languages/source/yaxii-product-workspace.js:78
+#: languages/source/yaxii-product-workspace.js:84
 msgid "Auto-focus product name"
 msgstr "التركيز تلقائيًا على اسم المنتج"
 
-#: languages/source/yaxii-product-workspace.js:79
+#: languages/source/yaxii-product-workspace.js:86
 msgid "Backorder"
 msgstr "طلب متأخر"
 
-#: languages/source/yaxii-product-workspace.js:80
+#: languages/source/yaxii-product-workspace.js:87
 msgid "Backorders"
 msgstr "الطلبات المتأخرة"
 
-#: languages/source/yaxii-product-workspace.js:81
+#: languages/source/yaxii-product-workspace.js:88
 msgid "Blue"
 msgstr "الأزرق"
 
-#: languages/source/yaxii-product-workspace.js:82
+#: languages/source/yaxii-product-workspace.js:89
 msgid "Bold"
 msgstr "عريض"
 
-#: languages/source/yaxii-product-workspace.js:83
+#: languages/source/yaxii-product-workspace.js:90
 msgid "Browser draft · current WooCommerce store"
 msgstr "مسودة المتصفح · متجر WooCommerce الحالي"
 
-#: languages/source/yaxii-product-workspace.js:84
+#: languages/source/yaxii-product-workspace.js:91
 msgid "Builds SKUs from the product SKU plus each option."
 msgstr "ينشئ رموز SKU من رمز SKU للمنتج ومن كل خيار."
 
-#: languages/source/yaxii-product-workspace.js:85
+#: languages/source/yaxii-product-workspace.js:92
 msgid "Bullet list"
 msgstr "قائمة نقطية"
 
-#. translators: translators: %s: product name.
-#: languages/source/yaxii-product-workspace.js:87
+#. translators: %s: product name.
+#: languages/source/yaxii-product-workspace.js:94
 msgid "Cancel"
 msgstr "إلغاء"
 
-#: languages/source/yaxii-product-workspace.js:88
+#: languages/source/yaxii-product-workspace.js:95
 msgid "Catalog visibility"
 msgstr "ظهور الكتالوج"
 
-#: languages/source/yaxii-product-workspace.js:89
+#: languages/source/yaxii-product-workspace.js:96
 msgid "Categories could not be loaded."
 msgstr "لا يمكن تحميل الفئات."
 
-#: languages/source/yaxii-product-workspace.js:90
+#: languages/source/yaxii-product-workspace.js:97
 msgid "Categories"
 msgstr "التصنيفات"
 
-#. translators: translators: %s: category ID.
-#: languages/source/yaxii-product-workspace.js:92
+#. translators: %s: category ID.
+#: languages/source/yaxii-product-workspace.js:99
 #, js-format
 msgid "Category #%s"
 msgstr "التصنيف رقم %s"
 
-#: languages/source/yaxii-product-workspace.js:93
+#: languages/source/yaxii-product-workspace.js:100
 msgid "Category is required"
 msgstr "التصنيف مطلوب"
 
-#: languages/source/yaxii-product-workspace.js:94
+#: languages/source/yaxii-product-workspace.js:101
 msgid "Category"
 msgstr "تصنيف"
 
-#: languages/source/yaxii-product-workspace.js:95
+#: languages/source/yaxii-product-workspace.js:102
 msgid "Choose Draft or Publish in Settings."
 msgstr "اختر «مسودة» أو «نشر» في الإعدادات."
 
-#: languages/source/yaxii-product-workspace.js:96
+#: languages/source/yaxii-product-workspace.js:103
 msgid "Choose month"
 msgstr "اختر الشهر"
 
-#: languages/source/yaxii-product-workspace.js:97
+#: languages/source/yaxii-product-workspace.js:104
 msgid "Choose product images from the WordPress media library before saving."
 msgstr "اختر صور المنتج من مكتبة الوسائط WordPress قبل الحفظ."
 
-#: languages/source/yaxii-product-workspace.js:98
+#: languages/source/yaxii-product-workspace.js:105
 msgid "Choose safe values to carry into the next product."
 msgstr "اختر قيمًا آمنة للاحتفاظ بها في المنتج التالي."
 
-#: languages/source/yaxii-product-workspace.js:99
+#: languages/source/yaxii-product-workspace.js:106
 msgid "Choose Simple to save now."
 msgstr "اختر «بسيط» للحفظ الآن."
 
-#: languages/source/yaxii-product-workspace.js:100
+#: languages/source/yaxii-product-workspace.js:107
 msgid "Choose year"
 msgstr "اختر السنة"
 
-#: languages/source/yaxii-product-workspace.js:101
+#: languages/source/yaxii-product-workspace.js:108
 msgid "Clear current draft"
 msgstr "مسح المسودة الحالية"
 
-#: languages/source/yaxii-product-workspace.js:102
+#: languages/source/yaxii-product-workspace.js:109
 msgid "Clear date"
 msgstr "مسح التاريخ"
 
-#: languages/source/yaxii-product-workspace.js:103
+#: languages/source/yaxii-product-workspace.js:110
 msgid "Clear the form (Esc)"
 msgstr "مسح النموذج (Esc)"
 
-#: languages/source/yaxii-product-workspace.js:104
+#: languages/source/yaxii-product-workspace.js:111
 msgid "Clear the sale dates to save now."
 msgstr "امسح تواريخ البيع للحفظ الآن."
 
-#: languages/source/yaxii-product-workspace.js:105
+#: languages/source/yaxii-product-workspace.js:112
 msgid "Clear"
 msgstr "مسح"
 
-#: languages/source/yaxii-product-workspace.js:106
+#: languages/source/yaxii-product-workspace.js:113
 msgid "Close"
 msgstr "إغلاق"
 
-#: languages/source/yaxii-product-workspace.js:107
+#: languages/source/yaxii-product-workspace.js:114
 msgid "Code block"
 msgstr "كتلة شيفرة"
 
-#: languages/source/yaxii-product-workspace.js:108
+#: languages/source/yaxii-product-workspace.js:115
 msgid "Collapse"
 msgstr "طيّ"
 
-#: languages/source/yaxii-product-workspace.js:109
+#: languages/source/yaxii-product-workspace.js:116
 msgid "Combination IDs must be unique."
 msgstr "يجب أن تكون معرّفات التركيبات فريدة."
 
-#: languages/source/yaxii-product-workspace.js:110
+#: languages/source/yaxii-product-workspace.js:117
 msgid "Combinations could not be generated."
 msgstr "تعذر إنشاء التركيبات."
 
-#: languages/source/yaxii-product-workspace.js:111
+#: languages/source/yaxii-product-workspace.js:118
 msgid "Comfortable density"
 msgstr "كثافة مريحة"
 
-#: languages/source/yaxii-product-workspace.js:112
+#: languages/source/yaxii-product-workspace.js:119
 msgid "Comfortable"
 msgstr "مريح"
 
-#: languages/source/yaxii-product-workspace.js:113
+#: languages/source/yaxii-product-workspace.js:120
 msgid "Compact density"
 msgstr "كثافة مدمجة"
 
-#: languages/source/yaxii-product-workspace.js:114
+#: languages/source/yaxii-product-workspace.js:121
 msgid "Compact fits noticeably more rows on screen."
 msgstr "تعرض الكثافة المدمجة صفوفًا أكثر بوضوح على الشاشة."
 
-#: languages/source/yaxii-product-workspace.js:115
+#: languages/source/yaxii-product-workspace.js:122
 msgid "Compact"
 msgstr "مدمج"
 
-#: languages/source/yaxii-product-workspace.js:116
+#: languages/source/yaxii-product-workspace.js:123
 msgid "Complementary tools for modern WooCommerce teams."
 msgstr "أدوات تكميلية لفرق WooCommerce الحديثة."
 
-#: languages/source/yaxii-product-workspace.js:117
+#: languages/source/yaxii-product-workspace.js:124
 msgid "Confirm before delete"
 msgstr "التأكيد قبل الحذف"
 
-#: languages/source/yaxii-product-workspace.js:118
+#: languages/source/yaxii-product-workspace.js:125
 msgid "Create an attribute used only on this product — nothing is added to store taxonomies."
 msgstr "أنشئ سمة تُستخدم في هذا المنتج فقط، من دون إضافة أي شيء إلى تصنيفات المتجر."
 
-#: languages/source/yaxii-product-workspace.js:119
+#: languages/source/yaxii-product-workspace.js:126
 msgid "Create products faster."
 msgstr "إنشاء المنتجات بشكل أسرع."
 
-#: languages/source/yaxii-product-workspace.js:120
+#: languages/source/yaxii-product-workspace.js:127
 msgid "Custom attribute — exists only on this product. No global taxonomy is created."
 msgstr "سمة مخصصة — تخص هذا المنتج فقط، ولا يُنشأ تصنيف عام."
 
-#: languages/source/yaxii-product-workspace.js:121
+#: languages/source/yaxii-product-workspace.js:128
 msgid "Custom attribute"
 msgstr "سمة مخصصة"
 
-#: languages/source/yaxii-product-workspace.js:122
+#: languages/source/yaxii-product-workspace.js:129
 msgid "Custom options must be 100 characters or fewer."
 msgstr "يجب أن تكون الخيارات المخصصة 100 حرف أو أقل."
 
-#: languages/source/yaxii-product-workspace.js:123
+#: languages/source/yaxii-product-workspace.js:130
 msgid "Custom options must be text values."
 msgstr "يجب أن تكون الخيارات المخصصة عبارة عن قيم نصية."
 
-#: languages/source/yaxii-product-workspace.js:124
+#: languages/source/yaxii-product-workspace.js:131
 msgid "Custom"
 msgstr "مخصص"
 
-#: languages/source/yaxii-product-workspace.js:125
+#: languages/source/yaxii-product-workspace.js:132
 msgid "Dark"
 msgstr "داكن"
 
-#: languages/source/yaxii-product-workspace.js:126
+#: languages/source/yaxii-product-workspace.js:133
 msgid "Default availability for new items."
 msgstr "التوفر الافتراضي للعناصر الجديدة."
 
-#: languages/source/yaxii-product-workspace.js:127
+#: languages/source/yaxii-product-workspace.js:134
 msgid "Default policy when tracked inventory reaches zero."
 msgstr "السياسة الافتراضية عندما يصل المخزون المتعقب إلى الصفر."
 
-#: languages/source/yaxii-product-workspace.js:128
+#: languages/source/yaxii-product-workspace.js:136
 msgid "Density"
 msgstr "الكثافة"
 
-#: languages/source/yaxii-product-workspace.js:129
+#: languages/source/yaxii-product-workspace.js:137
 msgid "Description type"
 msgstr "نوع الوصف"
 
-#: languages/source/yaxii-product-workspace.js:130
+#: languages/source/yaxii-product-workspace.js:138
 msgid "Descriptions"
 msgstr "الأوصاف"
 
-#: languages/source/yaxii-product-workspace.js:131
+#: languages/source/yaxii-product-workspace.js:139
 msgid "Disabled — skipped on save."
 msgstr "مُعطّل — سيُتخطى عند الحفظ."
 
-#: languages/source/yaxii-product-workspace.js:132
+#: languages/source/yaxii-product-workspace.js:140
 msgid "Distraction-free product entry. Remembered between sessions."
 msgstr "إدخال منتجات بلا مشتتات، مع تذكر الإعداد بين الجلسات."
 
-#: languages/source/yaxii-product-workspace.js:133
+#: languages/source/yaxii-product-workspace.js:141
 msgid "Divider"
 msgstr "مقسم"
 
-#: languages/source/yaxii-product-workspace.js:134
+#: languages/source/yaxii-product-workspace.js:142
 msgid "Do not allow"
 msgstr "عدم السماح"
 
-#. translators: translators: %s: number of selected categories.
-#: languages/source/yaxii-product-workspace.js:136
+#. translators: %s: number of selected categories.
+#: languages/source/yaxii-product-workspace.js:144
 msgid "Done"
 msgstr "تمّ"
 
-#: languages/source/yaxii-product-workspace.js:137
+#: languages/source/yaxii-product-workspace.js:145
 msgid "Draft cleared"
 msgstr "تم مسح المسودة"
 
-#: languages/source/yaxii-product-workspace.js:138
+#: languages/source/yaxii-product-workspace.js:146
 msgid "Draft could not be prepared."
 msgstr "لا يمكن إعداد المسودة."
 
-#: languages/source/yaxii-product-workspace.js:139
+#: languages/source/yaxii-product-workspace.js:147
 msgid "Draft saved"
 msgstr "تم حفظ المسودة"
 
-#: languages/source/yaxii-product-workspace.js:140
+#: languages/source/yaxii-product-workspace.js:148
 msgctxt "Operation status"
 msgid "Draft"
 msgstr "مسودة"
 
-#: languages/source/yaxii-product-workspace.js:141
+#: languages/source/yaxii-product-workspace.js:149
 msgctxt "Product status"
 msgid "Draft"
 msgstr "مسودة"
 
-#: languages/source/yaxii-product-workspace.js:142
+#: languages/source/yaxii-product-workspace.js:150
 msgid "Drag & drop product images"
 msgstr "سحب وإسقاط صور المنتج"
 
-#: languages/source/yaxii-product-workspace.js:143
+#: languages/source/yaxii-product-workspace.js:151
 msgid "Drop images to add"
 msgstr "أفلت الصور لإضافتها"
 
-#: languages/source/yaxii-product-workspace.js:144
+#: languages/source/yaxii-product-workspace.js:152
 msgid "Drop to upload"
 msgstr "أفلت للرفع"
 
-#: languages/source/yaxii-product-workspace.js:145
+#. translators: 1: one-based attribute number, 2: attribute name.
+#: languages/source/yaxii-product-workspace.js:154
 msgid "Duplicate attribute position."
 msgstr "موضع السمة مكرر."
 
-#: languages/source/yaxii-product-workspace.js:146
+#: languages/source/yaxii-product-workspace.js:155
 msgid "Duplicate attribute reference."
 msgstr "مرجع السمة مكرر."
 
-#: languages/source/yaxii-product-workspace.js:147
-msgid "Duplicate attribute."
-msgstr "سمة مكررة."
-
-#: languages/source/yaxii-product-workspace.js:148
+#: languages/source/yaxii-product-workspace.js:156
 msgid "Duplicate combination."
 msgstr "تركيبة مكررة."
 
-#: languages/source/yaxii-product-workspace.js:149
+#: languages/source/yaxii-product-workspace.js:157
 msgid "Duplicate last product"
 msgstr "تكرار المنتج الأخير"
 
-#. translators: translators: %s: source product name.
-#: languages/source/yaxii-product-workspace.js:151
+#. translators: %s: source product name.
+#: languages/source/yaxii-product-workspace.js:159
 msgid "Duplicate was not loaded"
 msgstr "لم يتم تحميل النسخة المكررة"
 
-#: languages/source/yaxii-product-workspace.js:152
+#: languages/source/yaxii-product-workspace.js:160
 msgid "Duplicate"
 msgstr "تكرار"
 
-#: languages/source/yaxii-product-workspace.js:153
+#: languages/source/yaxii-product-workspace.js:161
 msgid "Duplicated"
 msgstr "مكررة"
 
-#: languages/source/yaxii-product-workspace.js:154
+#: languages/source/yaxii-product-workspace.js:162
 msgid "e.g. Linen Crew Tee"
 msgstr "على سبيل المثال تي شيرت طاقم الكتان"
 
-#: languages/source/yaxii-product-workspace.js:155
+#: languages/source/yaxii-product-workspace.js:163
 msgid "Edit product"
 msgstr "تحرير المنتج"
 
-#: languages/source/yaxii-product-workspace.js:156
+#: languages/source/yaxii-product-workspace.js:164
 msgid "Edit"
 msgstr "تحرير"
 
-#: languages/source/yaxii-product-workspace.js:157
+#: languages/source/yaxii-product-workspace.js:165
 msgid "Editing"
 msgstr "التحرير"
 
-#: languages/source/yaxii-product-workspace.js:158
+#: languages/source/yaxii-product-workspace.js:166
 msgid "Emerald"
 msgstr "الزمرد"
 
-#: languages/source/yaxii-product-workspace.js:159
+#: languages/source/yaxii-product-workspace.js:167
 msgid "Enable variation"
 msgstr "تمكين التنويع"
 
-#: languages/source/yaxii-product-workspace.js:160
+#: languages/source/yaxii-product-workspace.js:168
 msgid "Enabled — this variation will be created in WooCommerce."
 msgstr "مُمكّن — سيُنشأ هذا التنويع في WooCommerce."
 
-#: languages/source/yaxii-product-workspace.js:161
+#: languages/source/yaxii-product-workspace.js:169
 msgid "Enabled variations require a valid price."
 msgstr "تتطلب التنويعات المُمكّنة سعرًا صالحًا."
 
-#: languages/source/yaxii-product-workspace.js:162
+#: languages/source/yaxii-product-workspace.js:170
 msgid "Ends"
 msgstr "ينتهي"
 
-#: languages/source/yaxii-product-workspace.js:163
+#: languages/source/yaxii-product-workspace.js:171
 msgid "Enter a non-negative number"
 msgstr "أدخل رقمًا غير سالب"
 
-#: languages/source/yaxii-product-workspace.js:164
+#: languages/source/yaxii-product-workspace.js:172
 msgid "Enter a whole stock quantity"
 msgstr "أدخل كمية المخزون كاملة"
 
-#: languages/source/yaxii-product-workspace.js:165
+#: languages/source/yaxii-product-workspace.js:173
 msgid "Entry & queue"
 msgstr "الإدخال وقائمة الانتظار"
 
-#: languages/source/yaxii-product-workspace.js:166
+#: languages/source/yaxii-product-workspace.js:174
 msgid "Entry flow"
 msgstr "مسار الإدخال"
 
-#: languages/source/yaxii-product-workspace.js:167
+#: languages/source/yaxii-product-workspace.js:175
 msgid "Entry workspace"
 msgstr "مساحة الإدخال"
 
-#: languages/source/yaxii-product-workspace.js:168
+#: languages/source/yaxii-product-workspace.js:176
 msgctxt "Command menu group"
 msgid "Entry"
 msgstr "الإدخال"
 
-#: languages/source/yaxii-product-workspace.js:169
+#: languages/source/yaxii-product-workspace.js:177
 msgctxt "Main navigation tab"
 msgid "Entry"
 msgstr "الإدخال"
 
-#: languages/source/yaxii-product-workspace.js:170
+#: languages/source/yaxii-product-workspace.js:178
 msgid "Every shortcut below is live in this workspace."
 msgstr "جميع الاختصارات أدناه مفعّلة في مساحة العمل هذه."
 
-#: languages/source/yaxii-product-workspace.js:171
+#: languages/source/yaxii-product-workspace.js:179
 msgid "Exit focus"
 msgstr "الخروج من وضع التركيز"
 
-#: languages/source/yaxii-product-workspace.js:172
+#: languages/source/yaxii-product-workspace.js:180
 msgid "Expand"
 msgstr "توسيع"
 
-#: languages/source/yaxii-product-workspace.js:173
+#: languages/source/yaxii-product-workspace.js:181
 msgid "Explore all Yaxii products"
 msgstr "اكتشف جميع منتجات Yaxii"
 
-#: languages/source/yaxii-product-workspace.js:174
+#: languages/source/yaxii-product-workspace.js:182
 msgid "Explore the Yaxii ecosystem"
 msgstr "استكشف النظام البيئي Yaxii"
 
-#: languages/source/yaxii-product-workspace.js:175
+#: languages/source/yaxii-product-workspace.js:183
 msgid "Extended options"
 msgstr "خيارات موسعة"
 
-#: languages/source/yaxii-product-workspace.js:176
+#: languages/source/yaxii-product-workspace.js:184
 msgid "Extended"
 msgstr "ممتد"
 
-#: languages/source/yaxii-product-workspace.js:177
+#: languages/source/yaxii-product-workspace.js:185
 msgid "failed, partial, or uncertain"
 msgstr "فاشلة أو جزئية أو غير مؤكدة"
 
-#: languages/source/yaxii-product-workspace.js:178
+#: languages/source/yaxii-product-workspace.js:186
 msgctxt "Operation status"
 msgid "Failed"
 msgstr "فشل"
 
-#: languages/source/yaxii-product-workspace.js:179
+#: languages/source/yaxii-product-workspace.js:187
 msgid "Find a product"
 msgstr "ابحث عن منتج"
 
-#: languages/source/yaxii-product-workspace.js:180
+#: languages/source/yaxii-product-workspace.js:188
 msgid "Find product"
 msgstr "البحث عن منتج"
 
-#. translators: translators: %s: number of selected images.
-#: languages/source/yaxii-product-workspace.js:182
+#. translators: %s: number of selected images.
+#: languages/source/yaxii-product-workspace.js:190
 msgid "First image becomes the thumbnail"
 msgstr "الصورة الأولى تصبح الصورة المصغرة"
 
-#: languages/source/yaxii-product-workspace.js:183
+#: languages/source/yaxii-product-workspace.js:191
 msgid "Focus mode — hide everything except product entry"
 msgstr "وضع التركيز — إخفاء كل شيء باستثناء إدخال المنتجات"
 
-#: languages/source/yaxii-product-workspace.js:184
+#: languages/source/yaxii-product-workspace.js:192
 msgid "Focus mode"
 msgstr "وضع التركيز"
 
-#: languages/source/yaxii-product-workspace.js:185
+#: languages/source/yaxii-product-workspace.js:193
 msgid "Focus"
 msgstr "التركيز"
 
-#: languages/source/yaxii-product-workspace.js:186
+#: languages/source/yaxii-product-workspace.js:194
 msgid "Follow the system setting or select one."
 msgstr "اتبع إعداد النظام أو اختر مظهرًا."
 
-#: languages/source/yaxii-product-workspace.js:187
+#: languages/source/yaxii-product-workspace.js:195
 msgid "Full description, materials, care instructions… Add images, lists, and links."
 msgstr "الوصف الكامل، والمواد، وتعليمات العناية… أضف الصور والقوائم والروابط."
 
-#: languages/source/yaxii-product-workspace.js:188
+#: languages/source/yaxii-product-workspace.js:196
 msgid "Full description"
 msgstr "الوصف الكامل"
 
-#: languages/source/yaxii-product-workspace.js:189
+#: languages/source/yaxii-product-workspace.js:197
 msgid "Full"
 msgstr "كامل"
 
-#: languages/source/yaxii-product-workspace.js:190
+#: languages/source/yaxii-product-workspace.js:198
 msgid "Generate combinations"
 msgstr "إنشاء التركيبات"
 
-#: languages/source/yaxii-product-workspace.js:191
+#: languages/source/yaxii-product-workspace.js:199
 msgid "Generate every projected combination before saving."
 msgstr "أنشئ جميع التركيبات المتوقعة قبل الحفظ."
 
-#: languages/source/yaxii-product-workspace.js:192
+#: languages/source/yaxii-product-workspace.js:200
 msgid "Global attribute — a real WooCommerce taxonomy and terms, reusable across products."
 msgstr "سمة عامة — تصنيف WooCommerce حقيقي بعناصر قابلة لإعادة الاستخدام في المنتجات."
 
-#: languages/source/yaxii-product-workspace.js:193
+#: languages/source/yaxii-product-workspace.js:201
 msgid "Global attributes could not be loaded."
 msgstr "تعذر تحميل السمات العامة."
 
-#: languages/source/yaxii-product-workspace.js:194
+#: languages/source/yaxii-product-workspace.js:202
 msgid "Global options require positive term IDs."
 msgstr "تتطلب الخيارات العامة معرفات عناصر موجبة."
 
-#: languages/source/yaxii-product-workspace.js:195
+#: languages/source/yaxii-product-workspace.js:203
 msgid "Global"
 msgstr "عام"
 
-#: languages/source/yaxii-product-workspace.js:196
+#: languages/source/yaxii-product-workspace.js:204
 msgid "Go to next month"
 msgstr "انتقل إلى الشهر المقبل"
 
-#: languages/source/yaxii-product-workspace.js:197
+#: languages/source/yaxii-product-workspace.js:205
 msgid "Go to previous month"
 msgstr "انتقل إلى الشهر السابق"
 
-#: languages/source/yaxii-product-workspace.js:198
+#: languages/source/yaxii-product-workspace.js:206
 msgid "Go to"
 msgstr "الانتقال إلى"
 
-#: languages/source/yaxii-product-workspace.js:199
+#: languages/source/yaxii-product-workspace.js:207
 msgid "Graphite"
 msgstr "الجرافيت"
 
-#: languages/source/yaxii-product-workspace.js:200
+#: languages/source/yaxii-product-workspace.js:208
 msgid "Group by day"
 msgstr "التجميع حسب اليوم"
 
-#: languages/source/yaxii-product-workspace.js:201
+#: languages/source/yaxii-product-workspace.js:209
 msgid "Heading 2"
 msgstr "ترويسة 2"
 
-#: languages/source/yaxii-product-workspace.js:202
+#: languages/source/yaxii-product-workspace.js:210
 msgid "Heading 3"
 msgstr "ترويسة 3"
 
-#: languages/source/yaxii-product-workspace.js:203
+#: languages/source/yaxii-product-workspace.js:211
 msgid "Height"
 msgstr "الارتفاع"
 
-#: languages/source/yaxii-product-workspace.js:204
+#: languages/source/yaxii-product-workspace.js:212
 msgid "Help tooltips"
 msgstr "تلميحات الأدوات المساعدة"
 
-#: languages/source/yaxii-product-workspace.js:205
+#: languages/source/yaxii-product-workspace.js:213
 msgid "Hidden"
 msgstr "مخفي"
 
-#: languages/source/yaxii-product-workspace.js:206
+#: languages/source/yaxii-product-workspace.js:214
 msgid "Hide extended"
 msgstr "إخفاء الخيارات الموسعة"
 
-#: languages/source/yaxii-product-workspace.js:207
+#: languages/source/yaxii-product-workspace.js:215
 msgid "Hide inline hints in"
 msgstr "إخفاء التلميحات المضمنة في"
 
-#: languages/source/yaxii-product-workspace.js:208
+#: languages/source/yaxii-product-workspace.js:216
 msgid "Hide navigation and metrics when the workspace opens."
 msgstr "إخفاء التنقل والمقاييس عند فتح مساحة العمل."
 
-#: languages/source/yaxii-product-workspace.js:209
+#: languages/source/yaxii-product-workspace.js:218
 msgid "How queued products are grouped and listed."
 msgstr "كيفية تجميع المنتجات الموجودة في قائمة الانتظار وإدراجها."
 
-#: languages/source/yaxii-product-workspace.js:210
+#: languages/source/yaxii-product-workspace.js:220
 msgid "How the workspace looks on this device."
 msgstr "كيف تبدو مساحة العمل على هذا الجهاز."
 
-#: languages/source/yaxii-product-workspace.js:211
+#: languages/source/yaxii-product-workspace.js:221
 msgid "Image upload failed. Try again."
 msgstr "فشل رفع الصورة. حاول مرة أخرى."
 
-#: languages/source/yaxii-product-workspace.js:212
+#: languages/source/yaxii-product-workspace.js:222
 msgid "Images could not be uploaded."
 msgstr "تعذر رفع الصور."
 
-#: languages/source/yaxii-product-workspace.js:213
+#: languages/source/yaxii-product-workspace.js:223
 msgid "Images"
 msgstr "الصور"
 
-#: languages/source/yaxii-product-workspace.js:214
+#: languages/source/yaxii-product-workspace.js:224
 msgid "In stock"
 msgstr "متوفر في المخزون"
 
-#: languages/source/yaxii-product-workspace.js:215
+#: languages/source/yaxii-product-workspace.js:225
 msgid "Inline “?” explanations on fields and controls. Turn off for a cleaner interface."
 msgstr "شروحات «؟» مضمّنة في الحقول وعناصر التحكم. عطّلها لواجهة أبسط."
 
-#: languages/source/yaxii-product-workspace.js:216
+#: languages/source/yaxii-product-workspace.js:226
 msgid "Inline keyboard hints"
 msgstr "تلميحات لوحة المفاتيح المضمنة"
 
-#: languages/source/yaxii-product-workspace.js:217
+#: languages/source/yaxii-product-workspace.js:227
 msgid "Insert image"
 msgstr "إدراج صورة"
 
-#: languages/source/yaxii-product-workspace.js:218
+#: languages/source/yaxii-product-workspace.js:228
 msgid "Invalid attribute key."
 msgstr "مفتاح السمة غير صالح."
 
-#: languages/source/yaxii-product-workspace.js:219
-msgid "Invalid attribute name."
-msgstr "اسم السمة غير صالح."
-
-#: languages/source/yaxii-product-workspace.js:220
+#: languages/source/yaxii-product-workspace.js:229
 msgid "Invalid attribute position."
 msgstr "موضع السمة غير صالح."
 
-#: languages/source/yaxii-product-workspace.js:221
+#: languages/source/yaxii-product-workspace.js:230
 msgid "Invalid global WooCommerce attribute reference."
 msgstr "مرجع سمة WooCommerce العامة غير صالح."
 
-#: languages/source/yaxii-product-workspace.js:222
+#: languages/source/yaxii-product-workspace.js:231
 msgid "Inventory"
 msgstr "المخزون"
 
-#: languages/source/yaxii-product-workspace.js:223
+#: languages/source/yaxii-product-workspace.js:232
 msgid "Italic"
 msgstr "مائل"
 
-#: languages/source/yaxii-product-workspace.js:224
+#: languages/source/yaxii-product-workspace.js:233
 msgid "Keep the queue in focus mode"
 msgstr "احتفظ بقائمة الانتظار في وضع التركيز"
 
-#: languages/source/yaxii-product-workspace.js:225
+#: languages/source/yaxii-product-workspace.js:234
 msgid "Keep this draft"
 msgstr "احتفظ بهذه المسودة"
 
-#: languages/source/yaxii-product-workspace.js:226
+#: languages/source/yaxii-product-workspace.js:235
 msgid "Keeps the queue in view while you scroll the form."
 msgstr "يبقي قائمة الانتظار ظاهرة أثناء تمرير النموذج."
 
-#: languages/source/yaxii-product-workspace.js:227
+#: languages/source/yaxii-product-workspace.js:236
 msgid "Keyboard shortcuts"
 msgstr "اختصارات لوحة المفاتيح"
 
-#: languages/source/yaxii-product-workspace.js:229
+#: languages/source/yaxii-product-workspace.js:238
 msgid "KPI trends"
 msgstr "اتجاهات مؤشرات الأداء الرئيسية"
 
-#: languages/source/yaxii-product-workspace.js:230
+#: languages/source/yaxii-product-workspace.js:239
 msgid "Landing tab"
 msgstr "علامة تبويب البدء"
 
-#: languages/source/yaxii-product-workspace.js:231
+#: languages/source/yaxii-product-workspace.js:240
 msgid "last 7 days"
 msgstr "آخر 7 أيام"
 
-#: languages/source/yaxii-product-workspace.js:232
+#: languages/source/yaxii-product-workspace.js:241
 msgid "Length"
 msgstr "الطول"
 
-#: languages/source/yaxii-product-workspace.js:233
+#: languages/source/yaxii-product-workspace.js:242
 msgid "Light"
 msgstr "فاتح"
 
-#: languages/source/yaxii-product-workspace.js:234
+#: languages/source/yaxii-product-workspace.js:243
 msgid "Limit each order to one unit."
 msgstr "اقصر كل طلب على وحدة واحدة."
 
-#: languages/source/yaxii-product-workspace.js:235
+#: languages/source/yaxii-product-workspace.js:244
 msgid "Link URL"
 msgstr "مسار الرابط (URL)"
 
-#: languages/source/yaxii-product-workspace.js:236
+#: languages/source/yaxii-product-workspace.js:245
 msgid "Link"
 msgstr "رابط"
 
-#: languages/source/yaxii-product-workspace.js:237
+#: languages/source/yaxii-product-workspace.js:246
 msgid "Load more categories"
 msgstr "تحميل مزيد من التصنيفات"
 
-#: languages/source/yaxii-product-workspace.js:238
+#: languages/source/yaxii-product-workspace.js:247
 msgid "Load more"
 msgstr "تحميل المزيد"
 
-#: languages/source/yaxii-product-workspace.js:239
+#: languages/source/yaxii-product-workspace.js:248
 msgid "Loading categories…"
 msgstr "جارٍ تحميل التصنيفات…"
 
-#: languages/source/yaxii-product-workspace.js:240
+#: languages/source/yaxii-product-workspace.js:249
 msgid "Loading products…"
 msgstr "جارٍ تحميل المنتجات…"
 
-#: languages/source/yaxii-product-workspace.js:241
+#: languages/source/yaxii-product-workspace.js:250
 msgid "Loading recent products"
 msgstr "جارٍ تحميل المنتجات الأخيرة"
 
-#: languages/source/yaxii-product-workspace.js:242
+#: languages/source/yaxii-product-workspace.js:251
 msgid "Loading Yaxii Product Workspace"
 msgstr "جارٍ تحميل Yaxii Product Workspace"
 
-#: languages/source/yaxii-product-workspace.js:243
+#: languages/source/yaxii-product-workspace.js:252
 msgid "loading"
 msgstr "جاري التحميل"
 
-#: languages/source/yaxii-product-workspace.js:244
+#: languages/source/yaxii-product-workspace.js:253
 msgid "Long description"
 msgstr "وصف طويل"
 
-#: languages/source/yaxii-product-workspace.js:245
+#: languages/source/yaxii-product-workspace.js:254
 msgid "Longer lists load more rows before paging."
 msgstr "تقوم القوائم الأطول بتحميل المزيد من الصفوف قبل الترحيل."
 
-#: languages/source/yaxii-product-workspace.js:246
+#: languages/source/yaxii-product-workspace.js:255
 msgid "Main"
 msgstr "الرئيسية"
 
-#: languages/source/yaxii-product-workspace.js:247
+#: languages/source/yaxii-product-workspace.js:256
 msgid "Manage stock"
 msgstr "إدارة المخزون"
 
-#: languages/source/yaxii-product-workspace.js:248
+#: languages/source/yaxii-product-workspace.js:257
 msgid "Managed stock requires a non-negative whole number."
 msgstr "يتطلب المخزون المُدار عددًا صحيحًا غير سالب."
 
-#: languages/source/yaxii-product-workspace.js:249
+#: languages/source/yaxii-product-workspace.js:258
 msgid "Minimizes animations and transitions across the app."
 msgstr "يقلل من الرسوم المتحركة والانتقالات عبر التطبيق."
 
-#: languages/source/yaxii-product-workspace.js:250
+#: languages/source/yaxii-product-workspace.js:259
 msgid "More information"
 msgstr "المزيد من المعلومات"
 
-#: languages/source/yaxii-product-workspace.js:251
+#: languages/source/yaxii-product-workspace.js:261
 msgid "More variation fields"
 msgstr "مزيد من حقول التنويع"
 
-#: languages/source/yaxii-product-workspace.js:252
+#: languages/source/yaxii-product-workspace.js:262
 msgid "Move to trash"
 msgstr "نقل إلى سلة المهملات"
 
-#: languages/source/yaxii-product-workspace.js:253
+#: languages/source/yaxii-product-workspace.js:263
 msgid "multiple allowed"
 msgstr "يُسمح بأكثر من واحد"
 
-#: languages/source/yaxii-product-workspace.js:254
+#: languages/source/yaxii-product-workspace.js:264
 msgid "Name or SKU…"
 msgstr "الاسم أو SKU…"
 
-#: languages/source/yaxii-product-workspace.js:255
+#: languages/source/yaxii-product-workspace.js:265
 msgid "Navigation and on-screen guidance."
 msgstr "التنقل والإرشادات الظاهرة على الشاشة."
 
-#: languages/source/yaxii-product-workspace.js:256
+#: languages/source/yaxii-product-workspace.js:266
 msgid "Navigation"
 msgstr "التنقّل"
 
-#: languages/source/yaxii-product-workspace.js:257
+#: languages/source/yaxii-product-workspace.js:267
 msgid "Needs attention"
 msgstr "يتطلب الانتباه"
 
-#: languages/source/yaxii-product-workspace.js:258
+#: languages/source/yaxii-product-workspace.js:268
 msgid "Newer product changes found"
 msgstr "تم العثور على تغييرات أحدث في المنتج"
 
-#. translators: translators: %s: taxonomy field label.
-#: languages/source/yaxii-product-workspace.js:260
+#. translators: %s: taxonomy field label.
+#: languages/source/yaxii-product-workspace.js:270
 #, js-format
 msgid "No %s found."
 msgstr "لم يتم العثور على %s."
 
-#: languages/source/yaxii-product-workspace.js:261
+#: languages/source/yaxii-product-workspace.js:271
 msgid "No category found."
 msgstr "لم يُعثر على أي تصنيف."
 
-#. translators: translators: %s: product name.
-#: languages/source/yaxii-product-workspace.js:263
+#. translators: %s: product name.
+#: languages/source/yaxii-product-workspace.js:273
 msgid "No changes"
 msgstr "لا تغييرات"
 
-#. translators: translators: 1: successful write count, 2: total final write count.
-#: languages/source/yaxii-product-workspace.js:265
+#. translators: 1: successful write count, 2: total final write count.
+#: languages/source/yaxii-product-workspace.js:275
 msgid "no final writes"
 msgstr "لا توجد عمليات كتابة نهائية"
 
-#: languages/source/yaxii-product-workspace.js:266
+#: languages/source/yaxii-product-workspace.js:276
 msgid "No matching products."
 msgstr "لا توجد منتجات مطابقة."
 
-#: languages/source/yaxii-product-workspace.js:267
+#: languages/source/yaxii-product-workspace.js:277
 msgid "No matching products"
 msgstr "لا توجد منتجات مطابقة"
 
-#: languages/source/yaxii-product-workspace.js:268
+#: languages/source/yaxii-product-workspace.js:278
 msgid "No products yet"
 msgstr "لا توجد أي منتجات حتى الآن"
 
-#: languages/source/yaxii-product-workspace.js:269
+#: languages/source/yaxii-product-workspace.js:279
 msgid "No results."
 msgstr "لا توجد نتائج."
 
-#: languages/source/yaxii-product-workspace.js:270
+#: languages/source/yaxii-product-workspace.js:280
 msgid "No SKU"
 msgstr "من دون SKU"
 
-#: languages/source/yaxii-product-workspace.js:271
+#: languages/source/yaxii-product-workspace.js:281
 msgid "None"
 msgstr "لا شيء"
 
-#: languages/source/yaxii-product-workspace.js:272
+#: languages/source/yaxii-product-workspace.js:282
 msgid "Not scheduled"
 msgstr "غير مجدول"
 
-#: languages/source/yaxii-product-workspace.js:273
+#: languages/source/yaxii-product-workspace.js:283
 msgid "Nothing to save"
 msgstr "لا شيء للحفظ"
 
-#: languages/source/yaxii-product-workspace.js:274
+#: languages/source/yaxii-product-workspace.js:284
 msgid "Numbered list"
 msgstr "قائمة مرقّمة"
 
-#: languages/source/yaxii-product-workspace.js:275
+#: languages/source/yaxii-product-workspace.js:285
 msgid "On backorder"
 msgstr "متاح للطلب المسبق"
 
-#: languages/source/yaxii-product-workspace.js:276
+#: languages/source/yaxii-product-workspace.js:286
 msgid "One or two lines shown near the price…"
 msgstr "سطر أو سطران يظهران بالقرب من السعر…"
 
-#: languages/source/yaxii-product-workspace.js:277
+#: languages/source/yaxii-product-workspace.js:287
 msgid "Open an existing WooCommerce product or prepare a new simple-product draft."
 msgstr "افتح منتج WooCommerce موجودًا أو جهّز مسودة منتج بسيط جديد."
 
-#: languages/source/yaxii-product-workspace.js:278
+#: languages/source/yaxii-product-workspace.js:288
 msgid "Open command menu"
 msgstr "فتح قائمة الأوامر"
 
-#: languages/source/yaxii-product-workspace.js:279
+#: languages/source/yaxii-product-workspace.js:289
 msgid "Open"
 msgstr "فتح"
 
-#: languages/source/yaxii-product-workspace.js:280
+#: languages/source/yaxii-product-workspace.js:290
 msgid "Operation status filters"
 msgstr "مرشحات حالات العمليات"
 
-#: languages/source/yaxii-product-workspace.js:281
+#: languages/source/yaxii-product-workspace.js:291
 msgid "Operation was not reconciled"
 msgstr "لم يتم التحقق من العملية"
 
-#: languages/source/yaxii-product-workspace.js:282
+#: languages/source/yaxii-product-workspace.js:292
 msgid "Optimized for fast, repetitive data entry."
 msgstr "محسّن لإدخال البيانات المتكرر بسرعة."
 
-#: languages/source/yaxii-product-workspace.js:283
-msgid "Optional discounted price. Leave empty for no sale. Schedule a window under Extended options."
-msgstr "سعر تخفيض اختياري. اتركه فارغًا إذا لم يوجد تخفيض، أو حدّد فترة ضمن الخيارات الموسعة."
-
-#: languages/source/yaxii-product-workspace.js:284
-msgid "Optional"
-msgstr "اختياري"
-
-#: languages/source/yaxii-product-workspace.js:285
+#: languages/source/yaxii-product-workspace.js:294
 msgid "Options must be unique and non-empty."
 msgstr "يجب أن تكون الخيارات فريدة وغير فارغة."
 
-#. translators: translators: %s: maximum image count.
-#: languages/source/yaxii-product-workspace.js:287
+#. translators: %s: maximum image count.
+#: languages/source/yaxii-product-workspace.js:296
 #, js-format
 msgid "or click to browse · up to %s image · first image becomes the thumbnail"
 msgid_plural "or click to browse · up to %s images · first image becomes the thumbnail"
@@ -1723,451 +1684,443 @@ msgstr[3] "أو انقر للتصفح · حتى %s صور · تصبح الصور
 msgstr[4] "أو انقر للتصفح · حتى %s صورةً · تصبح الصورة الأولى الصورة المصغرة"
 msgstr[5] "أو انقر للتصفح · حتى %s صورة · تصبح الصورة الأولى الصورة المصغرة"
 
-#: languages/source/yaxii-product-workspace.js:288
+#: languages/source/yaxii-product-workspace.js:297
 msgid "Out of stock"
 msgstr "غير متوفر في المخزون"
 
-#: languages/source/yaxii-product-workspace.js:289
+#: languages/source/yaxii-product-workspace.js:298
 msgid "Out"
 msgstr "نافد"
 
-#. translators: translators: %s: maximum combination count.
-#: languages/source/yaxii-product-workspace.js:291
+#. translators: %s: maximum combination count.
+#: languages/source/yaxii-product-workspace.js:300
 #, js-format
 msgid "Over the %s-combination limit. Remove options to continue."
 msgstr "تم تجاوز حد %s من التركيبات. أزل بعض الخيارات للمتابعة."
 
-#: languages/source/yaxii-product-workspace.js:292
+#: languages/source/yaxii-product-workspace.js:301
 msgctxt "Product status"
 msgid "Pending review"
 msgstr "بانتظار المراجعة"
 
-#: languages/source/yaxii-product-workspace.js:293
+#: languages/source/yaxii-product-workspace.js:302
 msgctxt "Operation status"
 msgid "Pending"
 msgstr "قيد الانتظار"
 
-#: languages/source/yaxii-product-workspace.js:294
+#: languages/source/yaxii-product-workspace.js:303
 msgid "Pick any level of the tree. Selecting a subcategory does not automatically add its parent in WooCommerce."
 msgstr "اختر أي مستوى من الشجرة. لا يؤدي تحديد تصنيف فرعي إلى إضافة التصنيف الأب تلقائيًا في WooCommerce."
 
-#: languages/source/yaxii-product-workspace.js:295
+#: languages/source/yaxii-product-workspace.js:304
 msgid "Pick attributes, preview how many combinations they produce, then set the price, SKU, stock, and image on each concrete variation."
 msgstr "اختر السمات، وعاين عدد التركيبات الناتجة، ثم حدّد السعر ورمز SKU والمخزون والصورة لكل تنويع."
 
-#: languages/source/yaxii-product-workspace.js:296
+#: languages/source/yaxii-product-workspace.js:305
 msgid "Pick the store terms used on this product."
 msgstr "اختر عناصر المتجر المستخدمة في هذا المنتج."
 
-#: languages/source/yaxii-product-workspace.js:297
+#: languages/source/yaxii-product-workspace.js:306
 msgid "Preferences were not saved"
 msgstr "لم يتم حفظ التفضيلات"
 
-#: languages/source/yaxii-product-workspace.js:298
+#: languages/source/yaxii-product-workspace.js:307
 msgid "Preferences"
 msgstr "التفضيلات"
 
-#. translators: translators: %s: source product name.
-#: languages/source/yaxii-product-workspace.js:300
+#. translators: %s: source product name.
+#: languages/source/yaxii-product-workspace.js:309
 #, js-format
 msgid "Prefilled from “%s”. No product was created."
 msgstr "مملوء مسبقًا من \"%s\". لم يتم إنشاء أي منتج."
 
-#: languages/source/yaxii-product-workspace.js:301
+#: languages/source/yaxii-product-workspace.js:310
 msgid "Preview"
 msgstr "معاينة"
 
-#: languages/source/yaxii-product-workspace.js:302
+#: languages/source/yaxii-product-workspace.js:311
 msgid "Price, SKU, and stock live on each combination"
 msgstr "يُحدّد السعر ورمز SKU والمخزون لكل تركيبة"
 
-#. translators: translators: %s: variation count.
-#: languages/source/yaxii-product-workspace.js:304
+#. translators: %s: variation count.
+#: languages/source/yaxii-product-workspace.js:313
 msgid "Price, SKU, stock, and image belong to each concrete WooCommerce combination."
 msgstr "يخص السعر ورمز SKU والمخزون والصورة كل تركيبة WooCommerce محددة."
 
-#: languages/source/yaxii-product-workspace.js:305
+#: languages/source/yaxii-product-workspace.js:314
 msgid "Price"
 msgstr "السعر"
 
-#: languages/source/yaxii-product-workspace.js:306
-msgid "Pricing & stock"
-msgstr "التسعير والمخزون"
-
-#: languages/source/yaxii-product-workspace.js:307
+#: languages/source/yaxii-product-workspace.js:316
 msgid "Product actions"
 msgstr "إجراءات المنتج"
 
-#: languages/source/yaxii-product-workspace.js:308
+#: languages/source/yaxii-product-workspace.js:317
 msgid "Product could not be opened."
 msgstr "لا يمكن فتح المنتج."
 
-#: languages/source/yaxii-product-workspace.js:309
+#: languages/source/yaxii-product-workspace.js:318
 msgid "Product could not be opened"
 msgstr "لا يمكن فتح المنتج"
 
-#: languages/source/yaxii-product-workspace.js:310
+#: languages/source/yaxii-product-workspace.js:319
 msgid "Product creation is unavailable"
 msgstr "إنشاء المنتج غير متاح"
 
-#: languages/source/yaxii-product-workspace.js:311
+#: languages/source/yaxii-product-workspace.js:320
 msgid "Product defaults"
 msgstr "إعدادات المنتجات الافتراضية"
 
-#: languages/source/yaxii-product-workspace.js:312
+#: languages/source/yaxii-product-workspace.js:321
 msgid "Product entry"
 msgstr "إدخال المنتجات"
 
-#. translators: translators: %s: image position.
-#: languages/source/yaxii-product-workspace.js:314
+#. translators: %s: image position.
+#: languages/source/yaxii-product-workspace.js:323
 #, js-format
 msgid "Product image %s"
 msgstr "صورة المنتج %s"
 
-#: languages/source/yaxii-product-workspace.js:315
+#: languages/source/yaxii-product-workspace.js:324
 msgid "Product images"
 msgstr "صور المنتج"
 
-#: languages/source/yaxii-product-workspace.js:316
+#: languages/source/yaxii-product-workspace.js:325
 msgid "Product is not available"
 msgstr "المنتج غير متوفر"
 
-#: languages/source/yaxii-product-workspace.js:317
+#: languages/source/yaxii-product-workspace.js:326
 msgid "Product moved to trash"
 msgstr "تم نقل المنتج إلى سلة المهملات"
 
-#: languages/source/yaxii-product-workspace.js:318
+#: languages/source/yaxii-product-workspace.js:327
 msgid "Product name is required"
 msgstr "اسم المنتج مطلوب"
 
-#: languages/source/yaxii-product-workspace.js:319
+#: languages/source/yaxii-product-workspace.js:328
 msgid "Product name"
 msgstr "اسم المنتج"
 
-#: languages/source/yaxii-product-workspace.js:320
+#: languages/source/yaxii-product-workspace.js:329
 msgid "Product needs recovery"
 msgstr "يحتاج المنتج إلى الاسترداد"
 
-#: languages/source/yaxii-product-workspace.js:321
+#: languages/source/yaxii-product-workspace.js:330
 msgid "Product saved"
 msgstr "تم حفظ المنتج"
 
-#: languages/source/yaxii-product-workspace.js:322
+#: languages/source/yaxii-product-workspace.js:331
 msgid "Product status"
 msgstr "حالة المنتج"
 
-#: languages/source/yaxii-product-workspace.js:323
+#: languages/source/yaxii-product-workspace.js:332
 msgid "Product type"
 msgstr "نوع المنتج"
 
-#: languages/source/yaxii-product-workspace.js:324
+#: languages/source/yaxii-product-workspace.js:333
 msgid "Product updated"
 msgstr "تم تحديث المنتج"
 
-#: languages/source/yaxii-product-workspace.js:325
+#: languages/source/yaxii-product-workspace.js:334
 msgid "Product was not saved"
 msgstr "لم يتم حفظ المنتج"
 
-#: languages/source/yaxii-product-workspace.js:326
+#: languages/source/yaxii-product-workspace.js:335
 msgid "Product was not trashed"
 msgstr "لم يتم نقل المنتج إلى المهملات"
 
-#: languages/source/yaxii-product-workspace.js:327
+#: languages/source/yaxii-product-workspace.js:336
 msgid "Product was not updated"
 msgstr "لم يتم تحديث المنتج"
 
-#: languages/source/yaxii-product-workspace.js:328
+#: languages/source/yaxii-product-workspace.js:337
 msgid "Product"
 msgstr "المنتج"
 
-#: languages/source/yaxii-product-workspace.js:329
+#: languages/source/yaxii-product-workspace.js:338
 msgid "Products could not be loaded."
 msgstr "لا يمكن تحميل المنتجات."
 
-#: languages/source/yaxii-product-workspace.js:330
+#: languages/source/yaxii-product-workspace.js:339
 msgid "Publish state used for new products."
 msgstr "حالة النشر المستخدمة للمنتجات الجديدة."
 
-#: languages/source/yaxii-product-workspace.js:331
+#: languages/source/yaxii-product-workspace.js:340
 msgctxt "Operation status"
 msgid "Published"
 msgstr "منشور"
 
-#: languages/source/yaxii-product-workspace.js:332
+#: languages/source/yaxii-product-workspace.js:341
 msgctxt "Product status"
 msgid "Published"
 msgstr "منشور"
 
-#: languages/source/yaxii-product-workspace.js:333
+#: languages/source/yaxii-product-workspace.js:342
 msgid "Published"
 msgstr "منشور"
 
-#: languages/source/yaxii-product-workspace.js:334
+#: languages/source/yaxii-product-workspace.js:343
 msgid "Publishing"
 msgstr "النشر"
 
-#: languages/source/yaxii-product-workspace.js:335
+#: languages/source/yaxii-product-workspace.js:344
 msgid "Qty"
 msgstr "الكمية"
 
-#: languages/source/yaxii-product-workspace.js:336
+#: languages/source/yaxii-product-workspace.js:346
 msgid "Queue display"
 msgstr "عرض قائمة الانتظار"
 
-#: languages/source/yaxii-product-workspace.js:337
+#: languages/source/yaxii-product-workspace.js:347
 msgid "Queue is empty"
 msgstr "قائمة الانتظار فارغة"
 
-#: languages/source/yaxii-product-workspace.js:338
+#: languages/source/yaxii-product-workspace.js:348
 msgid "Queue item was not dismissed"
 msgstr "لم تتم إزالة عنصر قائمة الانتظار"
 
-#: languages/source/yaxii-product-workspace.js:339
+#: languages/source/yaxii-product-workspace.js:349
 msgid "Queue unavailable"
 msgstr "قائمة الانتظار غير متاحة"
 
-#: languages/source/yaxii-product-workspace.js:340
+#: languages/source/yaxii-product-workspace.js:350
 msgid "Queue"
 msgstr "قائمة الانتظار"
 
-#: languages/source/yaxii-product-workspace.js:341
+#: languages/source/yaxii-product-workspace.js:351
 msgid "Quote"
 msgstr "اقتباس"
 
-#: languages/source/yaxii-product-workspace.js:342
+#: languages/source/yaxii-product-workspace.js:352
 msgid "Recent operations could not be loaded. Your WooCommerce products are unchanged."
 msgstr "تعذر تحميل العمليات الأخيرة. منتجات WooCommerce الخاصة بك لم تتغير."
 
-#: languages/source/yaxii-product-workspace.js:343
+#: languages/source/yaxii-product-workspace.js:353
 msgid "Recent operations"
 msgstr "العمليات الأخيرة"
 
-#: languages/source/yaxii-product-workspace.js:344
+#: languages/source/yaxii-product-workspace.js:354
 msgid "Recent products"
 msgstr "المنتجات الأخيرة"
 
-#: languages/source/yaxii-product-workspace.js:345
+#: languages/source/yaxii-product-workspace.js:355
 msgid "Recent"
 msgstr "الأحدث"
 
-#: languages/source/yaxii-product-workspace.js:346
+#: languages/source/yaxii-product-workspace.js:356
 msgid "Reconcile"
 msgstr "التحقق"
 
-#: languages/source/yaxii-product-workspace.js:347
+#: languages/source/yaxii-product-workspace.js:357
 msgid "Redo"
 msgstr "إلغاء التراجع"
 
-#: languages/source/yaxii-product-workspace.js:348
+#: languages/source/yaxii-product-workspace.js:358
 msgid "Reduce motion"
 msgstr "تقليل الحركة"
 
-#: languages/source/yaxii-product-workspace.js:349
+#: languages/source/yaxii-product-workspace.js:359
 msgid "Regenerate combinations"
 msgstr "إعادة إنشاء التركيبات"
 
-#: languages/source/yaxii-product-workspace.js:350
+#: languages/source/yaxii-product-workspace.js:360
 msgid "Regular price"
 msgstr "السعر الاعتيادي"
 
-#: languages/source/yaxii-product-workspace.js:351
+#: languages/source/yaxii-product-workspace.js:361
 msgid "Relative timestamps"
 msgstr "الطوابع الزمنية النسبية"
 
-#: languages/source/yaxii-product-workspace.js:352
+#: languages/source/yaxii-product-workspace.js:362
 msgid "Reload latest"
 msgstr "إعادة تحميل أحدث نسخة"
 
-#. translators: translators: %s: category name or ID.
-#: languages/source/yaxii-product-workspace.js:354
+#. translators: %s: category name or ID.
+#: languages/source/yaxii-product-workspace.js:364
 #, js-format
 msgid "Remove %s"
 msgstr "إزالة %s"
 
-#. translators: translators: %s: selected option count.
-#: languages/source/yaxii-product-workspace.js:356
+#. translators: %s: selected option count.
+#: languages/source/yaxii-product-workspace.js:366
 msgid "Remove attribute"
 msgstr "إزالة السمة"
 
-#: languages/source/yaxii-product-workspace.js:357
+#: languages/source/yaxii-product-workspace.js:367
 msgid "Remove from queue"
 msgstr "إزالة من قائمة الانتظار"
 
-#: languages/source/yaxii-product-workspace.js:358
+#: languages/source/yaxii-product-workspace.js:368
 msgid "Remove image"
 msgstr "إزالة صورة"
 
-#: languages/source/yaxii-product-workspace.js:359
+#: languages/source/yaxii-product-workspace.js:369
 msgid "Remove this queue entry?"
 msgstr "هل تريد إزالة إدخال قائمة الانتظار هذا؟"
 
-#: languages/source/yaxii-product-workspace.js:360
+#: languages/source/yaxii-product-workspace.js:370
 msgid "Remove variation image"
 msgstr "إزالة صورة التنويع"
 
-#: languages/source/yaxii-product-workspace.js:361
+#: languages/source/yaxii-product-workspace.js:371
 msgid "Remove"
 msgstr "إزالة"
 
-#: languages/source/yaxii-product-workspace.js:362
+#: languages/source/yaxii-product-workspace.js:372
 msgid "Repeat after Save & Next"
 msgstr "التكرار بعد «حفظ والتالي»"
 
-#: languages/source/yaxii-product-workspace.js:363
+#: languages/source/yaxii-product-workspace.js:373
 msgid "Replace variation image"
 msgstr "استبدال صورة التنويع"
 
-#: languages/source/yaxii-product-workspace.js:364
+#: languages/source/yaxii-product-workspace.js:374
 msgid "Reset changes"
 msgstr "إعادة ضبط التغييرات"
 
-#: languages/source/yaxii-product-workspace.js:365
+#: languages/source/yaxii-product-workspace.js:375
 msgid "Reset to defaults"
 msgstr "إعادة تعيين إلى الإعدادات الافتراضية"
 
-#: languages/source/yaxii-product-workspace.js:366
+#: languages/source/yaxii-product-workspace.js:376
 msgid "Restores preferences and product defaults. Your products stay untouched."
 msgstr "يعيد التفضيلات وإعدادات المنتجات الافتراضية، من دون تغيير منتجاتك."
 
-#: languages/source/yaxii-product-workspace.js:367
+#: languages/source/yaxii-product-workspace.js:377
 msgid "Retry safely"
 msgstr "أعد المحاولة بأمان"
 
-#: languages/source/yaxii-product-workspace.js:368
+#: languages/source/yaxii-product-workspace.js:378
 msgid "Retry the partial operation from the queue."
 msgstr "أعد محاولة العملية الجزئية من قائمة الانتظار."
 
-#: languages/source/yaxii-product-workspace.js:369
+#: languages/source/yaxii-product-workspace.js:379
 msgid "Retry was not started"
 msgstr "إعادة المحاولة لم تبدأ"
 
-#: languages/source/yaxii-product-workspace.js:370
+#: languages/source/yaxii-product-workspace.js:380
 msgid "Reuse an attribute that already exists in your WooCommerce store, with its real terms."
 msgstr "أعد استخدام سمة موجودة بالفعل في متجر WooCommerce الخاص بك، بشروطها الحقيقية."
 
-#: languages/source/yaxii-product-workspace.js:371
+#: languages/source/yaxii-product-workspace.js:381
 msgid "Review the current product operation queue."
 msgstr "راجع قائمة انتظار عمليات المنتجات الحالية."
 
-#: languages/source/yaxii-product-workspace.js:372
+#: languages/source/yaxii-product-workspace.js:382
 msgid "Review the product fields and try again."
 msgstr "راجع حقول المنتج وحاول مرة أخرى."
 
-#: languages/source/yaxii-product-workspace.js:373
+#: languages/source/yaxii-product-workspace.js:383
 msgid "Rich text · drag images in"
 msgstr "نص منسق · اسحب الصور إلى الداخل"
 
-#: languages/source/yaxii-product-workspace.js:374
+#: languages/source/yaxii-product-workspace.js:384
 msgid "Rich text and images supported"
 msgstr "يدعم النص المنسق والصور"
 
-#: languages/source/yaxii-product-workspace.js:375
+#: languages/source/yaxii-product-workspace.js:385
 msgid "Rows per page"
 msgstr "الصفوف لكل صفحة"
 
-#: languages/source/yaxii-product-workspace.js:376
+#: languages/source/yaxii-product-workspace.js:386
 msgid "Sale price must be valid and cannot exceed the regular price."
 msgstr "يجب أن يكون سعر البيع ساري المفعول ولا يمكن أن يتجاوز السعر العادي."
 
-#: languages/source/yaxii-product-workspace.js:377
+#: languages/source/yaxii-product-workspace.js:387
 msgid "Sale price"
 msgstr "سعر التخفيض"
 
-#: languages/source/yaxii-product-workspace.js:378
-msgid "Sale schedule"
-msgstr "جدولة التخفيض"
-
-#: languages/source/yaxii-product-workspace.js:379
+#: languages/source/yaxii-product-workspace.js:388
 msgid "Save & next"
 msgstr "حفظ والتالي"
 
-#: languages/source/yaxii-product-workspace.js:380
+#: languages/source/yaxii-product-workspace.js:389
 msgid "Save draft"
 msgstr "حفظ المسودة"
 
-#: languages/source/yaxii-product-workspace.js:381
+#: languages/source/yaxii-product-workspace.js:390
 msgid "Save outcome pending"
 msgstr "نتيجة الحفظ قيد الانتظار"
 
-#: languages/source/yaxii-product-workspace.js:382
+#: languages/source/yaxii-product-workspace.js:391
 msgid "Save outcome unknown"
 msgstr "نتيجة الحفظ غير معروفة"
 
-#: languages/source/yaxii-product-workspace.js:383
+#: languages/source/yaxii-product-workspace.js:392
 msgid "Saved products and operations appear here."
 msgstr "تظهر هنا المنتجات والعمليات المحفوظة."
 
-#: languages/source/yaxii-product-workspace.js:384
+#: languages/source/yaxii-product-workspace.js:393
 msgid "Saved to current store"
 msgstr "تم الحفظ في المتجر الحالي"
 
-#: languages/source/yaxii-product-workspace.js:385
+#: languages/source/yaxii-product-workspace.js:394
 msgid "Saves this product and clears the form for the next one. Shortcut: Ctrl + Enter."
 msgstr "يحفظ هذا المنتج ويمسح النموذج للمنتج التالي. الاختصار: Ctrl + Enter."
 
-#: languages/source/yaxii-product-workspace.js:386
+#: languages/source/yaxii-product-workspace.js:395
 msgid "Saving…"
 msgstr "جارٍ الحفظ…"
 
-#. translators: translators: %s: taxonomy field label.
-#: languages/source/yaxii-product-workspace.js:388
+#. translators: %s: taxonomy field label.
+#: languages/source/yaxii-product-workspace.js:398
 #, js-format
 msgid "Search %s…"
 msgstr "البحث في %s…"
 
-#: languages/source/yaxii-product-workspace.js:389
+#: languages/source/yaxii-product-workspace.js:399
 msgid "Search actions, pages and preferences…"
 msgstr "البحث في الإجراءات والصفحات والتفضيلات…"
 
-#: languages/source/yaxii-product-workspace.js:390
+#: languages/source/yaxii-product-workspace.js:400
 msgid "Search available workspace actions and preferences."
 msgstr "ابحث عن إجراءات وتفضيلات مساحة العمل المتاحة."
 
-#: languages/source/yaxii-product-workspace.js:391
+#: languages/source/yaxii-product-workspace.js:401
 msgid "Search by product name or SKU…"
 msgstr "البحث حسب اسم المنتج أو SKU…"
 
-#: languages/source/yaxii-product-workspace.js:392
+#: languages/source/yaxii-product-workspace.js:402
 msgid "Search categories…"
 msgstr "البحث في التصنيفات…"
 
-#: languages/source/yaxii-product-workspace.js:393
+#: languages/source/yaxii-product-workspace.js:403
 msgid "Search only"
 msgstr "بحث فقط"
 
-#: languages/source/yaxii-product-workspace.js:394
+#: languages/source/yaxii-product-workspace.js:404
 msgid "Search or jump to…"
 msgstr "البحث أو الانتقال إلى…"
 
-#. translators: translators: %s: taxonomy field label.
-#: languages/source/yaxii-product-workspace.js:396
+#. translators: %s: taxonomy field label.
+#: languages/source/yaxii-product-workspace.js:406
 msgid "Searching…"
 msgstr "البحث…"
 
-#: languages/source/yaxii-product-workspace.js:397
+#: languages/source/yaxii-product-workspace.js:407
 msgid "Secure product identity could not be generated. Product creation was not attempted."
 msgstr "لا يمكن إنشاء هوية المنتج الآمنة. لم تتم محاولة إنشاء المنتج."
 
-#. translators: translators: %s: taxonomy field label.
-#: languages/source/yaxii-product-workspace.js:399
+#. translators: %s: taxonomy field label.
+#: languages/source/yaxii-product-workspace.js:409
 #, js-format
 msgid "Select %s…"
 msgstr "حدد %s…"
 
-#: languages/source/yaxii-product-workspace.js:400
+#: languages/source/yaxii-product-workspace.js:410
 msgid "Select a valid category."
 msgstr "حدد تصنيفًا صالحًا."
 
-#: languages/source/yaxii-product-workspace.js:401
+#: languages/source/yaxii-product-workspace.js:411
 msgid "Select between one and 20 options."
 msgstr "اختر بين خيار واحد و20 خيارًا."
 
-#: languages/source/yaxii-product-workspace.js:402
+#: languages/source/yaxii-product-workspace.js:412
 msgid "Select categories…"
 msgstr "حدد التصنيفات…"
 
-#. translators: translators: %s: maximum option count per attribute.
-#: languages/source/yaxii-product-workspace.js:405
+#. translators: %s: maximum option count per attribute.
+#: languages/source/yaxii-product-workspace.js:415
 #, js-format
 msgid "Separate options with commas. Up to %s option per attribute."
 msgid_plural "Separate options with commas. Up to %s options per attribute."
@@ -2178,494 +2131,546 @@ msgstr[3] "افصل الخيارات بفواصل. حتى %s خيارات لكل
 msgstr[4] "افصل الخيارات بفواصل. حتى %s خيارًا لكل سمة."
 msgstr[5] "افصل الخيارات بفواصل. حتى %s خيار لكل سمة."
 
-#: languages/source/yaxii-product-workspace.js:406
+#: languages/source/yaxii-product-workspace.js:416
 msgid "Set all"
 msgstr "تعيين الكل"
 
-#: languages/source/yaxii-product-workspace.js:407
+#: languages/source/yaxii-product-workspace.js:417
 msgid "Settings & preferences"
 msgstr "الإعدادات والتفضيلات"
 
-#: languages/source/yaxii-product-workspace.js:408
+#: languages/source/yaxii-product-workspace.js:418
 msgid "Settings → Workspace"
 msgstr "الإعدادات → مساحة العمل"
 
-#: languages/source/yaxii-product-workspace.js:409
+#: languages/source/yaxii-product-workspace.js:419
 msgctxt "Main navigation tab"
 msgid "Settings"
 msgstr "الإعدادات"
 
-#: languages/source/yaxii-product-workspace.js:410
+#: languages/source/yaxii-product-workspace.js:420
 msgid "Settings"
 msgstr "الإعدادات"
 
-#: languages/source/yaxii-product-workspace.js:411
+#: languages/source/yaxii-product-workspace.js:422
 msgid "Shipping class"
 msgstr "فئة الشحن"
 
-#: languages/source/yaxii-product-workspace.js:412
+#: languages/source/yaxii-product-workspace.js:423
 msgid "Shipping only"
 msgstr "للشحن فقط"
 
-#: languages/source/yaxii-product-workspace.js:413
+#: languages/source/yaxii-product-workspace.js:424
 msgid "Shipping"
 msgstr "الشحن"
 
-#: languages/source/yaxii-product-workspace.js:414
+#: languages/source/yaxii-product-workspace.js:425
 msgid "Shop & search"
 msgstr "المتجر والبحث"
 
-#: languages/source/yaxii-product-workspace.js:415
+#: languages/source/yaxii-product-workspace.js:426
 msgid "Shop only"
 msgstr "المتجر فقط"
 
-#: languages/source/yaxii-product-workspace.js:416
+#: languages/source/yaxii-product-workspace.js:427
 msgid "Short description"
 msgstr "وصف قصير"
 
-#: languages/source/yaxii-product-workspace.js:417
+#: languages/source/yaxii-product-workspace.js:428
 msgid "Short"
 msgstr "قصير"
 
-#: languages/source/yaxii-product-workspace.js:418
+#: languages/source/yaxii-product-workspace.js:429
 msgid "Shortcuts pause while you type in a field, except save and submit."
 msgstr "تتوقف الاختصارات مؤقتًا أثناء الكتابة في الحقل، باستثناء الحفظ والإرسال."
 
-#: languages/source/yaxii-product-workspace.js:419
+#: languages/source/yaxii-product-workspace.js:430
 msgid "Show key badges on buttons and footers."
 msgstr "إظهار شارات مفاتيح الاختصار على الأزرار والتذييلات."
 
-#: languages/source/yaxii-product-workspace.js:420
+#: languages/source/yaxii-product-workspace.js:431
 msgid "Show recent products beside the form while focused."
 msgstr "إظهار المنتجات الحديثة بجانب النموذج أثناء التركيز."
 
-#: languages/source/yaxii-product-workspace.js:421
+#: languages/source/yaxii-product-workspace.js:432
 msgid "Show sparklines and deltas on the metric strip."
 msgstr "إظهار الرسوم المصغرة والفروق في شريط المؤشرات."
 
-#: languages/source/yaxii-product-workspace.js:423
+#: languages/source/yaxii-product-workspace.js:434
 msgid "Show this panel"
 msgstr "إظهار هذه اللوحة"
 
-#: languages/source/yaxii-product-workspace.js:424
+#: languages/source/yaxii-product-workspace.js:435
 msgid "Simple product"
 msgstr "منتج بسيط"
 
-#: languages/source/yaxii-product-workspace.js:425
+#: languages/source/yaxii-product-workspace.js:436
 msgid "Simple"
 msgstr "بسيط"
 
-#: languages/source/yaxii-product-workspace.js:426
+#: languages/source/yaxii-product-workspace.js:438
 msgid "Slug"
 msgstr "الاسم اللطيف"
 
-#: languages/source/yaxii-product-workspace.js:427
+#: languages/source/yaxii-product-workspace.js:439
 msgid "Sold individually"
 msgstr "تباع بشكل منفرد"
 
-#: languages/source/yaxii-product-workspace.js:428
+#: languages/source/yaxii-product-workspace.js:440
 msgid "Some variation changes were not saved."
 msgstr "لم تُحفظ بعض تغييرات التنويعات."
 
-#: languages/source/yaxii-product-workspace.js:429
+#: languages/source/yaxii-product-workspace.js:441
 msgid "Some variations were not saved."
 msgstr "لم تُحفظ بعض التنويعات."
 
-#: languages/source/yaxii-product-workspace.js:430
+#: languages/source/yaxii-product-workspace.js:443
 msgid "Standard"
 msgstr "قياسي"
 
-#: languages/source/yaxii-product-workspace.js:431
+#: languages/source/yaxii-product-workspace.js:444
 msgid "Start filling the form first."
 msgstr "ابدأ بملء النموذج أولاً."
 
-#: languages/source/yaxii-product-workspace.js:432
+#: languages/source/yaxii-product-workspace.js:445
 msgid "Start in focus mode"
 msgstr "ابدأ في وضع التركيز"
 
-#: languages/source/yaxii-product-workspace.js:433
+#: languages/source/yaxii-product-workspace.js:446
 msgid "Starts"
 msgstr "يبدأ"
 
-#: languages/source/yaxii-product-workspace.js:434
+#: languages/source/yaxii-product-workspace.js:447
 msgid "Status"
 msgstr "الحالة"
 
-#: languages/source/yaxii-product-workspace.js:435
+#: languages/source/yaxii-product-workspace.js:448
 msgid "Sticky queue panel"
 msgstr "لوحة قائمة انتظار ثابتة"
 
-#: languages/source/yaxii-product-workspace.js:436
+#: languages/source/yaxii-product-workspace.js:449
 msgid "Stock management"
 msgstr "إدارة المخزون"
 
-#: languages/source/yaxii-product-workspace.js:437
+#: languages/source/yaxii-product-workspace.js:450
 msgid "Stock must be a non-negative whole number."
 msgstr "يجب أن يكون المخزون عددًا صحيحًا غير سالب."
 
-#: languages/source/yaxii-product-workspace.js:438
+#: languages/source/yaxii-product-workspace.js:451
 msgid "Stock status"
 msgstr "حالة المخزون"
 
-#: languages/source/yaxii-product-workspace.js:439
-msgid "Stock"
-msgstr "المخزون"
-
-#: languages/source/yaxii-product-workspace.js:440
+#: languages/source/yaxii-product-workspace.js:452
 msgid "Strikethrough"
 msgstr "يتوسطه خط"
 
-#. translators: translators: 1: successful write count, 2: total final write count.
-#: languages/source/yaxii-product-workspace.js:442
+#. translators: 1: successful write count, 2: total final write count.
+#: languages/source/yaxii-product-workspace.js:454
 msgid "Success rate"
 msgstr "معدل النجاح"
 
-#: languages/source/yaxii-product-workspace.js:443
+#: languages/source/yaxii-product-workspace.js:455
 msgid "successful publishes"
 msgstr "عمليات نشر ناجحة"
 
-#: languages/source/yaxii-product-workspace.js:444
+#: languages/source/yaxii-product-workspace.js:456
 msgid "Switch to dark theme"
 msgstr "التبديل إلى المظهر الداكن"
 
-#: languages/source/yaxii-product-workspace.js:445
+#: languages/source/yaxii-product-workspace.js:457
 msgid "Switch to light theme"
 msgstr "التبديل إلى المظهر الفاتح"
 
-#: languages/source/yaxii-product-workspace.js:446
+#: languages/source/yaxii-product-workspace.js:458
 msgid "System"
 msgstr "النظام"
 
-#: languages/source/yaxii-product-workspace.js:447
+#: languages/source/yaxii-product-workspace.js:459
 msgid "Tags"
 msgstr "الوسوم"
 
-#: languages/source/yaxii-product-workspace.js:448
+#: languages/source/yaxii-product-workspace.js:460
 msgid "Tax & organization"
 msgstr "الضرائب والتنظيم"
 
-#: languages/source/yaxii-product-workspace.js:449
+#: languages/source/yaxii-product-workspace.js:461
 msgid "Tax class"
 msgstr "فئة الضريبة"
 
-#: languages/source/yaxii-product-workspace.js:450
+#: languages/source/yaxii-product-workspace.js:463
 msgid "Tax status"
 msgstr "حالة الضريبة"
 
-#: languages/source/yaxii-product-workspace.js:451
+#: languages/source/yaxii-product-workspace.js:464
 msgid "Tax treatment for new products."
 msgstr "المعاملة الضريبية للمنتجات الجديدة."
 
-#: languages/source/yaxii-product-workspace.js:452
+#: languages/source/yaxii-product-workspace.js:465
 msgid "Taxable"
 msgstr "خاضع للضريبة"
 
-#. translators: translators: %s: attribute name.
-#: languages/source/yaxii-product-workspace.js:454
+#. translators: %s: attribute name.
+#: languages/source/yaxii-product-workspace.js:467
 #, js-format
 msgid "Terms for %s could not be loaded."
 msgstr "تعذر تحميل عناصر %s."
 
-#: languages/source/yaxii-product-workspace.js:455
+#: languages/source/yaxii-product-workspace.js:468
 msgid "The cursor moves to the name field when the workspace loads."
 msgstr "ينتقل المؤشر إلى حقل الاسم عند تحميل مساحة العمل."
 
-#: languages/source/yaxii-product-workspace.js:456
+#: languages/source/yaxii-product-workspace.js:469
 msgid "The form was kept. Submit again to reconcile without creating a duplicate."
 msgstr "تم الاحتفاظ بالنموذج. أرسله مرة أخرى للتحقق من العملية من دون إنشاء نسخة مكررة."
 
-#: languages/source/yaxii-product-workspace.js:457
+#: languages/source/yaxii-product-workspace.js:470
 msgid "The image could not be uploaded."
 msgstr "تعذّر رفع الصورة."
 
-#: languages/source/yaxii-product-workspace.js:458
+#: languages/source/yaxii-product-workspace.js:471
 msgid "The latest product could not be loaded."
 msgstr "تعذر تحميل أحدث منتج."
 
-#. translators: translators: %s: maximum combination count.
-#: languages/source/yaxii-product-workspace.js:460
+#. translators: %s: maximum combination count.
+#: languages/source/yaxii-product-workspace.js:473
 #, js-format
 msgid "The plan exceeds %s combinations."
 msgstr "تتجاوز الخطة %s من التركيبات."
 
-#. translators: translators: %s: source product name.
-#: languages/source/yaxii-product-workspace.js:462
+#. translators: %s: source product name.
+#: languages/source/yaxii-product-workspace.js:475
 msgid "The product could not be loaded."
 msgstr "لا يمكن تحميل المنتج."
 
-#: languages/source/yaxii-product-workspace.js:463
+#: languages/source/yaxii-product-workspace.js:476
 msgid "The Product Workspace assets are unavailable. Rebuild the plugin frontend."
 msgstr "ملفات مساحة عمل المنتجات غير متاحة. أعد بناء واجهة الإضافة."
 
-#: languages/source/yaxii-product-workspace.js:464
+#: languages/source/yaxii-product-workspace.js:477
 msgid "The server request failed."
 msgstr "فشل طلب الخادم."
 
-#: languages/source/yaxii-product-workspace.js:465
+#: languages/source/yaxii-product-workspace.js:478
 msgid "The server response was not received."
 msgstr "لم يتم تلقي استجابة الخادم."
 
-#: languages/source/yaxii-product-workspace.js:466
+#: languages/source/yaxii-product-workspace.js:479
 msgid "The server returned an invalid response."
 msgstr "أرجع الخادم استجابة غير صالحة."
 
-#: languages/source/yaxii-product-workspace.js:467
+#: languages/source/yaxii-product-workspace.js:480
 msgid "The server returned invalid bootstrap data."
 msgstr "قام الخادم بإرجاع بيانات تمهيد غير صالحة."
 
-#: languages/source/yaxii-product-workspace.js:468
+#: languages/source/yaxii-product-workspace.js:481
 msgid "The server returned invalid data."
 msgstr "قام الخادم بإرجاع بيانات غير صالحة."
 
-#: languages/source/yaxii-product-workspace.js:469
+#: languages/source/yaxii-product-workspace.js:482
 msgid "The variable-product plan is invalid."
 msgstr "خطة المنتج المتغير غير صالحة."
 
-#: languages/source/yaxii-product-workspace.js:470
+#: languages/source/yaxii-product-workspace.js:483
 msgid "The WordPress host configuration is unavailable."
 msgstr "تكوين المضيف WordPress غير متاح."
 
-#: languages/source/yaxii-product-workspace.js:471
+#: languages/source/yaxii-product-workspace.js:484
 msgid "Theme & density"
 msgstr "المظهر والكثافة"
 
-#: languages/source/yaxii-product-workspace.js:472
+#: languages/source/yaxii-product-workspace.js:485
 msgid "Theme"
 msgstr "المظهر"
 
-#. translators: translators: %s: product name.
-#: languages/source/yaxii-product-workspace.js:474
+#. translators: %s: product name.
+#: languages/source/yaxii-product-workspace.js:487
 #, js-format
 msgid "This moves “%s” to WooCommerce trash. It is different from removing an entry from recent operations."
 msgstr "يؤدي هذا إلى نقل \"%s\" إلى سلة المهملات WooCommerce. وهو يختلف عن إزالة إدخال من العمليات الأخيرة."
 
-#: languages/source/yaxii-product-workspace.js:475
+#: languages/source/yaxii-product-workspace.js:488
 msgid "This operation does not have a WooCommerce product result to open."
 msgstr "لا تحتوي هذه العملية على نتيجة منتج WooCommerce لفتحها."
 
-#: languages/source/yaxii-product-workspace.js:476
+#: languages/source/yaxii-product-workspace.js:489
 msgid "This product operation is unavailable."
 msgstr "عملية المنتج هذه غير متوفرة."
 
-#: languages/source/yaxii-product-workspace.js:477
+#: languages/source/yaxii-product-workspace.js:490
 msgid "Today"
 msgstr "اليوم"
 
-#: languages/source/yaxii-product-workspace.js:478
+#: languages/source/yaxii-product-workspace.js:491
 msgid "Track inventory levels by default."
 msgstr "تتبع مستويات المخزون بشكل افتراضي."
 
-#: languages/source/yaxii-product-workspace.js:479
+#: languages/source/yaxii-product-workspace.js:492
 msgid "Trash this WooCommerce product?"
 msgstr "هل تريد نقل منتج WooCommerce هذا إلى سلة المهملات؟"
 
-#: languages/source/yaxii-product-workspace.js:480
+#: languages/source/yaxii-product-workspace.js:493
 msgid "Trash"
 msgstr "سلة المهملات"
 
-#: languages/source/yaxii-product-workspace.js:481
+#: languages/source/yaxii-product-workspace.js:494
 msgid "Type options — S, M, L then Enter"
 msgstr "اكتب الخيارات — S، M، L ثم اضغط Enter"
 
-#: languages/source/yaxii-product-workspace.js:482
+#: languages/source/yaxii-product-workspace.js:495
 msgid "unavailable"
 msgstr "غير متاح"
 
-#: languages/source/yaxii-product-workspace.js:483
+#: languages/source/yaxii-product-workspace.js:496
 msgid "Underline"
 msgstr "تحته خط"
 
-#: languages/source/yaxii-product-workspace.js:484
+#: languages/source/yaxii-product-workspace.js:497
 msgid "Undo delete"
 msgstr "التراجع عن الحذف"
 
-#: languages/source/yaxii-product-workspace.js:485
+#: languages/source/yaxii-product-workspace.js:498
 msgid "Undo last delete"
 msgstr "التراجع عن الحذف الأخير"
 
-#: languages/source/yaxii-product-workspace.js:486
+#: languages/source/yaxii-product-workspace.js:499
 msgid "Undo"
 msgstr "تراجع"
 
-#: languages/source/yaxii-product-workspace.js:487
-msgid "Units on hand. Entering a quantity enables WooCommerce stock management for this product."
-msgstr "الوحدات في متناول اليد. يؤدي إدخال الكمية إلى تمكين إدارة مخزون WooCommerce لهذا المنتج."
-
-#: languages/source/yaxii-product-workspace.js:488
+#: languages/source/yaxii-product-workspace.js:500
 msgid "units"
 msgstr "وحدات"
 
-#: languages/source/yaxii-product-workspace.js:489
+#: languages/source/yaxii-product-workspace.js:501
 msgid "Unknown attribute option."
 msgstr "خيار سمة غير معروف."
 
-#: languages/source/yaxii-product-workspace.js:490
+#: languages/source/yaxii-product-workspace.js:502
 msgid "Unknown attribute or option reference."
 msgstr "سمة أو مرجع خيار غير معروف."
 
-#: languages/source/yaxii-product-workspace.js:491
+#: languages/source/yaxii-product-workspace.js:503
 msgid "Unknown"
 msgstr "غير معروف"
 
-#. translators: translators: %s: product name.
-#: languages/source/yaxii-product-workspace.js:493
+#. translators: %s: product name.
+#: languages/source/yaxii-product-workspace.js:505
 #, js-format
 msgid "Unsaved draft · %s"
 msgstr "مسودة غير محفوظة · %s"
 
-#. translators: translators: %s: product name.
-#: languages/source/yaxii-product-workspace.js:495
+#. translators: %s: product name.
+#: languages/source/yaxii-product-workspace.js:507
 msgid "Unsaved draft"
 msgstr "مسودة غير محفوظة"
 
-#: languages/source/yaxii-product-workspace.js:496
+#: languages/source/yaxii-product-workspace.js:508
 msgid "Untitled product"
 msgstr "منتج بدون عنوان"
 
-#: languages/source/yaxii-product-workspace.js:497
+#: languages/source/yaxii-product-workspace.js:509
 msgid "Update product"
 msgstr "تحديث المنتج"
 
-#: languages/source/yaxii-product-workspace.js:498
+#: languages/source/yaxii-product-workspace.js:510
 msgid "Uploaded images were kept."
 msgstr "تم الاحتفاظ بالصور المرفوعة."
 
-#: languages/source/yaxii-product-workspace.js:499
+#: languages/source/yaxii-product-workspace.js:511
 msgid "Uploading image to WordPress…"
 msgstr "جارٍ رفع الصورة إلى WordPress…"
 
-#: languages/source/yaxii-product-workspace.js:500
+#: languages/source/yaxii-product-workspace.js:512
 msgid "Uploading to WordPress…"
 msgstr "جارٍ الرفع إلى WordPress…"
 
-#: languages/source/yaxii-product-workspace.js:501
+#: languages/source/yaxii-product-workspace.js:513
 msgid "Uploading variation image"
 msgstr "جارٍ رفع صورة التنويع"
 
-#: languages/source/yaxii-product-workspace.js:502
+#: languages/source/yaxii-product-workspace.js:514
 msgid "Use at least one attribute for variations."
 msgstr "استخدم سمة واحدة على الأقل للتنويعات."
 
-#: languages/source/yaxii-product-workspace.js:503
+#: languages/source/yaxii-product-workspace.js:515
 msgid "Used for primary buttons and active states."
 msgstr "يستخدم للأزرار الأساسية والحالات النشطة."
 
-#: languages/source/yaxii-product-workspace.js:504
+#: languages/source/yaxii-product-workspace.js:516
 msgid "Validate and save current draft"
 msgstr "التحقق من صحة وحفظ المسودة الحالية"
 
-#: languages/source/yaxii-product-workspace.js:505
+#: languages/source/yaxii-product-workspace.js:517
 msgid "variable"
 msgstr "متغير"
 
-#: languages/source/yaxii-product-workspace.js:506
+#: languages/source/yaxii-product-workspace.js:518
 msgid "Variable"
 msgstr "متغير"
 
-#: languages/source/yaxii-product-workspace.js:507
+#: languages/source/yaxii-product-workspace.js:519
 msgid "Variation image reference is invalid."
 msgstr "مرجع صورة التنويع غير صالح."
 
-#: languages/source/yaxii-product-workspace.js:508
+#: languages/source/yaxii-product-workspace.js:520
 msgid "Variation image. Shown when a shopper picks this exact combination."
 msgstr "صورة التنويع. تظهر عندما يختار المتسوق هذه التركيبة تحديدًا."
 
-#: languages/source/yaxii-product-workspace.js:509
+#: languages/source/yaxii-product-workspace.js:521
 msgid "Variation SKUs must be unique."
 msgstr "يجب أن تكون رموز SKU للتنويعات فريدة."
 
-#: languages/source/yaxii-product-workspace.js:510
+#: languages/source/yaxii-product-workspace.js:522
 msgid "Variations"
 msgstr "التنويعات"
 
-#: languages/source/yaxii-product-workspace.js:511
+#: languages/source/yaxii-product-workspace.js:523
 msgid "View queue"
 msgstr "عرض قائمة الانتظار"
 
-#: languages/source/yaxii-product-workspace.js:512
+#: languages/source/yaxii-product-workspace.js:524
 msgid "Violet"
 msgstr "البنفسجي"
 
-#: languages/source/yaxii-product-workspace.js:513
+#: languages/source/yaxii-product-workspace.js:525
 msgid "Weight"
 msgstr "الوزن"
 
-#: languages/source/yaxii-product-workspace.js:514
+#: languages/source/yaxii-product-workspace.js:526
 msgid "Where products appear in the storefront."
 msgstr "مكان ظهور المنتجات في واجهة المتجر."
 
-#: languages/source/yaxii-product-workspace.js:515
+#: languages/source/yaxii-product-workspace.js:527
 msgid "Where the app opens by default."
 msgstr "حيث يتم فتح التطبيق بشكل افتراضي."
 
-#: languages/source/yaxii-product-workspace.js:516
+#: languages/source/yaxii-product-workspace.js:528
 msgid "Width"
 msgstr "العرض"
 
-#: languages/source/yaxii-product-workspace.js:517
+#: languages/source/yaxii-product-workspace.js:529
 msgid "WooCommerce defaults"
 msgstr "إعدادات WooCommerce الافتراضية"
 
-#: languages/source/yaxii-product-workspace.js:518
+#: languages/source/yaxii-product-workspace.js:530
 msgid "WooCommerce did not return the product."
 msgstr "لم يُرجع WooCommerce المنتج."
 
-#: languages/source/yaxii-product-workspace.js:519
+#: languages/source/yaxii-product-workspace.js:532
 msgid "WooCommerce must be installed and active before this workspace can be used."
 msgstr "يجب تثبيت WooCommerce وتنشيطه قبل استخدام مساحة العمل هذه."
 
-#: languages/source/yaxii-product-workspace.js:520
+#: languages/source/yaxii-product-workspace.js:533
 msgid "WooCommerce tax class for new products."
 msgstr "فئة ضريبة WooCommerce للمنتجات الجديدة."
 
-#: languages/source/yaxii-product-workspace.js:521
+#: languages/source/yaxii-product-workspace.js:534
 msgid "WordPress returned invalid media data."
 msgstr "أرجع WordPress بيانات وسائط غير صالحة."
 
-#: languages/source/yaxii-product-workspace.js:522
+#: languages/source/yaxii-product-workspace.js:535
 msgid "Workspace behavior"
 msgstr "سلوك مساحة العمل"
 
-#: languages/source/yaxii-product-workspace.js:523
+#: languages/source/yaxii-product-workspace.js:536
 msgid "Workspace command menu"
 msgstr "قائمة أوامر مساحة العمل"
 
-#: languages/source/yaxii-product-workspace.js:524
+#: languages/source/yaxii-product-workspace.js:537
 msgid "Workspace unavailable"
 msgstr "مساحة العمل غير متوفرة"
 
-#: languages/source/yaxii-product-workspace.js:525
+#: languages/source/yaxii-product-workspace.js:538
 msgctxt "Keyboard shortcut group"
 msgid "Workspace"
 msgstr "مساحة العمل"
 
-#: languages/source/yaxii-product-workspace.js:526
+#: languages/source/yaxii-product-workspace.js:539
 msgid "Workspace"
 msgstr "مساحة العمل"
 
-#: languages/source/yaxii-product-workspace.js:527
+#: languages/source/yaxii-product-workspace.js:540
 msgid "Write here…"
 msgstr "اكتب هنا…"
 
-#: languages/source/yaxii-product-workspace.js:528
+#: languages/source/yaxii-product-workspace.js:541
 msgid "Yesterday"
 msgstr "أمس"
 
-#: languages/source/yaxii-product-workspace.js:529
+#: languages/source/yaxii-product-workspace.js:542
 msgid "You are not allowed to upload media."
 msgstr "لا تملك صلاحية رفع الوسائط."
 
-#: languages/source/yaxii-product-workspace.js:530
+#: languages/source/yaxii-product-workspace.js:543
 msgid "Your edit was not saved because this product changed after you opened it. Reload the latest values before editing again."
 msgstr "لم يتم حفظ تعديلك لأن هذا المنتج تغير بعد أن فتحته. أعد تحميل أحدث القيم قبل التحرير مرة أخرى."
 
-#: languages/source/yaxii-product-workspace.js:228
+#: languages/source/yaxii-product-workspace.js:237
 msgid "KPI cards"
 msgstr "بطاقات مؤشرات الأداء الرئيسية"
 
-#: languages/source/yaxii-product-workspace.js:422
+#: languages/source/yaxii-product-workspace.js:433
 msgid "Show the metric strip above the product workspace."
 msgstr "إظهار شريط المؤشرات أعلى مساحة عمل المنتجات."
+
+#: languages/source/yaxii-product-workspace.js:56
+msgid "Advanced inventory options"
+msgstr "خيارات المخزون المتقدمة"
+
+#: languages/source/yaxii-product-workspace.js:85
+msgid "auto-from-name"
+msgstr "تلقائي-من-الاسم"
+
+#: languages/source/yaxii-product-workspace.js:135
+msgid "Default workspace mode"
+msgstr "وضع مساحة العمل الافتراضي"
+
+#: languages/source/yaxii-product-workspace.js:217
+msgid "Hide secondary sections you don't use. They stay available in WooCommerce."
+msgstr "أخفِ الأقسام الثانوية التي لا تستخدمها. تظل متاحة في ووكومرس."
+
+#: languages/source/yaxii-product-workspace.js:219
+msgid "How the entry form opens and which secondary sections show."
+msgstr "كيفية فتح نموذج الإدخال والأقسام الثانوية التي تظهر."
+
+#: languages/source/yaxii-product-workspace.js:260
+msgid "More inventory options"
+msgstr "المزيد من خيارات المخزون"
+
+#: languages/source/yaxii-product-workspace.js:293
+msgid "Optional sections"
+msgstr "الأقسام الاختيارية"
+
+#: languages/source/yaxii-product-workspace.js:315
+msgid "Pricing"
+msgstr "التسعير"
+
+#: languages/source/yaxii-product-workspace.js:345
+msgid "Quantity"
+msgstr "الكمية"
+
+#: languages/source/yaxii-product-workspace.js:396
+msgid "Schedule sale"
+msgstr "جدولة التخفيض"
+
+#: languages/source/yaxii-product-workspace.js:421
+msgid "Shipping & dimensions"
+msgstr "الشحن والأبعاد"
+
+#: languages/source/yaxii-product-workspace.js:437
+msgid "SKU field"
+msgstr "حقل رمز المنتج (SKU)"
+
+#: languages/source/yaxii-product-workspace.js:442
+msgid "Standard shows essentials only; Extended opens with every section visible."
+msgstr "يعرض الوضع القياسي العناصر الأساسية فقط، يفتح الوضع الموسّع جميع الأقسام."
+
+#: languages/source/yaxii-product-workspace.js:462
+msgid "Tax details"
+msgstr "تفاصيل الضريبة"
+
+#: languages/source/yaxii-product-workspace.js:531
+msgid "WooCommerce generates this automatically from the product name unless you set it here."
+msgstr "تنشئ ووكومرس هذا تلقائيًا من اسم المنتج ما لم تحدده هنا."
 
 #. Plugin URI of the plugin
 #: yaxii-product-workspace.php
@@ -2686,8 +2691,45 @@ msgstr "الوصف القصير كبير جدًا ولا يمكن حفظه."
 msgid "%1$d combinations exceed the maximum of %2$d supported in a single save."
 msgstr "يتجاوز عدد التركيبات %1$d الحد الأقصى المسموح به وهو %2$d في عملية حفظ واحدة."
 
-#. translators: translators: 1: projected combination count, 2: maximum combination count.
+#. translators: 1: projected combination count, 2: maximum combination count.
 #: languages/source/yaxii-product-workspace.js:11
 #, js-format
 msgid "%1$s combinations exceed the maximum of %2$s supported in a single save."
 msgstr "يتجاوز عدد التركيبات %1$s الحد الأقصى المسموح به وهو %2$s في عملية حفظ واحدة."
+
+#. translators: 1: one-based attribute number, 2: attribute name.
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:81
+#, php-format
+msgid "Attribute %1$d name “%2$s” cannot be used by WooCommerce."
+msgstr "لا يمكن استخدام الاسم «%2$s» للسمة %1$d في WooCommerce."
+
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:129
+msgid "Choose a supported global or custom attribute source."
+msgstr "اختر مصدر سمة عامة أو مخصصة مدعومًا."
+
+#. translators: %d: one-based attribute number.
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:134
+#: languages/source/yaxii-product-workspace.js:76
+#, php-format,js-format
+msgid "Attribute %d needs a name."
+msgstr "تحتاج السمة %d إلى اسم."
+
+#. translators: 1: one-based attribute number, 2: attribute name, 3: character count.
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:142
+#: languages/source/yaxii-product-workspace.js:74
+#, php-format,js-format
+msgid "Attribute %1$d name “%2$s” is %3$d characters; the maximum is 40."
+msgstr "يتكون الاسم «%2$s» للسمة %1$d من %3$d حرفًا؛ الحد الأقصى هو 40."
+
+#. translators: %d: one-based attribute number.
+#: languages/source/yaxii-product-workspace.js:78
+#, js-format
+msgid "Attribute %d needs at least one option."
+msgstr "تحتاج السمة %d إلى خيار واحد على الأقل."
+
+#. translators: 1: one-based attribute number, 2: attribute name.
+#: src/Application/VariableProducts/VariableProductPlanFactory.php:94
+#: languages/source/yaxii-product-workspace.js:72
+#, php-format,js-format
+msgid "Attribute %1$d name “%2$s” duplicates an earlier attribute after normalization."
+msgstr "يكرر الاسم «%2$s» للسمة %1$d سمة سابقة بعد التطبيع."

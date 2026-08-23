@@ -66,7 +66,7 @@ function translatorComment(source, tree, node) {
     const latest = matches.at(-1)?.[0];
     if (latest) comments = [latest];
   }
-  return comments.join("\n").replace(/^\s*\/\*+\s*/u, "/* translators: ")
+  return comments.join("\n").replace(/^\s*\/\*+\s*(?:translators:\s*)?/iu, "/* translators: ")
     .replace(/\s*\*\/\s*$/u, " */");
 }
 
@@ -158,8 +158,7 @@ for (const { comment, name, values } of [...messages.values()].sort((left, right
 const generated = `${lines.join("\n")}\n`;
 if (process.argv.includes("--check")) {
   const current = await readFile(output, "utf8").catch(() => "");
-  const normalizedCurrent = current.replace(/\r\n/gu, "\n");
-  if (normalizedCurrent !== generated) throw new Error("Generated JavaScript translation source is stale. Run npm run i18n:source.");
+  if (current !== generated) throw new Error("Generated JavaScript translation source is stale. Run npm run i18n:source.");
 } else {
   await mkdir(path.dirname(output), { recursive: true });
   await writeFile(output, generated, "utf8");

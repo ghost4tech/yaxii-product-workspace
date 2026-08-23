@@ -69,19 +69,16 @@ export function ProductEntryForm({
       onCombinationsChange={controller.setVariationCombinations}
       onUploadImage={controller.uploadMedia}
       onVariableChange={controller.setIsVariable}
+      onSaleEnd={controller.setSaleEnd}
+      onSaleStart={controller.setSaleStart}
+      onScheduleOpenChange={controller.setScheduleOpen}
+      saleEnd={controller.saleEnd}
+      saleStart={controller.saleStart}
+      scheduleOpen={controller.scheduleOpen}
       typeLocked={controller.editing}
     />
   );
-  const extended = (
-    <ExtendedFields
-      form={form}
-      isVariable={controller.isVariable}
-      onSaleEnd={controller.setSaleEnd}
-      onSaleStart={controller.setSaleStart}
-      saleEnd={controller.saleEnd}
-      saleStart={controller.saleStart}
-    />
-  );
+  const extended = <ExtendedFields form={form} />;
   const descriptions = <DescriptionFields form={form} onUploadImage={controller.uploadMedia} />;
 
   return (

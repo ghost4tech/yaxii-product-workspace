@@ -127,10 +127,7 @@ else {
     }
     const handlePath = path.join(languages, `${domain}-${locale}-yaxii-product-workspace-app.json`);
     const handleJson = await readFile(handlePath, "utf8").catch(() => "");
-    const hashJson = await readFile(jsonPath, "utf8").catch(() => "");
-    if (!handleJson || handleJson !== hashJson) {
-      failures.push(`${locale}: stable script-handle JSON is missing or stale`);
-    }
+    if (handleJson) failures.push(`${locale}: obsolete custom-path handle catalog remains`);
   }
 }
 

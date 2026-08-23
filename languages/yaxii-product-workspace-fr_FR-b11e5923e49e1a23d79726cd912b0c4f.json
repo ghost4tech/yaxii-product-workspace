@@ -1,7 +1,7 @@
 {
-    "translation-revision-date": "2026-08-15T00:10:50+00:00",
+    "translation-revision-date": "2026-08-23T12:07:44+00:00",
     "generator": "WP-CLI\/2.12.0",
-    "source": "assets\/build\/assets\/main-DuGTDa0H.js",
+    "source": "assets\/build\/assets\/main-CeAP1Tqf.js",
     "domain": "messages",
     "locale_data": {
         "messages": {
@@ -58,10 +58,6 @@
             "%s match": [
                 "%s correspondance",
                 "%s correspondances"
-            ],
-            "%s operation": [
-                "%s op\u00e9ration",
-                "%s op\u00e9rations"
             ],
             "%s row": [
                 "%s ligne",
@@ -121,9 +117,6 @@
             ],
             "Add variation image": [
                 "Ajouter une image de variante"
-            ],
-            "Additional categories": [
-                "Cat\u00e9gories suppl\u00e9mentaires"
             ],
             "Adds date headers between queue rows.": [
                 "Ajoute des en-t\u00eates de date entre les lignes de file d\u2019attente."
@@ -386,9 +379,6 @@
             "Duplicate attribute reference.": [
                 "R\u00e9f\u00e9rence d\u2019attribut en double."
             ],
-            "Duplicate attribute.": [
-                "Attribut en double."
-            ],
             "Duplicate combination.": [
                 "Combinaison en double."
             ],
@@ -596,9 +586,6 @@
             "Invalid attribute key.": [
                 "Cl\u00e9 d\u2019attribut non valide."
             ],
-            "Invalid attribute name.": [
-                "Nom d\u2019attribut invalide."
-            ],
             "Invalid attribute position.": [
                 "Position d\u2019attribut invalide."
             ],
@@ -776,12 +763,6 @@
             "Optimized for fast, repetitive data entry.": [
                 "Optimis\u00e9 pour une saisie de donn\u00e9es rapide et r\u00e9p\u00e9titive."
             ],
-            "Optional discounted price. Leave empty for no sale. Schedule a window under Extended options.": [
-                "Prix r\u00e9duit en option. Laisser vide pour aucune vente. Planifiez une fen\u00eatre sous Options \u00e9tendues."
-            ],
-            "Optional": [
-                "Facultatif"
-            ],
             "Options must be unique and non-empty.": [
                 "Les options doivent \u00eatre uniques et non vides."
             ],
@@ -833,9 +814,6 @@
             ],
             "Price": [
                 "Prix"
-            ],
-            "Pricing & stock": [
-                "Prix et stock"
             ],
             "Product actions": [
                 "Actions sur le produit"
@@ -1041,9 +1019,6 @@
             "Sale price": [
                 "Prix promo"
             ],
-            "Sale schedule": [
-                "Calendrier des ventes"
-            ],
             "Save & next": [
                 "Enregistrer et continuer"
             ],
@@ -1207,9 +1182,6 @@
             "Stock status": [
                 "\u00c9tat du stock"
             ],
-            "Stock": [
-                "Stock"
-            ],
             "Strikethrough": [
                 "Barrer"
             ],
@@ -1335,9 +1307,6 @@
             ],
             "Undo": [
                 "Annuler"
-            ],
-            "Units on hand. Entering a quantity enables WooCommerce stock management for this product.": [
-                "Unit\u00e9s disponibles. La saisie d\u2019une quantit\u00e9 permet la gestion du stock WooCommerce pour ce produit."
             ],
             "units": [
                 "unit\u00e9s"
@@ -1468,8 +1437,65 @@
             "Show the metric strip above the product workspace.": [
                 "Afficher la barre d\u2019indicateurs au-dessus de l\u2019espace de travail des produits."
             ],
+            "Advanced inventory options": [
+                "Options d\u2019inventaire avanc\u00e9es"
+            ],
+            "auto-from-name": [
+                "auto-\u00e0-partir-du-nom"
+            ],
+            "Default workspace mode": [
+                "Mode d\u2019espace de travail par d\u00e9faut"
+            ],
+            "Hide secondary sections you don't use. They stay available in WooCommerce.": [
+                "Masquez les sections secondaires que vous n\u2019utilisez pas. Elles restent disponibles dans WooCommerce."
+            ],
+            "How the entry form opens and which secondary sections show.": [
+                "Comment le formulaire de saisie s\u2019ouvre et quelles sections secondaires s\u2019affichent."
+            ],
+            "More inventory options": [
+                "Plus d\u2019options d\u2019inventaire"
+            ],
+            "Optional sections": [
+                "Sections optionnelles"
+            ],
+            "Pricing": [
+                "Tarification"
+            ],
+            "Quantity": [
+                "Quantit\u00e9"
+            ],
+            "Schedule sale": [
+                "Planifier une promotion"
+            ],
+            "Shipping & dimensions": [
+                "Livraison et dimensions"
+            ],
+            "SKU field": [
+                "Champ UGS"
+            ],
+            "Standard shows essentials only; Extended opens with every section visible.": [
+                "Standard affiche uniquement l\u2019essentiel\u00a0; \u00c9tendu ouvre toutes les sections."
+            ],
+            "Tax details": [
+                "D\u00e9tails de la taxe"
+            ],
+            "WooCommerce generates this automatically from the product name unless you set it here.": [
+                "WooCommerce le g\u00e9n\u00e8re automatiquement \u00e0 partir du nom du produit, sauf si vous le d\u00e9finissez ici."
+            ],
             "%1$s combinations exceed the maximum of %2$s supported in a single save.": [
                 "%1$s combinaisons d\u00e9passent le maximum autoris\u00e9 de %2$s pour un seul enregistrement."
+            ],
+            "Attribute %d needs a name.": [
+                "L\u2019attribut %d n\u00e9cessite un nom."
+            ],
+            "Attribute %1$d name \u201c%2$s\u201d is %3$d characters; the maximum is 40.": [
+                "Le nom \u00ab\u00a0%2$s\u00a0\u00bb de l\u2019attribut %1$d contient %3$d caract\u00e8res\u00a0; le maximum est de 40."
+            ],
+            "Attribute %d needs at least one option.": [
+                "L\u2019attribut %d n\u00e9cessite au moins une option."
+            ],
+            "Attribute %1$d name \u201c%2$s\u201d duplicates an earlier attribute after normalization.": [
+                "Le nom \u00ab\u00a0%2$s\u00a0\u00bb de l\u2019attribut %1$d duplique un attribut pr\u00e9c\u00e9dent apr\u00e8s normalisation."
             ]
         }
     }

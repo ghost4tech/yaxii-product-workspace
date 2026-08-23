@@ -1,12 +1,13 @@
 import React from 'react';
-import { Package, Tags, Images, Layers } from 'lucide-react';
+import { Package, Images, Layers } from 'lucide-react';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ImageUpload } from '@/components/ImageUpload';
 import { CategoryTreeSelect } from '@/components/CategoryTreeSelect';
 import { ProductImage } from '@/types/product';
 import { FormSection, FieldShell } from '@/components/entry/FormSection';
-import { cn } from '@/lib/utils';
+import { InventoryFields } from '@/components/entry/InventoryFields';
+import { PricingFields } from '@/components/entry/PricingFields';
 import { HelpTip } from '@/components/ui/help-tip';
 import { VariationsEditor } from '@/components/VariationsEditor';
 import type { VariableAttribute, VariationCombination } from '@/production/domain/variableProducts';
@@ -24,10 +25,16 @@ interface Props {
   onUploadImage: (file: File) => Promise<ProductImage>;
   attributes: VariableAttribute[];
   combinations: VariationCombination[];
-  onAttributesChange: (attributes: VariableAttribute[]) => void;
-  onCombinationsChange: (combinations: VariationCombination[]) => void;
+  onAttributesChange: React.Dispatch<React.SetStateAction<VariableAttribute[]>>;
+  onCombinationsChange: React.Dispatch<React.SetStateAction<VariationCombination[]>>;
   nameRef: React.RefObject<HTMLInputElement>;
   currency?: string;
+  saleEnd?: Date;
+  saleStart?: Date;
+  onSaleEnd: (date?: Date) => void;
+  onSaleStart: (date?: Date) => void;
+  scheduleOpen: boolean;
+  onScheduleOpenChange: (open: boolean) => void;
 }
 
 export const EssentialsFields: React.FC<Props> = ({
@@ -44,6 +51,12 @@ export const EssentialsFields: React.FC<Props> = ({
   onCombinationsChange,
   nameRef,
   currency = '$',
+  saleEnd,
+  saleStart,
+  onSaleEnd,
+  onSaleStart,
+  scheduleOpen,
+  onScheduleOpenChange,
 }) => {
   const typeToggle = (
     <div className="flex items-center gap-1.5">
@@ -83,15 +96,18 @@ export const EssentialsFields: React.FC<Props> = ({
           />
           <FormField
             control={form.control}
-            name="sku"
+            name="slug"
             render={({ field }) => (
               <FormItem className="sm:w-44 space-y-0">
-                <label className="field-label" htmlFor="ypw-product-sku">SKU</label>
+                <label className="field-label flex items-center gap-1 text-muted-foreground" htmlFor="ypw-slug">
+                  {__("Slug", "yaxii-product-workspace")}
+                  <HelpTip side="right">{__("WooCommerce generates this automatically from the product name unless you set it here.", "yaxii-product-workspace")}</HelpTip>
+                </label>
                 <FormControl>
                   <Input
                     {...field}
-                    id="ypw-product-sku"
-                    placeholder="SKU-1024"
+                    id="ypw-slug"
+                    placeholder={__("auto-from-name", "yaxii-product-workspace")}
                     autoComplete="off"
                     className="ctl ctl-input font-mono" dir="ltr"
                   />
@@ -130,102 +146,21 @@ export const EssentialsFields: React.FC<Props> = ({
         />
       </FormSection>
 
-      {!isVariable && <FormSection
-        title={__("Pricing & stock", "yaxii-product-workspace")}
-        icon={Tags}
-      >
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          <FormField
-            control={form.control}
-            name="regularPrice"
-            render={({ field }) => (
-              <FormItem className="space-y-0">
-                <label htmlFor="ypw-product-regular-price" className={cn('field-label', isVariable && 'text-muted-foreground')}>
-                  {__("Price", "yaxii-product-workspace")} {!isVariable && '*'}
-                </label>
-                <FormControl>
-                  <div className={cn('input-group', isVariable && 'opacity-60')}>
-                    <span className="input-affix">{currency}</span>
-                    <input
-                      {...field}
-                      id="ypw-product-regular-price"
-                      type="number"
-                      step="0.01"
-                      inputMode="decimal"
-                      dir="ltr"
-                      placeholder={isVariable ? '—' : '0.00'}
-                      disabled={isVariable}
-                      className="font-mono"
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage className="text-[11px] mt-1" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="salePrice"
-            render={({ field }) => (
-              <FormItem className="space-y-0">
-                <label htmlFor="ypw-product-sale-price" className={cn('field-label flex items-center gap-1.5', isVariable && 'text-muted-foreground')}>
-                  {__("Sale price", "yaxii-product-workspace")} <HelpTip>{__("Optional discounted price. Leave empty for no sale. Schedule a window under Extended options.", "yaxii-product-workspace")}</HelpTip>
-                </label>
-                <FormControl>
-                  <div className={cn('input-group', isVariable && 'opacity-60')}>
-                    <span className="input-affix">{currency}</span>
-                    <input
-                      {...field}
-                      id="ypw-product-sale-price"
-                      type="number"
-                      step="0.01"
-                      inputMode="decimal"
-                      dir="ltr"
-                      placeholder={isVariable ? '—' : '0.00'}
-                      disabled={isVariable}
-                      className="font-mono"
-                    />
-                  </div>
-                </FormControl>
-                <FormMessage className="text-[11px] mt-1" />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="stockQuantity"
-            render={({ field }) => (
-              <FormItem className="col-span-2 sm:col-span-1 space-y-0">
-                <label htmlFor="ypw-product-stock" className={cn('field-label flex items-center gap-1.5', isVariable && 'text-muted-foreground')}>
-                  {__("Stock", "yaxii-product-workspace")} <HelpTip>{__("Units on hand. Entering a quantity enables WooCommerce stock management for this product.", "yaxii-product-workspace")}</HelpTip>
-                </label>
-                <FormControl>
-                  <div className={cn('input-group', isVariable && 'opacity-60')}>
-                    <input
-                      {...field}
-                      onChange={(event) => {
-                        field.onChange(event);
-                        if (event.target.value.trim()) {
-                          form.setValue('manageStock', true, { shouldDirty: true });
-                        }
-                      }}
-                      id="ypw-product-stock"
-                      type="number"
-                      inputMode="numeric"
-                      dir="ltr"
-                      placeholder={isVariable ? '—' : '0'}
-                      disabled={isVariable}
-                      className="font-mono"
-                    />
-                    <span className="input-affix input-affix-end">{__("units", "yaxii-product-workspace")}</span>
-                  </div>
-                </FormControl>
-                <FormMessage className="text-[11px] mt-1" />
-              </FormItem>
-            )}
-          />
-        </div>
-      </FormSection>}
+      {!isVariable && (
+        <PricingFields
+          currency={currency}
+          form={form}
+          isVariable={isVariable}
+          onSaleEnd={onSaleEnd}
+          onSaleStart={onSaleStart}
+          onScheduleOpenChange={onScheduleOpenChange}
+          saleEnd={saleEnd}
+          saleStart={saleStart}
+          scheduleOpen={scheduleOpen}
+        />
+      )}
+
+      {!isVariable && <InventoryFields form={form} />}
 
       {isVariable && <FormSection title={__("Variations", "yaxii-product-workspace")} icon={Layers}
         hint={__("Price, SKU, and stock live on each combination", "yaxii-product-workspace")}

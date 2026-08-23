@@ -101,4 +101,19 @@ describe("Lovable variable editor", () => {
     await user.click(screen.getByRole("button", { name: /generate combinations/i }));
     expect(screen.getAllByPlaceholderText("Price")).toHaveLength(6);
   });
+
+  it("does not generate while any configured attribute is incomplete", async () => {
+    const user = userEvent.setup();
+    renderEditor();
+
+    await user.click(screen.getByRole("button", { name: /custom attribute/i }));
+    fireEvent.change(screen.getByPlaceholderText(/attribute name/i), { target: { value: "Color" } });
+    await user.type(screen.getByPlaceholderText(/type options/i), "Black, White{Enter}");
+    await user.click(screen.getByRole("button", { name: /custom attribute/i }));
+    const options = screen.getAllByPlaceholderText(/type options/i);
+    await user.type(options[1]!, "S, M, L{Enter}");
+
+    expect(screen.getByRole("button", { name: /generate combinations/i })).toBeDisabled();
+    expect(screen.getByRole("alert")).toHaveTextContent("Attribute 2 needs a name.");
+  });
 });

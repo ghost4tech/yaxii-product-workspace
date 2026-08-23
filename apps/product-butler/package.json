@@ -16,6 +16,7 @@
     "check:lines": "node tools/check-production-lines.mjs",
     "check:boundary": "node tools/check-production-boundary.mjs",
     "check:i18n": "node tools/i18n-source.mjs --check && node tools/check-localization-artifacts.mjs",
+    "check:i18n-build": "node tools/check-translation-build.mjs",
     "i18n:source": "node tools/i18n-source.mjs",
     "i18n:map": "node tools/i18n-map.mjs",
     "i18n:finalize": "node tools/i18n-finalize.mjs",
@@ -23,7 +24,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "audit:production": "npm audit --omit=dev",
-    "check": "npm run typecheck && npm run lint && npm run check:lines && npm run check:i18n && npm test && npm run build && npm run check:boundary"
+    "check": "npm run typecheck && npm run lint && npm run check:lines && npm run check:i18n && npm test && npm run build && npm run check:i18n-build && npm run check:boundary"
   },
   "dependencies": {
     "@fontsource-variable/rubik": "5.3.0",

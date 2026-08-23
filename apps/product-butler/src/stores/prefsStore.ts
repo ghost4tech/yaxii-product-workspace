@@ -4,6 +4,8 @@ import { persist } from 'zustand/middleware';
 export type ThemeMode = 'light' | 'dark' | 'system';
 export type Density = 'comfortable' | 'compact';
 export type AccentName = 'graphite' | 'emerald' | 'blue' | 'violet';
+export type WorkspaceMode = 'standard' | 'extended';
+export type OptionalSection = 'sku' | 'tax' | 'shipping' | 'advancedInventory';
 
 export const ACCENTS: Record<AccentName, { hsl: string; swatch: string }> = {
   graphite: { hsl: '224 71% 6%', swatch: 'hsl(224 71% 6%)' },
@@ -32,6 +34,10 @@ export interface Preferences {
   focusMode: boolean;
   focusModeShowQueue: boolean;
 
+  /* Product entry */
+  defaultWorkspaceMode: WorkspaceMode;
+  hiddenOptionalSections: OptionalSection[];
+
 }
 
 export const defaultPreferences: Preferences = {
@@ -50,6 +56,9 @@ export const defaultPreferences: Preferences = {
 
   focusMode: false,
   focusModeShowQueue: true,
+
+  defaultWorkspaceMode: 'standard',
+  hiddenOptionalSections: [],
 
 };
 

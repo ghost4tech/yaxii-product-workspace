@@ -59,7 +59,7 @@ export function AttributeEditor({ attribute, onChange, onRemove, terms }: Props)
         <bdi className="ms-1.5 font-mono text-[11px] text-muted-foreground" dir="ltr">{attribute.taxonomy}</bdi>
       </span> : <input value={attribute.name} onChange={(event) => onChange({ ...attribute, name: event.target.value })}
         placeholder={__("Attribute name (e.g. Size)", "yaxii-product-workspace")}
-        className="h-7 min-w-0 flex-1 bg-transparent text-start text-[13px] font-medium outline-none placeholder:font-normal placeholder:text-muted-foreground/60" />}
+        className="h-7 min-w-0 flex-1 rounded-md border border-input bg-background px-2 text-start text-[13px] font-medium outline-none focus:border-foreground/40 placeholder:font-normal placeholder:text-muted-foreground/60" />}
       <span className="ms-auto shrink-0 text-[11px] tabular-nums text-muted-foreground">{
         /* translators: %s: selected option count. */
         sprintf(_n("%s selected", "%s selected", optionCount, "yaxii-product-workspace"), optionCount)
