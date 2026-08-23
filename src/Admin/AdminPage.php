@@ -106,8 +106,7 @@ final class AdminPage {
 
 		wp_set_script_translations(
 			self::SCRIPT_NAME,
-			'yaxii-product-workspace',
-			plugin_dir_path( $this->plugin_file ) . 'languages'
+			'yaxii-product-workspace'
 		);
 		wp_add_inline_script(
 			self::SCRIPT_NAME,

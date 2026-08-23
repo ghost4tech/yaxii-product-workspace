@@ -65,21 +65,44 @@ final class VariableProductPlanFactory {
 		$attributes = array();
 		$keys       = array();
 		$identities = array();
+		$woo_names  = array();
 		$positions  = array();
 		foreach ( $payload as $index => $attribute_input ) {
 			if ( ! is_array( $attribute_input ) ) {
 				$this->invalid( "attributes.$index", __( 'Each attribute must be an object.', 'yaxii-product-workspace' ) );
 			}
-			$attribute = $this->attribute( $attribute_input, $index );
-			$identity  = $attribute->is_global() ? 'global:' . $attribute->attribute_id() : 'custom:' . mb_strtolower( $attribute->name() );
-			if ( isset( $keys[ $attribute->key() ] ) || isset( $identities[ $identity ] ) ) {
-				$this->invalid( "attributes.$index", __( 'Duplicate attributes are not allowed.', 'yaxii-product-workspace' ) );
+			$attribute       = $this->attribute( $attribute_input, $index );
+			$normalized_name = sanitize_title( $attribute->name() );
+			if ( ! $attribute->is_global() && '' === $normalized_name ) {
+				$this->invalid(
+					"attributes.$index.name",
+					sprintf(
+						/* translators: 1: one-based attribute number, 2: attribute name. */
+						__( 'Attribute %1$d name “%2$s” cannot be used by WooCommerce.', 'yaxii-product-workspace' ),
+						$index + 1,
+						$attribute->name()
+					)
+				);
+			}
+			$identity = $attribute->is_global() ? 'global:' . $attribute->attribute_id() : 'custom:' . $normalized_name;
+			$woo_name = $attribute->is_global() ? $attribute->taxonomy() : $normalized_name;
+			if ( isset( $keys[ $attribute->key() ] ) || isset( $identities[ $identity ] ) || isset( $woo_names[ $woo_name ] ) ) {
+				$this->invalid(
+					"attributes.$index",
+					sprintf(
+						/* translators: 1: one-based attribute number, 2: attribute name. */
+						__( 'Attribute %1$d name “%2$s” duplicates an earlier attribute after normalization.', 'yaxii-product-workspace' ),
+						$index + 1,
+						$attribute->name()
+					)
+				);
 			}
 			if ( isset( $positions[ $attribute->position() ] ) ) {
 				$this->invalid( "attributes.$index.position", __( 'Each attribute requires a unique position.', 'yaxii-product-workspace' ) );
 			}
 			$keys[ $attribute->key() ]           = true;
 			$identities[ $identity ]             = true;
+			$woo_names[ $woo_name ]              = true;
 			$positions[ $attribute->position() ] = true;
 			$attributes[]                        = $attribute;
 		}
@@ -102,8 +125,26 @@ final class VariableProductPlanFactory {
 		if ( 1 !== preg_match( '/^[a-z0-9][a-z0-9:_-]{0,63}$/', $key ) ) {
 			$this->invalid( "attributes.$index.key", __( 'Use a stable lowercase attribute key.', 'yaxii-product-workspace' ) );
 		}
-		if ( ! in_array( $source, array( 'global', 'custom' ), true ) || '' === $name || 40 < mb_strlen( $name ) ) {
-			$this->invalid( "attributes.$index", __( 'Choose a supported source and an attribute name up to 40 characters.', 'yaxii-product-workspace' ) );
+		if ( ! in_array( $source, array( 'global', 'custom' ), true ) ) {
+			$this->invalid( "attributes.$index.source", __( 'Choose a supported global or custom attribute source.', 'yaxii-product-workspace' ) );
+		}
+		if ( '' === $name ) {
+			$this->invalid(
+				"attributes.$index.name",
+				sprintf( /* translators: %d: one-based attribute number. */ __( 'Attribute %d needs a name.', 'yaxii-product-workspace' ), $index + 1 )
+			);
+		}
+		if ( 40 < mb_strlen( $name ) ) {
+			$this->invalid(
+				"attributes.$index.name",
+				sprintf(
+					/* translators: 1: one-based attribute number, 2: attribute name, 3: character count. */
+					__( 'Attribute %1$d name “%2$s” is %3$d characters; the maximum is 40.', 'yaxii-product-workspace' ),
+					$index + 1,
+					$name,
+					mb_strlen( $name )
+				)
+			);
 		}
 		if ( ! is_int( $position ) || 0 > $position || VariableProductLimits::MAX_ATTRIBUTES <= $position || ! is_bool( $visible ) || ! is_bool( $variation ) ) {
 			$this->invalid( "attributes.$index", __( 'Attribute visibility, variation use, or position is invalid.', 'yaxii-product-workspace' ) );

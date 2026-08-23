@@ -1,24 +1,41 @@
 {
-  "_editor-vendor-CmxfUeEk.js": {
-    "file": "assets/editor-vendor-CmxfUeEk.js",
-    "name": "editor-vendor"
+  "_editor-vendor-EkKNt142.js": {
+    "file": "assets/editor-vendor-EkKNt142.js",
+    "name": "editor-vendor",
+    "imports": [
+      "_rolldown-runtime-Cks0co6g.js"
+    ]
   },
-  "_ui-vendor-iQhsuZTe.js": {
-    "file": "assets/ui-vendor-iQhsuZTe.js",
+  "_react-vendor-jZWSPA3t.js": {
+    "file": "assets/react-vendor-jZWSPA3t.js",
+    "name": "react-vendor",
+    "imports": [
+      "_rolldown-runtime-Cks0co6g.js",
+      "_editor-vendor-EkKNt142.js"
+    ]
+  },
+  "_rolldown-runtime-Cks0co6g.js": {
+    "file": "assets/rolldown-runtime-Cks0co6g.js",
+    "name": "rolldown-runtime"
+  },
+  "_ui-vendor-BFkN9I7Y.js": {
+    "file": "assets/ui-vendor-BFkN9I7Y.js",
     "name": "ui-vendor",
     "imports": [
-      "_editor-vendor-CmxfUeEk.js"
+      "_rolldown-runtime-Cks0co6g.js",
+      "_editor-vendor-EkKNt142.js",
+      "_react-vendor-jZWSPA3t.js"
     ]
   },
   "_vendor-D7NdHagc.css": {
     "file": "assets/vendor-D7NdHagc.css",
     "src": "_vendor-D7NdHagc.css"
   },
-  "_vendor-DrgeLRIn.js": {
-    "file": "assets/vendor-DrgeLRIn.js",
+  "_vendor-DILefjrx.js": {
+    "file": "assets/vendor-DILefjrx.js",
     "name": "vendor",
     "imports": [
-      "_editor-vendor-CmxfUeEk.js"
+      "_react-vendor-jZWSPA3t.js"
     ],
     "css": [
       "assets/vendor-D7NdHagc.css"
@@ -115,17 +132,19 @@
     "src": "node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-600-normal.woff2"
   },
   "src/main.tsx": {
-    "file": "assets/main-DuGTDa0H.js",
+    "file": "assets/main-CeAP1Tqf.js",
     "name": "main",
     "src": "src/main.tsx",
     "isEntry": true,
     "imports": [
-      "_editor-vendor-CmxfUeEk.js",
-      "_vendor-DrgeLRIn.js",
-      "_ui-vendor-iQhsuZTe.js"
+      "_rolldown-runtime-Cks0co6g.js",
+      "_vendor-DILefjrx.js",
+      "_editor-vendor-EkKNt142.js",
+      "_react-vendor-jZWSPA3t.js",
+      "_ui-vendor-BFkN9I7Y.js"
     ],
     "css": [
-      "assets/main-KoFoPnw2.css"
+      "assets/main-CdrnpeCB.css"
     ],
     "assets": [
       "assets/rubik-arabic-wght-normal-CGnJ-sf6.woff2",

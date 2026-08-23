@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitYaxiiProductWorkspace100
+class ComposerStaticInitYaxiiProductWorkspace110
 {
     public static $prefixLengthsPsr4 = array (
         'Y' => 
@@ -93,9 +93,9 @@ class ComposerStaticInitYaxiiProductWorkspace100
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitYaxiiProductWorkspace100::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitYaxiiProductWorkspace100::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitYaxiiProductWorkspace100::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitYaxiiProductWorkspace110::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitYaxiiProductWorkspace110::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitYaxiiProductWorkspace110::$classMap;
 
         }, null, ClassLoader::class);
     }
