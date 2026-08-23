@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect, useMemo, useState } from "react";
+import { forwardRef, useCallback, useEffect, useMemo, useState, type Dispatch, type SetStateAction } from "react";
 import { AlertTriangle, Layers, Plus, RefreshCw, Sparkles, Wand2 } from "lucide-react";
 import { AttributeEditor, GlobalAttributeSelect } from "@/components/variations/AttributeEditor";
 import { VariationRow } from "@/components/variations/VariationRow";
@@ -23,8 +23,8 @@ interface Props {
   baseSku?: string;
   combinations: VariationCombination[];
   currency?: string;
-  onAttributesChange: (attributes: VariableAttribute[]) => void;
-  onCombinationsChange: (combinations: VariationCombination[]) => void;
+  onAttributesChange: Dispatch<SetStateAction<VariableAttribute[]>>;
+  onCombinationsChange: Dispatch<SetStateAction<VariationCombination[]>>;
   onUploadImage: (file: File) => Promise<ProductImage>;
 }
 
@@ -79,6 +79,16 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
 
   const ready = attributes.filter((attribute) => attribute.name.trim()
     && (attribute.source === "global" ? attribute.optionIds.length : attribute.options.length));
+  const allReady = attributes.length > 0 && ready.length === attributes.length;
+  const incompleteIndex = attributes.findIndex((attribute) => !attribute.name.trim()
+    || !(attribute.source === "global" ? attribute.optionIds.length : attribute.options.length));
+  const incomplete = incompleteIndex >= 0 ? attributes[incompleteIndex] : undefined;
+  /* translators: %d: one-based attribute number. */
+  const incompleteMessage = incomplete && !incomplete.name.trim()
+    ? sprintf(__("Attribute %d needs a name.", "yaxii-product-workspace"), incompleteIndex + 1)
+    : incomplete
+      ? sprintf(__("Attribute %d needs at least one option.", "yaxii-product-workspace"), incompleteIndex + 1)
+      : "";
   const expected = useMemo(() => projectedCombinationCount(attributes), [attributes]);
   const overLimit = expected > VARIABLE_PRODUCT_LIMITS.combinations;
   const usedGlobalIds = new Set(attributes.filter((attribute) => attribute.source === "global").map((attribute) => attribute.attributeId));
@@ -86,7 +96,7 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
   const missingPrices = combinations.filter((combination) => combination.enabled && !combination.regularPrice).length;
   const enabledCount = combinations.filter((combination) => combination.enabled).length;
   const stale = useMemo(() => {
-    if (!ready.length || overLimit) return false;
+    if (!allReady || overLimit) return false;
     try {
       const generated = generateVariationCombinations(attributes, combinations, generateSecureUuidV4);
       const current = new Set(combinations.map((combination) => combinationFingerprint(combination.selections)));
@@ -95,40 +105,43 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
     } catch {
       return true;
     }
-  }, [attributes, combinations, overLimit, ready.length]);
+  }, [allReady, attributes, combinations, overLimit]);
   const previewFormula = ready.map((attribute) => {
     const count = attribute.source === "global" ? attribute.optionIds.length : attribute.options.length;
     return `${count} ${attribute.name.trim()}`;
   }).join(" × ");
 
   const patchAttribute = (key: string, next: VariableAttribute) => {
-    onAttributesChange(attributes.map((attribute) => attribute.key === key ? next : attribute));
+    onAttributesChange((current) => current.map((attribute) => attribute.key === key ? next : attribute));
   };
-  const removeAttribute = (key: string) => onAttributesChange(attributes
+  const removeAttribute = (key: string) => onAttributesChange((current) => current
     .filter((attribute) => attribute.key !== key)
     .map((attribute, position) => ({ ...attribute, position })));
   const addCustom = () => {
-    if (attributes.length >= VARIABLE_PRODUCT_LIMITS.attributes) return;
-    onAttributesChange([...attributes, {
+    onAttributesChange((current) => current.length >= VARIABLE_PRODUCT_LIMITS.attributes ? current : [...current, {
       key: `custom:attribute-${generateSecureUuidV4().slice(0, 8)}`,
-      name: "", options: [], position: attributes.length, source: "custom", variation: true, visible: true,
+      name: "", options: [], position: current.length, source: "custom", variation: true, visible: true,
     }]);
   };
-  const addGlobal = (attribute: AttributeCatalogItem) => onAttributesChange([...attributes, {
-    attributeId: attribute.id, key: `global:${attribute.id}`, name: attribute.name, optionIds: [],
-    position: attributes.length, source: "global", taxonomy: attribute.taxonomy, variation: true, visible: true,
-  }]);
+  const addGlobal = (attribute: AttributeCatalogItem) => onAttributesChange((current) => (
+    current.length >= VARIABLE_PRODUCT_LIMITS.attributes
+    || current.some((item) => item.source === "global" && item.attributeId === attribute.id)
+      ? current : [...current, {
+        attributeId: attribute.id, key: `global:${attribute.id}`, name: attribute.name, optionIds: [],
+        position: current.length, source: "global", taxonomy: attribute.taxonomy, variation: true, visible: true,
+      }]
+  ));
   const generate = useCallback(() => {
     try {
-      onCombinationsChange(generateVariationCombinations(attributes, combinations));
+      onCombinationsChange((current) => generateVariationCombinations(attributes, current));
       setError("");
     } catch (reason) {
       setError(reason instanceof VariablePlanError
         ? Object.values(reason.fields)[0] ?? reason.message : __("Combinations could not be generated.", "yaxii-product-workspace"));
     }
-  }, [attributes, combinations, onCombinationsChange]);
+  }, [attributes, onCombinationsChange]);
   const patchCombination = (clientId: string, updates: Partial<VariationCombination>) => {
-    onCombinationsChange(combinations.map((combination) => combination.clientId === clientId
+    onCombinationsChange((current) => current.map((combination) => combination.clientId === clientId
       ? { ...combination, ...updates } : combination));
   };
   const selectionLabels = (selections: VariationSelection[]) => selections.map((selection) => {
@@ -139,7 +152,7 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
       ? terms[attribute.attributeId]?.find((term) => term.id === selection.termId)?.name ?? String(selection.termId)
       : __("Unknown", "yaxii-product-workspace");
   });
-  const autoSku = () => onCombinationsChange(combinations.map((combination) => ({
+  const autoSku = () => onCombinationsChange((current) => current.map((combination) => ({
     ...combination,
     sku: [baseSku.trim() || "SKU", ...selectionLabels(combination.selections)
       .map((label) => label.toUpperCase().replace(/[^A-Z0-9]+/g, "").slice(0, 8))].join("-"),
@@ -186,10 +199,11 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
       </p>
       <HelpTip>{__("Price, SKU, stock, and image belong to each concrete WooCommerce combination.", "yaxii-product-workspace")}</HelpTip>
       <Button type="button" size="sm" variant={stale ? "default" : "outline"} onClick={generate}
-        disabled={overLimit} className="ms-auto h-8 text-[12px]">
+        disabled={overLimit || !allReady} className="ms-auto h-8 text-[12px]">
         {combinations.length ? <RefreshCw className="me-1.5 h-3.5 w-3.5" /> : <Sparkles className="me-1.5 h-3.5 w-3.5" />}
         {combinations.length ? __("Regenerate combinations", "yaxii-product-workspace") : __("Generate combinations", "yaxii-product-workspace")}
       </Button>
+      {!allReady && incompleteMessage && <p role="alert" className="w-full text-[11px] text-destructive">{incompleteMessage}</p>}
       {overLimit && <p className="flex w-full items-center gap-1.5 text-[11px] text-warning">
         <AlertTriangle className="h-3.5 w-3.5" /> {
           /* translators: %s: maximum combination count. */
@@ -214,7 +228,7 @@ export const VariationsEditor = forwardRef<HTMLDivElement, Props>(({
               onChange={(event) => setBulkPrice(event.target.value)} /></div>
           <Explain tip={__("Applies this price to every enabled variation. You can still override individual ones.", "yaxii-product-workspace")}>
             <Button type="button" size="sm" variant="outline" disabled={!bulkPrice}
-              onClick={() => onCombinationsChange(combinations.map((combination) => combination.enabled
+              onClick={() => onCombinationsChange((current) => current.map((combination) => combination.enabled
                 ? { ...combination, regularPrice: bulkPrice } : combination))} className="h-8 text-[12px]">{__("Apply", "yaxii-product-workspace")}</Button>
           </Explain>
           <Explain tip={__("Builds SKUs from the product SKU plus each option.", "yaxii-product-workspace")}>

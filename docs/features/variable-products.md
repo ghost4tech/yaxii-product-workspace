@@ -24,6 +24,12 @@ plan, attribute and term ownership, duplicate combinations, SKU uniqueness, pric
 image attachments, product type, variation ownership, and optimistic version. Free synchronous
 limits are five attributes, 20 options per attribute, and 50 concrete combinations.
 
+Combination generation remains disabled until every configured attribute has both a name and at
+least one option. The editor identifies the first incomplete attribute instead of submitting a
+partially configured multi-attribute plan. Server validation also rejects custom names that become
+empty or collide with another custom/global attribute after WooCommerce normalizes the persisted
+attribute key, before any product write begins.
+
 Create is one same-origin browser operation. The server writes the parent, attributes, and bounded
 variation set and then runs WooCommerce variable-product synchronization. Update can add, retain,
 change, or remove concrete variations through the same cohesive server operation.
@@ -69,6 +75,9 @@ visibility, and safe retry. The existing simple-product integration suite remain
 Frontend tests cover DTO serialization/hydration, exact combination generation, invalid commercial
 values, concrete editor interaction, value preservation on regeneration, cohesive one-request
 create orchestration, server field errors, partial queue detail, and simple-product regressions.
+The variable regression matrix additionally covers custom/custom, global/global, and mixed
+global/custom 2-by-3 plans; sequential regeneration; Arabic attribute/value names; incomplete
+attribute state; normalized duplicate names; create; and persisted hydration.
 
 Phase 4 authenticated LocalWP QA covered one- and two-attribute create, exact six-combination persistence,
 reopen/edit, independent image/price/SKU/stock/enabled fields, destructive validation,

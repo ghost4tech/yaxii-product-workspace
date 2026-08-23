@@ -25,8 +25,8 @@ interface Props {
   onUploadImage: (file: File) => Promise<ProductImage>;
   attributes: VariableAttribute[];
   combinations: VariationCombination[];
-  onAttributesChange: (attributes: VariableAttribute[]) => void;
-  onCombinationsChange: (combinations: VariationCombination[]) => void;
+  onAttributesChange: React.Dispatch<React.SetStateAction<VariableAttribute[]>>;
+  onCombinationsChange: React.Dispatch<React.SetStateAction<VariationCombination[]>>;
   nameRef: React.RefObject<HTMLInputElement>;
   currency?: string;
   saleEnd?: Date;

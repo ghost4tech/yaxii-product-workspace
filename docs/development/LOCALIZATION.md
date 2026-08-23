@@ -71,7 +71,7 @@ calls for WP-CLI extraction. `check:i18n` fails if that generated source is stal
 placeholders, plural forms, MO files, or current JavaScript JSON artifacts are incomplete.
 `i18n:finalize` removes obsolete generated hash catalogs and obsolete custom-path handle aliases.
 `check:i18n-build` verifies that the minified runtime entry still exposes WordPress-extractable
-gettext calls, exactly matches all 490 generated React messages, and that the release manifest
+gettext calls, exactly matches all 492 generated React messages, and that the release manifest
 cannot include PO, MO, or locale JSON files.
 
 The current Vite manifest contains statically imported vendor/editor chunks and no dynamically

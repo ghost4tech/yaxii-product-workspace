@@ -111,7 +111,7 @@ Your WooCommerce products are untouched. Deactivation only removes access to the
 
 = Where can developers find the human-readable frontend source? =
 
-Human-readable source for the currently published 1.0.0 release is maintained publicly on the dev branch at https://github.com/ghost4tech/yaxii-product-workspace/tree/dev. The 1.1.0 development source remains private until its public release preparation.
+Human-readable source for the current release is maintained publicly on the dev branch at https://github.com/ghost4tech/yaxii-product-workspace/tree/dev.
 
 == Screenshots ==
 
@@ -130,10 +130,12 @@ No telemetry or tracking is performed, and no plugin data is sent to Yaxii or an
 
 == Changelog ==
 
-= 1.1.0 =
+= 1.1.0 - 2026-08-23 =
 
-* Reorganized Product Entry pricing, inventory, categories, and publishing controls.
-* Improved workspace preferences, mobile Extended access, and variation-row usability.
+* Improved Product Entry organization, including pricing and sale schedules, inventory, categories, and publishing controls.
+* Improved Product Entry preferences, Standard and Extended discoverability, and mobile Extended access.
+* Polished variation rows and fixed multi-attribute combination generation and validation.
+* Improved WordPress-native translation extraction and loading reliability.
 
 = 1.0.0 =
 

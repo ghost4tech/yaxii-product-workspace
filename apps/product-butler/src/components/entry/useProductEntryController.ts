@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type SetStateAction } from "react";
 import { useForm } from "react-hook-form";
 import { saveDraft } from "@/lib/entryActions";
 import { useWorkspaceRuntime } from "@/production/app/WorkspaceRuntime";
@@ -246,11 +246,11 @@ export function useProductEntryController(options: Options) {
     setIsVariable(value);
     setVariableDirty(true);
   }, []);
-  const changeVariableAttributes = useCallback((value: VariableAttribute[]) => {
+  const changeVariableAttributes = useCallback((value: SetStateAction<VariableAttribute[]>) => {
     setVariableAttributes(value);
     setVariableDirty(true);
   }, []);
-  const changeVariationCombinations = useCallback((value: VariationCombination[]) => {
+  const changeVariationCombinations = useCallback((value: SetStateAction<VariationCombination[]>) => {
     setVariationCombinations(value);
     setVariableDirty(true);
   }, []);

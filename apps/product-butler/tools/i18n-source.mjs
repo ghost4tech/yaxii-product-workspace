@@ -66,7 +66,7 @@ function translatorComment(source, tree, node) {
     const latest = matches.at(-1)?.[0];
     if (latest) comments = [latest];
   }
-  return comments.join("\n").replace(/^\s*\/\*+\s*/u, "/* translators: ")
+  return comments.join("\n").replace(/^\s*\/\*+\s*(?:translators:\s*)?/iu, "/* translators: ")
     .replace(/\s*\*\/\s*$/u, " */");
 }
 

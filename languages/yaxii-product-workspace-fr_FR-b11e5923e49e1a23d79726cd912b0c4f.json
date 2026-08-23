@@ -1,7 +1,7 @@
 {
-    "translation-revision-date": "2026-08-15T00:10:50+00:00",
+    "translation-revision-date": "2026-08-23T12:07:44+00:00",
     "generator": "WP-CLI\/2.12.0",
-    "source": "assets\/build\/assets\/main-oIc4NeaC.js",
+    "source": "assets\/build\/assets\/main-CeAP1Tqf.js",
     "domain": "messages",
     "locale_data": {
         "messages": {
@@ -379,9 +379,6 @@
             "Duplicate attribute reference.": [
                 "R\u00e9f\u00e9rence d\u2019attribut en double."
             ],
-            "Duplicate attribute.": [
-                "Attribut en double."
-            ],
             "Duplicate combination.": [
                 "Combinaison en double."
             ],
@@ -588,9 +585,6 @@
             ],
             "Invalid attribute key.": [
                 "Cl\u00e9 d\u2019attribut non valide."
-            ],
-            "Invalid attribute name.": [
-                "Nom d\u2019attribut invalide."
             ],
             "Invalid attribute position.": [
                 "Position d\u2019attribut invalide."
@@ -1490,6 +1484,18 @@
             ],
             "%1$s combinations exceed the maximum of %2$s supported in a single save.": [
                 "%1$s combinaisons d\u00e9passent le maximum autoris\u00e9 de %2$s pour un seul enregistrement."
+            ],
+            "Attribute %d needs a name.": [
+                "L\u2019attribut %d n\u00e9cessite un nom."
+            ],
+            "Attribute %1$d name \u201c%2$s\u201d is %3$d characters; the maximum is 40.": [
+                "Le nom \u00ab\u00a0%2$s\u00a0\u00bb de l\u2019attribut %1$d contient %3$d caract\u00e8res\u00a0; le maximum est de 40."
+            ],
+            "Attribute %d needs at least one option.": [
+                "L\u2019attribut %d n\u00e9cessite au moins une option."
+            ],
+            "Attribute %1$d name \u201c%2$s\u201d duplicates an earlier attribute after normalization.": [
+                "Le nom \u00ab\u00a0%2$s\u00a0\u00bb de l\u2019attribut %1$d duplique un attribut pr\u00e9c\u00e9dent apr\u00e8s normalisation."
             ]
         }
     }

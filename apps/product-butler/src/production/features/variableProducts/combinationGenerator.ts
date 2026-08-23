@@ -146,13 +146,25 @@ function validateAttributes(attributes: VariableAttribute[]): void {
   const identities = new Set<string>();
   const positions = new Set<number>();
   attributes.forEach((attribute, index) => {
+    const name = attribute.name.trim();
+    const characterCount = Array.from(name).length;
+    if (!name) {
+      /* translators: %d: one-based attribute number. */
+      fail(`attributes.${index}.name`, sprintf(__("Attribute %d needs a name.", "yaxii-product-workspace"), index + 1));
+    }
+    if (characterCount > 40) {
+      /* translators: 1: one-based attribute number, 2: attribute name, 3: character count. */
+      fail(`attributes.${index}.name`, sprintf(__("Attribute %1$d name “%2$s” is %3$d characters; the maximum is 40.", "yaxii-product-workspace"), index + 1, name, characterCount));
+    }
     const identity = attribute.source === "global"
       ? `global:${attribute.attributeId}`
-      : `custom:${attribute.name.trim().toLocaleLowerCase()}`;
-    if (keys.has(attribute.key) || identities.has(identity)) fail(`attributes.${index}`, __("Duplicate attribute.", "yaxii-product-workspace"));
+      : `custom:${name.normalize("NFKC").toLocaleLowerCase()}`;
+    if (keys.has(attribute.key) || identities.has(identity)) {
+      /* translators: 1: one-based attribute number, 2: attribute name. */
+      fail(`attributes.${index}`, sprintf(__("Attribute %1$d name “%2$s” duplicates an earlier attribute after normalization.", "yaxii-product-workspace"), index + 1, name));
+    }
     if (positions.has(attribute.position)) fail(`attributes.${index}.position`, __("Duplicate attribute position.", "yaxii-product-workspace"));
     if (!/^[a-z0-9][a-z0-9:_-]{0,63}$/.test(attribute.key)) fail(`attributes.${index}.key`, __("Invalid attribute key.", "yaxii-product-workspace"));
-    if (!attribute.name.trim() || attribute.name.trim().length > 40) fail(`attributes.${index}.name`, __("Invalid attribute name.", "yaxii-product-workspace"));
     if (typeof attribute.visible !== "boolean" || typeof attribute.variation !== "boolean") {
       fail(`attributes.${index}`, __("Attribute visibility and variation use must be true or false.", "yaxii-product-workspace"));
     }

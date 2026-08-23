@@ -1,7 +1,7 @@
 {
-    "translation-revision-date": "2026-08-15T00:10:50+00:00",
+    "translation-revision-date": "2026-08-23T12:07:44+00:00",
     "generator": "WP-CLI\/2.12.0",
-    "source": "assets\/build\/assets\/main-oIc4NeaC.js",
+    "source": "assets\/build\/assets\/main-CeAP1Tqf.js",
     "domain": "messages",
     "locale_data": {
         "messages": {
@@ -415,9 +415,6 @@
             "Duplicate attribute reference.": [
                 "\u0645\u0631\u062c\u0639 \u0627\u0644\u0633\u0645\u0629 \u0645\u0643\u0631\u0631."
             ],
-            "Duplicate attribute.": [
-                "\u0633\u0645\u0629 \u0645\u0643\u0631\u0631\u0629."
-            ],
             "Duplicate combination.": [
                 "\u062a\u0631\u0643\u064a\u0628\u0629 \u0645\u0643\u0631\u0631\u0629."
             ],
@@ -624,9 +621,6 @@
             ],
             "Invalid attribute key.": [
                 "\u0645\u0641\u062a\u0627\u062d \u0627\u0644\u0633\u0645\u0629 \u063a\u064a\u0631 \u0635\u0627\u0644\u062d."
-            ],
-            "Invalid attribute name.": [
-                "\u0627\u0633\u0645 \u0627\u0644\u0633\u0645\u0629 \u063a\u064a\u0631 \u0635\u0627\u0644\u062d."
             ],
             "Invalid attribute position.": [
                 "\u0645\u0648\u0636\u0639 \u0627\u0644\u0633\u0645\u0629 \u063a\u064a\u0631 \u0635\u0627\u0644\u062d."
@@ -1534,6 +1528,18 @@
             ],
             "%1$s combinations exceed the maximum of %2$s supported in a single save.": [
                 "\u064a\u062a\u062c\u0627\u0648\u0632 \u0639\u062f\u062f \u0627\u0644\u062a\u0631\u0643\u064a\u0628\u0627\u062a %1$s \u0627\u0644\u062d\u062f \u0627\u0644\u0623\u0642\u0635\u0649 \u0627\u0644\u0645\u0633\u0645\u0648\u062d \u0628\u0647 \u0648\u0647\u0648 %2$s \u0641\u064a \u0639\u0645\u0644\u064a\u0629 \u062d\u0641\u0638 \u0648\u0627\u062d\u062f\u0629."
+            ],
+            "Attribute %d needs a name.": [
+                "\u062a\u062d\u062a\u0627\u062c \u0627\u0644\u0633\u0645\u0629 %d \u0625\u0644\u0649 \u0627\u0633\u0645."
+            ],
+            "Attribute %1$d name \u201c%2$s\u201d is %3$d characters; the maximum is 40.": [
+                "\u064a\u062a\u0643\u0648\u0646 \u0627\u0644\u0627\u0633\u0645 \u00ab%2$s\u00bb \u0644\u0644\u0633\u0645\u0629 %1$d \u0645\u0646 %3$d \u062d\u0631\u0641\u064b\u0627\u061b \u0627\u0644\u062d\u062f \u0627\u0644\u0623\u0642\u0635\u0649 \u0647\u0648 40."
+            ],
+            "Attribute %d needs at least one option.": [
+                "\u062a\u062d\u062a\u0627\u062c \u0627\u0644\u0633\u0645\u0629 %d \u0625\u0644\u0649 \u062e\u064a\u0627\u0631 \u0648\u0627\u062d\u062f \u0639\u0644\u0649 \u0627\u0644\u0623\u0642\u0644."
+            ],
+            "Attribute %1$d name \u201c%2$s\u201d duplicates an earlier attribute after normalization.": [
+                "\u064a\u0643\u0631\u0631 \u0627\u0644\u0627\u0633\u0645 \u00ab%2$s\u00bb \u0644\u0644\u0633\u0645\u0629 %1$d \u0633\u0645\u0629 \u0633\u0627\u0628\u0642\u0629 \u0628\u0639\u062f \u0627\u0644\u062a\u0637\u0628\u064a\u0639."
             ]
         }
     }
