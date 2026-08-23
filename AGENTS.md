@@ -278,6 +278,14 @@ After baseline:
 - use tested checkpoint commits for substantial implementation phases;
 - merge only after review/acceptance.
 
+### Release publication authorization
+
+Preparing, auditing, testing, packaging, or documenting a release does not authorize publishing
+it. Immediately before a WordPress.org SVN commit, release-facing public Git push, or version-tag
+creation/push, confirm explicit owner authorization for that exact product, version, channel, and
+action. If it is absent or contradicted, stop with the artifact and proposed command ready for the
+owner. Never publish autonomously from an implementation or audit task.
+
 ## Repository commands
 
 Do not invent canonical commands that the repository does not yet define.

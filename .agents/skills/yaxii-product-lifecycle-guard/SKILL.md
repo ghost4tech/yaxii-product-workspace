@@ -233,6 +233,24 @@ Record hashes, tags, revisions, release evidence, remaining known issues.
 
 Do not skip directly from implementation to publication.
 
+## Publication authorization gate
+
+Release preparation, implementation, audit, QA, packaging, or a recommendation to release does
+not authorize publication. Immediately before each irreversible release action, verify that the
+owner has explicitly authorized the exact product, version, channel, and action in the current
+task or a later owner message.
+
+This separate authorization is required immediately before:
+
+- committing to WordPress.org SVN;
+- pushing a release-facing public Git branch or commit;
+- creating or pushing a version tag.
+
+If that authorization is absent, ambiguous, withdrawn, or contradicted by the task, stop before
+the action. Report the ready artifact, intended refs, and exact pending command instead. Never
+infer publication authority from an implementation, audit, release-candidate, or end-to-end QA
+request. Record the authorization basis with the release evidence.
+
 ---
 
 # 6. Do not release with unresolved known blockers

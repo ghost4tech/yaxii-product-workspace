@@ -58,7 +58,7 @@ PHP 8.1+
 WooCommerce required
 
 Current public release:
-1.0.0
+1.1.1
 
 WordPress.org SVN release revision:
-3657382
+3662113
