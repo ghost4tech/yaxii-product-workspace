@@ -4,7 +4,7 @@
 
 **Current work:** 1.1.2 WooCommerce interoperability and existing-product reliability
 
-**Acceptance state:** PRIVATE IMPLEMENTATION READY - owner acceptance pending
+**Acceptance state:** 1.1.2 FINAL RELEASE IN PROGRESS - implementation accepted and publication authorized
 
 ## Repository authority
 
@@ -35,7 +35,7 @@ Implementation details and regression scope are in
 
 ## Release boundary
 
-The runtime version remains `1.1.1` during implementation. Do not create `v1.1.2`, touch
-WordPress.org SVN, export to public Git, update public `dev`/`main`, or publish the release without
-explicit owner authorization for that exact action. The next permitted action after a green private
-checkpoint is owner acceptance.
+The runtime version is `1.1.2`. The owner accepted implementation commit
+`f1dd985b609f36a29c4840e1b7d39c3162a57cc3` and explicitly authorized the complete public Git,
+WordPress.org SVN, public-download verification, and final-tag workflow for 1.1.2, conditional on
+every material release gate passing. Any material gate failure keeps the release on HOLD.

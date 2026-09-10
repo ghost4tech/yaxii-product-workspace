@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Yaxii Product Workspace 1.1.1\n"
+"Project-Id-Version: Yaxii Product Workspace 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -261,10 +261,6 @@ msgstr "لا يمكنك استخدام صورة واحدة أو أكثر مخت�
 #: src/Application/Products/ProductManagementService.php:146
 msgid "This product changed after it was opened. Reload it before saving."
 msgstr "تغيّر هذا المنتج بعد فتحه. أعد تحميله قبل الحفظ."
-
-#: src/Application/Products/ProductManagementService.php:160
-msgid "The requested simple product was not found."
-msgstr "لم يتم العثور على المنتج البسيط المطلوب."
 
 #: src/Application/VariableProducts/CombinationGenerator.php:44
 msgid "Generate every projected variation combination before saving."
@@ -2771,3 +2767,7 @@ msgstr "يحتوي رابط مساحة عمل المنتجات على معرّف
 msgctxt "Product type"
 msgid "Variable"
 msgstr "متغير"
+
+#: src/Application/Products/ProductManagementService.php:160
+msgid "The requested product was not found."
+msgstr "تعذّر العثور على المنتج المطلوب."

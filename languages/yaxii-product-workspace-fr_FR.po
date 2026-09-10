@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Yaxii Product Workspace 1.1.1\n"
+"Project-Id-Version: Yaxii Product Workspace 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -261,10 +261,6 @@ msgstr "Vous ne pouvez pas utiliser une ou plusieurs images sélectionnées."
 #: src/Application/Products/ProductManagementService.php:146
 msgid "This product changed after it was opened. Reload it before saving."
 msgstr "Ce produit a été modifié après son ouverture. Rechargez-le avant de l’enregistrer."
-
-#: src/Application/Products/ProductManagementService.php:160
-msgid "The requested simple product was not found."
-msgstr "Le produit simple demandé n’a pas été trouvé."
 
 #: src/Application/VariableProducts/CombinationGenerator.php:44
 msgid "Generate every projected variation combination before saving."
@@ -2727,3 +2723,7 @@ msgstr "Le lien vers l’espace de travail des produits contient un ID de produi
 msgctxt "Product type"
 msgid "Variable"
 msgstr "Variable"
+
+#: src/Application/Products/ProductManagementService.php:160
+msgid "The requested product was not found."
+msgstr "Le produit demandé est introuvable."
