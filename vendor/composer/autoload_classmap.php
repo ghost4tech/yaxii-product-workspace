@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Yaxii\\ProductWorkspace\\Admin\\AdminPage' => $baseDir . '/src/Admin/AdminPage.php',
+    'Yaxii\\ProductWorkspace\\Admin\\ProductNavigation' => $baseDir . '/src/Admin/ProductNavigation.php',
     'Yaxii\\ProductWorkspace\\Application\\Access\\CapabilityPolicy' => $baseDir . '/src/Application/Access/CapabilityPolicy.php',
     'Yaxii\\ProductWorkspace\\Application\\Access\\WordPressCapabilityPolicy' => $baseDir . '/src/Application/Access/WordPressCapabilityPolicy.php',
     'Yaxii\\ProductWorkspace\\Application\\Bootstrap\\BootstrapProvider' => $baseDir . '/src/Application/Bootstrap/BootstrapProvider.php',

@@ -22,4 +22,4 @@ if (PHP_VERSION_ID < 50600) {
 
 require_once __DIR__ . '/composer/autoload_real.php';
 
-return ComposerAutoloaderInitYaxiiProductWorkspace111::getLoader();
+return ComposerAutoloaderInitYaxiiProductWorkspace112::getLoader();

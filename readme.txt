@@ -5,7 +5,7 @@ Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 8.1
 Requires Plugins: woocommerce
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -65,7 +65,7 @@ Simple and variable products share the same starting screen, so switching betwee
 * Products, variations, categories, tags, and media are managed through standard WordPress and WooCommerce APIs.
 * No WooCommerce REST API keys, consumer secrets, or external credentials are required or stored.
 * No Yaxii account, license key, or activation is required.
-* Version 1.1.1 has no telemetry, tracking, or external service calls.
+* Version 1.1.2 has no telemetry, tracking, or external service calls.
 * Internationalized and built with RTL layout support.
 
 == Installation ==
@@ -103,7 +103,7 @@ No. The plugin runs entirely inside your WordPress admin using same-site REST re
 
 = Does it send store or product data to an external service? =
 
-No. Version 1.1.1 has no telemetry, tracking, license call, or external API request.
+No. Version 1.1.2 has no telemetry, tracking, license call, or external API request.
 
 = What happens if I deactivate the plugin? =
 
@@ -129,6 +129,10 @@ The plugin stores a site-local operation ledger for safe product writes and oper
 No telemetry or tracking is performed, and no plugin data is sent to Yaxii or another external service. Deactivation retains data. Uninstall removes plugin-owned storage and markers but never deletes WooCommerce products, variations, terms, or media.
 
 == Changelog ==
+
+= 1.1.2 - 2026-09-10 =
+
+* Improved compatibility with existing WooCommerce Simple and Variable products, including native variation attributes and SKU search, plus faster navigation between WooCommerce and Product Workspace.
 
 = 1.1.1 - 2026-08-23 =
 

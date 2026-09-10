@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitYaxiiProductWorkspace111
+class ComposerStaticInitYaxiiProductWorkspace112
 {
     public static $prefixLengthsPsr4 = array (
         'Y' => 
@@ -23,6 +23,7 @@ class ComposerStaticInitYaxiiProductWorkspace111
     public static $classMap = array (
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'Yaxii\\ProductWorkspace\\Admin\\AdminPage' => __DIR__ . '/../..' . '/src/Admin/AdminPage.php',
+        'Yaxii\\ProductWorkspace\\Admin\\ProductNavigation' => __DIR__ . '/../..' . '/src/Admin/ProductNavigation.php',
         'Yaxii\\ProductWorkspace\\Application\\Access\\CapabilityPolicy' => __DIR__ . '/../..' . '/src/Application/Access/CapabilityPolicy.php',
         'Yaxii\\ProductWorkspace\\Application\\Access\\WordPressCapabilityPolicy' => __DIR__ . '/../..' . '/src/Application/Access/WordPressCapabilityPolicy.php',
         'Yaxii\\ProductWorkspace\\Application\\Bootstrap\\BootstrapProvider' => __DIR__ . '/../..' . '/src/Application/Bootstrap/BootstrapProvider.php',
@@ -93,9 +94,9 @@ class ComposerStaticInitYaxiiProductWorkspace111
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitYaxiiProductWorkspace111::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitYaxiiProductWorkspace111::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitYaxiiProductWorkspace111::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitYaxiiProductWorkspace112::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitYaxiiProductWorkspace112::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitYaxiiProductWorkspace112::$classMap;
 
         }, null, ClassLoader::class);
     }
