@@ -23,6 +23,7 @@ export function useCategoryTree(open: boolean, query: string, selectedIds: numbe
   const [searching, setSearching] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const searchRequest = useRef<AbortController | null>(null);
+  const selectedLookup = useRef("");
 
   const loadRoots = useCallback(async (page = 1) => {
     if (!bootstrap.features.categoryLookup || rootState.loading) return;
@@ -69,7 +70,13 @@ export function useCategoryTree(open: boolean, query: string, selectedIds: numbe
   useEffect(() => {
     if (!selectedIds.length || !bootstrap.features.categoryLookup) return;
     const missing = selectedIds.filter((id) => !categories.some((category) => category.id === id));
-    if (!missing.length) return;
+    if (!missing.length) {
+      selectedLookup.current = "";
+      return;
+    }
+    const lookupKey = [...missing].sort((left, right) => left - right).join(",");
+    if (selectedLookup.current === lookupKey) return;
+    selectedLookup.current = lookupKey;
     void client.listCategories({ include: missing, perPage: 20 }).then((result) => {
       mergeCategories(withAncestors(result.items));
     }).catch(() => setLoadError(true));

@@ -14,6 +14,10 @@ function isDirection(value: unknown): value is Direction {
   return value === "ltr" || value === "rtl";
 }
 
+function isInitialProductId(value: unknown): value is number | null {
+  return value === null || (typeof value === "number" && Number.isInteger(value) && value >= 0);
+}
+
 export function parseHostConfig(value: unknown): WorkspaceHostConfig | null {
   if (!isRecord(value)) {
     return null;
@@ -23,6 +27,7 @@ export function parseHostConfig(value: unknown): WorkspaceHostConfig | null {
     value.environment !== "wordpress" ||
     !isDirection(value.direction) ||
     typeof value.frontendAvailable !== "boolean" ||
+    !isInitialProductId(value.initialProductId) ||
     typeof value.isWooCommerceAvailable !== "boolean" ||
     typeof value.locale !== "string" ||
     typeof value.mediaRestUrl !== "string" ||
@@ -37,6 +42,7 @@ export function parseHostConfig(value: unknown): WorkspaceHostConfig | null {
     direction: value.direction,
     environment: value.environment,
     frontendAvailable: value.frontendAvailable,
+    initialProductId: value.initialProductId,
     isWooCommerceAvailable: value.isWooCommerceAvailable,
     locale: value.locale,
     mediaRestUrl: value.mediaRestUrl,

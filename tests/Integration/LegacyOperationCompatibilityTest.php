@@ -32,7 +32,6 @@ final class LegacyOperationCompatibilityTest extends TestCase {
 		$this->operation_id     = wp_generate_uuid4();
 		wp_set_current_user( $this->administrator_id );
 		SchemaManager::create()->maybe_upgrade();
-		do_action( 'rest_api_init' );
 	}
 
 	protected function tearDown(): void {

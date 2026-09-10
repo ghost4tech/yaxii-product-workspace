@@ -18,7 +18,6 @@ final class BootstrapControllerTest extends TestCase {
 	protected function setUp(): void {
 		parent::setUp();
 		$this->original_user_id = get_current_user_id();
-		do_action( 'rest_api_init' );
 	}
 
 	protected function tearDown(): void {

@@ -44,7 +44,6 @@ final class SimpleProductLifecycleTest extends TestCase {
 		$this->administrator_id = (int) $administrators[0]->ID;
 		wp_set_current_user( $this->administrator_id );
 		SchemaManager::create()->maybe_upgrade();
-		do_action( 'rest_api_init' );
 		$this->create_references();
 	}
 

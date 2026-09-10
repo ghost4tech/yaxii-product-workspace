@@ -34,7 +34,6 @@ final class OperationSummaryTest extends TestCase {
 		$this->administrator_id = $administrator;
 		wp_set_current_user( $this->administrator_id );
 		SchemaManager::create()->maybe_upgrade();
-		do_action( 'rest_api_init' );
 	}
 
 	protected function tearDown(): void {

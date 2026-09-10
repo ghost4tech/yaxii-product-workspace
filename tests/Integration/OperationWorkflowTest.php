@@ -43,7 +43,6 @@ final class OperationWorkflowTest extends TestCase {
 		$this->administrator_id = (int) $administrators[0]->ID;
 		wp_set_current_user( $this->administrator_id );
 		SchemaManager::create()->maybe_upgrade();
-		do_action( 'rest_api_init' );
 		$term = wp_insert_term( 'YPW operation ' . wp_generate_password( 7, false ), 'product_cat' );
 		self::assertIsArray( $term );
 		$this->category_id = (int) $term['term_id'];

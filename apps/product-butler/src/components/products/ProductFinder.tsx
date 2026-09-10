@@ -17,6 +17,11 @@ const productStatuses: Record<CanonicalProduct["status"], string> = {
   publish: _x("Published", "Product status", "yaxii-product-workspace"),
 };
 
+const productTypes: Record<CanonicalProduct["type"], string> = {
+  simple: _x("Simple", "Product type", "yaxii-product-workspace"),
+  variable: _x("Variable", "Product type", "yaxii-product-workspace"),
+};
+
 interface Props {
   onDraftPrepared?: () => void;
   onOpenProduct: (product: CanonicalProduct) => void;
@@ -108,7 +113,7 @@ export function ProductFinder({ onDraftPrepared, onOpenChange, onOpenProduct, op
               <div key={product.id} className="flex items-center gap-3 border-b border-border p-3 last:border-0">
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-start text-sm font-medium">{product.name}</p>
-                  <p className="truncate text-xs text-muted-foreground"><bdi dir="ltr">#{product.id} · {product.sku || __("No SKU", "yaxii-product-workspace")}</bdi> · {productStatuses[product.status]}</p>
+                  <p className="truncate text-xs text-muted-foreground"><bdi dir="ltr">#{product.id} · {product.sku || __("No SKU", "yaxii-product-workspace")}</bdi> · {productTypes[product.type]} · {productStatuses[product.status]}</p>
                 </div>
                 {product.type === "simple" && <Button type="button" size="sm" variant="ghost" disabled={busyId === product.id}
                   onClick={() => void duplicate(product)}><Copy className="me-1.5 h-3.5 w-3.5" />{__("Duplicate", "yaxii-product-workspace")}</Button>}

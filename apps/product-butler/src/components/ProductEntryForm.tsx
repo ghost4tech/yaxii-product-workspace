@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp, Pencil, X } from "lucide-react";
+import { ChevronDown, ChevronUp, ExternalLink, Pencil, X } from "lucide-react";
 import React from "react";
 import type { CanonicalProduct } from "@/production/domain/products";
 import { Button } from "@/components/ui/button";
@@ -84,11 +84,16 @@ export function ProductEntryForm({
   return (
     <Form {...form}>
       <form onSubmit={(event) => void form.handleSubmit(controller.submit)(event)}>
-        {controller.editing && <div className="mb-4 flex h-9 items-center gap-2 rounded-md border border-info/25 bg-info/[0.07] px-3 text-[12px]">
+        {controller.editing && <div className="mb-4 flex min-h-9 flex-wrap items-center gap-2 rounded-md border border-info/25 bg-info/[0.07] px-3 py-1.5 text-[12px]">
           <Pencil className="h-3.5 w-3.5 shrink-0 text-info" />
           <span className="truncate text-start">{__("Editing", "yaxii-product-workspace")} <span className="font-semibold">{product?.name}</span></span>
+          {product?.native_edit_url && <Button asChild variant="ghost" size="sm" className="ms-auto h-7 px-2 text-[11px]">
+            <a href={product.native_edit_url} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="me-1.5 h-3.5 w-3.5" />{__("Open in WooCommerce", "yaxii-product-workspace")}
+            </a>
+          </Button>}
           <button type="button" onClick={controller.cancelEdit}
-            className="ms-auto inline-flex items-center gap-1 text-muted-foreground hover:text-foreground">
+            className="inline-flex min-h-7 items-center gap-1 rounded px-1 text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
             <X className="h-3 w-3" /> {__("Cancel", "yaxii-product-workspace")}
           </button>
         </div>}

@@ -34,7 +34,6 @@ final class VariableAttributeMatrixTest extends TestCase {
 		self::assertNotEmpty( $admins );
 		wp_set_current_user( (int) $admins[0]->ID );
 		SchemaManager::create()->maybe_upgrade();
-		do_action( 'rest_api_init' );
 		$category = wp_insert_term( 'YPW matrix ' . wp_generate_password( 6, false ), 'product_cat' );
 		self::assertIsArray( $category );
 		$this->category_id = (int) $category['term_id'];

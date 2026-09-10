@@ -37,7 +37,6 @@ final class ProductControllerTest extends TestCase {
 		$this->administrator_id = (int) $administrators[0]->ID;
 		wp_set_current_user( $this->administrator_id );
 		SchemaManager::create()->maybe_upgrade();
-		do_action( 'rest_api_init' );
 
 		$term = wp_insert_term( 'YPW test ' . wp_generate_uuid4(), 'product_cat' );
 		self::assertIsArray( $term );

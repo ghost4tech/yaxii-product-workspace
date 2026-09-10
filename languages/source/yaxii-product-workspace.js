@@ -246,6 +246,7 @@ wp.i18n.__("Link", "yaxii-product-workspace");
 wp.i18n.__("Load more categories", "yaxii-product-workspace");
 wp.i18n.__("Load more", "yaxii-product-workspace");
 wp.i18n.__("Loading categories…", "yaxii-product-workspace");
+wp.i18n.__("Loading linked product…", "yaxii-product-workspace");
 wp.i18n.__("Loading products…", "yaxii-product-workspace");
 wp.i18n.__("Loading recent products", "yaxii-product-workspace");
 wp.i18n.__("Loading Yaxii Product Workspace", "yaxii-product-workspace");
@@ -286,6 +287,7 @@ wp.i18n.__("On backorder", "yaxii-product-workspace");
 wp.i18n.__("One or two lines shown near the price…", "yaxii-product-workspace");
 wp.i18n.__("Open an existing WooCommerce product or prepare a new simple-product draft.", "yaxii-product-workspace");
 wp.i18n.__("Open command menu", "yaxii-product-workspace");
+wp.i18n.__("Open in WooCommerce", "yaxii-product-workspace");
 wp.i18n.__("Open", "yaxii-product-workspace");
 wp.i18n.__("Operation status filters", "yaxii-product-workspace");
 wp.i18n.__("Operation was not reconciled", "yaxii-product-workspace");
@@ -433,6 +435,7 @@ wp.i18n.__("Show sparklines and deltas on the metric strip.", "yaxii-product-wor
 wp.i18n.__("Show the metric strip above the product workspace.", "yaxii-product-workspace");
 wp.i18n.__("Show this panel", "yaxii-product-workspace");
 wp.i18n.__("Simple product", "yaxii-product-workspace");
+wp.i18n._x("Simple", "Product type", "yaxii-product-workspace");
 wp.i18n.__("Simple", "yaxii-product-workspace");
 wp.i18n.__("SKU field", "yaxii-product-workspace");
 wp.i18n.__("Slug", "yaxii-product-workspace");
@@ -469,11 +472,13 @@ wp.i18n.__("The cursor moves to the name field when the workspace loads.", "yaxi
 wp.i18n.__("The form was kept. Submit again to reconcile without creating a duplicate.", "yaxii-product-workspace");
 wp.i18n.__("The image could not be uploaded.", "yaxii-product-workspace");
 wp.i18n.__("The latest product could not be loaded.", "yaxii-product-workspace");
+wp.i18n.__("The linked product could not be opened.", "yaxii-product-workspace");
 /* translators: %s: maximum combination count. */
 wp.i18n.__("The plan exceeds %s combinations.", "yaxii-product-workspace");
 /* translators: %s: source product name. */
 wp.i18n.__("The product could not be loaded.", "yaxii-product-workspace");
 wp.i18n.__("The Product Workspace assets are unavailable. Rebuild the plugin frontend.", "yaxii-product-workspace");
+wp.i18n.__("The Product Workspace link contains an invalid product ID.", "yaxii-product-workspace");
 wp.i18n.__("The server request failed.", "yaxii-product-workspace");
 wp.i18n.__("The server response was not received.", "yaxii-product-workspace");
 wp.i18n.__("The server returned an invalid response.", "yaxii-product-workspace");
@@ -514,6 +519,7 @@ wp.i18n.__("Uploading variation image", "yaxii-product-workspace");
 wp.i18n.__("Use at least one attribute for variations.", "yaxii-product-workspace");
 wp.i18n.__("Used for primary buttons and active states.", "yaxii-product-workspace");
 wp.i18n.__("Validate and save current draft", "yaxii-product-workspace");
+wp.i18n._x("Variable", "Product type", "yaxii-product-workspace");
 wp.i18n.__("variable", "yaxii-product-workspace");
 wp.i18n.__("Variable", "yaxii-product-workspace");
 wp.i18n.__("Variation image reference is invalid.", "yaxii-product-workspace");

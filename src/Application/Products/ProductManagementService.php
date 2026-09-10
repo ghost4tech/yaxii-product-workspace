@@ -100,6 +100,13 @@ final class ProductManagementService {
 		$this->assert_workspace_access();
 		$product = $this->products->get( $product_id );
 		if ( null === $product ) {
+			if ( null !== $this->products->product_type( $product_id ) ) {
+				throw new ApiException(
+					'ypw_unsupported_product_type',
+					__( 'This WooCommerce product type is not supported. Open a Simple or Variable product.', 'yaxii-product-workspace' ),
+					422
+				);
+			}
 			throw $this->not_found();
 		}
 		return $product;
@@ -150,7 +157,7 @@ final class ProductManagementService {
 	}
 
 	private function not_found(): ApiException {
-		return new ApiException( 'ypw_product_not_found', __( 'The requested simple product was not found.', 'yaxii-product-workspace' ), 404 );
+		return new ApiException( 'ypw_product_not_found', __( 'The requested product was not found.', 'yaxii-product-workspace' ), 404 );
 	}
 	// phpcs:enable WordPress.Security.EscapeOutput.ExceptionNotEscaped
 }

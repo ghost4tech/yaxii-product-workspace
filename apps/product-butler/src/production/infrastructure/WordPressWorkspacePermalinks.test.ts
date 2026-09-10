@@ -6,6 +6,7 @@ const plainHost: WorkspaceHostConfig = {
   direction: "ltr",
   environment: "wordpress",
   frontendAvailable: true,
+  initialProductId: null,
   isWooCommerceAvailable: true,
   locale: "en-US",
   mediaRestUrl: "https://example.test/index.php?rest_route=/wp/v2/media",

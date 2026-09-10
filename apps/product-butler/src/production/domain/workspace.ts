@@ -5,6 +5,7 @@ export interface WorkspaceHostConfig {
   direction: Direction;
   environment: HostEnvironment;
   frontendAvailable: boolean;
+  initialProductId: number | null;
   isWooCommerceAvailable: boolean;
   locale: string;
   mediaRestUrl: string;
@@ -34,6 +35,7 @@ export interface WorkspaceBootstrap {
     variableProductCreate: boolean;
   };
   frontendAvailable: boolean;
+  initialProductId: number | null;
   isWooCommerceAvailable: boolean;
   locale: string;
   pluginVersion: string;

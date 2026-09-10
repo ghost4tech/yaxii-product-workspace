@@ -30,6 +30,10 @@ final class FakeProductGateway implements ProductGateway {
 		return $this->available;
 	}
 
+	public function product_type( int $product_id ): ?string {
+		return null === $this->get( $product_id ) ? null : 'simple';
+	}
+
 	public function validate( CreateProductCommand $command, int $product_id = 0 ): array {
 		unset( $command, $product_id );
 		return $this->validation_errors;

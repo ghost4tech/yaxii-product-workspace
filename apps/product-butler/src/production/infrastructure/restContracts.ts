@@ -34,6 +34,7 @@ const canonicalBaseSchema = simpleProductFieldsSchema.extend({
   id: z.number().int().positive(),
   images: z.array(z.object({ alt: z.string(), id: z.number().int().positive(), url: z.string() })),
   modified_at: z.string().nullable(),
+  native_edit_url: z.string().url().nullable().optional(),
   version: z.string().length(64),
 });
 

@@ -25,6 +25,7 @@ export const canonicalProduct: CanonicalProduct = {
   id: 321,
   images: [],
   modified_at: "2026-08-13T12:00:00+00:00",
+  native_edit_url: "https://store.test/wp-admin/post.php?post=321&action=edit",
   type: "simple",
   version: "1".repeat(64),
 };
@@ -58,6 +59,7 @@ export const workspaceSnapshot: WorkspaceSnapshot = {
       variableProductCreate: true,
     },
     frontendAvailable: true,
+    initialProductId: null,
     isWooCommerceAvailable: true,
     locale: "en-US",
     pluginVersion: "test",
