@@ -329,157 +329,157 @@
     {
       "license": "MIT",
       "name": "@tiptap/core",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-blockquote",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-bold",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-bubble-menu",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-bullet-list",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-code",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-code-block",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-document",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-dropcursor",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-floating-menu",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-gapcursor",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-hard-break",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-heading",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-horizontal-rule",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-image",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-italic",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-link",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-list",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-list-item",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-list-keymap",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-ordered-list",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-paragraph",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-placeholder",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-strike",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-text",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-text-align",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extension-underline",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/extensions",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/pm",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/react",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
       "name": "@tiptap/starter-kit",
-      "version": "3.30.1"
+      "version": "3.30.5"
     },
     {
       "license": "MIT",
@@ -704,7 +704,7 @@
     {
       "license": "MIT",
       "name": "prosemirror-changeset",
-      "version": "2.4.1"
+      "version": "2.4.2"
     },
     {
       "license": "MIT",
@@ -759,12 +759,12 @@
     {
       "license": "MIT",
       "name": "prosemirror-transform",
-      "version": "1.12.0"
+      "version": "1.12.1"
     },
     {
       "license": "MIT",
       "name": "prosemirror-view",
-      "version": "1.42.2"
+      "version": "1.42.3"
     },
     {
       "license": "MIT",
