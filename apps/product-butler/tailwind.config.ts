@@ -2,7 +2,16 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: [
+    "./src/**/*.{ts,tsx}",
+    "!./src/components/deferred/**/*.{ts,tsx}",
+    "!./src/components/ProLock.tsx",
+    "!./src/components/UpgradeModal.tsx",
+    "!./src/components/WooCommerceSetup.tsx",
+    "!./src/pages/{Analytics,License,Stores,Team}.tsx",
+    "!./src/services/**/*.{ts,tsx}",
+    "!./src/stores/{storesStore,tierStore}.ts",
+  ],
   prefix: "",
   theme: {
     container: {
