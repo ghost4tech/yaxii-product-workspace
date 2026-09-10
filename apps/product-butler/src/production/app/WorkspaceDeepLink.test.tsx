@@ -60,7 +60,7 @@ describe("Workspace product deep links", () => {
     });
 
     expect(await screen.findByRole("heading", { name: "Edit product" })).toBeVisible();
-    expect(screen.getByDisplayValue("Canvas tote")).toBeVisible();
+    expect(await screen.findByDisplayValue("Canvas tote")).toBeVisible();
     expect(screen.getByRole("link", { name: "Open in WooCommerce" })).toHaveAttribute(
       "href",
       canonicalProduct.native_edit_url,
