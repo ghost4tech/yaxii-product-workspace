@@ -13,6 +13,8 @@ namespace Yaxii\ProductWorkspace\Application\Products;
 interface ProductGateway {
 	public function is_available(): bool;
 
+	public function product_type( int $product_id ): ?string;
+
 	/**
 	 * @return array<string, array<string>> Field-addressable validation errors.
 	 */

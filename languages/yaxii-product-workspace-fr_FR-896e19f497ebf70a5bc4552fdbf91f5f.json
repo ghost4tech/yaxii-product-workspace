@@ -1,7 +1,7 @@
 {
     "translation-revision-date": "2026-08-23T12:07:44+00:00",
     "generator": "WP-CLI\/2.12.0",
-    "source": "assets\/build\/assets\/main-CLCvGnpd.js",
+    "source": "assets\/build\/assets\/main-Dip0dA-G.js",
     "domain": "messages",
     "locale_data": {
         "messages": {
@@ -1496,6 +1496,24 @@
             ],
             "Attribute %1$d name \u201c%2$s\u201d duplicates an earlier attribute after normalization.": [
                 "Le nom \u00ab\u00a0%2$s\u00a0\u00bb de l\u2019attribut %1$d duplique un attribut pr\u00e9c\u00e9dent apr\u00e8s normalisation."
+            ],
+            "Loading linked product\u2026": [
+                "Chargement du produit li\u00e9\u2026"
+            ],
+            "Open in WooCommerce": [
+                "Ouvrir dans WooCommerce"
+            ],
+            "Product type\u0004Simple": [
+                "Simple"
+            ],
+            "The linked product could not be opened.": [
+                "Impossible d\u2019ouvrir le produit li\u00e9."
+            ],
+            "The Product Workspace link contains an invalid product ID.": [
+                "Le lien vers l\u2019espace de travail des produits contient un ID de produit non valide."
+            ],
+            "Product type\u0004Variable": [
+                "Variable"
             ]
         }
     }

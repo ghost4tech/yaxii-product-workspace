@@ -9,9 +9,19 @@ contains reusable parent product fields, product attributes, and every concrete 
 combination. Multiple attributes are supported: two Color values and three Size values create six
 distinct variations, not five option rows.
 
+Existing compatible Variable products follow the same path even when they were created in the
+native WooCommerce editor and contain no Product Workspace operation or combination metadata.
+Find Product resolves a child variation SKU to its Variable parent. Hydration assigns deterministic
+legacy client IDs only in the browser contract while retaining the real WooCommerce variation IDs,
+so an update edits the existing children instead of duplicating them.
+
 Global attributes use real WooCommerce attribute IDs, `pa_*` taxonomies, and term IDs. Custom
 attributes use a product-local name and option strings and do not create taxonomies. Visibility,
 variation use, and position are persisted on the parent.
+
+Variation reads use WooCommerce edit-context values. This preserves the distinction between an
+explicit child image and an inherited parent image and normalizes inherited stock-management state
+without changing the stored product.
 
 Each concrete variation independently owns enabled status, regular and optional sale price, SKU,
 stock management and quantity, stock status, and image attachment ID. Commercial fields never

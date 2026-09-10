@@ -96,6 +96,7 @@ function parseBootstrap(value: unknown, host: WorkspaceHostConfig): WorkspaceBoo
       variableProductCreate: booleanValue(features.variable_product_create),
     },
     frontendAvailable: host.frontendAvailable,
+    initialProductId: host.initialProductId,
     isWooCommerceAvailable: booleanValue(woo.available),
     locale: typeof locale.code === "string" ? locale.code : host.locale,
     pluginVersion: host.pluginVersion,

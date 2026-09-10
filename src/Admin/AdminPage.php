@@ -16,7 +16,6 @@ defined( 'ABSPATH' ) || exit;
  * Mounts and scopes the approved Lovable application in wp-admin.
  */
 final class AdminPage {
-	private const MENU_SLUG    = 'yaxii-product-workspace';
 	private const SCRIPT_NAME  = 'yaxii-product-workspace-app';
 	private const SHELL_STYLE  = 'yaxii-product-workspace-admin-shell';
 	private const STYLE_PREFIX = 'yaxii-product-workspace-app';
@@ -25,11 +24,13 @@ final class AdminPage {
 	private string $plugin_file;
 	private CapabilityPolicy $capabilities;
 	private UserLocaleContext $locale;
+	private ProductNavigation $navigation;
 
-	public function __construct( string $plugin_file, CapabilityPolicy $capabilities, UserLocaleContext $locale ) {
+	public function __construct( string $plugin_file, CapabilityPolicy $capabilities, UserLocaleContext $locale, ?ProductNavigation $navigation = null ) {
 		$this->plugin_file  = $plugin_file;
 		$this->capabilities = $capabilities;
 		$this->locale       = $locale;
+		$this->navigation   = $navigation ?? new ProductNavigation( $capabilities );
 	}
 
 	public function register(): void {
@@ -39,6 +40,7 @@ final class AdminPage {
 		add_filter( 'admin_footer_text', array( $this, 'footer_text' ), 99 );
 		add_filter( 'update_footer', array( $this, 'footer_text' ), 99 );
 		add_filter( 'script_loader_tag', array( $this, 'mark_script_as_module' ), 10, 2 );
+		$this->navigation->register();
 	}
 
 	public function add_menu_page(): void {
@@ -46,7 +48,7 @@ final class AdminPage {
 			__( 'Yaxii Product Workspace', 'yaxii-product-workspace' ),
 			__( 'Product Workspace', 'yaxii-product-workspace' ),
 			$this->required_capability(),
-			self::MENU_SLUG,
+			ProductNavigation::MENU_SLUG,
 			array( $this, 'render_page' ),
 			'dashicons-products',
 			56
@@ -170,6 +172,7 @@ final class AdminPage {
 			'environment'            => 'wordpress',
 			'frontendAvailable'      => null !== $this->manifest_entry(),
 			'isWooCommerceAvailable' => $this->is_woocommerce_available(),
+			'initialProductId'       => $this->navigation->requested_product_id(),
 			'locale'                 => $locale['code'],
 			'nonce'                  => wp_create_nonce( 'wp_rest' ),
 			'pluginVersion'          => YAXII_PRODUCT_WORKSPACE_VERSION,

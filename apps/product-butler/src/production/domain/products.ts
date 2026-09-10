@@ -49,6 +49,7 @@ interface CanonicalProductBase extends SimpleProductFields {
   id: number;
   images: ProductImageResource[];
   modified_at: string | null;
+  native_edit_url?: string | null;
   version: string;
 }
 

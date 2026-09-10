@@ -113,7 +113,7 @@ final class WooVariableProductMapper {
 	 * @return array<string, mixed> */
 	private function combination( \WC_Product_Variation $variation, array $attributes ): array {
 		$selections = array();
-		$values     = $variation->get_attributes();
+		$values     = $variation->get_attributes( 'edit' );
 		foreach ( $attributes as $attribute ) {
 			if ( ! $attribute['variation'] ) {
 				continue;
@@ -138,14 +138,14 @@ final class WooVariableProductMapper {
 			'client_id'      => wp_is_uuid( $client_id ) ? $client_id : $this->legacy_client_id( $variation->get_id() ),
 			'variation_id'   => $variation->get_id(),
 			'selections'     => $selections,
-			'enabled'        => 'publish' === $variation->get_status(),
-			'regular_price'  => $variation->get_regular_price(),
-			'sale_price'     => '' === $variation->get_sale_price() ? null : $variation->get_sale_price(),
-			'sku'            => $variation->get_sku(),
-			'manage_stock'   => $variation->get_manage_stock(),
-			'stock_quantity' => $variation->get_stock_quantity(),
-			'stock_status'   => $variation->get_stock_status(),
-			'image_id'       => $variation->get_image_id(),
+			'enabled'        => 'publish' === $variation->get_status( 'edit' ),
+			'regular_price'  => $variation->get_regular_price( 'edit' ),
+			'sale_price'     => '' === $variation->get_sale_price( 'edit' ) ? null : $variation->get_sale_price( 'edit' ),
+			'sku'            => $variation->get_sku( 'edit' ),
+			'manage_stock'   => (bool) $variation->get_manage_stock( 'edit' ),
+			'stock_quantity' => $variation->get_stock_quantity( 'edit' ),
+			'stock_status'   => $variation->get_stock_status( 'edit' ),
+			'image_id'       => $variation->get_image_id( 'edit' ),
 		);
 	}
 

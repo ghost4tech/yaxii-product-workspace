@@ -65,7 +65,7 @@ export function useProductEntryController(options: Options) {
   const [trashOpen, setTrashOpen] = useState(false);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const firstRevision = useRef(draftRevision);
-  const priorProductId = useRef<number>();
+  const priorProductKey = useRef<string>();
   const preferencesApplied = useRef(false);
   const form = useForm<ProductEntryValues>({
     defaultValues: toProductEntryValues(draftFormData),
@@ -90,10 +90,12 @@ export function useProductEntryController(options: Options) {
 
   useEffect(() => {
     if (product) {
-      priorProductId.current = product.id;
+      const productKey = `${product.id}:${product.version}`;
+      if (priorProductKey.current === productKey) return;
+      priorProductKey.current = productKey;
       hydrate(product);
-    } else if (priorProductId.current) {
-      priorProductId.current = undefined;
+    } else if (priorProductKey.current) {
+      priorProductKey.current = undefined;
       const draft = useProductStore.getState().draftFormData;
       form.reset(toProductEntryValues(draft));
       setImages(draft.images);

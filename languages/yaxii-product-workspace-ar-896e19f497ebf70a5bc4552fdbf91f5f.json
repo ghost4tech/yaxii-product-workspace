@@ -1,7 +1,7 @@
 {
     "translation-revision-date": "2026-08-23T12:07:44+00:00",
     "generator": "WP-CLI\/2.12.0",
-    "source": "assets\/build\/assets\/main-CLCvGnpd.js",
+    "source": "assets\/build\/assets\/main-Dip0dA-G.js",
     "domain": "messages",
     "locale_data": {
         "messages": {
@@ -1540,6 +1540,24 @@
             ],
             "Attribute %1$d name \u201c%2$s\u201d duplicates an earlier attribute after normalization.": [
                 "\u064a\u0643\u0631\u0631 \u0627\u0644\u0627\u0633\u0645 \u00ab%2$s\u00bb \u0644\u0644\u0633\u0645\u0629 %1$d \u0633\u0645\u0629 \u0633\u0627\u0628\u0642\u0629 \u0628\u0639\u062f \u0627\u0644\u062a\u0637\u0628\u064a\u0639."
+            ],
+            "Loading linked product\u2026": [
+                "\u062c\u0627\u0631\u064d \u062a\u062d\u0645\u064a\u0644 \u0627\u0644\u0645\u0646\u062a\u062c \u0627\u0644\u0645\u0631\u062a\u0628\u0637\u2026"
+            ],
+            "Open in WooCommerce": [
+                "\u0641\u062a\u062d \u0641\u064a WooCommerce"
+            ],
+            "Product type\u0004Simple": [
+                "\u0628\u0633\u064a\u0637"
+            ],
+            "The linked product could not be opened.": [
+                "\u062a\u0639\u0630\u0631 \u0641\u062a\u062d \u0627\u0644\u0645\u0646\u062a\u062c \u0627\u0644\u0645\u0631\u062a\u0628\u0637."
+            ],
+            "The Product Workspace link contains an invalid product ID.": [
+                "\u064a\u062d\u062a\u0648\u064a \u0631\u0627\u0628\u0637 \u0645\u0633\u0627\u062d\u0629 \u0639\u0645\u0644 \u0627\u0644\u0645\u0646\u062a\u062c\u0627\u062a \u0639\u0644\u0649 \u0645\u0639\u0631\u0651\u0641 \u0645\u0646\u062a\u062c \u063a\u064a\u0631 \u0635\u0627\u0644\u062d."
+            ],
+            "Product type\u0004Variable": [
+                "\u0645\u062a\u063a\u064a\u0631"
             ]
         }
     }

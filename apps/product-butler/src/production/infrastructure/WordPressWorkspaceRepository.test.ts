@@ -8,6 +8,7 @@ const host: WorkspaceHostConfig = {
   direction: "ltr",
   environment: "wordpress",
   frontendAvailable: true,
+  initialProductId: null,
   isWooCommerceAvailable: true,
   locale: "en-US",
   mediaRestUrl: "https://store.test/wp-json/wp/v2/media",

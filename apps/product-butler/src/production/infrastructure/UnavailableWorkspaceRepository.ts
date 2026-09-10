@@ -23,6 +23,7 @@ export class UnavailableWorkspaceRepository implements WorkspaceRepository {
           variableProductCreate: false,
         },
         frontendAvailable: false,
+        initialProductId: null,
         isWooCommerceAvailable: false,
         locale: "en-US",
         pluginVersion: "unknown",

@@ -29,7 +29,6 @@ final class ProductCategoryControllerTest extends TestCase {
 		);
 		self::assertNotEmpty( $administrators );
 		wp_set_current_user( (int) $administrators[0]->ID );
-		do_action( 'rest_api_init' );
 		$this->create_hierarchy();
 	}
 

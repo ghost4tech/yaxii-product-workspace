@@ -29,7 +29,6 @@ final class VariableProductLifecycleTest extends TestCase {
 		$this->administrator_id = (int) $admins[0]->ID;
 		wp_set_current_user( $this->administrator_id );
 		SchemaManager::create()->maybe_upgrade();
-		do_action( 'rest_api_init' );
 		$this->create_references();
 	}
 	protected function tearDown(): void {
@@ -63,6 +62,17 @@ final class VariableProductLifecycleTest extends TestCase {
 		self::assertCount( 6, array_unique( array_column( $product['combinations'], 'variation_id' ) ) );
 		self::assertSame( array( '11', '12', '13', '14', '15', '16' ), array_column( $product['combinations'], 'regular_price' ) );
 		self::assertSame( array( 1, 2, 3, 4, 5, 6 ), array_column( $product['combinations'], 'stock_quantity' ) );
+		$search = $this->data(
+			$this->dispatch(
+				'GET',
+				'/products',
+				array(
+					'search'   => $product['name'],
+					'per_page' => 20,
+				)
+			)
+		);
+		self::assertContains( $product['id'], array_column( $search['items'], 'id' ) );
 
 		$detail = $this->data( $this->dispatch( 'GET', '/variable-products/' . $product['id'] ) );
 		self::assertSame( $product['version'], $detail['version'] );

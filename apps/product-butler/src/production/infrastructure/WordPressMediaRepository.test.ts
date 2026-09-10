@@ -3,7 +3,7 @@ import type { WorkspaceHostConfig } from "../domain/workspace";
 import { WordPressWorkspaceRepository } from "./WordPressWorkspaceRepository";
 
 const host: WorkspaceHostConfig = {
-  direction: "ltr", environment: "wordpress", frontendAvailable: true,
+  direction: "ltr", environment: "wordpress", frontendAvailable: true, initialProductId: null,
   isWooCommerceAvailable: true, locale: "en-US",
   mediaRestUrl: "https://store.test/wp-json/wp/v2/media", nonce: "rest-nonce",
   pluginVersion: "0.2.0", restUrl: "https://store.test/wp-json/yaxii-product-workspace/v1/",

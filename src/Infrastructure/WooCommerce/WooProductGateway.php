@@ -32,6 +32,11 @@ final class WooProductGateway implements ProductGateway {
 		return class_exists( 'WooCommerce' ) && class_exists( 'WC_Product_Simple' ) && defined( 'WC_VERSION' );
 	}
 
+	public function product_type( int $product_id ): ?string {
+		$product = wc_get_product( $product_id );
+		return $product instanceof \WC_Product ? $product->get_type() : null;
+	}
+
 	public function validate( CreateProductCommand $command, int $product_id = 0 ): array {
 		$fields = array();
 		if ( '' !== $command->sku() && ! wc_product_has_unique_sku( $product_id, $command->sku() ) ) {
@@ -58,10 +63,12 @@ final class WooProductGateway implements ProductGateway {
 
 	public function get( int $product_id ): ?array {
 		$product = wc_get_product( $product_id );
-		if ( $product instanceof \WC_Product_Simple ) {
+		if ( $product instanceof \WC_Product_Simple && $product->is_type( 'simple' ) ) {
 			return $this->mapper->resource( $product );
 		}
-		return $product instanceof \WC_Product_Variable && null !== $this->variable_mapper ? $this->variable_mapper->resource( $product ) : null;
+		return $product instanceof \WC_Product_Variable && $product->is_type( 'variable' ) && null !== $this->variable_mapper
+			? $this->variable_mapper->resource( $product )
+			: null;
 	}
 
 	public function query( ProductQuery $query ): array {
@@ -79,9 +86,9 @@ final class WooProductGateway implements ProductGateway {
 			if ( ! current_user_can( 'edit_post', $product_id ) ) {
 				continue;
 			}
-			if ( $product instanceof \WC_Product_Simple ) {
+			if ( $product instanceof \WC_Product_Simple && $product->is_type( 'simple' ) ) {
 				$items[] = $this->mapper->resource( $product );
-			} elseif ( $product instanceof \WC_Product_Variable && null !== $this->variable_mapper ) {
+			} elseif ( $product instanceof \WC_Product_Variable && $product->is_type( 'variable' ) && null !== $this->variable_mapper ) {
 				$items[] = $this->variable_mapper->resource( $product );
 			}
 		}
@@ -98,7 +105,7 @@ final class WooProductGateway implements ProductGateway {
 
 	public function update( int $product_id, CreateProductCommand $command ): array {
 		$product = wc_get_product( $product_id );
-		if ( ! $product instanceof \WC_Product_Simple && ! $product instanceof \WC_Product_Variable ) {
+		if ( ! $product instanceof \WC_Product_Simple || ! $product->is_type( 'simple' ) ) {
 			throw new RuntimeException( 'The requested product is unavailable.' );
 		}
 		$this->mapper->apply( $product, $command );
@@ -108,7 +115,7 @@ final class WooProductGateway implements ProductGateway {
 
 	public function trash( int $product_id ): array {
 		$product = wc_get_product( $product_id );
-		if ( ! $product instanceof \WC_Product_Simple ) {
+		if ( ! $product instanceof \WC_Product_Simple || ! $product->is_type( 'simple' ) ) {
 			throw new RuntimeException( 'The requested simple product is unavailable.' );
 		}
 		$product->delete( false );
@@ -120,7 +127,7 @@ final class WooProductGateway implements ProductGateway {
 
 	public function duplicate_prefill( int $product_id ): ?array {
 		$product = wc_get_product( $product_id );
-		return $product instanceof \WC_Product_Simple ? $this->mapper->duplicate_prefill( $product ) : null;
+		return $product instanceof \WC_Product_Simple && $product->is_type( 'simple' ) ? $this->mapper->duplicate_prefill( $product ) : null;
 	}
 
 	public function find_by_operation( string $operation_id ): ?array {
@@ -221,10 +228,15 @@ final class WooProductGateway implements ProductGateway {
 		if ( '' === $query->search() ) {
 			return 0;
 		}
-		$sku_id    = wc_get_product_id_by_sku( $query->search() );
-		$product   = $sku_id ? wc_get_product( $sku_id ) : false;
-		$supported = $product instanceof \WC_Product_Simple
-			|| ( $product instanceof \WC_Product_Variable && null !== $this->variable_mapper );
+		$sku_id  = wc_get_product_id_by_sku( $query->search() );
+		$product = $sku_id ? wc_get_product( $sku_id ) : false;
+		if ( $product instanceof \WC_Product_Variation ) {
+			$sku_id  = $product->get_parent_id();
+			$product = 0 < $sku_id ? wc_get_product( $sku_id ) : false;
+		}
+		$supported = $product instanceof \WC_Product
+			&& in_array( $product->get_type(), array( 'simple', 'variable' ), true )
+			&& ( 'simple' === $product->get_type() || null !== $this->variable_mapper );
 		if ( ! $supported || ! current_user_can( 'edit_post', $sku_id ) ) {
 			return 0;
 		}
@@ -238,7 +250,7 @@ final class WooProductGateway implements ProductGateway {
 	/** @return array<string, mixed> */
 	private function persisted_resource( int $product_id ): array {
 		$product = wc_get_product( $product_id );
-		if ( ! $product instanceof \WC_Product_Simple ) {
+		if ( ! $product instanceof \WC_Product_Simple || ! $product->is_type( 'simple' ) ) {
 			throw new RuntimeException( 'WooCommerce could not reload the saved simple product.' );
 		}
 		return $this->mapper->resource( $product );

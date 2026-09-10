@@ -24,6 +24,7 @@ export class DevelopmentWorkspaceRepository implements WorkspaceRepository {
           variableProductCreate: false,
         },
         frontendAvailable: true,
+        initialProductId: null,
         isWooCommerceAvailable: true,
         locale: "en-US",
         pluginVersion: "development",

@@ -1,4 +1,5 @@
-import { useCallback, useState } from "react";
+import { Loader2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ProductEntryForm } from "@/components/ProductEntryForm";
 import { ProductQueue } from "@/components/ProductQueue";
 import { QueueSheet } from "@/components/entry/QueueSheet";
@@ -24,7 +25,29 @@ const Entry = () => {
   const [success, setSuccess] = useState<SaveSuccessInfo | null>(null);
   const operationCounts = useOperationSummary();
   const { toast } = useToast();
-  const { client } = useWorkspaceRuntime();
+  const { bootstrap, client } = useWorkspaceRuntime();
+  const initialProductHandled = useRef(false);
+  const [initialProductLoading, setInitialProductLoading] = useState(bootstrap.initialProductId !== null);
+  const [deepLinkError, setDeepLinkError] = useState("");
+
+  useEffect(() => {
+    if (initialProductHandled.current || bootstrap.initialProductId === null) return;
+    initialProductHandled.current = true;
+    if (bootstrap.initialProductId <= 0) {
+      setDeepLinkError(__("The Product Workspace link contains an invalid product ID.", "yaxii-product-workspace"));
+      setInitialProductLoading(false);
+      return;
+    }
+    void client.getProduct(bootstrap.initialProductId)
+      .then((product) => {
+        setDeepLinkError("");
+        setEditingProduct(product);
+      })
+      .catch((error: unknown) => {
+        setDeepLinkError(error instanceof Error ? error.message : __("The linked product could not be opened.", "yaxii-product-workspace"));
+      })
+      .finally(() => setInitialProductLoading(false));
+  }, [bootstrap.initialProductId, client]);
 
   const openQueueProduct = useCallback(
     async (product: Product) => {
@@ -37,6 +60,7 @@ const Entry = () => {
         return;
       }
       try {
+        setDeepLinkError("");
         setEditingProduct(await client.getProduct(product.wooCommerceId));
         setQueueSheet(false);
       } catch (error) {
@@ -81,22 +105,29 @@ const Entry = () => {
             </div>
           </div>
           <div className="panel-body relative">
-            <ProductEntryForm
-              advancedOpen={advancedOpen}
-              onAdvancedChange={setAdvancedOpen}
-              onCloseEdit={() => setEditingProduct(null)}
-              onProductUpdated={setEditingProduct}
-              onProductSaved={(product, updated) => setSuccess({ name: product.name, sku: product.sku, updated })}
-              product={editingProduct}
-              twoColumn={advancedOpen}
-            />
-            <SaveSuccess info={success} onDismiss={() => {
-              if (success?.updated) setEditingProduct(null);
-              setSuccess(null);
-            }} onViewQueue={() => {
-              setSuccess(null);
-              setQueueSheet(true);
-            }} />
+            {initialProductLoading ? (
+              <div className="flex min-h-52 items-center justify-center text-sm text-muted-foreground" role="status">
+                <Loader2 className="me-2 h-4 w-4 animate-spin" />{__("Loading linked product…", "yaxii-product-workspace")}
+              </div>
+            ) : <>
+              {deepLinkError && <p role="alert" className="mb-4 rounded-md border border-destructive/25 bg-destructive/[0.06] p-3 text-[12px] text-destructive">{deepLinkError}</p>}
+              <ProductEntryForm
+                advancedOpen={advancedOpen}
+                onAdvancedChange={setAdvancedOpen}
+                onCloseEdit={() => setEditingProduct(null)}
+                onProductUpdated={setEditingProduct}
+                onProductSaved={(product, updated) => setSuccess({ name: product.name, sku: product.sku, updated })}
+                product={editingProduct}
+                twoColumn={advancedOpen}
+              />
+              <SaveSuccess info={success} onDismiss={() => {
+                if (success?.updated) setEditingProduct(null);
+                setSuccess(null);
+              }} onViewQueue={() => {
+                setSuccess(null);
+                setQueueSheet(true);
+              }} />
+            </>}
           </div>
         </section>
 
@@ -124,7 +155,13 @@ const Entry = () => {
         onEdit={(product) => void openQueueProduct(product)}
       />
       <ProductFinder open={finderOpen} onOpenChange={setFinderOpen}
-        onOpenProduct={setEditingProduct} onDraftPrepared={() => setEditingProduct(null)} />
+        onOpenProduct={(product) => {
+          setDeepLinkError("");
+          setEditingProduct(product);
+        }} onDraftPrepared={() => {
+          setDeepLinkError("");
+          setEditingProduct(null);
+        }} />
     </div>
   );
 };

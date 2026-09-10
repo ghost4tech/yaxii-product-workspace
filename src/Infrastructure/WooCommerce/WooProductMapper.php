@@ -53,6 +53,7 @@ final class WooProductMapper {
 		$created_at  = $product->get_date_created();
 		$modified_at = $product->get_date_modified();
 		$version     = wp_json_encode( $fields );
+		$native_url  = get_edit_post_link( $product->get_id(), 'raw' );
 		if ( false === $version ) {
 			throw new RuntimeException( 'Unable to version the WooCommerce product.' );
 		}
@@ -60,12 +61,13 @@ final class WooProductMapper {
 		return array_merge(
 			$fields,
 			array(
-				'id'          => $product->get_id(),
-				'type'        => $product->get_type(),
-				'created_at'  => $created_at ? $created_at->format( DATE_ATOM ) : null,
-				'modified_at' => $modified_at ? $modified_at->format( DATE_ATOM ) : null,
-				'version'     => hash( 'sha256', $version ),
-				'images'      => $this->images( $product ),
+				'id'              => $product->get_id(),
+				'type'            => $product->get_type(),
+				'native_edit_url' => $native_url ? $native_url : null,
+				'created_at'      => $created_at ? $created_at->format( DATE_ATOM ) : null,
+				'modified_at'     => $modified_at ? $modified_at->format( DATE_ATOM ) : null,
+				'version'         => hash( 'sha256', $version ),
+				'images'          => $this->images( $product ),
 			)
 		);
 	}
