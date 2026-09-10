@@ -6,8 +6,8 @@
 
 **Baseline:** `b041e5d904c804b5acb1bcac4a641411e02467af`
 
-**Release state:** Implementation checkpoint only; owner acceptance and every publication action
-remain pending.
+**Historical release state at this checkpoint:** Implementation only; publication had not yet
+started. The completed release record is `docs/project/RELEASE-1.1.2-EVIDENCE.md`.
 
 ## Root cause and correction
 
@@ -99,8 +99,9 @@ debug noise were reactivated, and the original permalink structure was restored.
 
 ## Release boundary and proposed changelog
 
-The code version and release manifest intentionally remain `1.1.1`. No tag, WordPress.org SVN
-change, public `dev`/`main` update, or public export was made.
+At this implementation checkpoint, the code version and release manifest intentionally remained
+`1.1.1`. No tag, WordPress.org SVN change, public `dev`/`main` update, or public export had been
+made yet. Those later publication results are recorded in the completed release evidence.
 
 Proposed 1.1.2 changelog:
 
