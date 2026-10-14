@@ -158,7 +158,8 @@ for (const { comment, name, values } of [...messages.values()].sort((left, right
 const generated = `${lines.join("\n")}\n`;
 if (process.argv.includes("--check")) {
   const current = await readFile(output, "utf8").catch(() => "");
-  if (current !== generated) throw new Error("Generated JavaScript translation source is stale. Run npm run i18n:source.");
+  const normalizedCurrent = current.replace(/\r\n/gu, "\n");
+  if (normalizedCurrent !== generated) throw new Error("Generated JavaScript translation source is stale. Run npm run i18n:source.");
 } else {
   await mkdir(path.dirname(output), { recursive: true });
   await writeFile(output, generated, "utf8");

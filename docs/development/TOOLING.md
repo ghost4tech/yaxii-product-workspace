@@ -1,13 +1,16 @@
 # Development Tooling
 
-**Updated:** 2026-08-13
+**Updated:** 2026-08-15
 
 ## Package authority
 
 npm is the canonical frontend package manager. Its lockfile is
 `apps/product-butler/package-lock.json`; the preserved Phase 0 `bun.lockb` is source provenance, not
 a supported Bun workflow. Composer owns PHP development tools through the root `composer.lock`.
-The frontend declares Node `^20.19.0 || >=22.12.0` and npm `>=10`.
+The frontend declares Node `^20.19.0 || >=22.12.0` and npm `>=10`. The release
+checkout was built with Node 22.12.0 and npm 11.15.0. PHP development and the
+release runtime require PHP 8.1 or newer; the locked Composer platform is PHP
+8.1.29 and the release checkout used Composer 2.8.5.
 
 ## Frontend commands
 
@@ -26,6 +29,23 @@ Run from `apps/product-butler`:
 
 `npm run dev` starts a standalone development adapter. It does not provide production store writes
 or seeded catalog data and is not the WordPress architecture.
+
+## Localization build
+
+From the repository root, after `npm ci`, run the following exact sequence. It
+does not require Lovable or another private service.
+
+```powershell
+npm --prefix apps/product-butler run i18n:source
+wp i18n make-pot . languages/yaxii-product-workspace.pot --domain=yaxii-product-workspace --exclude=vendor,node_modules,assets/build,apps/product-butler-v2,apps/product-butler/src,tests,docs
+# Update the maintained PO translations before compiling when source messages changed.
+wp i18n make-mo languages
+npm --prefix apps/product-butler run build
+npm --prefix apps/product-butler run i18n:map
+wp i18n make-json languages languages --domain=yaxii-product-workspace --no-purge --pretty-print --use-map=languages/source-map.json
+npm --prefix apps/product-butler run i18n:finalize
+npm --prefix apps/product-butler run check:i18n
+```
 
 ## PHP commands
 
@@ -55,6 +75,22 @@ $ypwPhp = Join-Path $env:APPDATA 'Local\lightning-services\php-8.3.23+0\bin\win6
 
 LocalWP currently emits an optional `php_imagick.dll` startup warning. The verified test and media
 paths remain operational; treat it as a failure only when the tested behavior requires Imagick.
+
+## Deterministic release package
+
+From a clean committed checkout, run:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/build-release.ps1
+```
+
+The script performs a clean npm install, rebuilds and verifies committed
+frontend/localization/license artifacts, stages the allowlist from
+`release-manifest.json`, runs `composer install --no-dev
+--classmap-authoritative --no-scripts` inside the staged plugin, and writes the
+deterministic ZIP plus its SHA-256/file manifest under `dist/`. Development PHP
+dependencies are installed with `composer install`; only Composer's generated
+production autoloader is packaged.
 
 ## Phase 3 verification
 
