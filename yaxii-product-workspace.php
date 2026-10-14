@@ -1,7 +1,7 @@
 <?php
 /**
 Plugin Name: Yaxii Product Workspace
-Plugin URI: https://github.com/ghost4tech/yaxii-product-workspace
+Plugin URI: https://yaxii.dev/product/yaxii-product-workspace/
 Description: A focused WooCommerce product-entry workspace for WordPress administrators.
 Version: 1.1.2
 Requires at least: 7.0
