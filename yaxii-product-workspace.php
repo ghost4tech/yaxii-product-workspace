@@ -1,11 +1,12 @@
 <?php
 /**
 Plugin Name: Yaxii Product Workspace
-Plugin URI: https://yaxii.dev/
+Plugin URI: https://github.com/ghost4tech/yaxii-product-workspace
 Description: A focused WooCommerce product-entry workspace for WordPress administrators.
-Version: 0.2.0-alpha.1
+Version: 1.0.0
 Requires at least: 6.5
-Requires PHP: 7.4
+Requires PHP: 8.1
+Requires Plugins: woocommerce
 Author: Yaxii Dev
 Author URI: https://yaxii.dev/
 Text Domain: yaxii-product-workspace
@@ -22,7 +23,7 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'YAXII_PRODUCT_WORKSPACE_VERSION', '0.2.0-alpha.1' );
+define( 'YAXII_PRODUCT_WORKSPACE_VERSION', '1.0.0' );
 define( 'YAXII_PRODUCT_WORKSPACE_FILE', __FILE__ );
 
 $yaxii_product_workspace_autoloader = __DIR__ . '/vendor/autoload.php';

@@ -2,14 +2,14 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Yaxii Product Workspace 0.2.0-alpha.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wt-ypw-05a\n"
+"Project-Id-Version: Yaxii Product Workspace 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/ypw-phase1-recovery\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-15T12:36:35+00:00\n"
+"POT-Creation-Date: 2026-08-15T13:42:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: yaxii-product-workspace\n"
@@ -22,9 +22,8 @@ msgid "Yaxii Product Workspace"
 msgstr ""
 
 #. Plugin URI of the plugin
-#. Author URI of the plugin
 #: yaxii-product-workspace.php
-msgid "https://yaxii.dev/"
+msgid "https://github.com/ghost4tech/yaxii-product-workspace"
 msgstr ""
 
 #. Description of the plugin
@@ -35,6 +34,11 @@ msgstr ""
 #. Author of the plugin
 #: yaxii-product-workspace.php
 msgid "Yaxii Dev"
+msgstr ""
+
+#. Author URI of the plugin
+#: yaxii-product-workspace.php
+msgid "https://yaxii.dev/"
 msgstr ""
 
 #: src/Admin/AdminPage.php:47
@@ -66,7 +70,7 @@ msgid "Review the workspace preferences."
 msgstr ""
 
 #: src/Application/Preferences/PreferenceService.php:102
-#: src/Application/Products/CreateProductRequestFactory.php:171
+#: src/Application/Products/CreateProductRequestFactory.php:181
 #: src/Application/VariableProducts/VariationInputParser.php:130
 msgid "Expected true or false."
 msgstr ""
@@ -84,45 +88,53 @@ msgstr ""
 msgid "Choose a supported value."
 msgstr ""
 
-#: src/Application/Products/CreateProductRequestFactory.php:75
+#: src/Application/Products/CreateProductRequestFactory.php:77
 msgid "Every product field must be present; send an empty value to clear a field."
 msgstr ""
 
-#: src/Application/Products/CreateProductRequestFactory.php:77
+#: src/Application/Products/CreateProductRequestFactory.php:79
 msgid "Reload the product before saving this update."
 msgstr ""
 
-#: src/Application/Products/CreateProductRequestFactory.php:125
+#: src/Application/Products/CreateProductRequestFactory.php:129
 msgid "Product name is required."
 msgstr ""
 
-#: src/Application/Products/CreateProductRequestFactory.php:127
+#: src/Application/Products/CreateProductRequestFactory.php:131
 msgid "Product name must be 200 characters or fewer."
 msgstr ""
 
-#: src/Application/Products/CreateProductRequestFactory.php:130
+#: src/Application/Products/CreateProductRequestFactory.php:134
 msgid "SKU must be 100 characters or fewer."
 msgstr ""
 
-#: src/Application/Products/CreateProductRequestFactory.php:141
+#: src/Application/Products/CreateProductRequestFactory.php:137
+msgid "Description is too large to save."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:140
+msgid "Short description is too large to save."
+msgstr ""
+
+#: src/Application/Products/CreateProductRequestFactory.php:151
 #: src/Application/VariableProducts/VariationInputParser.php:60
 msgid "Sale price cannot exceed the regular price."
 msgstr ""
 
-#: src/Application/Products/CreateProductRequestFactory.php:146
+#: src/Application/Products/CreateProductRequestFactory.php:156
 msgid "Sale end date cannot be before the start date."
 msgstr ""
 
-#: src/Application/Products/CreateProductRequestFactory.php:155
+#: src/Application/Products/CreateProductRequestFactory.php:165
 msgid "The request contains unsupported fields."
 msgstr ""
 
-#: src/Application/Products/CreateProductRequestFactory.php:166
+#: src/Application/Products/CreateProductRequestFactory.php:176
 #: src/Application/VariableProducts/VariationInputParser.php:138
 msgid "Expected a text value."
 msgstr ""
 
-#: src/Application/Products/CreateProductRequestFactory.php:183
+#: src/Application/Products/CreateProductRequestFactory.php:193
 msgid "Review the highlighted product fields."
 msgstr ""
 
@@ -587,7 +599,7 @@ msgstr ""
 msgid "Send a JSON variable-product object."
 msgstr ""
 
-#: yaxii-product-workspace.php:41
+#: yaxii-product-workspace.php:42
 msgid "Yaxii Product Workspace cannot start because its Composer dependencies are missing."
 msgstr ""
 

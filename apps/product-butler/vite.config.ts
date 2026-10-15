@@ -13,9 +13,13 @@ export default defineConfig({
   },
   plugins: [react()],
   resolve: {
-    alias: {
-      "@": path.resolve(projectRoot, "./src"),
-    },
+    alias: [
+      { find: "@", replacement: path.resolve(projectRoot, "./src") },
+      { find: /^react$/, replacement: path.resolve(projectRoot, "wordpress-externals/react.js") },
+      { find: /^react-dom$/, replacement: path.resolve(projectRoot, "wordpress-externals/react-dom.js") },
+      { find: /^react-dom\/client$/, replacement: path.resolve(projectRoot, "wordpress-externals/react-dom.js") },
+      { find: /^react\/jsx-runtime$/, replacement: path.resolve(projectRoot, "wordpress-externals/react-jsx-runtime.js") },
+    ],
   },
   build: {
     outDir: path.resolve(projectRoot, "../../assets/build"),
@@ -28,7 +32,7 @@ export default defineConfig({
           if (!id.includes("node_modules")) return undefined;
           if (id.includes("@tiptap") || id.includes("prosemirror")) return "editor-vendor";
           if (id.includes("@radix-ui") || id.includes("cmdk")) return "ui-vendor";
-          if (id.includes("react") || id.includes("scheduler")) return "react-vendor";
+          if (id.includes("scheduler")) return "react-vendor";
           return "vendor";
         },
       },

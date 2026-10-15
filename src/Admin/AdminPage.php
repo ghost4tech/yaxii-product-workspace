@@ -99,7 +99,7 @@ final class AdminPage {
 		wp_enqueue_script(
 			self::SCRIPT_NAME,
 			$build_url . $script,
-			array( 'wp-i18n' ),
+			array( 'wp-element', 'wp-i18n', 'react-jsx-runtime' ),
 			$this->asset_version( $build_path . $script ),
 			true
 		);
